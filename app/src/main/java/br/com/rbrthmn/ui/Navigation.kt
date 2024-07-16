@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import br.com.rbrthmn.ui.financialcompanion.FinancialCompanionScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.FinancialCompanionScreen
 
 @Composable
 fun MainNavigation() {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.rbrthmn.ui.financialcompanion
+package br.com.rbrthmn.ui.financialcompanion.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,9 +26,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import br.com.rbrthmn.data.FinancialCompanionRepository
-import br.com.rbrthmn.ui.financialcompanion.FinancialCompanionUiState.Error
-import br.com.rbrthmn.ui.financialcompanion.FinancialCompanionUiState.Loading
-import br.com.rbrthmn.ui.financialcompanion.FinancialCompanionUiState.Success
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.FinancialCompanionUiState.Error
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.FinancialCompanionUiState.Loading
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.FinancialCompanionUiState.Success
 import javax.inject.Inject
 
 @HiltViewModel

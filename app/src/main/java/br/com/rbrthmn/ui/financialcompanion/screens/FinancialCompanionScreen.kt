@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.rbrthmn.ui.financialcompanion
+package br.com.rbrthmn.ui.financialcompanion.screens
 
 import br.com.rbrthmn.ui.theme.MyApplicationTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.FinancialCompanionUiState
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.FinancialCompanionViewModel
 
 @Composable
 fun FinancialCompanionScreen(modifier: Modifier = Modifier, viewModel: FinancialCompanionViewModel = hiltViewModel()) {

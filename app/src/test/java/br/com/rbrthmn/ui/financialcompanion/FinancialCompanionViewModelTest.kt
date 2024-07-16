@@ -25,6 +25,8 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import br.com.rbrthmn.data.FinancialCompanionRepository
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.FinancialCompanionUiState
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.FinancialCompanionViewModel
 
 /**
  * Example local unit test, which will execute on the development machine (host).
