@@ -43,6 +43,8 @@ import br.com.rbrthmn.ui.financialcompanion.utils.ComfinNavigationType
 import br.com.rbrthmn.ui.financialcompanion.utils.ContentType
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
 
+data class Account(val id: Int, val name: String, val balance: String)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -90,34 +92,35 @@ fun HomeScreen(
 
 @Composable
 private fun HomeScreenContent(innerPaddingValues: PaddingValues, modifier: Modifier = Modifier) {
+    val accounts = listOf(Account(1,"Banco A", "500,00"), Account(2,"Banco B", "1.000,00"))
+    val totalBalance = "1.000,00"
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = modifier
             .padding(innerPaddingValues)
+            .padding(horizontal = 20.dp)
+            .padding(top = 20.dp)
             .fillMaxSize()
 //            .verticalScroll(rememberScrollState())
     ) {
         MonthlyLimitCard(modifier)
-        BalanceCard(modifier)
+        BalanceCard(totalBalance = totalBalance, accounts = accounts, modifier = modifier)
+        CreditCardsBillCard(totalCreditCardsBill = "2300,00", cardBills = accounts)
     }
 }
 
 @Composable
 private fun MonthlyLimitCard(modifier: Modifier = Modifier) {
     Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        modifier = modifier
-            .padding(horizontal = 20.dp, vertical = 20.dp)
-            .shadow(elevation = 10.dp)
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        modifier = modifier.shadow(elevation = 10.dp)
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier.padding(20.dp)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = modifier
-                    .padding(horizontal = 20.dp)
-                    .padding(top = 20.dp)
             ) {
                 Text(
                     text = "LIMITE DO MÊS",
@@ -143,7 +146,6 @@ private fun MonthlyLimitCard(modifier: Modifier = Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = modifier
-                    .padding(horizontal = 10.dp)
                     .padding(top = 20.dp)
             ) {
                 Text(
@@ -164,48 +166,46 @@ private fun MonthlyLimitCard(modifier: Modifier = Modifier) {
                 text = "R$ 1.000,00",
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(bottom = 20.dp, top = 5.dp)
+                modifier = modifier.padding(top = 5.dp)
             )
         }
     }
 }
 
 @Composable
-private fun BalanceCard(modifier: Modifier = Modifier) {
-    val accounts = listOf(Account(1,"Banco A", "500,00"), Account(2,"Banco B", "1.000,00"))
+private fun BalanceCard(totalBalance: String, accounts: List<Account>, modifier: Modifier = Modifier) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier
-            .padding(horizontal = 20.dp, vertical = 20.dp)
-            .shadow(elevation = 10.dp)
+        modifier = modifier.shadow(elevation = 10.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier.padding(vertical = 20.dp, horizontal = 20.dp)
         ) {
-            TotalBalanceText(modifier)
-            HorizontalDivider(modifier.padding(vertical = 10.dp))
-            BalanceList(modifier, accounts)
-            AddBalanceAccountButton(modifier)
+            TotalValueText(totalValueName = "SALDO:", totalValue = totalBalance, modifier = modifier)
+            HorizontalDivider(modifier)
+            ItemsList(modifier, accounts)
+            AddItemButton(itemName = "conta", modifier)
         }
     }
 }
 
 @Composable
-private fun TotalBalanceText(modifier: Modifier) {
+private fun TotalValueText(totalValueName: String, totalValue: String, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
+            .padding(bottom = 10.dp)
     ) {
         Text(
-            text = "SALDO:",
+            text = totalValueName,
             fontSize = 30.sp,
             fontWeight = FontWeight.ExtraBold
         )
         Text(
-            text = "R$ 1.000,00",
+            text = "R$ $totalValue",
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold
         )
@@ -213,27 +213,27 @@ private fun TotalBalanceText(modifier: Modifier) {
 }
 
 @Composable
-private fun BalanceList(
+private fun ItemsList(
     modifier: Modifier = Modifier,
     accounts: List<Account> = listOf()
 ) {
-    LazyColumn(modifier = modifier) {
-        itemsIndexed(accounts) { index, account ->
-            if (index <= accounts.size) {
-                BalanceItem(account.name, account.balance)
-            }
+    LazyColumn(
+        contentPadding = PaddingValues(top = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = modifier
+    ) {
+        itemsIndexed(accounts) { _, account ->
+            Item(account.name, account.balance)
         }
     }
 }
 
 @Composable
-fun BalanceItem(accountName: String, accountBalance: String, modifier: Modifier = Modifier) {
+fun Item(accountName: String, accountBalance: String, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 5.dp)
+        modifier = modifier.fillMaxWidth()
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
@@ -250,12 +250,13 @@ fun BalanceItem(accountName: String, accountBalance: String, modifier: Modifier 
 }
 
 @Composable
-fun AddBalanceAccountButton(modifier: Modifier = Modifier) {
+fun AddItemButton(itemName: String, modifier: Modifier = Modifier) {
     TextButton(
         onClick = {  },
         contentPadding = PaddingValues(0.dp),
-        modifier = modifier.fillMaxWidth())
-    {
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -271,8 +272,26 @@ fun AddBalanceAccountButton(modifier: Modifier = Modifier) {
                     tint = Color.Gray,
                     modifier = modifier.padding(horizontal = 5.dp)
                 )
-                Text(text = "Adicionar conta", fontSize = 20.sp)
+                Text(text = "Adicionar $itemName", fontSize = 20.sp)
             }
+        }
+    }
+}
+
+@Composable
+fun CreditCardsBillCard(totalCreditCardsBill: String, cardBills: List<Account>, modifier: Modifier = Modifier) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        modifier = modifier.shadow(elevation = 10.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier.padding(vertical = 20.dp, horizontal = 20.dp)
+        ) {
+            TotalValueText(totalValueName = "FATURAS:", totalValue = totalCreditCardsBill, modifier = modifier)
+            HorizontalDivider(modifier)
+            ItemsList(modifier, cardBills)
+            AddItemButton(itemName = "cartão", modifier)
         }
     }
 }
@@ -287,4 +306,24 @@ private fun HomeScreenPreview(modifier: Modifier = Modifier) {
     )
 }
 
-data class Account(val id: Int, val name: String, val balance: String)
+@Preview
+@Composable
+fun MonthlyLimitCardPreview(modifier: Modifier = Modifier) {
+    MonthlyLimitCard()
+}
+
+@Preview
+@Composable
+fun BalanceCardPreview(modifier: Modifier = Modifier) {
+    val accounts = listOf(Account(1,"Banco A", "500,00"), Account(2,"Banco B", "1.000,00"))
+    val totalBalance = "1234.00"
+    BalanceCard(totalBalance = totalBalance, accounts = accounts, modifier = modifier)
+}
+
+@Preview
+@Composable
+fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
+    val accounts = listOf(Account(1,"Banco A", "500,00"), Account(2,"Banco B", "1.000,00"))
+    val totalCreditCardsBill = "12234.00"
+    CreditCardsBillCard(totalCreditCardsBill = totalCreditCardsBill, cardBills = accounts, modifier = modifier)
+}
