@@ -81,8 +81,7 @@ fun HomeScreen(
                 onPreviousMonthClick = { println("PREVIOUS MONTH") },
                 onNextMonthClick = { println("NEXT MONTH") },
                 scrollBehavior = scrollBehavior,
-                modifier = Modifier
-                    .nestedScroll(scrollBehavior.nestedScrollConnection)
+                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
             )
         }, modifier = modifier) { innerPadding ->
             HomeScreenContent(innerPadding, modifier)
@@ -92,7 +91,7 @@ fun HomeScreen(
 
 @Composable
 private fun HomeScreenContent(innerPaddingValues: PaddingValues, modifier: Modifier = Modifier) {
-    val accounts = listOf(Account(1,"Banco A", "500,00"), Account(2,"Banco B", "1.000,00"))
+    val accounts = listOf(Account(1,"Banco A", "R$ 500,00"), Account(2,"Banco B", "R$ 1.000,00"))
     val totalBalance = "1.000,00"
 
     Column(
@@ -103,16 +102,16 @@ private fun HomeScreenContent(innerPaddingValues: PaddingValues, modifier: Modif
             .padding(horizontal = 20.dp)
             .padding(top = 20.dp)
             .fillMaxSize()
-//            .verticalScroll(rememberScrollState())
     ) {
-        MonthlyLimitCard(modifier)
-        BalanceCard(totalBalance = totalBalance, accounts = accounts, modifier = modifier)
-        CreditCardsBillCard(totalCreditCardsBill = "2300,00", cardBills = accounts)
+        MonthlyLimitCard(monthLimit = "R$ 1.000,00", monthDifference = "-R$ 5435,99")
+        BalanceCard(totalBalance = totalBalance, accounts = accounts)
+        CreditCardsBillCard(totalCreditCardsBill = "R$ 2300,00", cardBills = accounts)
+        DifferenceFromLastMonthCard("-R$ 5435,99")
     }
 }
 
 @Composable
-private fun MonthlyLimitCard(modifier: Modifier = Modifier) {
+private fun MonthlyLimitCard(monthLimit: String, monthDifference: String,modifier: Modifier = Modifier) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier.shadow(elevation = 10.dp)
@@ -137,7 +136,7 @@ private fun MonthlyLimitCard(modifier: Modifier = Modifier) {
                 )
             }
             Text(
-                text = "R$ 1.000,00",
+                text = monthLimit,
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = modifier.padding(bottom = 20.dp, top = 5.dp)
@@ -163,7 +162,7 @@ private fun MonthlyLimitCard(modifier: Modifier = Modifier) {
                 )
             }
             Text(
-                text = "R$ 1.000,00",
+                text = monthDifference,
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = modifier.padding(top = 5.dp)
@@ -205,7 +204,7 @@ private fun TotalValueText(totalValueName: String, totalValue: String, modifier:
             fontWeight = FontWeight.ExtraBold
         )
         Text(
-            text = "R$ $totalValue",
+            text = totalValue,
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold
         )
@@ -245,7 +244,7 @@ fun Item(accountName: String, accountBalance: String, modifier: Modifier = Modif
             )
             Text(text = accountName, fontSize = 20.sp)
         }
-        Text(text = "R$ $accountBalance", fontSize = 20.sp)
+        Text(text = accountBalance, fontSize = 20.sp)
     }
 }
 
@@ -296,6 +295,30 @@ fun CreditCardsBillCard(totalCreditCardsBill: String, cardBills: List<Account>, 
     }
 }
 
+@Composable
+fun DifferenceFromLastMonthCard(differenceValue: String, modifier: Modifier = Modifier) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        modifier = modifier.shadow(elevation = 10.dp)
+    ) {
+       Row(
+           verticalAlignment = Alignment.CenterVertically,
+//           horizontalArrangement = Arrangement.SpaceBetween,
+           modifier = modifier
+               .fillMaxWidth()
+               .padding(vertical = 20.dp, horizontal = 20.dp)
+       ) {
+           Text(text = "Diferença do mês passado",
+               fontSize = 20.sp,
+               fontWeight = FontWeight.ExtraBold,
+               modifier = modifier.weight(0.6f))
+           Row(horizontalArrangement = Arrangement.End, modifier = modifier.weight(0.4f)) {
+               Text(text = differenceValue, fontSize = 20.sp)
+           }
+       }
+    }
+}
+
 @Preview
 @Composable
 private fun HomeScreenPreview(modifier: Modifier = Modifier) {
@@ -309,7 +332,7 @@ private fun HomeScreenPreview(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun MonthlyLimitCardPreview(modifier: Modifier = Modifier) {
-    MonthlyLimitCard()
+    MonthlyLimitCard("323", "323")
 }
 
 @Preview
@@ -326,4 +349,10 @@ fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
     val accounts = listOf(Account(1,"Banco A", "500,00"), Account(2,"Banco B", "1.000,00"))
     val totalCreditCardsBill = "12234.00"
     CreditCardsBillCard(totalCreditCardsBill = totalCreditCardsBill, cardBills = accounts, modifier = modifier)
+}
+
+@Preview(widthDp = 300)
+@Composable
+fun DifferenceFromLastMonthCardPreview(modifier: Modifier = Modifier) {
+    DifferenceFromLastMonthCard(differenceValue = "-4.00", modifier = modifier)
 }
