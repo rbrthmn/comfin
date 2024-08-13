@@ -8,11 +8,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -31,13 +30,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.components.NavigationItemContent
 import br.com.rbrthmn.ui.financialcompanion.components.SelectMonthTopBar
 import br.com.rbrthmn.ui.financialcompanion.utils.ComfinNavigationType
 import br.com.rbrthmn.ui.financialcompanion.utils.ContentType
@@ -52,25 +49,6 @@ fun HomeScreen(
     contentType: ContentType,
     modifier: Modifier = Modifier
 ) {
-    val navigationItemContentList = listOf(
-        NavigationItemContent(
-            icon = Icons.Default.Home,
-            text = stringResource(id = R.string.home)
-        ),
-        NavigationItemContent(
-            icon = Icons.Default.Home,
-            text = stringResource(id = R.string.operations)
-        ),
-        NavigationItemContent(
-            icon = Icons.Default.Home,
-            text = stringResource(id = R.string.dashboard)
-        ),
-        NavigationItemContent(
-            icon = Icons.Default.Home,
-            text = stringResource(id = R.string.more)
-        )
-    )
-
     if (navigationType == ComfinNavigationType.BOTTOM_NAVIGATION && contentType == ContentType.LIST_ONLY) {
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -91,7 +69,11 @@ fun HomeScreen(
 
 @Composable
 private fun HomeScreenContent(innerPaddingValues: PaddingValues, modifier: Modifier = Modifier) {
-    val accounts = listOf(Account(1,"Banco A", "R$ 500,00"), Account(2,"Banco B", "R$ 1.000,00"))
+    val accounts = listOf(
+        Account(1, "Banco A", "R$ 500,00"),
+        Account(2, "Banco B", "R$ 1.000,00"),
+        Account(3, "Banco C", "R$ 5,00")
+    )
     val totalBalance = "1.000,00"
 
     Column(
@@ -100,8 +82,8 @@ private fun HomeScreenContent(innerPaddingValues: PaddingValues, modifier: Modif
         modifier = modifier
             .padding(innerPaddingValues)
             .padding(horizontal = 20.dp)
-            .padding(top = 20.dp)
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         MonthlyLimitCard(monthLimit = "R$ 1.000,00", monthDifference = "-R$ 5435,99")
         BalanceCard(totalBalance = totalBalance, accounts = accounts)
@@ -111,12 +93,21 @@ private fun HomeScreenContent(innerPaddingValues: PaddingValues, modifier: Modif
 }
 
 @Composable
-private fun MonthlyLimitCard(monthLimit: String, monthDifference: String,modifier: Modifier = Modifier) {
+private fun MonthlyLimitCard(
+    monthLimit: String,
+    monthDifference: String,
+    modifier: Modifier = Modifier
+) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier.shadow(elevation = 10.dp)
+        modifier = modifier
+            .padding(top = 20.dp)
+            .shadow(elevation = 10.dp)
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier.padding(20.dp)) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier.padding(20.dp)
+        ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = modifier
@@ -172,7 +163,11 @@ private fun MonthlyLimitCard(monthLimit: String, monthDifference: String,modifie
 }
 
 @Composable
-private fun BalanceCard(totalBalance: String, accounts: List<Account>, modifier: Modifier = Modifier) {
+private fun BalanceCard(
+    totalBalance: String,
+    accounts: List<Account>,
+    modifier: Modifier = Modifier
+) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier.shadow(elevation = 10.dp)
@@ -181,7 +176,11 @@ private fun BalanceCard(totalBalance: String, accounts: List<Account>, modifier:
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier.padding(vertical = 20.dp, horizontal = 20.dp)
         ) {
-            TotalValueText(totalValueName = "SALDO:", totalValue = totalBalance, modifier = modifier)
+            TotalValueText(
+                totalValueName = "SALDO:",
+                totalValue = totalBalance,
+                modifier = modifier
+            )
             HorizontalDivider(modifier)
             ItemsList(modifier, accounts)
             AddItemButton(itemName = "conta", modifier)
@@ -190,7 +189,11 @@ private fun BalanceCard(totalBalance: String, accounts: List<Account>, modifier:
 }
 
 @Composable
-private fun TotalValueText(totalValueName: String, totalValue: String, modifier: Modifier = Modifier) {
+private fun TotalValueText(
+    totalValueName: String,
+    totalValue: String,
+    modifier: Modifier = Modifier
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -214,14 +217,13 @@ private fun TotalValueText(totalValueName: String, totalValue: String, modifier:
 @Composable
 private fun ItemsList(
     modifier: Modifier = Modifier,
-    accounts: List<Account> = listOf()
+    accounts: List<Account>
 ) {
-    LazyColumn(
-        contentPadding = PaddingValues(top = 10.dp),
+    Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = modifier
+        modifier = modifier.padding(top = 10.dp)
     ) {
-        itemsIndexed(accounts) { _, account ->
+        for (account in accounts) {
             Item(account.name, account.balance)
         }
     }
@@ -251,7 +253,7 @@ fun Item(accountName: String, accountBalance: String, modifier: Modifier = Modif
 @Composable
 fun AddItemButton(itemName: String, modifier: Modifier = Modifier) {
     TextButton(
-        onClick = {  },
+        onClick = { },
         contentPadding = PaddingValues(0.dp),
         modifier = modifier
             .fillMaxWidth()
@@ -278,7 +280,11 @@ fun AddItemButton(itemName: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun CreditCardsBillCard(totalCreditCardsBill: String, cardBills: List<Account>, modifier: Modifier = Modifier) {
+fun CreditCardsBillCard(
+    totalCreditCardsBill: String,
+    cardBills: List<Account>,
+    modifier: Modifier = Modifier
+) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier.shadow(elevation = 10.dp)
@@ -287,7 +293,11 @@ fun CreditCardsBillCard(totalCreditCardsBill: String, cardBills: List<Account>, 
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier.padding(vertical = 20.dp, horizontal = 20.dp)
         ) {
-            TotalValueText(totalValueName = "FATURAS:", totalValue = totalCreditCardsBill, modifier = modifier)
+            TotalValueText(
+                totalValueName = "FATURAS:",
+                totalValue = totalCreditCardsBill,
+                modifier = modifier
+            )
             HorizontalDivider(modifier)
             ItemsList(modifier, cardBills)
             AddItemButton(itemName = "cartão", modifier)
@@ -299,23 +309,26 @@ fun CreditCardsBillCard(totalCreditCardsBill: String, cardBills: List<Account>, 
 fun DifferenceFromLastMonthCard(differenceValue: String, modifier: Modifier = Modifier) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier.shadow(elevation = 10.dp)
+        modifier = modifier
+            .padding(bottom = 20.dp)
+            .shadow(elevation = 10.dp)
     ) {
-       Row(
-           verticalAlignment = Alignment.CenterVertically,
-//           horizontalArrangement = Arrangement.SpaceBetween,
-           modifier = modifier
-               .fillMaxWidth()
-               .padding(vertical = 20.dp, horizontal = 20.dp)
-       ) {
-           Text(text = "Diferença do mês passado",
-               fontSize = 20.sp,
-               fontWeight = FontWeight.ExtraBold,
-               modifier = modifier.weight(0.6f))
-           Row(horizontalArrangement = Arrangement.End, modifier = modifier.weight(0.4f)) {
-               Text(text = differenceValue, fontSize = 20.sp)
-           }
-       }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = 20.dp, horizontal = 20.dp)
+        ) {
+            Text(
+                text = "Diferença do mês passado",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.ExtraBold,
+                modifier = modifier.weight(0.6f)
+            )
+            Row(horizontalArrangement = Arrangement.End, modifier = modifier.weight(0.4f)) {
+                Text(text = differenceValue, fontSize = 20.sp)
+            }
+        }
     }
 }
 
@@ -338,7 +351,7 @@ fun MonthlyLimitCardPreview(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun BalanceCardPreview(modifier: Modifier = Modifier) {
-    val accounts = listOf(Account(1,"Banco A", "500,00"), Account(2,"Banco B", "1.000,00"))
+    val accounts = listOf(Account(1, "Banco A", "500,00"), Account(2, "Banco B", "1.000,00"))
     val totalBalance = "1234.00"
     BalanceCard(totalBalance = totalBalance, accounts = accounts, modifier = modifier)
 }
@@ -346,12 +359,16 @@ fun BalanceCardPreview(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
-    val accounts = listOf(Account(1,"Banco A", "500,00"), Account(2,"Banco B", "1.000,00"))
+    val accounts = listOf(Account(1, "Banco A", "500,00"), Account(2, "Banco B", "1.000,00"))
     val totalCreditCardsBill = "12234.00"
-    CreditCardsBillCard(totalCreditCardsBill = totalCreditCardsBill, cardBills = accounts, modifier = modifier)
+    CreditCardsBillCard(
+        totalCreditCardsBill = totalCreditCardsBill,
+        cardBills = accounts,
+        modifier = modifier
+    )
 }
 
-@Preview(widthDp = 300)
+@Preview()
 @Composable
 fun DifferenceFromLastMonthCardPreview(modifier: Modifier = Modifier) {
     DifferenceFromLastMonthCard(differenceValue = "-4.00", modifier = modifier)
