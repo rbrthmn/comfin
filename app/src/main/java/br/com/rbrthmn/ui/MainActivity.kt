@@ -22,9 +22,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.Modifier
+import br.com.rbrthmn.ui.financialcompanion.ComFinApp
 import dagger.hilt.android.AndroidEntryPoint
-import br.com.rbrthmn.ui.theme.MyApplicationTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -32,14 +33,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApplicationTheme {
+//            MyApplicationTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainNavigation()
+                    ComFinApp(windowSize = WindowWidthSizeClass.Compact)
                 }
-            }
+//            }
         }
     }
 }

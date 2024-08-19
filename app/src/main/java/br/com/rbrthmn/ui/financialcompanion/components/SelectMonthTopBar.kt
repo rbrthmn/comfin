@@ -71,7 +71,7 @@ fun SelectMonthTopBar(
         },
         scrollBehavior = scrollBehavior,
         modifier = modifier
-            .shadow(elevation = 25.dp)
+            .shadow(elevation = 10.dp)
             .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
     )
 }
