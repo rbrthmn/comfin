@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.SelectMonthTopBar
-import br.com.rbrthmn.ui.financialcompanion.utils.ComfinNavigationType
+import br.com.rbrthmn.ui.financialcompanion.utils.ComFinNavigationType
 import br.com.rbrthmn.ui.financialcompanion.utils.ContentType
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
 
@@ -45,11 +45,11 @@ data class Account(val id: Int, val name: String, val balance: String)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navigationType: ComfinNavigationType,
+    navigationType: ComFinNavigationType,
     contentType: ContentType,
     modifier: Modifier = Modifier
 ) {
-    if (navigationType == ComfinNavigationType.BOTTOM_NAVIGATION && contentType == ContentType.LIST_ONLY) {
+    if (navigationType == ComFinNavigationType.BOTTOM_NAVIGATION && contentType == ContentType.LIST_ONLY) {
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
         Scaffold(topBar = {
@@ -336,7 +336,7 @@ fun DifferenceFromLastMonthCard(differenceValue: String, modifier: Modifier = Mo
 @Composable
 private fun HomeScreenPreview(modifier: Modifier = Modifier) {
     HomeScreen(
-        navigationType = ComfinNavigationType.BOTTOM_NAVIGATION,
+        navigationType = ComFinNavigationType.BOTTOM_NAVIGATION,
         contentType = ContentType.LIST_ONLY,
         modifier = modifier
     )

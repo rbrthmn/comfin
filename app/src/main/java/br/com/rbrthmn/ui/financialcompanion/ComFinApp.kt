@@ -16,8 +16,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import br.com.rbrthmn.ui.financialcompanion.components.ComFinNavigationBar
 import br.com.rbrthmn.ui.financialcompanion.screens.HomeScreen
-import br.com.rbrthmn.ui.financialcompanion.utils.ComFinScreens
 import br.com.rbrthmn.ui.financialcompanion.utils.ComFinNavigationType
+import br.com.rbrthmn.ui.financialcompanion.utils.ComFinScreens
 import br.com.rbrthmn.ui.financialcompanion.utils.ContentType
 
 @Composable
