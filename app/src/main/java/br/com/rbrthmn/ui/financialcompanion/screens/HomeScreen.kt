@@ -86,7 +86,7 @@ private fun HomeScreenContent(innerPaddingValues: PaddingValues, modifier: Modif
             .verticalScroll(rememberScrollState())
     ) {
         MonthlyLimitCard(monthLimit = "R$ 1.000,00", monthDifference = "-R$ 5435,99")
-        BalanceCard(totalBalance = totalBalance, accounts = accounts)
+        TotalBalanceCard(totalBalance = totalBalance, accounts = accounts)
         CreditCardsBillCard(totalCreditCardsBill = "R$ 2300,00", cardBills = accounts)
         DifferenceFromLastMonthCard("-R$ 5435,99")
     }
@@ -163,7 +163,7 @@ private fun MonthlyLimitCard(
 }
 
 @Composable
-private fun BalanceCard(
+private fun TotalBalanceCard(
     totalBalance: String,
     accounts: List<Account>,
     modifier: Modifier = Modifier
@@ -353,7 +353,7 @@ fun MonthlyLimitCardPreview(modifier: Modifier = Modifier) {
 fun BalanceCardPreview(modifier: Modifier = Modifier) {
     val accounts = listOf(Account(1, "Banco A", "500,00"), Account(2, "Banco B", "1.000,00"))
     val totalBalance = "1234.00"
-    BalanceCard(totalBalance = totalBalance, accounts = accounts, modifier = modifier)
+    TotalBalanceCard(totalBalance = totalBalance, accounts = accounts, modifier = modifier)
 }
 
 @Preview
