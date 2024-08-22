@@ -16,6 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import br.com.rbrthmn.ui.financialcompanion.components.ComFinNavigationBar
 import br.com.rbrthmn.ui.financialcompanion.screens.HomeScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.OperationsScreen
 import br.com.rbrthmn.ui.financialcompanion.utils.ComFinNavigationType
 import br.com.rbrthmn.ui.financialcompanion.utils.ComFinScreens
 import br.com.rbrthmn.ui.financialcompanion.utils.ContentType
@@ -54,6 +55,12 @@ fun ComFinApp(
             NavHost(navController = navController, startDestination = "HOME", modifier.weight(0.9f)) {
                 composable("HOME") {
                     HomeScreen(
+                        contentType = contentType,
+                        navigationType = navigationType
+                    )
+                }
+                composable("OPERATIONS") {
+                    OperationsScreen(
                         contentType = contentType,
                         navigationType = navigationType
                     )
