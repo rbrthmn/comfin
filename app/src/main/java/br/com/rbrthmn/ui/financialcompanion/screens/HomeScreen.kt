@@ -100,17 +100,14 @@ private fun MonthlyLimitCard(
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier
-            .padding(top = 20.dp)
-            .shadow(elevation = 10.dp)
+        modifier = modifier.padding(top = 20.dp).shadow(elevation = 10.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier.padding(20.dp)
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = "LIMITE DO MÊS",
@@ -121,7 +118,7 @@ private fun MonthlyLimitCard(
                     painter = painterResource(id = R.drawable.help),
                     contentDescription = "Ícone com ponto de interrogação",
                     tint = Color.Gray,
-                    modifier = modifier
+                    modifier = Modifier
                         .padding(start = 5.dp)
                         .clickable { }
                 )
@@ -135,8 +132,7 @@ private fun MonthlyLimitCard(
             HorizontalDivider()
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier
-                    .padding(top = 20.dp)
+                modifier = modifier.padding(top = 20.dp)
             ) {
                 Text(
                     text = "DIFERENÇA",
@@ -174,16 +170,16 @@ private fun TotalBalanceCard(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier.padding(vertical = 20.dp, horizontal = 20.dp)
+            modifier = modifier.padding(20.dp)
         ) {
             TotalValueText(
                 totalValueName = "SALDO:",
                 totalValue = totalBalance,
                 modifier = modifier
             )
-            HorizontalDivider(modifier)
+            HorizontalDivider()
             ItemsList(modifier, accounts)
-            AddItemButton(itemName = "conta", modifier)
+            AddItemButton(itemName = "conta")
         }
     }
 }
@@ -255,8 +251,7 @@ fun AddItemButton(itemName: String, modifier: Modifier = Modifier) {
     TextButton(
         onClick = { },
         contentPadding = PaddingValues(0.dp),
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -298,7 +293,7 @@ fun CreditCardsBillCard(
                 totalValue = totalCreditCardsBill,
                 modifier = modifier
             )
-            HorizontalDivider(modifier)
+            HorizontalDivider()
             ItemsList(modifier, cardBills)
             AddItemButton(itemName = "cartão", modifier)
         }
