@@ -85,6 +85,20 @@ dependencies {
     testImplementation(libs.hilt.android.testing)
     kaptTest(libs.hilt.android.compiler)
 
+    // Koin Dependency Injection
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    // Koin Test features
+    testImplementation(libs.koin.test)
+    // Koin JUnit 4
+    testImplementation(libs.koin.test.junit)
+    // Koin Jetpack WorkManager
+    implementation(libs.koin.androidx.workmanager)
+    // Koin  Navigation Graph
+    implementation(libs.koin.androidx.navigation)
+    // Koin  Compose
+    implementation(libs.koin.androidx.compose)
+
     // Arch Components
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -99,6 +113,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material3.window.size)
+
     // Tooling
     debugImplementation(libs.androidx.compose.ui.tooling)
     // Instrumented tests
@@ -110,7 +125,6 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
 
     // Instrumented tests: jUnit rules and runners
-
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
