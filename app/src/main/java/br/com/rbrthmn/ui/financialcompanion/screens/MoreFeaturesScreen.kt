@@ -20,8 +20,13 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 
 data class FeatureLabel(val name: String, val route: String)
+
+object MoreFeaturesDestination : NavigationDestination {
+    override val route = "more_features"
+}
 
 @Composable
 fun MoreFeaturesScreen(modifier: Modifier = Modifier) {

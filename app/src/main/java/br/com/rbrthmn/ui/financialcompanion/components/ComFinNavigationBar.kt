@@ -5,7 +5,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.sharp.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -15,40 +14,49 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.financialcompanion.screens.HomeDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.MoreFeaturesDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.OperationsDestination
+import br.com.rbrthmn.ui.financialcompanion.utils.ComFinNavigationType
 
 @Composable
 fun ComFinNavigationBar(
     modifier: Modifier = Modifier,
+    navigationType: ComFinNavigationType,
+    navigateToDestination: (String) -> Unit
 ) {
-    val navigationItemContentList = listOf(
+    val navItemsList = listOf(
         NavigationItemContent(
             icon = Icons.Default.Home,
-            text = stringResource(id = R.string.home)
+            text = stringResource(id = R.string.home),
+            route = HomeDestination.route
         ),
         NavigationItemContent(
             icon = Icons.Outlined.Menu,
-            text = stringResource(id = R.string.operations)
-        ),
-        NavigationItemContent(
-            icon = Icons.Sharp.Lock,
-            text = stringResource(id = R.string.dashboard)
+            text = stringResource(id = R.string.operations),
+            route = OperationsDestination.route
         ),
         NavigationItemContent(
             icon = Icons.Filled.MoreVert,
-            text = stringResource(id = R.string.more)
+            text = stringResource(id = R.string.more),
+            route = MoreFeaturesDestination.route
         )
     )
 
-    ComFinBottomNavigationBar(
-        onTabPressed = { },
-        navigationItemContentList = navigationItemContentList,
-        modifier = modifier.fillMaxWidth()
-    )
+    when (navigationType) {
+        ComFinNavigationType.BOTTOM_NAVIGATION -> {
+            ComFinBottomNavigationBar(
+                onItemPressed = navigateToDestination,
+                navigationItemContentList = navItemsList,
+                modifier = modifier.fillMaxWidth()
+            )
+        }
+    }
 }
 
 @Composable
 private fun ComFinBottomNavigationBar(
-    onTabPressed: (() -> Unit),
+    onItemPressed: ((String) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
     modifier: Modifier = Modifier
 ) {
@@ -56,7 +64,9 @@ private fun ComFinBottomNavigationBar(
         for (navItem in navigationItemContentList) {
             NavigationBarItem(
                 selected = false,
-                onClick = { onTabPressed() },
+                onClick = {
+                    onItemPressed(navItem.route)
+                },
                 icon = {
                     Icon(
                         imageVector = navItem.icon,
@@ -72,11 +82,12 @@ private fun ComFinBottomNavigationBar(
 @Composable
 fun ComFinNavigationBarPreview(modifier: Modifier = Modifier) {
     ComFinNavigationBar(
-        modifier = Modifier,
-    )
+        navigationType = ComFinNavigationType.BOTTOM_NAVIGATION,
+        navigateToDestination = {})
 }
 
 data class NavigationItemContent(
     val icon: ImageVector,
-    val text: String
+    val text: String,
+    val route: String
 )

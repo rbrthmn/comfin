@@ -36,34 +36,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.SelectMonthTopBar
-import br.com.rbrthmn.ui.financialcompanion.utils.ComFinNavigationType
-import br.com.rbrthmn.ui.financialcompanion.utils.ContentType
+import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
 
 data class Account(val id: Int, val name: String, val balance: String)
 
+object HomeDestination : NavigationDestination {
+    override val route = "home"
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navigationType: ComFinNavigationType,
-    contentType: ContentType,
     modifier: Modifier = Modifier
 ) {
-    if (navigationType == ComFinNavigationType.BOTTOM_NAVIGATION && contentType == ContentType.LIST_ONLY) {
-        val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
-        Scaffold(topBar = {
-            SelectMonthTopBar(
-                currentMonth = MonthsOfTheYear.January,
-                onCurrentMonthClick = { println("CURRENT MONTH") },
-                onPreviousMonthClick = { println("PREVIOUS MONTH") },
-                onNextMonthClick = { println("NEXT MONTH") },
-                scrollBehavior = scrollBehavior,
-                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-            )
-        }, modifier = modifier) { innerPadding ->
-            HomeScreenContent(innerPadding, modifier)
-        }
+    Scaffold(topBar = {
+        SelectMonthTopBar(
+            currentMonth = MonthsOfTheYear.January,
+            onCurrentMonthClick = { println("CURRENT MONTH") },
+            onPreviousMonthClick = { println("PREVIOUS MONTH") },
+            onNextMonthClick = { println("NEXT MONTH") },
+            scrollBehavior = scrollBehavior,
+            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        )
+    }, modifier = modifier) { innerPadding ->
+        HomeScreenContent(innerPadding, modifier)
     }
 }
 
@@ -100,7 +99,9 @@ private fun MonthlyLimitCard(
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier.padding(top = 20.dp).shadow(elevation = 10.dp)
+        modifier = modifier
+            .padding(top = 20.dp)
+            .shadow(elevation = 10.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -330,11 +331,7 @@ fun DifferenceFromLastMonthCard(differenceValue: String, modifier: Modifier = Mo
 @Preview
 @Composable
 private fun HomeScreenPreview(modifier: Modifier = Modifier) {
-    HomeScreen(
-        navigationType = ComFinNavigationType.BOTTOM_NAVIGATION,
-        contentType = ContentType.LIST_ONLY,
-        modifier = modifier
-    )
+    HomeScreen(modifier = modifier)
 }
 
 @Preview

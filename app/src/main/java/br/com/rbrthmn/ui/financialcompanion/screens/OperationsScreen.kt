@@ -36,8 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.ui.financialcompanion.components.SelectMonthTopBar
-import br.com.rbrthmn.ui.financialcompanion.utils.ComFinNavigationType
-import br.com.rbrthmn.ui.financialcompanion.utils.ContentType
+import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -53,68 +52,42 @@ data class Operation(
     val extras: String? = null
 )
 
+object OperationsDestination : NavigationDestination {
+    override val route = "operations"
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OperationsScreen(
-    navigationType: ComFinNavigationType,
-    contentType: ContentType,
     modifier: Modifier = Modifier
 ) {
-    if (navigationType == ComFinNavigationType.BOTTOM_NAVIGATION && contentType == ContentType.LIST_ONLY) {
-        val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val operations = listOf<Operation>()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
-        Scaffold(topBar = {
-            SelectMonthTopBar(
-                currentMonth = MonthsOfTheYear.January,
-                onCurrentMonthClick = { println("CURRENT MONTH") },
-                onPreviousMonthClick = { println("PREVIOUS MONTH") },
-                onNextMonthClick = { println("NEXT MONTH") },
-                scrollBehavior = scrollBehavior,
-                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-            )
-        }, modifier = modifier) { innerPadding ->
-            OperationsScreenContent(innerPadding, modifier)
-        }
+    Scaffold(topBar = {
+        SelectMonthTopBar(
+            currentMonth = MonthsOfTheYear.January,
+            onCurrentMonthClick = { println("CURRENT MONTH") },
+            onPreviousMonthClick = { println("PREVIOUS MONTH") },
+            onNextMonthClick = { println("NEXT MONTH") },
+            scrollBehavior = scrollBehavior,
+            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        )
+    }, modifier = modifier) { innerPadding ->
+        OperationsScreenContent(operations, innerPadding, modifier)
     }
 }
 
 
 @Composable
 private fun OperationsScreenContent(
+    operations: List<Operation>,
     innerPaddingValues: PaddingValues,
     modifier: Modifier = Modifier
 ) {
     val totalBalance = "R$ 1.000,00"
     val incomes = "R$ 2.000,00"
     val outflow = "R$ 1.000,00"
-
-    fun Double.format(digits: Int) = "%.${digits}f".format(this)
-    val operations = mutableListOf<Operation>()
-    repeat(12) { index ->
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.YEAR, 2023)
-
-        if (index > 0 && Random.nextBoolean()) {
-            calendar.time = operations[index - 1].date
-        } else {
-            calendar.set(Calendar.MONTH, Random.nextInt(12))
-            calendar.set(Calendar.DAY_OF_MONTH, Random.nextInt(1, 29))
-        }
-
-        val types = listOf("Transferência", "Pagamento", "Depósito", "Saque")
-        val extras = listOf("Conta A", "Conta B", "Cartão X", "Investimento Y", null)
-        val value = Random.nextDouble(100.0, 5000.0).format(2)
-
-        operations.add(
-            Operation(
-                description = "Teste ${index + 1}",
-                value = value,
-                date = calendar.time,
-                type = types.random(),
-                extras = extras.randomOrNull()
-            )
-        )
-    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -195,7 +168,9 @@ fun TotalBalanceCard(
 fun OperationsListCard(operations: List<Operation>) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = Modifier.padding(bottom = 20.dp).shadow(elevation = 10.dp)
+        modifier = Modifier
+            .padding(bottom = 20.dp)
+            .shadow(elevation = 10.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -245,7 +220,7 @@ fun OperationsList(operations: List<Operation>) {
         modifier = Modifier.padding(top = 10.dp)
     ) {
         groupedOperations.forEach { (date, operationsForDate) ->
-            DayOfWeekAndMonthText(date = operationsForDate[0].date) // Use any date from the group
+            DayOfWeekAndMonthText(date = operationsForDate[0].date)
 
             operationsForDate.forEach { operation ->
                 OperationItem(
@@ -276,7 +251,9 @@ fun OperationItem(
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 10.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
@@ -298,9 +275,37 @@ fun OperationItem(
 @Preview
 @Composable
 fun OperationsScreenPreview(modifier: Modifier = Modifier) {
-    OperationsScreen(
-        navigationType = ComFinNavigationType.BOTTOM_NAVIGATION,
-        contentType = ContentType.LIST_ONLY
+    fun Double.format(digits: Int) = "%.${digits}f".format(this)
+    val operations = mutableListOf<Operation>()
+    repeat(12) { index ->
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, 2023)
+
+        if (index > 0 && Random.nextBoolean()) {
+            calendar.time = operations[index - 1].date
+        } else {
+            calendar.set(Calendar.MONTH, Random.nextInt(12))
+            calendar.set(Calendar.DAY_OF_MONTH, Random.nextInt(1, 29))
+        }
+
+        val types = listOf("Transferência", "Pagamento", "Depósito", "Saque")
+        val extras = listOf("Conta A", "Conta B", "Cartão X", "Investimento Y", null)
+        val value = Random.nextDouble(100.0, 5000.0).format(2)
+
+        operations.add(
+            Operation(
+                description = "Teste ${index + 1}",
+                value = value,
+                date = calendar.time,
+                type = types.random(),
+                extras = extras.randomOrNull()
+            )
+        )
+    }
+
+    OperationsScreenContent(
+        operations = operations,
+        innerPaddingValues = PaddingValues(0.dp),
     )
 }
 
