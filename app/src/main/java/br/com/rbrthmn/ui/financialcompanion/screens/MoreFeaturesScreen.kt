@@ -43,7 +43,7 @@ fun MoreFeaturesScreen(modifier: Modifier = Modifier) {
 }
 @Composable
 fun MoreFeaturesCard(modifier: Modifier = Modifier) {
-    val featuresList = listOf<FeatureLabel>(
+    val featuresList = listOf(
         FeatureLabel("Reservas", "reservas"),
         FeatureLabel("Gastos Recorrentes", "gastos_recorrentes"),
         FeatureLabel("Rendas e Distribuições", "distribution"),

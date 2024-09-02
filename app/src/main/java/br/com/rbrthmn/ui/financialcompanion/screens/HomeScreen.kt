@@ -360,7 +360,7 @@ fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
     )
 }
 
-@Preview()
+@Preview
 @Composable
 fun DifferenceFromLastMonthCardPreview(modifier: Modifier = Modifier) {
     DifferenceFromLastMonthCard(differenceValue = "-4.00", modifier = modifier)
