@@ -18,8 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 
 data class FeatureLabel(val name: String, val route: String)
@@ -32,9 +34,9 @@ object MoreFeaturesDestination : NavigationDestination {
 fun MoreFeaturesScreen(modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
         modifier = modifier
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
@@ -44,28 +46,28 @@ fun MoreFeaturesScreen(modifier: Modifier = Modifier) {
 @Composable
 fun MoreFeaturesCard(modifier: Modifier = Modifier) {
     val featuresList = listOf(
-        FeatureLabel("Reservas", "reservas"),
-        FeatureLabel("Gastos Recorrentes", "gastos_recorrentes"),
-        FeatureLabel("Rendas e Distribuições", "distribution"),
-        FeatureLabel("Configurações", "configurations")
+        FeatureLabel(stringResource(id = R.string.feature_label_reserves), "reservas"),
+        FeatureLabel(stringResource(id = R.string.feature_label_recurring_expenses), "gastos_recorrentes"),
+        FeatureLabel(stringResource(id = R.string.feature_label_income_distribution), "distribution"),
+        FeatureLabel(stringResource(id = R.string.feature_label_settings), "configurations")
     )
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 20.dp)
-            .shadow(elevation = 10.dp)
+            .padding(top = dimensionResource(id = R.dimen.padding_medium))
+            .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(horizontal = 20.dp)
+            modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
         ) {
             for (index in featuresList.indices) {
                 TextButton(
                     onClick = { },
-                    contentPadding = PaddingValues(0.dp),
+                    contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
                 ) {
                     Text(text = featuresList[index].name, modifier = Modifier.fillMaxWidth())
                 }

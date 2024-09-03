@@ -36,4 +36,9 @@
     <string name="outflow_title">Saídas</string>
     <string name="search_hint">Pesquisar</string>
     <string name="add_operation_button">Adicionar operação</string>
+
+    <string name="feature_label_reserves">Reservas</string>
+    <string name="feature_label_recurring_expenses">Gastos Recorrentes</string>
+    <string name="feature_label_income_distribution">Rendas e Distribuições</string>
+    <string name="feature_label_settings">Configurações</string>
 </resources>
