@@ -29,10 +29,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.SelectMonthTopBar
@@ -77,10 +78,10 @@ private fun HomeScreenContent(innerPaddingValues: PaddingValues, modifier: Modif
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
         modifier = modifier
             .padding(innerPaddingValues)
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
@@ -100,60 +101,60 @@ private fun MonthlyLimitCard(
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
-            .padding(top = 20.dp)
-            .shadow(elevation = 10.dp)
+            .padding(top = dimensionResource(id = R.dimen.padding_medium))
+            .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier.padding(20.dp)
+            modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "LIMITE DO MÊS",
-                    fontSize = 30.sp,
+                    text = stringResource(id = R.string.monthly_limit_title),
+                    fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.help),
-                    contentDescription = "Ícone com ponto de interrogação",
+                    contentDescription = stringResource(id = R.string.help_icon_description),
                     tint = Color.Gray,
                     modifier = Modifier
-                        .padding(start = 5.dp)
+                        .padding(start = dimensionResource(id = R.dimen.padding_extra_small))
                         .clickable { }
                 )
             }
             Text(
                 text = monthLimit,
-                fontSize = 25.sp,
+                fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(bottom = 20.dp, top = 5.dp)
+                modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.padding_medium), top = dimensionResource(id = R.dimen.padding_extra_small))
             )
             HorizontalDivider()
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier.padding(top = 20.dp)
+                modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_medium))
             ) {
                 Text(
-                    text = "DIFERENÇA",
-                    fontSize = 30.sp,
+                    text = stringResource(id = R.string.difference_title),
+                    fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.help),
-                    contentDescription = "Ícone com ponto de interrogação",
+                    contentDescription = stringResource(id = R.string.help_icon_description),
                     tint = Color.Gray,
                     modifier = modifier
-                        .padding(start = 5.dp)
+                        .padding(start = dimensionResource(id = R.dimen.padding_extra_small))
                         .clickable { }
                 )
             }
             Text(
                 text = monthDifference,
-                fontSize = 25.sp,
+                fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(top = 5.dp)
+                modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_extra_small))
             )
         }
     }
@@ -167,20 +168,20 @@ private fun TotalBalanceCard(
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier.shadow(elevation = 10.dp)
+        modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier.padding(20.dp)
+            modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
         ) {
             TotalValueText(
-                totalValueName = "SALDO:",
+                totalValueName = stringResource(id = R.string.total_balance_title),
                 totalValue = totalBalance,
                 modifier = modifier
             )
             HorizontalDivider()
             ItemsList(modifier, accounts)
-            AddItemButton(itemName = "conta")
+            AddItemButton(buttonText = stringResource(id = R.string.add_account_button))
         }
     }
 }
@@ -196,16 +197,16 @@ private fun TotalValueText(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = 10.dp)
+            .padding(bottom = dimensionResource(id = R.dimen.padding_small))
     ) {
         Text(
             text = totalValueName,
-            fontSize = 30.sp,
+            fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp,
             fontWeight = FontWeight.ExtraBold
         )
         Text(
             text = totalValue,
-            fontSize = 25.sp,
+            fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
             fontWeight = FontWeight.Bold
         )
     }
@@ -217,8 +218,8 @@ private fun ItemsList(
     accounts: List<Account>
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = modifier.padding(top = 10.dp)
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+        modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
     ) {
         for (account in accounts) {
             Item(account.name, account.balance)
@@ -236,22 +237,22 @@ fun Item(accountName: String, accountBalance: String, modifier: Modifier = Modif
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 imageVector = Icons.Default.Info,
-                contentDescription = "Ícone do banco",
+                contentDescription = stringResource(id = R.string.bank_icon_description),
                 tint = Color.Gray,
                 modifier = modifier
-                    .padding(horizontal = 5.dp)
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
             )
-            Text(text = accountName, fontSize = 20.sp)
+            Text(text = accountName, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp)
         }
-        Text(text = accountBalance, fontSize = 20.sp)
+        Text(text = accountBalance, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp)
     }
 }
 
 @Composable
-fun AddItemButton(itemName: String, modifier: Modifier = Modifier) {
+fun AddItemButton(buttonText: String, modifier: Modifier = Modifier) {
     TextButton(
         onClick = { },
-        contentPadding = PaddingValues(0.dp),
+        contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
         modifier = modifier.fillMaxWidth()
     ) {
         Row(
@@ -265,11 +266,11 @@ fun AddItemButton(itemName: String, modifier: Modifier = Modifier) {
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Ícone de mais",
+                    contentDescription = stringResource(id = R.string.add_icon_description),
                     tint = Color.Gray,
-                    modifier = modifier.padding(horizontal = 5.dp)
+                    modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
                 )
-                Text(text = "Adicionar $itemName", fontSize = 20.sp)
+                Text(text = buttonText, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp)
             }
         }
     }
@@ -283,20 +284,20 @@ fun CreditCardsBillCard(
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier.shadow(elevation = 10.dp)
+        modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier.padding(vertical = 20.dp, horizontal = 20.dp)
+            modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_medium), horizontal = dimensionResource(id = R.dimen.padding_medium))
         ) {
             TotalValueText(
-                totalValueName = "FATURAS:",
+                totalValueName = stringResource(id = R.string.total_bills_title),
                 totalValue = totalCreditCardsBill,
                 modifier = modifier
             )
             HorizontalDivider()
             ItemsList(modifier, cardBills)
-            AddItemButton(itemName = "cartão", modifier)
+            AddItemButton(buttonText = stringResource(id = R.string.add_card_button), modifier)
         }
     }
 }
@@ -306,23 +307,26 @@ fun DifferenceFromLastMonthCard(differenceValue: String, modifier: Modifier = Mo
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
-            .padding(bottom = 20.dp)
-            .shadow(elevation = 10.dp)
+            .padding(bottom = dimensionResource(id = R.dimen.padding_medium))
+            .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(vertical = 20.dp, horizontal = 20.dp)
+                .padding(
+                    vertical = dimensionResource(id = R.dimen.padding_medium),
+                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                )
         ) {
             Text(
-                text = "Diferença do mês passado",
-                fontSize = 20.sp,
+                text = stringResource(id = R.string.difference_from_last_month_title),
+                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = modifier.weight(0.6f)
             )
             Row(horizontalArrangement = Arrangement.End, modifier = modifier.weight(0.4f)) {
-                Text(text = differenceValue, fontSize = 20.sp)
+                Text(text = differenceValue, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp)
             }
         }
     }

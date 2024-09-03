@@ -19,11 +19,21 @@
     <string name="november">NOV</string>
     <string name="december">DEZ</string>
 
+    <string name="monthly_limit_title">LIMITE DO MÊS</string>
+    <string name="help_icon_description">Ícone com ponto de interrogação</string>
+    <string name="difference_title">DIFERENÇA</string>
+    <string name="total_balance_title">SALDO:</string>
+    <string name="add_account_button">Adicionar conta</string>
+    <string name="bank_icon_description">Ícone do banco</string>
+    <string name="add_icon_description">Ícone de mais</string>
+    <string name="add_card_button">Adicionar cartão</string>
+    <string name="total_bills_title">FATURAS:</string>
+    <string name="difference_from_last_month_title">Diferença do mês passado</string>
+
     <string name="operations_route">operations</string>
     <string name="balance_title">Balanço</string>
     <string name="incomes_title">Entradas</string>
     <string name="outflow_title">Saídas</string>
     <string name="search_hint">Pesquisar</string>
     <string name="add_operation_button">Adicionar operação</string>
-    <string name="add_icon_description">Ícone de mais</string>
 </resources>
