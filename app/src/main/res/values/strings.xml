@@ -18,4 +18,12 @@
     <string name="october">OUT</string>
     <string name="november">NOV</string>
     <string name="december">DEZ</string>
+
+    <string name="operations_route">operations</string>
+    <string name="balance_title">Balanço</string>
+    <string name="incomes_title">Entradas</string>
+    <string name="outflow_title">Saídas</string>
+    <string name="search_hint">Pesquisar</string>
+    <string name="add_operation_button">Adicionar operação</string>
+    <string name="add_icon_description">Ícone de mais</string>
 </resources>

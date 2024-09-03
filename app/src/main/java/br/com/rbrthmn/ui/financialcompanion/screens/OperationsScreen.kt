@@ -31,10 +31,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.SelectMonthTopBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
@@ -45,11 +47,11 @@ import java.util.Locale
 import kotlin.random.Random
 
 data class Operation(
+    val extras: String? = null,
     val description: String,
     val value: String,
     val date: Date,
-    val type: String,
-    val extras: String? = null
+    val type: String
 )
 
 object OperationsDestination : NavigationDestination {
@@ -91,15 +93,15 @@ private fun OperationsScreenContent(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
         modifier = modifier
             .padding(innerPaddingValues)
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         TotalBalanceCard(
-            modifier = modifier.padding(top = 20.dp),
+            modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_medium)),
             totalBalance = totalBalance,
             incomes = incomes,
             outflow = outflow
@@ -117,22 +119,23 @@ fun TotalBalanceCard(
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier.shadow(elevation = 10.dp)
+        modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(bottom = 10.dp)
+                modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_small))
             ) {
                 Text(
                     text = totalBalance,
-                    fontSize = 30.sp,
+                    fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp,
                 )
                 Text(
-                    text = "Balanço", fontSize = 30.sp,
+                    text = stringResource(id = R.string.balance_title),
+                    fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
             }
@@ -142,20 +145,27 @@ fun TotalBalanceCard(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp)
+                    .padding(top = dimensionResource(id = R.dimen.padding_small))
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = incomes, fontSize = 20.sp)
                     Text(
-                        text = "Entradas",
-                        fontSize = 20.sp,
+                        text = incomes,
+                        fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                    )
+                    Text(
+                        text = stringResource(id = R.string.incomes_title),
+                        fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = outflow, fontSize = 20.sp)
                     Text(
-                        text = "Saídas", fontSize = 20.sp,
+                        text = outflow,
+                        fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                    )
+                    Text(
+                        text = stringResource(id = R.string.outflow_title),
+                        fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
                 }
@@ -169,21 +179,27 @@ fun OperationsListCard(operations: List<Operation>) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
-            .padding(bottom = 20.dp)
-            .shadow(elevation = 10.dp)
+            .padding(bottom = dimensionResource(id = R.dimen.padding_medium))
+            .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp)
+            modifier = Modifier.padding(
+                vertical = dimensionResource(id = R.dimen.padding_medium),
+                horizontal = dimensionResource(id = R.dimen.padding_medium)
+            )
         ) {
             TextField(
                 value = "",
                 onValueChange = { },
-                label = { Text(text = "Pesquisar") },
+                label = { Text(text = stringResource(id = R.string.search_hint)) },
                 modifier = Modifier.fillMaxWidth()
             )
             HorizontalDivider()
-            TextButton(onClick = {}, contentPadding = PaddingValues(0.dp)) {
+            TextButton(
+                onClick = {},
+                contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding))
+            ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -195,16 +211,21 @@ fun OperationsListCard(operations: List<Operation>) {
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
-                            contentDescription = "Ícone de mais",
+                            contentDescription = stringResource(id = R.string.add_icon_description),
                             tint = Color.Gray,
-                            modifier = Modifier.padding(end = 5.dp)
+                            modifier = Modifier.padding(end = dimensionResource(id = R.dimen.padding_extra_small))
                         )
-                        Text(text = "Adicionar operação", fontSize = 20.sp)
+                        Text(
+                            text = stringResource(id = R.string.add_operation_button),
+                            fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                        )
                     }
                 }
             }
-            HorizontalDivider()
-            OperationsList(operations = operations)
+            if (operations.isNotEmpty()) {
+                HorizontalDivider()
+                OperationsList(operations = operations)
+            }
         }
     }
 }
@@ -216,8 +237,8 @@ fun OperationsList(operations: List<Operation>) {
     }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier.padding(top = 10.dp)
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+        modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
     ) {
         groupedOperations.forEach { (date, operationsForDate) ->
             DayOfWeekAndMonthText(date = operationsForDate[0].date)
@@ -238,7 +259,10 @@ fun OperationsList(operations: List<Operation>) {
 fun DayOfWeekAndMonthText(date: Date) {
     val formatter = SimpleDateFormat("EEE, dd", Locale.getDefault())
     val formattedDate = formatter.format(date)
-    Text(text = formattedDate, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+    Text(
+        text = formattedDate, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+        fontWeight = FontWeight.ExtraBold
+    )
 }
 
 @Composable
@@ -253,22 +277,31 @@ fun OperationItem(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 10.dp)
+            .padding(start = dimensionResource(id = R.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.height(IntrinsicSize.Min)
         ) {
-            Text(text = description, fontSize = 20.sp)
+            Text(
+                text = description,
+                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+            )
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = type, fontSize = 10.sp)
+                Text(
+                    text = type,
+                    fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
+                )
                 extras?.let {
-                    VerticalDivider(modifier = Modifier.padding(horizontal = 4.dp))
-                    Text(text = it, fontSize = 10.sp)
+                    VerticalDivider(modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small)))
+                    Text(
+                        text = it,
+                        fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
+                    )
                 }
             }
         }
-        Text(text = value, fontSize = 20.sp)
+        Text(text = value, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp)
     }
 }
 
@@ -305,7 +338,7 @@ fun OperationsScreenPreview(modifier: Modifier = Modifier) {
 
     OperationsScreenContent(
         operations = operations,
-        innerPaddingValues = PaddingValues(0.dp),
+        innerPaddingValues = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
     )
 }
 
@@ -315,28 +348,6 @@ fun TotalBalanceCardPreview(modifier: Modifier = Modifier) {
     TotalBalanceCard(
         totalBalance = "R$ 1.000,00",
         incomes = "R$ 2.000,00",
-        outflow = "R$ 1.000,00"
+        outflow = "R$ 1.000"
     )
-}
-
-@Preview
-@Composable
-fun OperationsListCardPreview(modifier: Modifier = Modifier) {
-    val operations = listOf(
-        Operation(
-            description = "teste A",
-            value = "R$ 2.000,00",
-            date = Date(),
-            type = "transação",
-            extras = "conta A"
-        ),
-        Operation(
-            description = "teste B",
-            value = "R$ 2.000,00",
-            date = Date(),
-            type = "transação",
-            extras = "conta B"
-        )
-    )
-    OperationsListCard(operations = operations)
 }
