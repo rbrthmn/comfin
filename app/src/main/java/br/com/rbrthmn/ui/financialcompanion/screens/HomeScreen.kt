@@ -35,6 +35,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.SelectMonthTopBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
@@ -49,6 +51,7 @@ object HomeDestination : NavigationDestination {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -63,12 +66,12 @@ fun HomeScreen(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
     }, modifier = modifier) { innerPadding ->
-        HomeScreenContent(innerPadding, modifier)
+        HomeScreenContent(navController, innerPadding, modifier)
     }
 }
 
 @Composable
-private fun HomeScreenContent(innerPaddingValues: PaddingValues, modifier: Modifier = Modifier) {
+private fun HomeScreenContent(navController: NavController, innerPaddingValues: PaddingValues, modifier: Modifier = Modifier) {
     val accounts = listOf(
         Account(1, "Banco A", "R$ 500,00"),
         Account(2, "Banco B", "R$ 1.000,00"),
@@ -85,7 +88,10 @@ private fun HomeScreenContent(innerPaddingValues: PaddingValues, modifier: Modif
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        MonthlyLimitCard(monthLimit = "R$ 1.000,00", monthDifference = "-R$ 5435,99")
+        MonthlyLimitCard(
+            onCardClick = { navController.navigate(route = IncomeDivisionsDestination.route) },
+            monthLimit = "R$ 1.000,00",
+            monthDifference = "-R$ 5435,99")
         TotalBalanceCard(totalBalance = totalBalance, accounts = accounts)
         CreditCardsBillCard(totalCreditCardsBill = "R$ 2300,00", cardBills = accounts)
         DifferenceFromLastMonthCard("-R$ 5435,99")
@@ -94,6 +100,7 @@ private fun HomeScreenContent(innerPaddingValues: PaddingValues, modifier: Modif
 
 @Composable
 private fun MonthlyLimitCard(
+    onCardClick: () -> Unit,
     monthLimit: String,
     monthDifference: String,
     modifier: Modifier = Modifier
@@ -103,6 +110,7 @@ private fun MonthlyLimitCard(
         modifier = modifier
             .padding(top = dimensionResource(id = R.dimen.padding_medium))
             .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
+            .clickable { onCardClick() }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -288,7 +296,7 @@ fun CreditCardsBillCard(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_medium), horizontal = dimensionResource(id = R.dimen.padding_medium))
+            modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
         ) {
             TotalValueText(
                 totalValueName = stringResource(id = R.string.total_bills_title),
@@ -335,13 +343,13 @@ fun DifferenceFromLastMonthCard(differenceValue: String, modifier: Modifier = Mo
 @Preview
 @Composable
 private fun HomeScreenPreview(modifier: Modifier = Modifier) {
-    HomeScreen(modifier = modifier)
+    HomeScreen(navController = rememberNavController(), modifier = modifier)
 }
 
 @Preview
 @Composable
 fun MonthlyLimitCardPreview(modifier: Modifier = Modifier) {
-    MonthlyLimitCard("323", "323")
+    MonthlyLimitCard({}, "323", "323")
 }
 
 @Preview

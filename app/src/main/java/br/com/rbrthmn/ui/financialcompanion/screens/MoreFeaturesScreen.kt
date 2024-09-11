@@ -21,6 +21,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 
@@ -31,7 +33,7 @@ object MoreFeaturesDestination : NavigationDestination {
 }
 
 @Composable
-fun MoreFeaturesScreen(modifier: Modifier = Modifier) {
+fun MoreFeaturesScreen(navController: NavController, modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
@@ -40,21 +42,21 @@ fun MoreFeaturesScreen(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        MoreFeaturesCard()
+        MoreFeaturesCard(navController)
     }
 }
 @Composable
-fun MoreFeaturesCard(modifier: Modifier = Modifier) {
+private fun MoreFeaturesCard(navController: NavController) {
     val featuresList = listOf(
         FeatureLabel(stringResource(id = R.string.feature_label_reserves), "reservas"),
         FeatureLabel(stringResource(id = R.string.feature_label_recurring_expenses), "gastos_recorrentes"),
-        FeatureLabel(stringResource(id = R.string.feature_label_income_distribution), "distribution"),
+        FeatureLabel(stringResource(id = R.string.feature_label_income_distribution), IncomeDivisionsDestination.route),
         FeatureLabel(stringResource(id = R.string.feature_label_settings), "configurations")
     )
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(top = dimensionResource(id = R.dimen.padding_medium))
             .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
@@ -66,7 +68,7 @@ fun MoreFeaturesCard(modifier: Modifier = Modifier) {
         ) {
             for (index in featuresList.indices) {
                 TextButton(
-                    onClick = { },
+                    onClick = { navController.navigate(featuresList[index].route) },
                     contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
                 ) {
                     Text(text = featuresList[index].name, modifier = Modifier.fillMaxWidth())
@@ -82,5 +84,5 @@ fun MoreFeaturesCard(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun MoreFeaturesScreenPreview(modifier: Modifier = Modifier) {
-    MoreFeaturesScreen()
+    MoreFeaturesScreen(navController = rememberNavController())
 }

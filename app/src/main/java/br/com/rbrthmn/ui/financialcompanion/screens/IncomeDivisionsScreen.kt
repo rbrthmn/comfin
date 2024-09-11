@@ -49,7 +49,7 @@ object IncomeDivisionsDestination : NavigationDestination {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IncomeDivisionsScreen(modifier: Modifier) {
+fun IncomeDivisionsScreen(modifier: Modifier = Modifier) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(topBar = {
@@ -67,7 +67,7 @@ fun IncomeDivisionsScreen(modifier: Modifier) {
 }
 
 @Composable
-fun IncomeDivisionsScreenContent(
+private fun IncomeDivisionsScreenContent(
     modifier: Modifier = Modifier,
     innerPaddingValues: PaddingValues,
 ) {
@@ -113,14 +113,16 @@ fun IncomeDivisionsScreenContent(
                 modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             ) {
                 for (division in incomeDivisions) {
-                    IncomeDivision(
-                        divisionName = division.name,
-                        divisionValue = division.value,
-                        divisionPercentage = division.percentage,
-                        canEditValue = false,
-                        canEditPercentage = false,
-                        modifier = modifier
-                    )
+                    with(division) {
+                        IncomeDivision(
+                            divisionName = name,
+                            divisionValue = value,
+                            divisionPercentage = percentage,
+                            canEditValue = canEditValue,
+                            canEditPercentage = canEditPercentage,
+                            modifier = modifier
+                        )
+                    }
                     if (incomeDivisions.indexOf(division) == incomeDivisions.lastIndex - 1) {
                         HorizontalDivider(modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small)))
                         AddDivisionButton(modifier = modifier)
@@ -135,7 +137,7 @@ fun IncomeDivisionsScreenContent(
 }
 
 @Composable
-fun IncomeDivision(
+private fun IncomeDivision(
     divisionName: String,
     divisionValue: String,
     divisionPercentage: String,
@@ -182,7 +184,7 @@ fun IncomeDivision(
 }
 
 @Composable
-fun AddDivisionButton(modifier: Modifier = Modifier) {
+private fun AddDivisionButton(modifier: Modifier = Modifier) {
     val showDialog = remember { mutableStateOf(false) }
 
     if (showDialog.value) {
@@ -219,7 +221,7 @@ fun AddDivisionButton(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick: () -> Unit) {
+private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick: () -> Unit) {
     Dialog(onDismissRequest = onCancelButtonClick ) {
         Card(
             modifier = Modifier

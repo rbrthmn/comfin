@@ -7,6 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import br.com.rbrthmn.ui.financialcompanion.screens.HomeDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.HomeScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.IncomeDivisionsDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.IncomeDivisionsScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.MoreFeaturesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.MoreFeaturesScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.OperationsDestination
@@ -19,13 +21,16 @@ fun ComFinNavGraph(
 ) {
     NavHost(navController = navController, startDestination = HomeDestination.route, modifier = modifier) {
         composable(route = HomeDestination.route) {
-            HomeScreen()
+            HomeScreen(navController = navController)
         }
         composable(route = OperationsDestination.route) {
             OperationsScreen()
         }
         composable(route = MoreFeaturesDestination.route) {
-            MoreFeaturesScreen()
+            MoreFeaturesScreen(navController = navController)
+        }
+        composable(route = IncomeDivisionsDestination.route) {
+            IncomeDivisionsScreen()
         }
     }
 }

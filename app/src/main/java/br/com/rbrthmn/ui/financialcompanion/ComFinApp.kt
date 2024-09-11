@@ -27,13 +27,11 @@ fun ComFinApp(
 
     Box(modifier = modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.inverseOnSurface)
+            modifier = modifier.background(MaterialTheme.colorScheme.inverseOnSurface)
         ) {
             ComFinNavGraph(
                 navController = navController,
-                modifier = modifier.weight(0.9f)
+                modifier = Modifier.weight(0.9f)
             )
             ComFinNavigationBar(
                 modifier = Modifier.weight(0.1f),
