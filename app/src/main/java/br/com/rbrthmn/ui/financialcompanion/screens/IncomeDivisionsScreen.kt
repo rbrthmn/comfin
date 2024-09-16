@@ -105,7 +105,7 @@ private fun IncomeDivisionsScreenContent(
         Card(
             colors = CardDefaults.cardColors(containerColor = Color.White),
             modifier = modifier
-                .padding(top = dimensionResource(id = R.dimen.padding_medium))
+                .padding(vertical = dimensionResource(id = R.dimen.padding_medium))
                 .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
         ) {
             Column(
