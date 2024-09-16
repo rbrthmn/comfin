@@ -73,19 +73,19 @@ private fun IncomeDivisionsScreenContent(
 ) {
     val incomeDivisions = listOf(
         IncomeDivision(
-            name = "Renda Total",
+            name = stringResource(id = R.string.total_income),
             value = "1000",
             percentage = "100",
             canEditPercentage = false,
         ),
         IncomeDivision(
-            name = "Gastos Recorrentes",
+            name = stringResource(id = R.string.recurring_expenses),
             value = "100",
             percentage = "10",
             canEditValue = false,
         ),
         IncomeDivision(
-            name = "Restante do mês",
+            name = stringResource(id = R.string.remaining_month),
             value = "100",
             canEditValue = false,
             percentage = "10",
@@ -153,7 +153,7 @@ private fun IncomeDivision(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = divisionName.plus(":"),
+            text = divisionName.plus(stringResource(id = R.string.colon)),
             fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
             modifier = modifier.weight(0.4F)
         )
@@ -212,7 +212,7 @@ private fun AddDivisionButton(modifier: Modifier = Modifier) {
                     modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
                 )
                 Text(
-                    text = "Adicionar divisão",
+                    text = stringResource(id = R.string.add_division),
                     fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
                 )
             }
@@ -235,19 +235,19 @@ private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 TextField(
-                    label = { Text(text = "Nome da divisão") },
+                    label = { Text(text = stringResource(id = R.string.division_name_hint)) },
                     value = "",
                     onValueChange = { }
                 )
                 TextField(
-                    prefix = { Text(text = "R$") },
-                    label = { Text(text = "Valor") },
+                    prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
+                    label = { Text(text = stringResource(id = R.string.division_value_hint)) },
                     value = "",
                     onValueChange = { }
                 )
                 TextField(
-                    suffix = { Text(text = "%") },
-                    label = { Text(text = "Porcentagem") },
+                    suffix = { Text(text = stringResource(id = R.string.division_percentage)) },
+                    label = { Text(text = stringResource(id = R.string.division_percentage_hint)) },
                     value = "",
                     onValueChange = { }
                 )
@@ -259,10 +259,10 @@ private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     TextButton(onClick = onCancelButtonClick) {
-                        Text(text = "Cancelar")
+                        Text(text = stringResource(id = R.string.cancel_button))
                     }
                     Button(onClick = onSaveButtonClick) {
-                        Text(text = "Salvar")
+                        Text(text = stringResource(id = R.string.save_button))
                     }
                 }
             }
@@ -274,6 +274,12 @@ private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick
 @Composable
 fun IncomeDivisionsScreenPreview(modifier: Modifier = Modifier) {
     IncomeDivisionsScreen(modifier = Modifier)
+}
+
+@Preview
+@Composable
+fun NewDivisionDialogPreview(modifier: Modifier = Modifier) {
+    NewDivisionDialog(onSaveButtonClick = { }, onCancelButtonClick = { })
 }
 
 class IncomeDivision(

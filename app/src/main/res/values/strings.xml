@@ -29,6 +29,7 @@
     <string name="add_card_button">Adicionar cartão</string>
     <string name="total_bills_title">FATURAS:</string>
     <string name="difference_from_last_month_title">Diferença do mês passado</string>
+    <string name="brl_currency">R$</string>
 
     <string name="operations_route">operations</string>
     <string name="balance_title">Balanço</string>
@@ -41,4 +42,16 @@
     <string name="feature_label_recurring_expenses">Gastos Recorrentes</string>
     <string name="feature_label_income_distribution">Rendas e Distribuições</string>
     <string name="feature_label_settings">Configurações</string>
+
+    <string name="total_income">Renda Total</string>
+    <string name="recurring_expenses">Gastos Recorrentes</string>
+    <string name="remaining_month">Restante do mês</string>
+    <string name="add_division">Adicionar divisão</string>
+    <string name="division_name_hint">Nome da divisão</string>
+    <string name="division_value_hint">Valor</string>
+    <string name="division_percentage">%</string>
+    <string name="division_percentage_hint">Porcentagem</string>
+    <string name="cancel_button">Cancelar</string>
+    <string name="save_button">Salvar</string>
+    <string name="colon">: </string>
 </resources>
