@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -24,6 +26,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -35,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import br.com.rbrthmn.R
@@ -105,6 +110,23 @@ private fun MonthlyLimitCard(
     monthDifference: String,
     modifier: Modifier = Modifier
 ) {
+    val showMonthlyLimitDialog = remember { mutableStateOf(false) }
+    val showMonthlyDifferenceDialog = remember { mutableStateOf(false) }
+
+    if (showMonthlyLimitDialog.value) {
+        InfoDialog(
+            dialogText = stringResource(id = R.string.monthly_limit_dialog_text),
+            onCloseButtonClick = { showMonthlyLimitDialog.value = false }
+        )
+    }
+
+    if (showMonthlyDifferenceDialog.value) {
+        InfoDialog(
+            dialogText = stringResource(id = R.string.monthly_difference_dialog_text),
+            onCloseButtonClick = { showMonthlyDifferenceDialog.value = false }
+        )
+    }
+
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
@@ -130,7 +152,7 @@ private fun MonthlyLimitCard(
                     tint = Color.Gray,
                     modifier = Modifier
                         .padding(start = dimensionResource(id = R.dimen.padding_extra_small))
-                        .clickable { }
+                        .clickable { showMonthlyLimitDialog.value = true }
                 )
             }
             Text(
@@ -155,7 +177,7 @@ private fun MonthlyLimitCard(
                     tint = Color.Gray,
                     modifier = modifier
                         .padding(start = dimensionResource(id = R.dimen.padding_extra_small))
-                        .clickable { }
+                        .clickable { showMonthlyDifferenceDialog.value = true }
                 )
             }
             Text(
@@ -164,6 +186,37 @@ private fun MonthlyLimitCard(
                 fontWeight = FontWeight.Bold,
                 modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_extra_small))
             )
+        }
+    }
+}
+
+@Composable
+fun InfoDialog(dialogText: String, onCloseButtonClick: () -> Unit) {
+    Dialog(onDismissRequest = onCloseButtonClick) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.padding_medium)),
+            shape = RoundedCornerShape(dimensionResource(id = R.dimen.padding_medium)),
+        ) {
+            Column(
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(text = dialogText)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    TextButton(onClick = onCloseButtonClick) {
+                        Text(text = stringResource(id = R.string.close_button))
+                    }
+                }
+            }
         }
     }
 }
@@ -376,4 +429,16 @@ fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
 @Composable
 fun DifferenceFromLastMonthCardPreview(modifier: Modifier = Modifier) {
     DifferenceFromLastMonthCard(differenceValue = "-4.00", modifier = modifier)
+}
+
+@Preview
+@Composable
+fun MonthlyLimitDialogPreview() {
+    InfoDialog(stringResource(id = R.string.monthly_limit_dialog_text), {})
+}
+
+@Preview
+@Composable
+fun MonthlyDifferenceDialogPreview() {
+    InfoDialog(stringResource(id = R.string.monthly_difference_dialog_text), {})
 }
