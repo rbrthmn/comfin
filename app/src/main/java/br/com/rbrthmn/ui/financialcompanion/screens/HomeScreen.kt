@@ -57,7 +57,7 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.SelectMonthTopBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
-import kotlin.math.sin
+import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 
 data class Account(val id: Int, val name: String, val balance: String)
 
@@ -111,11 +111,11 @@ private fun HomeScreenContent(
     ) {
         MonthlyLimitCard(
             onCardClick = { navController.navigate(route = IncomeDivisionsDestination.route) },
-            monthLimit = "R$ 1.000,00",
-            monthDifference = "-R$ 5435,99"
+            monthLimit = "1.000,00",
+            monthDifference = "-5435,99"
         )
         TotalBalanceCard(totalBalance = totalBalance, accounts = accounts)
-        CreditCardsBillCard(totalCreditCardsBill = "R$ 2300,00", cardBills = accounts)
+        CreditCardsBillCard(totalCreditCardsBill = "2300,00", cardBills = accounts)
         DifferenceFromLastMonthCard("-5435,99")
     }
 }
@@ -141,7 +141,6 @@ private fun MonthlyLimitCard(
             dialogText = stringResource(id = R.string.monthly_difference_dialog_text),
             onCloseButtonClick = { showMonthlyDifferenceDialog.value = false }
         )
-
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -172,7 +171,7 @@ private fun MonthlyLimitCard(
                 )
             }
             Text(
-                text = monthLimit,
+                text = valueWithCurrencyString(currencyStringId = R.string.brl_currency, value = monthLimit),
                 fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = modifier.padding(
@@ -200,7 +199,7 @@ private fun MonthlyLimitCard(
                 )
             }
             Text(
-                text = monthDifference,
+                text = valueWithCurrencyString(currencyStringId = R.string.brl_currency, value = monthDifference),
                 fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_extra_small))
@@ -255,8 +254,7 @@ private fun TotalBalanceCard(
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small)),
-        onClick = { showAddBalanceDialog.value = true }
+        modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -269,7 +267,7 @@ private fun TotalBalanceCard(
             )
             HorizontalDivider()
             ItemsList(items = accounts, modifier = modifier)
-            AddItemButton(buttonText = stringResource(id = R.string.add_account_button))
+            AddItemButton(buttonText = stringResource(id = R.string.add_account_button), onButtonClick = { showAddBalanceDialog.value = true })
         }
     }
 }
@@ -404,7 +402,7 @@ private fun TotalValueText(
             fontWeight = FontWeight.ExtraBold
         )
         Text(
-            text = totalValue,
+            text = valueWithCurrencyString(currencyStringId = R.string.brl_currency, value = totalValue),
             fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
             fontWeight = FontWeight.Bold
         )
@@ -459,9 +457,9 @@ fun Item(itemName: String, itemValue: String, modifier: Modifier = Modifier, can
 }
 
 @Composable
-fun AddItemButton(buttonText: String, modifier: Modifier = Modifier) {
+fun AddItemButton(buttonText: String, modifier: Modifier = Modifier, onButtonClick: () -> Unit = { }) {
     TextButton(
-        onClick = { },
+        onClick = onButtonClick,
         contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
         modifier = modifier.fillMaxWidth()
     ) {
@@ -540,7 +538,7 @@ fun DifferenceFromLastMonthCard(differenceValue: String, modifier: Modifier = Mo
             )
             Row(horizontalArrangement = Arrangement.End, modifier = modifier.weight(0.4f)) {
                 Text(
-                    text =  "${stringResource(id = R.string.brl_currency)} $differenceValue",
+                    text = valueWithCurrencyString(currencyStringId = R.string.brl_currency, value = differenceValue),
                     fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
                 )
             }
