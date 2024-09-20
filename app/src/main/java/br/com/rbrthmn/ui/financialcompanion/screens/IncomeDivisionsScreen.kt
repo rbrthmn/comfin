@@ -18,6 +18,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -234,18 +235,19 @@ private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                TextField(
+                OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.division_name_hint)) },
                     value = "",
                     onValueChange = { }
                 )
-                TextField(
+                OutlinedTextField(
                     prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
                     label = { Text(text = stringResource(id = R.string.division_value_hint)) },
                     value = "",
-                    onValueChange = { }
+                    onValueChange = { },
+                    singleLine = true
                 )
-                TextField(
+                OutlinedTextField(
                     suffix = { Text(text = stringResource(id = R.string.division_percentage)) },
                     label = { Text(text = stringResource(id = R.string.division_percentage_hint)) },
                     value = "",
