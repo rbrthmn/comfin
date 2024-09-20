@@ -30,6 +30,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -56,6 +57,7 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.SelectMonthTopBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
+import kotlin.math.sin
 
 data class Account(val id: Int, val name: String, val balance: String)
 
@@ -92,9 +94,9 @@ private fun HomeScreenContent(
     modifier: Modifier = Modifier
 ) {
     val accounts = listOf(
-        Account(1, "Banco A", "R$ 500,00"),
-        Account(2, "Banco B", "R$ 1.000,00"),
-        Account(3, "Banco C", "R$ 5,00")
+        Account(1, "Banco A", "500,00"),
+        Account(2, "Banco B", "1.000.000,00"),
+        Account(3, "Banco C", "5,00")
     )
     val totalBalance = "1.000,00"
 
@@ -114,7 +116,7 @@ private fun HomeScreenContent(
         )
         TotalBalanceCard(totalBalance = totalBalance, accounts = accounts)
         CreditCardsBillCard(totalCreditCardsBill = "R$ 2300,00", cardBills = accounts)
-        DifferenceFromLastMonthCard("-R$ 5435,99")
+        DifferenceFromLastMonthCard("-5435,99")
     }
 }
 
@@ -266,7 +268,7 @@ private fun TotalBalanceCard(
                 modifier = modifier
             )
             HorizontalDivider()
-            ItemsList(modifier, accounts)
+            ItemsList(items = accounts, modifier = modifier)
             AddItemButton(buttonText = stringResource(id = R.string.add_account_button))
         }
     }
@@ -295,6 +297,7 @@ fun AddBalanceDialog(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = "",
                     onValueChange = { },
+                    singleLine = true
                 )
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.balance_description_input_hint)) },
@@ -356,7 +359,8 @@ fun BanksDropdownMenu(modifier: Modifier = Modifier) {
                 IconButton(onClick = { expanded = true }) {
                     Icon(Icons.Filled.ArrowDropDown, "contentDescription")
                 }
-            }
+            },
+            singleLine = true
         )
         DropdownMenu(
             expanded = expanded,
@@ -410,26 +414,27 @@ private fun TotalValueText(
 @Composable
 private fun ItemsList(
     modifier: Modifier = Modifier,
-    accounts: List<Account>
+    items: List<Account>,
+    canEditValue: Boolean = false
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
         modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
     ) {
-        for (account in accounts) {
-            Item(account.name, account.balance)
+        for (item in items) {
+            Item(itemName = item.name, itemValue = item.balance, canEditValue = canEditValue)
         }
     }
 }
 
 @Composable
-fun Item(accountName: String, accountBalance: String, modifier: Modifier = Modifier) {
+fun Item(itemName: String, itemValue: String, modifier: Modifier = Modifier, canEditValue: Boolean) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth()
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier.weight(0.6f)) {
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = stringResource(id = R.string.bank_icon_description),
@@ -438,13 +443,17 @@ fun Item(accountName: String, accountBalance: String, modifier: Modifier = Modif
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
             )
             Text(
-                text = accountName,
+                text = itemName,
                 fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
             )
         }
-        Text(
-            text = accountBalance,
-            fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+        TextField(
+            prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
+            value = itemValue,
+            onValueChange = { },
+            readOnly = !canEditValue,
+            singleLine = true,
+            modifier = modifier.weight(0.4f)
         )
     }
 }
@@ -500,7 +509,7 @@ fun CreditCardsBillCard(
                 modifier = modifier
             )
             HorizontalDivider()
-            ItemsList(modifier, cardBills)
+            ItemsList(items = cardBills, canEditValue = true, modifier = modifier)
             AddItemButton(buttonText = stringResource(id = R.string.add_card_button), modifier)
         }
     }
@@ -531,7 +540,7 @@ fun DifferenceFromLastMonthCard(differenceValue: String, modifier: Modifier = Mo
             )
             Row(horizontalArrangement = Arrangement.End, modifier = modifier.weight(0.4f)) {
                 Text(
-                    text = differenceValue,
+                    text =  "${stringResource(id = R.string.brl_currency)} $differenceValue",
                     fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
                 )
             }
