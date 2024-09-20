@@ -11,23 +11,32 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -37,6 +46,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -76,7 +86,11 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HomeScreenContent(navController: NavController, innerPaddingValues: PaddingValues, modifier: Modifier = Modifier) {
+private fun HomeScreenContent(
+    navController: NavController,
+    innerPaddingValues: PaddingValues,
+    modifier: Modifier = Modifier
+) {
     val accounts = listOf(
         Account(1, "Banco A", "R$ 500,00"),
         Account(2, "Banco B", "R$ 1.000,00"),
@@ -96,7 +110,8 @@ private fun HomeScreenContent(navController: NavController, innerPaddingValues: 
         MonthlyLimitCard(
             onCardClick = { navController.navigate(route = IncomeDivisionsDestination.route) },
             monthLimit = "R$ 1.000,00",
-            monthDifference = "-R$ 5435,99")
+            monthDifference = "-R$ 5435,99"
+        )
         TotalBalanceCard(totalBalance = totalBalance, accounts = accounts)
         CreditCardsBillCard(totalCreditCardsBill = "R$ 2300,00", cardBills = accounts)
         DifferenceFromLastMonthCard("-R$ 5435,99")
@@ -113,19 +128,18 @@ private fun MonthlyLimitCard(
     val showMonthlyLimitDialog = remember { mutableStateOf(false) }
     val showMonthlyDifferenceDialog = remember { mutableStateOf(false) }
 
-    if (showMonthlyLimitDialog.value) {
+    if (showMonthlyLimitDialog.value)
         InfoDialog(
             dialogText = stringResource(id = R.string.monthly_limit_dialog_text),
             onCloseButtonClick = { showMonthlyLimitDialog.value = false }
         )
-    }
 
-    if (showMonthlyDifferenceDialog.value) {
+    if (showMonthlyDifferenceDialog.value)
         InfoDialog(
             dialogText = stringResource(id = R.string.monthly_difference_dialog_text),
             onCloseButtonClick = { showMonthlyDifferenceDialog.value = false }
         )
-    }
+
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -159,7 +173,10 @@ private fun MonthlyLimitCard(
                 text = monthLimit,
                 fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.padding_medium), top = dimensionResource(id = R.dimen.padding_extra_small))
+                modifier = modifier.padding(
+                    bottom = dimensionResource(id = R.dimen.padding_medium),
+                    top = dimensionResource(id = R.dimen.padding_extra_small)
+                )
             )
             HorizontalDivider()
             Row(
@@ -227,9 +244,17 @@ private fun TotalBalanceCard(
     accounts: List<Account>,
     modifier: Modifier = Modifier
 ) {
+    val showAddBalanceDialog = remember { mutableStateOf(false) }
+
+    if (showAddBalanceDialog.value)
+        AddBalanceDialog(
+            onCancelButtonClick = { showAddBalanceDialog.value = false },
+            onSaveButtonClick = { showAddBalanceDialog.value = false })
+
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
+        modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small)),
+        onClick = { showAddBalanceDialog.value = true }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -243,6 +268,115 @@ private fun TotalBalanceCard(
             HorizontalDivider()
             ItemsList(modifier, accounts)
             AddItemButton(buttonText = stringResource(id = R.string.add_account_button))
+        }
+    }
+}
+
+@Composable
+fun AddBalanceDialog(
+    modifier: Modifier = Modifier,
+    onCancelButtonClick: () -> Unit,
+    onSaveButtonClick: () -> Unit
+) {
+    Dialog(onDismissRequest = onCancelButtonClick) {
+        Card(
+            modifier = modifier.fillMaxWidth()
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier.padding(
+                    horizontal = dimensionResource(id = R.dimen.padding_large),
+                    vertical = dimensionResource(id = R.dimen.padding_medium)
+                )
+            ) {
+                OutlinedTextField(
+                    prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
+                    label = { Text(text = stringResource(id = R.string.balance_input_hint)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    value = "",
+                    onValueChange = { },
+                )
+                OutlinedTextField(
+                    label = { Text(text = stringResource(id = R.string.balance_description_input_hint)) },
+                    maxLines = 100,
+                    value = "",
+                    onValueChange = { }
+                )
+                BanksDropdownMenu(modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small)))
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(top = dimensionResource(id = R.dimen.padding_small)),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround,
+                ) {
+                    TextButton(onClick = onCancelButtonClick) {
+                        Text(text = stringResource(id = R.string.cancel_button))
+                    }
+                    Button(onClick = onSaveButtonClick) {
+                        Text(text = stringResource(id = R.string.save_button))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun BanksDropdownMenu(modifier: Modifier = Modifier) {
+    var expanded by remember { mutableStateOf(false) }
+    val options = listOf(
+        "Banco Inter",
+        "Banco Interpanamericano latino das americas",
+        "Banco Santander",
+        "Banco Bradesco",
+        "Banco do Brasil",
+        "Banco Itaú",
+        "Banco BMG",
+        "Banco do Nordeste",
+        "Banco do ddasdsad",
+        "Banco Inter",
+        "Banco Interpanamericano latino das americas",
+        "Banco Santander",
+        "Banco Bradesco",
+        "Banco do Brasil",
+        "Banco Itaú",
+        "Banco BMG",
+        "Banco do Nordeste",
+        "Banco do ddasdsad",
+    )
+    var selectedOptionText by remember { mutableStateOf(options.first()) }
+
+    Column(modifier = modifier) {
+        OutlinedTextField(
+            value = selectedOptionText,
+            onValueChange = { selectedOptionText = it },
+            readOnly = true,
+            trailingIcon = {
+                IconButton(onClick = { expanded = true }) {
+                    Icon(Icons.Filled.ArrowDropDown, "contentDescription")
+                }
+            }
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            options.forEach { selectionOption ->
+                DropdownMenuItem(
+                    onClick = {
+                        selectedOptionText = selectionOption
+                        expanded = false
+                    },
+                    text = { Text(text = selectionOption) },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.help),
+                            contentDescription = "Balance Icon"
+                        )
+                    }
+                )
+            }
         }
     }
 }
@@ -303,9 +437,15 @@ fun Item(accountName: String, accountBalance: String, modifier: Modifier = Modif
                 modifier = modifier
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
             )
-            Text(text = accountName, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp)
+            Text(
+                text = accountName,
+                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+            )
         }
-        Text(text = accountBalance, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp)
+        Text(
+            text = accountBalance,
+            fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+        )
     }
 }
 
@@ -331,7 +471,10 @@ fun AddItemButton(buttonText: String, modifier: Modifier = Modifier) {
                     tint = Color.Gray,
                     modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
                 )
-                Text(text = buttonText, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp)
+                Text(
+                    text = buttonText,
+                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                )
             }
         }
     }
@@ -387,7 +530,10 @@ fun DifferenceFromLastMonthCard(differenceValue: String, modifier: Modifier = Mo
                 modifier = modifier.weight(0.6f)
             )
             Row(horizontalArrangement = Arrangement.End, modifier = modifier.weight(0.4f)) {
-                Text(text = differenceValue, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp)
+                Text(
+                    text = differenceValue,
+                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                )
             }
         }
     }
@@ -434,11 +580,17 @@ fun DifferenceFromLastMonthCardPreview(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun MonthlyLimitDialogPreview() {
-    InfoDialog(stringResource(id = R.string.monthly_limit_dialog_text), {})
+    InfoDialog(stringResource(id = R.string.monthly_limit_dialog_text)) { }
 }
 
 @Preview
 @Composable
 fun MonthlyDifferenceDialogPreview() {
-    InfoDialog(stringResource(id = R.string.monthly_difference_dialog_text), {})
+    InfoDialog(stringResource(id = R.string.monthly_difference_dialog_text)) {}
+}
+
+@Preview
+@Composable
+fun AddBalanceDialogPreview(modifier: Modifier = Modifier) {
+    AddBalanceDialog(onSaveButtonClick = { }, onCancelButtonClick = { })
 }

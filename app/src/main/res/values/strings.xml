@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ComFin</string>
+    <string name="app_name" translatable="false">ComFin</string>
 
     <string name="home">Home</string>
     <string name="operations">Operations</string>
@@ -32,6 +32,8 @@
     <string name="brl_currency">R$</string>
     <string name="monthly_limit_dialog_text">O limite do mês é o limite total de todas as faturas, subtraido do valor do restante do mês os gastos recorrentes ainda não pagos, transações do mês e diferença do mês passado.\nEm resumo, é o valor do saldo disponível para uso.</string>
     <string name="monthly_difference_dialog_text">A diferença é o valor do limite do mês subtraído do valor total das faturas</string>
+    <string name="balance_input_hint">Saldo</string>
+    <string name="balance_description_input_hint">Descrição</string>
 
     <string name="operations_route">operations</string>
     <string name="balance_title">Balanço</string>
@@ -55,7 +57,7 @@
     <string name="division_percentage_hint">Porcentagem</string>
     <string name="cancel_button">Cancelar</string>
     <string name="save_button">Salvar</string>
-    <string name="colon">:</string>
+    <string name="colon" translatable="false">:</string>
 
     <string name="close_button">Fechar</string>
 </resources>
