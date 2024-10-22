@@ -22,7 +22,7 @@ import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 
 
 @Composable
-fun DifferenceFromLastMonthCard(differenceValue: String, modifier: Modifier = Modifier) {
+fun LastMonthDifferenceCard(differenceValue: String, modifier: Modifier = Modifier) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
@@ -59,6 +59,6 @@ fun DifferenceFromLastMonthCard(differenceValue: String, modifier: Modifier = Mo
 
 @Preview
 @Composable
-fun DifferenceFromLastMonthCardPreview(modifier: Modifier = Modifier) {
-    DifferenceFromLastMonthCard(differenceValue = "-4.00", modifier = modifier)
+fun LastMonthDifferenceCardPreview(modifier: Modifier = Modifier) {
+    LastMonthDifferenceCard(differenceValue = "-4.00", modifier = modifier)
 }

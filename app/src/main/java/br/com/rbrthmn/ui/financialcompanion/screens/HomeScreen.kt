@@ -23,7 +23,7 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.Account
 import br.com.rbrthmn.ui.financialcompanion.components.BalanceCard
 import br.com.rbrthmn.ui.financialcompanion.components.CreditCardsBillCard
-import br.com.rbrthmn.ui.financialcompanion.components.DifferenceFromLastMonthCard
+import br.com.rbrthmn.ui.financialcompanion.components.LastMonthDifferenceCard
 import br.com.rbrthmn.ui.financialcompanion.components.MonthlyLimitCard
 import br.com.rbrthmn.ui.financialcompanion.components.SelectMonthTopBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
@@ -84,7 +84,7 @@ private fun HomeScreenContent(
         )
         BalanceCard(totalBalance = totalBalance, accounts = accounts)
         CreditCardsBillCard(totalCreditCardsBill = "2300,00", cardBills = accounts)
-        DifferenceFromLastMonthCard("-5435,99")
+        LastMonthDifferenceCard("-5435,99")
     }
 }
 
