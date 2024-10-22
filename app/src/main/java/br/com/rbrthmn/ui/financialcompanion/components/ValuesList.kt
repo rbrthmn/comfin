@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 
-data class Account(val id: Int, val name: String, val balance: String)
+data class Account(val id: Int, val name: String, val balance: String, val canValueBeEdited: Boolean = true)
 
 @Composable
 fun ValuesList(
@@ -48,7 +48,6 @@ fun ValuesList(
         HorizontalDivider()
         ItemsList(
             items = values,
-            canEditValue = true,
             modifier = modifier,
             onButtonClick = onAddItemButtonClick,
             addItemButtonText = addItemButtonText
@@ -89,7 +88,6 @@ private fun TotalValueText(
 private fun ItemsList(
     modifier: Modifier = Modifier,
     items: List<Account>,
-    canEditValue: Boolean = false,
     addItemButtonText: String,
     onButtonClick: () -> Unit
 ) {
@@ -98,7 +96,7 @@ private fun ItemsList(
         modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
     ) {
         for (item in items) {
-            Item(itemName = item.name, itemValue = item.balance, canEditValue = canEditValue)
+            Item(itemName = item.name, itemValue = item.balance, canEditValue = item.canValueBeEdited)
         }
         AddItemButton(buttonText = addItemButtonText, onButtonClick = onButtonClick)
     }
