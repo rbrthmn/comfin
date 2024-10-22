@@ -13,13 +13,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,9 +33,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 
 @Composable
@@ -67,19 +62,12 @@ fun CreditCardsBillCard(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddCardBillDialog(
     modifier: Modifier = Modifier,
     onCancelButtonClick: () -> Unit,
     onSaveButtonClick: () -> Unit
 ) {
-    val datePickerState = rememberDatePickerState()
-    val selectedDate = datePickerState.selectedDateMillis?.let {
-        convertMillisToDate(it)
-    } ?: ""
-
-
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
             modifier = modifier.fillMaxWidth()
@@ -105,36 +93,8 @@ fun AddCardBillDialog(
                     value = "",
                     onValueChange = { }
                 )
-                BanksDropdownMenu(modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small)))
-                CardBillCloseDayDropdownMenu()
-//                Box(
-//                    modifier = Modifier.fillMaxWidth()
-//                ) {
-//                    CardBillCloseDayDropdownMenu()
-//                    OutlinedTextField(
-//                        value = selectedDate,
-//                        onValueChange = { },
-//                        label = { Text("DOB") },
-//                        readOnly = true,
-//                        trailingIcon = {
-//                            IconButton(onClick = {  }) {
-//                                Icon(
-//                                    imageVector = Icons.Default.DateRange,
-//                                    contentDescription = "Select date"
-//                                )
-//                            }
-//                        },
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .height(64.dp)
-//                    )
-//                    var selectedDay by remember { mutableStateOf(1) } // Inicializa com 0 ou um dia padrão
-//
-//                    DayOfMonthInput(
-//                        selectedDay = selectedDay,
-//                        onDaySelected = { selectedDay = it }
-//                    )
-//                }
+                BanksDropdownMenu(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small)))
+                CardBillCloseDayDropdownMenu(modifier = modifier.padding())
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
@@ -157,14 +117,12 @@ fun AddCardBillDialog(
 @Composable
 fun CardBillCloseDayDropdownMenu(modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
-    val options = listOf(
-        "1", "2"
-    )
-    var selectedOptionText by remember { mutableStateOf(options.first()) }
+    val options = List(31) { (it + 1).toString() }
+    var selectedOptionText: String? by remember { mutableStateOf(null) }
 
     Column(modifier = modifier) {
         OutlinedTextField(
-            value = selectedOptionText,
+            value = selectedOptionText ?: stringResource(id = R.string.card_bill_close_day_hint),
             onValueChange = { selectedOptionText = it },
             readOnly = true,
             trailingIcon = {
@@ -207,9 +165,4 @@ fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
 @Composable
 fun AddCardBillDialogPreview(modifier: Modifier = Modifier) {
     AddCardBillDialog(onSaveButtonClick = { }, onCancelButtonClick = { })
-}
-
-fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-    return formatter.format(Date(millis))
 }

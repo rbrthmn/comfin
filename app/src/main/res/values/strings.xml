@@ -35,6 +35,8 @@
     <string name="balance_input_hint">Saldo</string>
     <string name="balance_description_input_hint">Descrição</string>
     <string name="card_bill_input_hint">Fatura</string>
+    <string name="card_bill_close_day_hint">Dia de fechamento</string>
+    <string name="bank_hint">Banco</string>
 
     <string name="operations_route">operations</string>
     <string name="balance_title">Balanço</string>

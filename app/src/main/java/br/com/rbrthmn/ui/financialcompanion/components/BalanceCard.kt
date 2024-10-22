@@ -43,18 +43,13 @@ fun BalanceCard(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
-        ) {
-            ValuesList(
-                totalValue = totalBalance,
-                totalValueTitle = stringResource(id = R.string.total_balance_title),
-                values = accounts,
-                onAddItemButtonClick = { showAddBalanceDialog.value = true },
-                addItemButtonText = stringResource(id = R.string.add_card_button)
-            )
-        }
+        ValuesList(
+            totalValue = totalBalance,
+            totalValueTitle = stringResource(id = R.string.total_balance_title),
+            values = accounts,
+            onAddItemButtonClick = { showAddBalanceDialog.value = true },
+            addItemButtonText = stringResource(id = R.string.add_account_button)
+        )
     }
 }
 

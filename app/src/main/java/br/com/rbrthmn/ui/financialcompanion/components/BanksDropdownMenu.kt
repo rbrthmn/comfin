@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import br.com.rbrthmn.R
 
 
@@ -42,11 +43,11 @@ fun BanksDropdownMenu(modifier: Modifier = Modifier) {
         "Banco do Nordeste",
         "Banco do ddasdsad",
     )
-    var selectedOptionText by remember { mutableStateOf(options.first()) }
+    var selectedOptionText: String? by remember { mutableStateOf(null) }
 
     Column(modifier = modifier) {
         OutlinedTextField(
-            value = selectedOptionText,
+            value = selectedOptionText ?: stringResource(id = R.string.bank_hint),
             onValueChange = { selectedOptionText = it },
             readOnly = true,
             trailingIcon = {
