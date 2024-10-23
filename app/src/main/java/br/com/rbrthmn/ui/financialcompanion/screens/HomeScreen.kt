@@ -43,7 +43,7 @@ fun HomeScreen(
 
     Scaffold(topBar = {
         SelectMonthTopBar(
-            currentMonth = MonthsOfTheYear.January,
+            currentMonth = MonthsOfTheYear.JANUARY,
             onCurrentMonthClick = { println("CURRENT MONTH") },
             onPreviousMonthClick = { println("PREVIOUS MONTH") },
             onNextMonthClick = { println("NEXT MONTH") },
