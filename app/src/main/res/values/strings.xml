@@ -44,6 +44,19 @@
     <string name="outflow_title">Saídas</string>
     <string name="search_hint">Pesquisar</string>
     <string name="add_operation_button">Adicionar operação</string>
+    <string name="operation_value_hint">Valor</string>
+    <string name="operation_type_hint">Tipo de operação</string>
+    <string name="aimed_account_hint">Conta destino</string>
+    <string name="origin_account_hint">Conta origem</string>
+    <string name="operation_type_transfer">Transferência</string>
+    <string name="operation_type_debit_purchase">Compra no débito</string>
+    <string name="operation_type_bill_payment">Pagamento de boleto</string>
+    <string name="operation_type_withdrawal">Saque</string>
+    <string name="operation_type_deposit">Depósito</string>
+    <string name="operation_type_reserve_allocation">Aplicação em reserva</string>
+    <string name="operation_type_reserve_withdrawal">Resgate de reserva</string>
+    <string name="operation_type_income">Rendimentos</string>
+    <string name="operation_type_other">Outros</string>
 
     <string name="feature_label_reserves">Reservas</string>
     <string name="feature_label_recurring_expenses">Gastos Recorrentes</string>
@@ -62,5 +75,8 @@
     <string name="save_button">Salvar</string>
     <string name="colon" translatable="false">:</string>
 
+    <string name="reserve_hint">Reserva</string>
+
+    <string name="blank"/>
     <string name="close_button">Fechar</string>
 </resources>
