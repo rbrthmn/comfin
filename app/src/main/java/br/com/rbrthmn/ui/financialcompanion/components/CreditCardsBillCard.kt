@@ -117,12 +117,13 @@ fun AddCardBillDialog(
 @Composable
 fun CardBillCloseDayDropdownMenu(modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
-    val options = List(31) { (it + 1).toString() }
     var selectedOptionText: String? by remember { mutableStateOf(null) }
+    val options = List(31) { (it + 1).toString() }
 
     Column(modifier = modifier) {
         OutlinedTextField(
-            value = selectedOptionText ?: stringResource(id = R.string.card_bill_close_day_hint),
+            value = selectedOptionText ?: stringResource(id = R.string.blank),
+            label = { Text(text = stringResource(id = R.string.card_bill_close_day_hint)) },
             onValueChange = { selectedOptionText = it },
             readOnly = true,
             trailingIcon = {

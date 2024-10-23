@@ -23,6 +23,7 @@ import br.com.rbrthmn.R
 @Composable
 fun BanksDropdownMenu(modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
+    var selectedOptionText: String? by remember { mutableStateOf(null) }
     val options = listOf(
         "Banco Inter",
         "Banco Interpanamericano latino das americas",
@@ -43,11 +44,11 @@ fun BanksDropdownMenu(modifier: Modifier = Modifier) {
         "Banco do Nordeste",
         "Banco do ddasdsad",
     )
-    var selectedOptionText: String? by remember { mutableStateOf(null) }
 
     Column(modifier = modifier) {
         OutlinedTextField(
-            value = selectedOptionText ?: stringResource(id = R.string.bank_hint),
+            value = selectedOptionText ?: stringResource(id = R.string.blank),
+            label = { Text(text = stringResource(id = R.string.bank_hint)) },
             onValueChange = { selectedOptionText = it },
             readOnly = true,
             trailingIcon = {
