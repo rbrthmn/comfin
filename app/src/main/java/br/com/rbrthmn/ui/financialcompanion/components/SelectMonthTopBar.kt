@@ -82,7 +82,7 @@ fun SelectMonthTopBar(
 fun MonthTopAppBarPreview(modifier: Modifier = Modifier) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     SelectMonthTopBar(
-        currentMonth = MonthsOfTheYear.December,
+        currentMonth = MonthsOfTheYear.DECEMBER,
         onCurrentMonthClick = { println("CURRENT MONTH") },
         onPreviousMonthClick = { println("PREVIOUS MONTH") },
         onNextMonthClick = { println("NEXT MONTH") },
