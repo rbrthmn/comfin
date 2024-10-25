@@ -1,38 +1,32 @@
 package br.com.rbrthmn.ui.financialcompanion.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.VerticalDivider
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,10 +42,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.Popup
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.screens.Operation
 import br.com.rbrthmn.ui.financialcompanion.utils.OperationType
@@ -252,6 +244,7 @@ private fun OperationTypeDropdownMenu(
 @Composable
 private fun AccountsDropdownMenu(modifier: Modifier = Modifier, accountType: String) {
     var expanded by remember { mutableStateOf(false) }
+    var showAddAccountDialog by remember { mutableStateOf(false) }
     val options = listOf(
         "Conta A",
         "Conta B",
@@ -260,9 +253,14 @@ private fun AccountsDropdownMenu(modifier: Modifier = Modifier, accountType: Str
         "Conta E",
         "Conta F",
         "Conta G",
-
-        )
+    ).plus(stringResource(id = R.string.add_account_option))
     var selectedOptionText: String? by remember { mutableStateOf(null) }
+
+    if (showAddAccountDialog) {
+        AddSimpleAccountDialog(
+            onCancelButtonClick = { showAddAccountDialog = false },
+            onSaveButtonClick = { showAddAccountDialog = false })
+    }
 
     Column(modifier = modifier) {
         OutlinedTextField(
@@ -281,13 +279,14 @@ private fun AccountsDropdownMenu(modifier: Modifier = Modifier, accountType: Str
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            options.forEach { selectionOption ->
+            options.forEach { selectedOption ->
                 DropdownMenuItem(
                     onClick = {
-                        selectedOptionText = selectionOption
+                        selectedOptionText = selectedOption
                         expanded = false
+                        if (selectedOptionText == options.last()) showAddAccountDialog = true
                     },
-                    text = { Text(text = selectionOption) },
+                    text = { Text(text = selectedOption) },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.help),
@@ -300,62 +299,53 @@ private fun AccountsDropdownMenu(modifier: Modifier = Modifier, accountType: Str
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DatePickerDocked() {
-    var showDatePicker by remember { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState()
-    val selectedDate = datePickerState.selectedDateMillis?.let {
-        convertMillisToDate(it)
-    } ?: convertMillisToDate(System.currentTimeMillis())
+private fun AddSimpleAccountDialog(
+    modifier: Modifier = Modifier,
+    onCancelButtonClick: () -> Unit,
+    onSaveButtonClick: () -> Unit
+) {
+    var accountHolder by remember { mutableStateOf("") }
 
-    Box(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        OutlinedTextField(
-            value = selectedDate,
-            onValueChange = { },
-            label = { Text("Data da operação") },
-            readOnly = true,
-            trailingIcon = {
-                IconButton(onClick = { showDatePicker = !showDatePicker }) {
-                    Icon(
-                        imageVector = Icons.Default.DateRange,
-                        contentDescription = "Select date"
-                    )
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp)
-        )
-
-        if (showDatePicker) {
-            Popup(
-                onDismissRequest = { showDatePicker = false },
-                alignment = Alignment.TopStart
+    Dialog(onDismissRequest = onCancelButtonClick) {
+        Card(
+            modifier = modifier.fillMaxWidth()
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier.padding(
+                    horizontal = dimensionResource(id = R.dimen.padding_large),
+                    vertical = dimensionResource(id = R.dimen.padding_medium)
+                )
             ) {
-                Box(
-                    modifier = Modifier
+                OutlinedTextField(
+                    label = { Text(text = stringResource(id = R.string.account_holder_hint)) },
+                    value = accountHolder,
+                    onValueChange = { accountHolder = it },
+                )
+                Row(
+                    modifier = modifier
                         .fillMaxWidth()
-                        .offset(y = 64.dp)
-                        .shadow(elevation = 4.dp)
-                        .background(MaterialTheme.colorScheme.surface)
-                        .padding(16.dp)
+                        .padding(top = dimensionResource(id = R.dimen.padding_small)),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround,
                 ) {
-                    DatePicker(
-                        state = datePickerState,
-                        showModeToggle = false
-                    )
+                    Button(onClick = onCancelButtonClick) {
+                        Icon(
+                            imageVector = Icons.Default.Close, contentDescription = stringResource(
+                                id = R.string.close_icon_description
+                            )
+                        )
+                    }
+                    Button(onClick = onSaveButtonClick) {
+                        Icon(imageVector = Icons.Default.Check, contentDescription = stringResource(
+                            id = R.string.check_icon_description
+                        ))
+                    }
                 }
             }
         }
     }
-}
-
-private fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-    return formatter.format(Date(millis))
 }
 
 @Composable
@@ -443,4 +433,10 @@ fun OperationsListCardPreview(modifier: Modifier = Modifier) {
 @Composable
 fun AddOperationDialogPreview(modifier: Modifier = Modifier) {
     AddOperationDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
+}
+
+@Preview
+@Composable
+fun AddSimpleAccountDialogPreview(modifier: Modifier = Modifier) {
+    AddSimpleAccountDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
 }
