@@ -10,8 +10,8 @@
     <dimen name="drawer_padding_header">16dp</dimen>
     <dimen name="drawer_padding_content">12dp</dimen>
 
-    <dimen name="font_size_small">10sp</dimen>
-    <dimen name="font_size_medium">20sp</dimen>
-    <dimen name="font_size_large">30sp</dimen>
+    <dimen name="font_size_small">8sp</dimen>
+    <dimen name="font_size_medium">16sp</dimen>
+    <dimen name="font_size_large">24sp</dimen>
     <dimen name="font_size_month_limit_value">25sp</dimen>
 </resources>

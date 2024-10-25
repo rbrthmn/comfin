@@ -19,15 +19,15 @@
     <string name="november">NOV</string>
     <string name="december">DEZ</string>
 
-    <string name="monthly_limit_title">LIMITE DO MÊS</string>
+    <string name="monthly_limit_title">Limite do mês</string>
     <string name="help_icon_description">Ícone com ponto de interrogação</string>
-    <string name="difference_title">DIFERENÇA</string>
-    <string name="total_balance_title">SALDO:</string>
+    <string name="difference_title">Diferença</string>
+    <string name="total_balance_title">Saldo:</string>
     <string name="add_account_button">Adicionar conta</string>
     <string name="bank_icon_description">Ícone do banco</string>
     <string name="add_icon_description">Ícone de mais</string>
     <string name="add_card_button">Adicionar cartão</string>
-    <string name="total_bills_title">FATURAS:</string>
+    <string name="total_bills_title">Faturas:</string>
     <string name="difference_from_last_month_title">Diferença do mês passado</string>
     <string name="brl_currency">R$</string>
     <string name="monthly_limit_dialog_text">O limite do mês é o limite total de todas as faturas, subtraido do valor do restante do mês os gastos recorrentes ainda não pagos, transações do mês e diferença do mês passado.\nEm resumo, é o valor do saldo disponível para uso.</string>
@@ -57,6 +57,8 @@
     <string name="operation_type_reserve_withdrawal">Resgate de reserva</string>
     <string name="operation_type_income">Rendimentos</string>
     <string name="operation_type_other">Outros</string>
+    <string name="account_holder_hint">Titular</string>
+    <string name="add_account_option">Adicionar outra conta</string>
 
     <string name="feature_label_reserves">Reservas</string>
     <string name="feature_label_recurring_expenses">Gastos Recorrentes</string>
@@ -79,4 +81,6 @@
 
     <string name="blank"/>
     <string name="close_button">Fechar</string>
+    <string name="close_icon_description">Close icon</string>
+    <string name="check_icon_description">Check icon</string>
 </resources>
