@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import br.com.rbrthmn.ui.financialcompanion.components.ComFinNavigationBar
+import br.com.rbrthmn.ui.financialcompanion.components.NavigationBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
 import br.com.rbrthmn.ui.financialcompanion.utils.ComFinNavigationType
 
@@ -33,7 +33,7 @@ fun ComFinApp(
                 navController = navController,
                 modifier = Modifier.weight(0.9f)
             )
-            ComFinNavigationBar(
+            NavigationBar(
                 modifier = Modifier.weight(0.1f),
                 navigationType = navigationType,
                 navigateToDestination = navController::navigate

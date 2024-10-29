@@ -20,7 +20,7 @@ import br.com.rbrthmn.ui.financialcompanion.screens.OperationsDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.ComFinNavigationType
 
 @Composable
-fun ComFinNavigationBar(
+fun NavigationBar(
     modifier: Modifier = Modifier,
     navigationType: ComFinNavigationType,
     navigateToDestination: (String) -> Unit
@@ -81,7 +81,7 @@ private fun ComFinBottomNavigationBar(
 @Preview
 @Composable
 fun ComFinNavigationBarPreview(modifier: Modifier = Modifier) {
-    ComFinNavigationBar(
+    NavigationBar(
         navigationType = ComFinNavigationType.BOTTOM_NAVIGATION,
         navigateToDestination = {})
 }
