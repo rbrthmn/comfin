@@ -13,6 +13,8 @@ import br.com.rbrthmn.ui.financialcompanion.screens.MoreFeaturesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.MoreFeaturesScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.OperationsDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.OperationsScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.ReservesDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.ReservesScreen
 
 @Composable
 fun ComFinNavGraph(
@@ -31,6 +33,9 @@ fun ComFinNavGraph(
         }
         composable(route = IncomeDivisionsDestination.route) {
             IncomeDivisionsScreen()
+        }
+        composable(route = ReservesDestination.route) {
+            ReservesScreen()
         }
     }
 }

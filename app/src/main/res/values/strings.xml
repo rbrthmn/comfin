@@ -78,6 +78,7 @@
     <string name="colon" translatable="false">:</string>
 
     <string name="reserve_hint">Reserva</string>
+    <string name="add_reserve_button">Adicionar reserva</string>
 
     <string name="blank"/>
     <string name="close_button">Fechar</string>

@@ -43,7 +43,7 @@ object OperationsDestination : NavigationDestination {
 fun OperationsScreen(
     modifier: Modifier = Modifier
 ) {
-    val operations = listOf<Operation>()
+    val operations = getOperationsMock()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(topBar = {

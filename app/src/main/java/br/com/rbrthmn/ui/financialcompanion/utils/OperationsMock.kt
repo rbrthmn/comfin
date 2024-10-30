@@ -10,16 +10,14 @@ import kotlin.random.Random
 fun getOperationsMock(): List<Operation> {
     fun Double.format(digits: Int) = "%.${digits}f".format(this)
     val operations = mutableListOf<Operation>()
+    val fixedMonth = Random.nextInt(12)
+
     repeat(12) { index ->
         val calendar = Calendar.getInstance()
-        calendar.set(Calendar.YEAR, 2023)
+        calendar.set(Calendar.YEAR, 2024)
+        calendar.set(Calendar.MONTH, fixedMonth)
+        calendar.set(Calendar.DAY_OF_MONTH, Random.nextInt(1, 29))
 
-        if (index > 0 && Random.nextBoolean()) {
-            calendar.time = operations[index - 1].date
-        } else {
-            calendar.set(Calendar.MONTH, Random.nextInt(12))
-            calendar.set(Calendar.DAY_OF_MONTH, Random.nextInt(1, 29))
-        }
 
         val types = OperationType.entries.map { stringResource(id = it.stringId) }
         val extras = listOf("Conta A", "Conta B", "Cartão X", "Investimento Y", null)

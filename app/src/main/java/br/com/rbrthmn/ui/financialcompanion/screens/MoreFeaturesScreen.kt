@@ -48,7 +48,7 @@ fun MoreFeaturesScreen(navController: NavController, modifier: Modifier = Modifi
 @Composable
 private fun MoreFeaturesCard(navController: NavController) {
     val featuresList = listOf(
-        FeatureLabel(stringResource(id = R.string.feature_label_reserves), "reservas"),
+        FeatureLabel(stringResource(id = R.string.feature_label_reserves), ReservesDestination.route),
         FeatureLabel(stringResource(id = R.string.feature_label_recurring_expenses), "gastos_recorrentes"),
         FeatureLabel(stringResource(id = R.string.feature_label_income_distribution), IncomeDivisionsDestination.route),
         FeatureLabel(stringResource(id = R.string.feature_label_settings), "configurations")

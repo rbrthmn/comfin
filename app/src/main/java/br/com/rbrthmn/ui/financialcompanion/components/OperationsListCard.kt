@@ -87,24 +87,19 @@ fun OperationsListCard(operations: List<Operation>) {
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.Start,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Start
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(id = R.string.add_icon_description),
-                            tint = Color.Gray,
-                            modifier = Modifier.padding(end = dimensionResource(id = R.dimen.padding_extra_small))
-                        )
-                        Text(
-                            text = stringResource(id = R.string.add_operation_button),
-                            fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
-                        )
-                    }
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(id = R.string.add_icon_description),
+                        tint = Color.Gray,
+                        modifier = Modifier.padding(end = dimensionResource(id = R.dimen.padding_extra_small))
+                    )
+                    Text(
+                        text = stringResource(id = R.string.add_operation_button),
+                        fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                    )
                 }
             }
             if (operations.isNotEmpty()) {
@@ -116,12 +111,13 @@ fun OperationsListCard(operations: List<Operation>) {
 }
 
 @Composable
-private fun AddOperationDialog(
+fun AddOperationDialog(
     modifier: Modifier = Modifier,
     onCancelButtonClick: () -> Unit,
-    onSaveButtonClick: () -> Unit
+    onSaveButtonClick: () -> Unit,
+    availableOperationTypes: List<OperationType> = OperationType.entries
 ) {
-    var operationType: OperationType? by remember { mutableStateOf(null) }
+    var operationType: OperationType? by remember { mutableStateOf(availableOperationTypes.first()) }
 
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
@@ -142,7 +138,10 @@ private fun AddOperationDialog(
                     onValueChange = { },
                     singleLine = true
                 )
-                OperationTypeDropdownMenu(onTypeClicked = { operationType = it })
+                OperationTypeDropdownMenu(
+                    onTypeClicked = { operationType = it },
+                    operationTypes = availableOperationTypes
+                )
                 when (operationType) {
                     OperationType.TRANSFER -> {
                         AccountsDropdownMenu(accountType = stringResource(id = R.string.origin_account_hint))
@@ -203,11 +202,11 @@ private fun AddOperationDialog(
 @Composable
 private fun OperationTypeDropdownMenu(
     modifier: Modifier = Modifier,
-    onTypeClicked: (type: OperationType) -> Unit
+    onTypeClicked: (type: OperationType) -> Unit,
+    operationTypes: List<OperationType>
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText: String? by remember { mutableStateOf(null) }
-    val options = OperationType.entries
 
     Column(modifier = modifier) {
         OutlinedTextField(
@@ -226,7 +225,7 @@ private fun OperationTypeDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            options.forEach { selectedOption ->
+            operationTypes.forEach { selectedOption ->
                 val optionString = stringResource(id = selectedOption.stringId)
                 DropdownMenuItem(
                     onClick = {
@@ -338,9 +337,11 @@ private fun AddSimpleAccountDialog(
                         )
                     }
                     Button(onClick = onSaveButtonClick) {
-                        Icon(imageVector = Icons.Default.Check, contentDescription = stringResource(
-                            id = R.string.check_icon_description
-                        ))
+                        Icon(
+                            imageVector = Icons.Default.Check, contentDescription = stringResource(
+                                id = R.string.check_icon_description
+                            )
+                        )
                     }
                 }
             }
