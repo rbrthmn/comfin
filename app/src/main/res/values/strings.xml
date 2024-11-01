@@ -79,6 +79,8 @@
 
     <string name="reserve_hint">Reserva</string>
     <string name="add_reserve_button">Adicionar reserva</string>
+    <string name="new_reserve_name_hint">Nome da reserva</string>
+    <string name="new_reserve_value_hint">Valor inicial</string>
 
     <string name="blank"/>
     <string name="close_button">Fechar</string>

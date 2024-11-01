@@ -23,6 +23,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -44,6 +45,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.AddOperationDialog
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
@@ -81,6 +83,7 @@ fun ReservesScreen(modifier: Modifier = Modifier) {
         operations = listOf()
     )
     val reserves = listOf(reserveA, reserveB)
+    val totalReservesValue = reserves.sumOf { it.value.toDouble() }.toString()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -90,27 +93,44 @@ fun ReservesScreen(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        ReservesCard(reservesTotalValue = "10000", reserves = reserves)
+        ReservesCard(reservesTotalValue = totalReservesValue, reserves = reserves)
     }
 }
 
 @Composable
-private fun ReservesCard(reservesTotalValue: String, reserves: List<Reserve>) {
+private fun ReservesCard(modifier: Modifier = Modifier, reservesTotalValue: String, reserves: List<Reserve>) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = Modifier
+        modifier = modifier
             .padding(vertical = dimensionResource(id = R.dimen.padding_medium))
             .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(
+            modifier = modifier.padding(
                 vertical = dimensionResource(id = R.dimen.padding_medium),
                 horizontal = dimensionResource(id = R.dimen.padding_medium)
             )
         ) {
-            Row {
-Text(text = reservesTotalValue)
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Total:",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp
+                )
+                Text(
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    text = valueWithCurrencyString(
+                        currencyStringId = R.string.brl_currency,
+                        value = reservesTotalValue
+                    ),
+                    fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp
+                )
             }
             for (reserve in reserves) {
                 ReserveItem(reserve = reserve)
@@ -121,14 +141,13 @@ Text(text = reservesTotalValue)
 }
 
 @Composable
-fun AddReserveButton(modifier: Modifier = Modifier) {
+private fun AddReserveButton(modifier: Modifier = Modifier) {
     val showDialog = remember { mutableStateOf(false) }
 
-//    if (showDialog.value) {
-////        NewOperationDialog(
-////            onSaveButtonClick = { showDialog.value = false },
-////            onCancelButtonClick = { showDialog.value = false })
-//    }
+    if (showDialog.value)
+        NewReserveDialog(
+            onSaveButtonClick = { showDialog.value = false },
+            onCancelButtonClick = { showDialog.value = false })
 
     Button(
         onClick = { showDialog.value = true },
@@ -140,29 +159,74 @@ fun AddReserveButton(modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.Start,
             modifier = modifier.fillMaxWidth()
         ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(id = R.string.add_icon_description),
-                    tint = Color.Gray,
-                    modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = stringResource(id = R.string.add_icon_description),
+                tint = Color.Gray,
+                modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+            )
+            Text(
+                text = stringResource(id = R.string.add_reserve_button),
+                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun NewReserveDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick: () -> Unit) {
+    Dialog(onDismissRequest = onCancelButtonClick ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.padding_medium)),
+            shape = RoundedCornerShape(dimensionResource(id = R.dimen.padding_medium)),
+        ) {
+            Column(
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                OutlinedTextField(
+                    label = { Text(text = stringResource(id = R.string.new_reserve_name_hint)) },
+                    value = "",
+                    onValueChange = { }
                 )
-                Text(
-                    text = stringResource(id = R.string.add_reserve_button),
-                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                OutlinedTextField(
+                    prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
+                    label = { Text(text = stringResource(id = R.string.new_reserve_value_hint)) },
+                    value = "",
+                    onValueChange = { },
+                    singleLine = true
                 )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = dimensionResource(id = R.dimen.padding_small)),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    TextButton(onClick = onCancelButtonClick) {
+                        Text(text = stringResource(id = R.string.cancel_button))
+                    }
+                    Button(onClick = onSaveButtonClick) {
+                        Text(text = stringResource(id = R.string.save_button))
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
-    var isExpanded by remember { mutableStateOf(true) }
+    var isExpanded by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f, label = ""
     )
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { isExpanded = !isExpanded }
             .animateContentSize(
@@ -173,7 +237,7 @@ private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
             ),
     ) {
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp)),
             verticalAlignment = Alignment.CenterVertically,
@@ -185,7 +249,7 @@ private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+                modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -197,10 +261,9 @@ private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
                     fontWeight = FontWeight.Bold,
                 )
                 IconButton(
-                    modifier = Modifier
+                    modifier = modifier
                         .alpha(0.2f)
-                        .rotate(rotationState)
-                        .padding(0.dp),
+                        .rotate(rotationState),
                     onClick = {
                         isExpanded = !isExpanded
                     }) {
@@ -221,7 +284,7 @@ private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
 @Composable
 private fun ReserveOperationsList(
     reserve: Reserve,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     val showDialog = remember { mutableStateOf(false) }
 
@@ -229,14 +292,15 @@ private fun ReserveOperationsList(
         AddOperationDialog(
             onSaveButtonClick = { showDialog.value = false },
             onCancelButtonClick = { showDialog.value = false },
-            availableOperationTypes = listOf(OperationType.RESERVE_ALLOCATION, OperationType.RESERVE_WITHDRAWAL)
+            availableOperationTypes = listOf(
+                OperationType.RESERVE_ALLOCATION,
+                OperationType.RESERVE_WITHDRAWAL
+            )
         )
     }
 
     Column(
-        modifier = Modifier
-//                    .background(Color.LightGray)
-        ,
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_extra_small))
     ) {
         for (operation in reserve.operations) {
@@ -244,7 +308,7 @@ private fun ReserveOperationsList(
             val operationValueSymbol = if (operation.isWithdrawal) "-" else "+"
 
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
                     .padding(vertical = dimensionResource(id = R.dimen.padding_extra_small)),
@@ -272,26 +336,25 @@ private fun ReserveOperationsList(
         }
         TextButton(
             onClick = { showDialog.value = true },
-            contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
                 modifier = modifier.fillMaxWidth()
             ) {
-
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(id = R.string.add_icon_description),
-                        tint = Color.Gray,
-                        modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
-                    )
-                    Text(
-                        text = stringResource(id = R.string.add_operation_button),
-                        fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(id = R.string.add_icon_description),
+                    tint = Color.Gray,
+                )
+                Text(
+                    text = stringResource(id = R.string.add_operation_button),
+                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                )
+            }
         }
     }
 }
@@ -300,4 +363,10 @@ private fun ReserveOperationsList(
 @Composable
 private fun ReservesScreenPreview(modifier: Modifier = Modifier) {
     ReservesScreen()
+}
+
+@Preview
+@Composable
+fun NewReserveDialogPreview(modifier: Modifier = Modifier) {
+    NewReserveDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
 }
