@@ -43,7 +43,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
@@ -98,7 +97,11 @@ fun ReservesScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ReservesCard(modifier: Modifier = Modifier, reservesTotalValue: String, reserves: List<Reserve>) {
+private fun ReservesCard(
+    modifier: Modifier = Modifier,
+    reservesTotalValue: String,
+    reserves: List<Reserve>
+) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
@@ -175,7 +178,7 @@ private fun AddReserveButton(modifier: Modifier = Modifier) {
 
 @Composable
 private fun NewReserveDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick: () -> Unit) {
-    Dialog(onDismissRequest = onCancelButtonClick ) {
+    Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -239,7 +242,7 @@ private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp)),
+                .clip(RoundedCornerShape(dimensionResource(id = R.dimen.corner_shape_round))),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {

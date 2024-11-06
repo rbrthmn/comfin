@@ -10,6 +10,13 @@
     <dimen name="drawer_padding_header">16dp</dimen>
     <dimen name="drawer_padding_content">12dp</dimen>
 
+    <dimen name="corner_shape_round">8dp</dimen>
+
+    <dimen name="date_picker_field_height">64dp</dimen>
+    <dimen name="date_picker_popup_offset">64dp</dimen>
+    <dimen name="date_picker_popup_elevation">4dp</dimen>
+
+    <!-- font sizes values -->
     <dimen name="font_size_small">8sp</dimen>
     <dimen name="font_size_medium">16sp</dimen>
     <dimen name="font_size_large">24sp</dimen>

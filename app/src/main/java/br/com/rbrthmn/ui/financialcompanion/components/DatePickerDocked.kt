@@ -24,8 +24,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.window.Popup
+import br.com.rbrthmn.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -58,7 +59,7 @@ fun DatePickerDocked() {
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp)
+                .height(dimensionResource(id = R.dimen.date_picker_field_height))
         )
 
         if (showDatePicker) {
@@ -69,10 +70,10 @@ fun DatePickerDocked() {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .offset(y = 64.dp)
-                        .shadow(elevation = 4.dp)
+                        .offset(y = dimensionResource(id = R.dimen.date_picker_popup_offset))
+                        .shadow(elevation = dimensionResource(id = R.dimen.date_picker_popup_elevation))
                         .background(MaterialTheme.colorScheme.surface)
-                        .padding(16.dp)
+                        .padding(dimensionResource(id = R.dimen.padding_medium))
                 ) {
                     DatePicker(
                         state = datePickerState,
