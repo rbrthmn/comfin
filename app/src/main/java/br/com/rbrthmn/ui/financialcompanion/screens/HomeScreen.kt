@@ -36,7 +36,7 @@ object HomeDestination : NavigationDestination {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navController: NavController,
+    onMonthlyLimitCardClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -51,13 +51,13 @@ fun HomeScreen(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
     }, modifier = modifier) { innerPadding ->
-        HomeScreenContent(navController, innerPadding, modifier)
+        HomeScreenContent(onMonthlyLimitCardClick, innerPadding, modifier)
     }
 }
 
 @Composable
 private fun HomeScreenContent(
-    navController: NavController,
+    onMonthlyLimitCardClick: () -> Unit,
     innerPaddingValues: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -78,7 +78,7 @@ private fun HomeScreenContent(
             .verticalScroll(rememberScrollState())
     ) {
         MonthlyLimitCard(
-            onCardClick = { navController.navigate(route = IncomeDivisionsDestination.route) },
+            onCardClick = onMonthlyLimitCardClick,
             monthLimit = "1.000,00",
             monthDifference = "-5435,99"
         )
@@ -91,5 +91,5 @@ private fun HomeScreenContent(
 @Preview
 @Composable
 private fun HomeScreenPreview(modifier: Modifier = Modifier) {
-    HomeScreen(navController = rememberNavController(), modifier = modifier)
+    HomeScreen(onMonthlyLimitCardClick = {}, modifier = modifier)
 }

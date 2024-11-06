@@ -13,6 +13,8 @@ import br.com.rbrthmn.ui.financialcompanion.screens.MoreFeaturesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.MoreFeaturesScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.OperationsDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.OperationsScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.RecurringExpenses
+import br.com.rbrthmn.ui.financialcompanion.screens.RecurringExpensesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.ReservesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.ReservesScreen
 
@@ -21,18 +23,26 @@ fun ComFinNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    NavHost(navController = navController, startDestination = HomeDestination.route, modifier = modifier) {
+    NavHost(
+        navController = navController,
+        startDestination = HomeDestination.route,
+        modifier = modifier
+    ) {
         composable(route = HomeDestination.route) {
-            HomeScreen(navController = navController)
+            HomeScreen(onMonthlyLimitCardClick = { navController.navigate(route = IncomeDivisionsDestination.route) })
         }
         composable(route = OperationsDestination.route) {
             OperationsScreen()
         }
         composable(route = MoreFeaturesDestination.route) {
-            MoreFeaturesScreen(navController = navController)
+            MoreFeaturesScreen(onFeatureClick = navController::navigate)
         }
         composable(route = IncomeDivisionsDestination.route) {
-            IncomeDivisionsScreen()
+            IncomeDivisionsScreen(onRecurringExpensesDivisionClick = {
+                navController.navigate(
+                    RecurringExpensesDestination.route
+                )
+            })
         }
         composable(route = ReservesDestination.route) {
             ReservesScreen()

@@ -1,5 +1,7 @@
 package br.com.rbrthmn.ui.financialcompanion.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,6 +29,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,11 +37,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.SelectMonthTopBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
@@ -50,7 +56,10 @@ object IncomeDivisionsDestination : NavigationDestination {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IncomeDivisionsScreen(modifier: Modifier = Modifier) {
+fun IncomeDivisionsScreen(
+    modifier: Modifier = Modifier,
+    onRecurringExpensesDivisionClick: () -> Unit
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(topBar = {
@@ -63,7 +72,11 @@ fun IncomeDivisionsScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
     }, modifier = modifier) { innerPadding ->
-        IncomeDivisionsScreenContent(innerPaddingValues = innerPadding, modifier = modifier)
+        IncomeDivisionsScreenContent(
+            innerPaddingValues = innerPadding,
+            modifier = modifier,
+            onRecurringExpensesDivisionClick = onRecurringExpensesDivisionClick
+        )
     }
 }
 
@@ -71,6 +84,7 @@ fun IncomeDivisionsScreen(modifier: Modifier = Modifier) {
 private fun IncomeDivisionsScreenContent(
     modifier: Modifier = Modifier,
     innerPaddingValues: PaddingValues,
+    onRecurringExpensesDivisionClick: () -> Unit
 ) {
     val incomeDivisions = listOf(
         IncomeDivision(
@@ -84,6 +98,7 @@ private fun IncomeDivisionsScreenContent(
             value = "100",
             percentage = "10",
             canEditValue = false,
+            isRecurringExpenses = true
         ),
         IncomeDivision(
             name = stringResource(id = R.string.remaining_month),
@@ -121,6 +136,8 @@ private fun IncomeDivisionsScreenContent(
                             divisionPercentage = percentage,
                             canEditValue = canEditValue,
                             canEditPercentage = canEditPercentage,
+                            isRecurringExpenses = isRecurringExpenses,
+                            onRecurringExpensesClick = onRecurringExpensesDivisionClick,
                             modifier = modifier
                         )
                     }
@@ -139,19 +156,27 @@ private fun IncomeDivisionsScreenContent(
 
 @Composable
 private fun IncomeDivision(
+    modifier: Modifier = Modifier,
     divisionName: String,
     divisionValue: String,
     divisionPercentage: String,
     canEditValue: Boolean,
     canEditPercentage: Boolean,
-    modifier: Modifier = Modifier
+    isRecurringExpenses: Boolean = false,
+    onRecurringExpensesClick: () -> Unit = { }
 ) {
     var value = divisionValue
     var percentage = divisionPercentage
 
     Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = if (isRecurringExpenses.not()) {
+            modifier.fillMaxWidth()
+        } else modifier
+            .fillMaxWidth()
+            .clickable {
+                onRecurringExpensesClick()
+            },
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = divisionName.plus(stringResource(id = R.string.colon)),
@@ -189,7 +214,9 @@ private fun AddDivisionButton(modifier: Modifier = Modifier) {
     val showDialog = remember { mutableStateOf(false) }
 
     if (showDialog.value) {
-        NewDivisionDialog(onSaveButtonClick = { showDialog.value = false }, onCancelButtonClick = { showDialog.value = false })
+        NewDivisionDialog(
+            onSaveButtonClick = { showDialog.value = false },
+            onCancelButtonClick = { showDialog.value = false })
     }
 
     TextButton(
@@ -223,7 +250,7 @@ private fun AddDivisionButton(modifier: Modifier = Modifier) {
 
 @Composable
 private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick: () -> Unit) {
-    Dialog(onDismissRequest = onCancelButtonClick ) {
+    Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -275,7 +302,7 @@ private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick
 @Preview
 @Composable
 fun IncomeDivisionsScreenPreview(modifier: Modifier = Modifier) {
-    IncomeDivisionsScreen(modifier = Modifier)
+    IncomeDivisionsScreen(modifier = Modifier, onRecurringExpensesDivisionClick = {})
 }
 
 @Preview
@@ -289,6 +316,6 @@ class IncomeDivision(
     val value: String,
     val canEditValue: Boolean = true,
     val percentage: String,
-    val canEditPercentage: Boolean = true
-
+    val canEditPercentage: Boolean = true,
+    val isRecurringExpenses: Boolean = false
 )

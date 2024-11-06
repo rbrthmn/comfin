@@ -33,7 +33,7 @@ object MoreFeaturesDestination : NavigationDestination {
 }
 
 @Composable
-fun MoreFeaturesScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun MoreFeaturesScreen(onFeatureClick: (String) -> Unit, modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
@@ -42,14 +42,14 @@ fun MoreFeaturesScreen(navController: NavController, modifier: Modifier = Modifi
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        MoreFeaturesCard(navController)
+        MoreFeaturesCard(onFeatureClick)
     }
 }
 @Composable
-private fun MoreFeaturesCard(navController: NavController) {
+private fun MoreFeaturesCard(onFeatureClick: (String) -> Unit) {
     val featuresList = listOf(
         FeatureLabel(stringResource(id = R.string.feature_label_reserves), ReservesDestination.route),
-        FeatureLabel(stringResource(id = R.string.feature_label_recurring_expenses), "gastos_recorrentes"),
+        FeatureLabel(stringResource(id = R.string.feature_label_recurring_expenses), RecurringExpensesDestination.route),
         FeatureLabel(stringResource(id = R.string.feature_label_income_distribution), IncomeDivisionsDestination.route),
         FeatureLabel(stringResource(id = R.string.feature_label_settings), "configurations")
     )
@@ -68,7 +68,7 @@ private fun MoreFeaturesCard(navController: NavController) {
         ) {
             for (index in featuresList.indices) {
                 TextButton(
-                    onClick = { navController.navigate(featuresList[index].route) },
+                    onClick = { onFeatureClick(featuresList[index].route) },
                     contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
                 ) {
                     Text(text = featuresList[index].name, modifier = Modifier.fillMaxWidth())
@@ -84,5 +84,5 @@ private fun MoreFeaturesCard(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun MoreFeaturesScreenPreview(modifier: Modifier = Modifier) {
-    MoreFeaturesScreen(navController = rememberNavController())
+    MoreFeaturesScreen(onFeatureClick = {})
 }
