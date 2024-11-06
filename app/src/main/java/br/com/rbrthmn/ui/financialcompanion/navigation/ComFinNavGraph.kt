@@ -37,5 +37,8 @@ fun ComFinNavGraph(
         composable(route = ReservesDestination.route) {
             ReservesScreen()
         }
+        composable(route = RecurringExpensesDestination.route) {
+            RecurringExpenses()
+        }
     }
 }
