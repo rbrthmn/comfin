@@ -49,7 +49,7 @@ private fun MoreFeaturesCard(onFeatureClick: (String) -> Unit) {
         FeatureLabel(stringResource(id = R.string.feature_label_reserves), ReservesDestination.route),
         FeatureLabel(stringResource(id = R.string.feature_label_recurring_expenses), RecurringExpensesDestination.route),
         FeatureLabel(stringResource(id = R.string.feature_label_income_distribution), IncomeDivisionsDestination.route),
-        FeatureLabel(stringResource(id = R.string.feature_label_settings), "configurations")
+        FeatureLabel(stringResource(id = R.string.feature_label_settings), SettingsDestination.route)
     )
 
     Card(

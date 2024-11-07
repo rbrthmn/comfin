@@ -17,6 +17,8 @@ import br.com.rbrthmn.ui.financialcompanion.screens.RecurringExpenses
 import br.com.rbrthmn.ui.financialcompanion.screens.RecurringExpensesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.ReservesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.ReservesScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.SettingsDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.SettingsScreen
 
 @Composable
 fun ComFinNavGraph(
@@ -49,6 +51,9 @@ fun ComFinNavGraph(
         }
         composable(route = RecurringExpensesDestination.route) {
             RecurringExpenses()
+        }
+        composable(route = SettingsDestination.route) {
+            SettingsScreen()
         }
     }
 }
