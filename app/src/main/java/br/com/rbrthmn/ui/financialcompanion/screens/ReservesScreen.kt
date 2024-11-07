@@ -121,7 +121,7 @@ private fun ReservesCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Total:",
+                    text = stringResource(id = R.string.reserve_total_title),
                     fontWeight = FontWeight.Bold,
                     fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp
                 )

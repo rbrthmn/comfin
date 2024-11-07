@@ -400,7 +400,6 @@ private fun OperationItem(
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
-            modifier = Modifier.height(IntrinsicSize.Min)
         ) {
             Text(
                 text = description,
@@ -412,7 +411,7 @@ private fun OperationItem(
                     fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
                 )
                 extras?.let {
-                    VerticalDivider(modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small)))
+                    VerticalDivider(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)).padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small)))
                     Text(
                         text = it,
                         fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp

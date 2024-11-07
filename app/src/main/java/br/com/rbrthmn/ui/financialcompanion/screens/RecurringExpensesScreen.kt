@@ -105,7 +105,7 @@ private fun RecurringExpensesCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Total:",
+                    text = stringResource(id = R.string.recurring_total_title),
                     fontWeight = FontWeight.Bold,
                     fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp
                 )
@@ -257,7 +257,6 @@ private fun NewRecurringExpenseDialog(onSaveButtonClick: () -> Unit, onCancelBut
             }
         }
     }
-
 }
 @Composable
 private fun ExpenseBillingDayDropdownMenu() {
