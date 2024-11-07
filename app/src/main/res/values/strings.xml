@@ -83,7 +83,13 @@
     <string name="new_reserve_value_hint">Valor inicial</string>
 
     <string name="blank"/>
-    <string name="close_button">Fechar</string>
+    <string name="understood_button">Entendi</string>
     <string name="close_icon_description">Close icon</string>
     <string name="check_icon_description">Check icon</string>
+
+    <string name="recurring_expense_add_button">Adicionar gasto recorrente</string>
+    <string name="recurring_expense_description_hint">Descrição</string>
+    <string name="recurring_expense_value_hint">Valor</string>
+    <string name="recurring_expense_billing_day_hint">Dia de cobrança</string>
+    <string name="recurring_expense_billing_day">Dia</string>
 </resources>
