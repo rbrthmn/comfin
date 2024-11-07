@@ -26,6 +26,7 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.Modifier
 import br.com.rbrthmn.ui.financialcompanion.ComFinApp
 import br.com.rbrthmn.ui.theme.ComFinTheme
+import br.com.rbrthmn.ui.theme.LocalTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,7 +35,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComFinTheme(darkTheme = false) {
+            ComFinTheme(darkTheme = LocalTheme.current.isDark) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

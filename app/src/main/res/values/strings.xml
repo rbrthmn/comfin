@@ -81,6 +81,7 @@
     <string name="add_reserve_button">Adicionar reserva</string>
     <string name="new_reserve_name_hint">Nome da reserva</string>
     <string name="new_reserve_value_hint">Valor inicial</string>
+    <string name="reserve_total_title">Total:</string>
 
     <string name="blank"/>
     <string name="understood_button">Entendi</string>
@@ -92,4 +93,7 @@
     <string name="recurring_expense_value_hint">Valor</string>
     <string name="recurring_expense_billing_day_hint">Dia de cobrança</string>
     <string name="recurring_expense_billing_day">Dia</string>
+    <string name="recurring_total_title">Total:</string>
+
+    <string name="settings_dark_mode">Modo escuro</string>
 </resources>
