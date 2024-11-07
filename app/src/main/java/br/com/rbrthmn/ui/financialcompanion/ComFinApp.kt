@@ -31,10 +31,10 @@ fun ComFinApp(
         ) {
             ComFinNavGraph(
                 navController = navController,
-                modifier = Modifier.weight(0.9f)
+                modifier = Modifier.weight(0.92f)
             )
             NavigationBar(
-                modifier = Modifier.weight(0.1f),
+                modifier = Modifier.weight(0.08f),
                 navigationType = navigationType,
                 navigateToDestination = navController::navigate
             )

@@ -105,6 +105,7 @@ private fun ReservesCard(
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
+            .fillMaxWidth()
             .padding(vertical = dimensionResource(id = R.dimen.padding_medium))
             .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
@@ -135,8 +136,19 @@ private fun ReservesCard(
                     fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp
                 )
             }
-            for (reserve in reserves) {
-                ReserveItem(reserve = reserve)
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .animateContentSize(
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = LinearOutSlowInEasing
+                        )
+                    ),
+            ) {
+                for (reserve in reserves) {
+                    ReserveItem(reserve = reserve)
+                }
             }
             AddReserveButton()
         }
@@ -228,59 +240,47 @@ private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
         targetValue = if (isExpanded) 180f else 0f, label = ""
     )
 
-    Column(
+    Row(
         modifier = modifier
             .fillMaxWidth()
             .clickable { isExpanded = !isExpanded }
-            .animateContentSize(
-                animationSpec = tween(
-                    durationMillis = 300,
-                    easing = LinearOutSlowInEasing
-                )
-            ),
+            .clip(RoundedCornerShape(dimensionResource(id = R.dimen.corner_shape_round))),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(dimensionResource(id = R.dimen.corner_shape_round))),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier.weight(1f)) {
+            IconButton(
+                modifier = modifier
+                    .alpha(0.2f)
+                    .rotate(rotationState),
+                onClick = {
+                    isExpanded = !isExpanded
+                }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = "Drop-Down Arrow"
+                )
+            }
             Text(
                 text = reserve.name,
                 fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
             )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = valueWithCurrencyString(
-                        currencyStringId = R.string.brl_currency, value = reserve.value
-                    ),
-                    maxLines = 1,
-                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-                IconButton(
-                    modifier = modifier
-                        .alpha(0.2f)
-                        .rotate(rotationState),
-                    onClick = {
-                        isExpanded = !isExpanded
-                    }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = "Drop-Down Arrow"
-                    )
-                }
-            }
         }
+        Text(
+            text = valueWithCurrencyString(
+                currencyStringId = R.string.brl_currency, value = reserve.value
+            ),
+            maxLines = 1,
+            fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+            fontWeight = FontWeight.Bold,
+        )
+    }
 
-        if (isExpanded) {
-            ReserveOperationsList(reserve, modifier)
-        }
+    if (isExpanded) {
+        ReserveOperationsList(reserve, modifier)
     }
 }
 
@@ -362,7 +362,7 @@ private fun ReserveOperationsList(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun ReservesScreenPreview(modifier: Modifier = Modifier) {
     ReservesScreen()
@@ -370,6 +370,6 @@ private fun ReservesScreenPreview(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun NewReserveDialogPreview(modifier: Modifier = Modifier) {
+private fun NewReserveDialogPreview(modifier: Modifier = Modifier) {
     NewReserveDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
 }

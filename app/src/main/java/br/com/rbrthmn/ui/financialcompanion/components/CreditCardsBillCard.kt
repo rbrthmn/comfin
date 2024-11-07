@@ -94,7 +94,7 @@ fun AddCardBillDialog(
                     onValueChange = { }
                 )
                 BanksDropdownMenu(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small)))
-                CardBillCloseDayDropdownMenu(modifier = modifier.padding())
+                CardBillCloseDayDropdownMenu()
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
@@ -115,37 +115,35 @@ fun AddCardBillDialog(
 }
 
 @Composable
-fun CardBillCloseDayDropdownMenu(modifier: Modifier = Modifier) {
+private fun CardBillCloseDayDropdownMenu() {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText: String? by remember { mutableStateOf(null) }
     val options = List(31) { (it + 1).toString() }
 
-    Column(modifier = modifier) {
-        OutlinedTextField(
-            value = selectedOptionText ?: stringResource(id = R.string.blank),
-            label = { Text(text = stringResource(id = R.string.card_bill_close_day_hint)) },
-            onValueChange = { selectedOptionText = it },
-            readOnly = true,
-            trailingIcon = {
-                IconButton(onClick = { expanded = true }) {
-                    Icon(Icons.Filled.ArrowDropDown, "contentDescription")
-                }
-            },
-            singleLine = true
-        )
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            options.forEach { selectionOption ->
-                DropdownMenuItem(
-                    onClick = {
-                        selectedOptionText = selectionOption
-                        expanded = false
-                    },
-                    text = { Text(text = selectionOption) }
-                )
+    OutlinedTextField(
+        value = selectedOptionText ?: stringResource(id = R.string.blank),
+        label = { Text(text = stringResource(id = R.string.card_bill_close_day_hint)) },
+        onValueChange = { selectedOptionText = it },
+        readOnly = true,
+        trailingIcon = {
+            IconButton(onClick = { expanded = true }) {
+                Icon(Icons.Filled.ArrowDropDown, "contentDescription")
             }
+        },
+        singleLine = true
+    )
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { expanded = false }
+    ) {
+        options.forEach { selectionOption ->
+            DropdownMenuItem(
+                onClick = {
+                    selectedOptionText = selectionOption
+                    expanded = false
+                },
+                text = { Text(text = selectionOption) }
+            )
         }
     }
 }

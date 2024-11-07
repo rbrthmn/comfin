@@ -126,7 +126,7 @@ fun MonthlyLimitCard(
 }
 
 @Composable
-fun InfoDialog(dialogText: String, onCloseButtonClick: () -> Unit) {
+private fun InfoDialog(dialogText: String, onCloseButtonClick: () -> Unit) {
     Dialog(onDismissRequest = onCloseButtonClick) {
         Card(
             modifier = Modifier
@@ -148,7 +148,7 @@ fun InfoDialog(dialogText: String, onCloseButtonClick: () -> Unit) {
                 ) {
                     Spacer(modifier = Modifier.weight(1f))
                     TextButton(onClick = onCloseButtonClick) {
-                        Text(text = stringResource(id = R.string.close_button))
+                        Text(text = stringResource(id = R.string.understood_button))
                     }
                 }
             }
