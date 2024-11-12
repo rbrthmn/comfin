@@ -22,7 +22,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -157,15 +156,15 @@ private fun ReservesCard(
 
 @Composable
 private fun AddReserveButton(modifier: Modifier = Modifier) {
-    val showDialog = remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
 
-    if (showDialog.value)
+    if (showDialog)
         NewReserveDialog(
-            onSaveButtonClick = { showDialog.value = false },
-            onCancelButtonClick = { showDialog.value = false })
+            onSaveButtonClick = { showDialog = false },
+            onCancelButtonClick = { showDialog = false })
 
     Button(
-        onClick = { showDialog.value = true },
+        onClick = { showDialog = true },
         contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
         modifier = modifier.fillMaxWidth()
     ) {
@@ -243,24 +242,21 @@ private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(dimensionResource(id = R.dimen.corner_shape_round)))
             .clickable { isExpanded = !isExpanded }
-            .clip(RoundedCornerShape(dimensionResource(id = R.dimen.corner_shape_round))),
+            .padding(end = dimensionResource(id = R.dimen.padding_extra_small)),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier.weight(1f)) {
-            IconButton(
+            Icon(
+                imageVector = Icons.Default.ArrowDropDown,
+                contentDescription = stringResource(id = R.string.drop_down_arrow_icon_description),
                 modifier = modifier
                     .alpha(0.2f)
-                    .rotate(rotationState),
-                onClick = {
-                    isExpanded = !isExpanded
-                }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = "Drop-Down Arrow"
-                )
-            }
+                    .rotate(rotationState)
+                    .padding(dimensionResource(id = R.dimen.padding_extra_small)),
+            )
             Text(
                 text = reserve.name,
                 fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,

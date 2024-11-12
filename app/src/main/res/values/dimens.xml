@@ -12,6 +12,11 @@
 
     <dimen name="corner_shape_round">8dp</dimen>
 
+    <dimen name="month_top_bar_corner_shape_round">25dp</dimen>
+    <dimen name="month_top_bar_elevation">10dp</dimen>
+    <dimen name="dates_circular_list_width">140dp</dimen>
+    <dimen name="dates_circular_list_item_height">40dp</dimen>
+
     <dimen name="date_picker_field_height">64dp</dimen>
     <dimen name="date_picker_popup_offset">64dp</dimen>
     <dimen name="date_picker_popup_elevation">4dp</dimen>

@@ -3,35 +3,20 @@ package br.com.rbrthmn.ui.financialcompanion.utils
 import androidx.annotation.StringRes
 import br.com.rbrthmn.R
 
-enum class MonthsOfTheYear(@StringRes val stringId: Int) {
-    JANUARY(stringId = R.string.january),
-    FEBRUARY(stringId = R.string.february),
-    MARCH(stringId = R.string.march),
-    APRIL(stringId = R.string.april),
-    MAY(stringId = R.string.may),
-    JUNE(stringId = R.string.june),
-    JULY(stringId = R.string.july),
-    AUGUST(stringId = R.string.august),
-    SEPTEMBER(stringId = R.string.september),
-    OCTOBER(stringId = R.string.october),
-    NOVEMBER(stringId = R.string.november),
-    DECEMBER(stringId = R.string.december)
-}
-
-fun MonthsOfTheYear.previousMonth(): MonthsOfTheYear {
-    val ordinal = this.ordinal
-    return if (ordinal == 0) {
-        MonthsOfTheYear.DECEMBER
-    } else {
-        MonthsOfTheYear.entries[ordinal - 1]
-    }
-}
-
-fun MonthsOfTheYear.nextMonth(): MonthsOfTheYear {
-    val ordinal = this.ordinal
-    return if (ordinal == MonthsOfTheYear.entries.size - 1) {
-        MonthsOfTheYear.JANUARY
-    } else {
-        MonthsOfTheYear.entries[ordinal + 1]
-    }
+enum class MonthsOfTheYear(
+    @StringRes val shortStringId: Int,
+    @StringRes val longStringId: Int
+) {
+    JANUARY(shortStringId = R.string.january_short, longStringId = R.string.january),
+    FEBRUARY(shortStringId = R.string.february_short, longStringId = R.string.february),
+    MARCH(shortStringId = R.string.march_short, longStringId = R.string.march),
+    APRIL(shortStringId = R.string.april_short, longStringId = R.string.april),
+    MAY(shortStringId = R.string.may_short, longStringId = R.string.may),
+    JUNE(shortStringId = R.string.june_short, longStringId = R.string.june),
+    JULY(shortStringId = R.string.july_short, longStringId = R.string.july),
+    AUGUST(shortStringId = R.string.august_short, longStringId = R.string.august),
+    SEPTEMBER(shortStringId = R.string.september_short, longStringId = R.string.september),
+    OCTOBER(shortStringId = R.string.october_short, longStringId = R.string.october),
+    NOVEMBER(shortStringId = R.string.november_short, longStringId = R.string.november),
+    DECEMBER(shortStringId = R.string.december_short, longStringId = R.string.december)
 }

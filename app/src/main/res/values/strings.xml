@@ -6,20 +6,37 @@
     <string name="dashboard">Dashboard</string>
     <string name="more">More</string>
 
-    <string name="january">JAN</string>
-    <string name="february">FEV</string>
-    <string name="march">MAR</string>
-    <string name="april">ABR</string>
-    <string name="may">MAI</string>
-    <string name="june">JUN</string>
-    <string name="july">JUL</string>
-    <string name="august">AGO</string>
-    <string name="september">SET</string>
-    <string name="october">OUT</string>
-    <string name="november">NOV</string>
-    <string name="december">DEZ</string>
+    <string name="january_short">JAN</string>
+    <string name="february_short">FEV</string>
+    <string name="march_short">MAR</string>
+    <string name="april_short">ABR</string>
+    <string name="may_short">MAI</string>
+    <string name="june_short">JUN</string>
+    <string name="july_short">JUL</string>
+    <string name="august_short">AGO</string>
+    <string name="september_short">SET</string>
+    <string name="october_short">OUT</string>
+    <string name="november_short">NOV</string>
+    <string name="december_short">DEZ</string>
+
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
+
+    <string name="current_month_button">Mês atual</string>
+    <string name="apply_date_button">Aplicar</string>
 
     <string name="monthly_limit_title">Limite do mês</string>
+    <string name="drop_down_arrow_icon_description">Ícone de flecha para baixo</string>
     <string name="help_icon_description">Ícone com ponto de interrogação</string>
     <string name="difference_title">Diferença</string>
     <string name="total_balance_title">Saldo:</string>
@@ -83,7 +100,7 @@
     <string name="new_reserve_value_hint">Valor inicial</string>
     <string name="reserve_total_title">Total:</string>
 
-    <string name="blank"/>
+    <string name="blank" />
     <string name="understood_button">Entendi</string>
     <string name="close_icon_description">Close icon</string>
     <string name="check_icon_description">Check icon</string>

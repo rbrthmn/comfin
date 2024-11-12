@@ -23,7 +23,7 @@ import br.com.rbrthmn.ui.financialcompanion.components.BalanceCard
 import br.com.rbrthmn.ui.financialcompanion.components.CreditCardsBillCard
 import br.com.rbrthmn.ui.financialcompanion.components.LastMonthDifferenceCard
 import br.com.rbrthmn.ui.financialcompanion.components.MonthlyLimitCard
-import br.com.rbrthmn.ui.financialcompanion.components.SelectMonthTopBar
+import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
 
@@ -40,12 +40,8 @@ fun HomeScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(topBar = {
-        SelectMonthTopBar(
+        MonthSelectionTopBar(
             currentMonth = MonthsOfTheYear.JANUARY,
-            onCurrentMonthClick = { println("CURRENT MONTH") },
-            onPreviousMonthClick = { println("PREVIOUS MONTH") },
-            onNextMonthClick = { println("NEXT MONTH") },
-            scrollBehavior = scrollBehavior,
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
     }, modifier = modifier) { innerPadding ->

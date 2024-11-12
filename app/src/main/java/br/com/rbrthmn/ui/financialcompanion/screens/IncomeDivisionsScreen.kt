@@ -41,7 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.components.SelectMonthTopBar
+import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
 
@@ -58,12 +58,8 @@ fun IncomeDivisionsScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(topBar = {
-        SelectMonthTopBar(
+        MonthSelectionTopBar(
             currentMonth = MonthsOfTheYear.JANUARY,
-            onCurrentMonthClick = { println("CURRENT MONTH") },
-            onPreviousMonthClick = { println("PREVIOUS MONTH") },
-            onNextMonthClick = { println("NEXT MONTH") },
-            scrollBehavior = scrollBehavior,
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
     }, modifier = modifier) { innerPadding ->
