@@ -1,6 +1,7 @@
 package br.com.rbrthmn.ui.financialcompanion.components
 
-import InfiniteCircularList
+import InfiniteHorizontalCircularList
+import InfiniteVerticalCircularList
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
@@ -59,25 +61,19 @@ fun MonthSelectionTopBar(
 
     CenterAlignedTopAppBar(
         title = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = modifier
+            InfiniteHorizontalCircularList(
+                height = dimensionResource(id = R.dimen.dates_circular_list_item_height),
+                itemWidth = 80.dp,
+                items = MonthsOfTheYear.entries.map { stringResource(id = it.shortStringId) },
+                initialItem = currentMonth,
+                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+                textColor = Color.LightGray,
+                selectedTextColor = Color.Black,
+                modifier = Modifier
                     .clip(RoundedCornerShape(dimensionResource(id = R.dimen.month_top_bar_corner_shape_round)))
-                    .clickable { showDialog = true }
-                    .padding(horizontal = dimensionResource(id = R.dimen.padding_large))
-                    .padding(vertical = dimensionResource(id = R.dimen.padding_small))
-            ) {
-                Text(
-                    text = stringResource(id = currentMonthStringId),
-                    fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp,
-                    modifier = modifier.padding(end = dimensionResource(id = R.dimen.padding_small))
-                )
-                Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = stringResource(id = R.string.drop_down_arrow_icon_description)
-                )
-            }
+                    .clickable { showDialog = true },
+                onItemSelected = { _, _ -> }
+            )
         },
         modifier = modifier
             .shadow(elevation = dimensionResource(id = R.dimen.month_top_bar_elevation))
@@ -109,7 +105,7 @@ private fun MonthSelectionDialog(
                         horizontalArrangement = Arrangement.Start,
                         modifier = Modifier
                     ) {
-                        InfiniteCircularList(
+                        InfiniteVerticalCircularList(
                             width = dimensionResource(id = R.dimen.dates_circular_list_width),
                             itemHeight = dimensionResource(id = R.dimen.dates_circular_list_item_height),
                             items = getYearsList(),
@@ -119,10 +115,10 @@ private fun MonthSelectionDialog(
                             selectedTextColor = Color.Black,
                             onItemSelected = { _, _ -> }
                         )
-                        InfiniteCircularList(
+                        InfiniteVerticalCircularList(
                             width = dimensionResource(id = R.dimen.dates_circular_list_width),
                             itemHeight = dimensionResource(id = R.dimen.dates_circular_list_item_height),
-                            items = MonthsOfTheYear.entries.map { stringResource(id = it.shortStringId) },
+                            items = MonthsOfTheYear.entries.map { stringResource(id = it.longStringId) },
                             initialItem = currentMonth,
                             fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
                             textColor = Color.LightGray,
