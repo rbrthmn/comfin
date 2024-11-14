@@ -1,0 +1,136 @@
+<!--
+  ~
+  ~ Copyright (C) 2022 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Modifications made by Roberto Kenzo Hamano, 2024
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<resources>
+    <string name="app_name" translatable="false">ComFin</string>
+
+    <string name="home">Home</string>
+    <string name="operations">Operations</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="more">More</string>
+
+    <string name="january_short">JAN</string>
+    <string name="february_short">FEV</string>
+    <string name="march_short">MAR</string>
+    <string name="april_short">ABR</string>
+    <string name="may_short">MAI</string>
+    <string name="june_short">JUN</string>
+    <string name="july_short">JUL</string>
+    <string name="august_short">AGO</string>
+    <string name="september_short">SET</string>
+    <string name="october_short">OUT</string>
+    <string name="november_short">NOV</string>
+    <string name="december_short">DEZ</string>
+
+    <string name="january">Janeiro</string>
+    <string name="february">Fevereiro</string>
+    <string name="march">Março</string>
+    <string name="april">Abril</string>
+    <string name="may">Maio</string>
+    <string name="june">Junho</string>
+    <string name="july">Julho</string>
+    <string name="august">Agosto</string>
+    <string name="september">Setembro</string>
+    <string name="october">Outubro</string>
+    <string name="november">Novembro</string>
+    <string name="december">Dezembro</string>
+
+    <string name="current_month_button">Mês atual</string>
+    <string name="apply_date_button">Aplicar</string>
+
+    <string name="monthly_limit_title">Limite do mês</string>
+    <string name="drop_down_arrow_icon_description">Ícone de flecha para baixo</string>
+    <string name="help_icon_description">Ícone com ponto de interrogação</string>
+    <string name="difference_title">Diferença</string>
+    <string name="total_balance_title">Saldo:</string>
+    <string name="add_account_button">Adicionar conta</string>
+    <string name="bank_icon_description">Ícone do banco</string>
+    <string name="add_icon_description">Ícone de mais</string>
+    <string name="add_card_button">Adicionar cartão</string>
+    <string name="total_bills_title">Faturas:</string>
+    <string name="difference_from_last_month_title">Diferença do mês passado</string>
+    <string name="brl_currency">R$</string>
+    <string name="monthly_limit_dialog_text">O limite do mês é o limite total de todas as faturas, subtraido do valor do restante do mês os gastos recorrentes ainda não pagos, transações do mês e diferença do mês passado.\nEm resumo, é o valor do saldo disponível para uso.</string>
+    <string name="monthly_difference_dialog_text">A diferença é o valor do limite do mês subtraído do valor total das faturas</string>
+    <string name="balance_input_hint">Saldo</string>
+    <string name="balance_description_input_hint">Descrição</string>
+    <string name="card_bill_input_hint">Fatura</string>
+    <string name="card_bill_close_day_hint">Dia de fechamento</string>
+    <string name="bank_hint">Banco</string>
+
+    <string name="operations_route">operations</string>
+    <string name="balance_title">Balanço</string>
+    <string name="incomes_title">Entradas</string>
+    <string name="outflow_title">Saídas</string>
+    <string name="search_hint">Pesquisar</string>
+    <string name="add_operation_button">Adicionar operação</string>
+    <string name="operation_value_hint">Valor</string>
+    <string name="operation_type_hint">Tipo de operação</string>
+    <string name="aimed_account_hint">Conta destino</string>
+    <string name="origin_account_hint">Conta origem</string>
+    <string name="operation_type_transfer">Transferência</string>
+    <string name="operation_type_debit_purchase">Compra no débito</string>
+    <string name="operation_type_bill_payment">Pagamento de boleto</string>
+    <string name="operation_type_withdrawal">Saque</string>
+    <string name="operation_type_deposit">Depósito</string>
+    <string name="operation_type_reserve_allocation">Aplicação em reserva</string>
+    <string name="operation_type_reserve_withdrawal">Resgate de reserva</string>
+    <string name="operation_type_income">Rendimentos</string>
+    <string name="operation_type_other">Outros</string>
+    <string name="account_holder_hint">Titular</string>
+    <string name="add_account_option">Adicionar outra conta</string>
+
+    <string name="feature_label_reserves">Reservas</string>
+    <string name="feature_label_recurring_expenses">Gastos Recorrentes</string>
+    <string name="feature_label_income_distribution">Rendas e Distribuições</string>
+    <string name="feature_label_settings">Configurações</string>
+
+    <string name="total_income">Renda Total</string>
+    <string name="recurring_expenses">Gastos Recorrentes</string>
+    <string name="remaining_month">Restante do mês</string>
+    <string name="add_division">Adicionar divisão</string>
+    <string name="division_name_hint">Nome da divisão</string>
+    <string name="division_value_hint">Valor</string>
+    <string name="division_percentage">%</string>
+    <string name="division_percentage_hint">Porcentagem</string>
+    <string name="cancel_button">Cancelar</string>
+    <string name="save_button">Salvar</string>
+    <string name="colon" translatable="false">:</string>
+
+    <string name="reserve_hint">Reserva</string>
+    <string name="add_reserve_button">Adicionar reserva</string>
+    <string name="new_reserve_name_hint">Nome da reserva</string>
+    <string name="new_reserve_value_hint">Valor inicial</string>
+    <string name="reserve_total_title">Total:</string>
+
+    <string name="blank" />
+    <string name="understood_button">Entendi</string>
+    <string name="close_icon_description">Close icon</string>
+    <string name="check_icon_description">Check icon</string>
+
+    <string name="recurring_expense_add_button">Adicionar gasto recorrente</string>
+    <string name="recurring_expense_description_hint">Descrição</string>
+    <string name="recurring_expense_value_hint">Valor</string>
+    <string name="recurring_expense_billing_day_hint">Dia de cobrança</string>
+    <string name="recurring_expense_billing_day">Dia</string>
+    <string name="recurring_total_title">Total:</string>
+
+    <string name="settings_dark_mode">Modo escuro</string>
+</resources>
