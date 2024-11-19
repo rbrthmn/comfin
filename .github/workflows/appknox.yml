@@ -30,21 +30,13 @@ jobs:
   appknox:
     runs-on: ubuntu-latest
     steps:
-      - name: set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
-
       - name: Checkout Code
         uses: actions/checkout@v2
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build the app
-        run: ./gradlew build                                         # Update this to build your Android or iOS application
+      - uses: ./.github/workflows/android.yml
 
       - name: Appknox GitHub action
         uses: appknox/appknox-github-action@b7d2bfb2321d5544e97bffcba48557234ab953a4
