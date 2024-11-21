@@ -44,6 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.FinancialOverviewUiState
 
 data class Account(val id: Int, val name: String, val balance: String, val canValueBeEdited: Boolean = true)
 
@@ -52,7 +53,7 @@ fun ValuesList(
     modifier: Modifier = Modifier,
     totalValue: String,
     totalValueTitle: String,
-    values: List<Account>,
+    values: List<FinancialOverviewUiState>,
     onAddItemButtonClick: () -> Unit,
     addItemButtonText: String
 ) {
@@ -107,7 +108,7 @@ private fun TotalValueText(
 @Composable
 private fun ItemsList(
     modifier: Modifier = Modifier,
-    items: List<Account>,
+    items: List<FinancialOverviewUiState>,
     addItemButtonText: String,
     onButtonClick: () -> Unit
 ) {
@@ -116,7 +117,7 @@ private fun ItemsList(
         modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
     ) {
         for (item in items) {
-            Item(itemName = item.name, itemValue = item.balance, canEditValue = item.canValueBeEdited)
+            Item(itemName = item.name, itemValue = item.value, canEditValue = item.canValueBeEdited)
         }
         AddItemButton(buttonText = addItemButtonText, onButtonClick = onButtonClick)
     }

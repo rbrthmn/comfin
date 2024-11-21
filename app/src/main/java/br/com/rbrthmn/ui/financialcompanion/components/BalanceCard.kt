@@ -33,6 +33,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -44,14 +46,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
 
 @Composable
 fun BalanceCard(
-    totalBalance: String,
-    accounts: List<Account>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: BalanceCardViewModel = viewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
     val showAddBalanceDialog = remember { mutableStateOf(false) }
 
     if (showAddBalanceDialog.value)
@@ -64,9 +68,9 @@ fun BalanceCard(
         modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
         ValuesList(
-            totalValue = totalBalance,
+            totalValue = uiState.totalBalance,
             totalValueTitle = stringResource(id = R.string.total_balance_title),
-            values = accounts,
+            values = uiState.accounts,
             onAddItemButtonClick = { showAddBalanceDialog.value = true },
             addItemButtonText = stringResource(id = R.string.add_account_button)
         )
@@ -127,11 +131,8 @@ fun AddBalanceDialog(
 @Preview
 @Composable
 fun BalanceCardPreview(modifier: Modifier = Modifier) {
-    val accounts = listOf(Account(1, "Banco A", "500,00"), Account(2, "Banco B", "1.000,00"))
-    val totalBalance = "1234.00"
     BalanceCard(
-        totalBalance = totalBalance,
-        accounts = accounts,
+        viewModel = BalanceCardViewModel(),
         modifier = modifier
     )
 }

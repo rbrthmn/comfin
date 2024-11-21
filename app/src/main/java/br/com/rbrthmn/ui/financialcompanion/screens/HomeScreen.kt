@@ -46,6 +46,7 @@ import br.com.rbrthmn.ui.financialcompanion.components.MonthlyLimitCard
 import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.FinancialOverviewUiState
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -76,9 +77,9 @@ private fun HomeScreenContent(
     modifier: Modifier = Modifier
 ) {
     val accounts = listOf(
-        Account(1, "Banco A", "500,00"),
-        Account(2, "Banco B", "1.000.000,00"),
-        Account(3, "Banco C", "5,00")
+        FinancialOverviewUiState("Banco A", "500,00", "R$"),
+        FinancialOverviewUiState("Banco B", "1.000.000,00", "R$"),
+        FinancialOverviewUiState("Banco C", "5,00", "R$")
     )
     val totalBalance = "1.000,00"
 
@@ -96,7 +97,7 @@ private fun HomeScreenContent(
             monthLimit = "1.000,00",
             monthDifference = "-5435,99"
         )
-        BalanceCard(totalBalance = totalBalance, accounts = accounts)
+        BalanceCard()
         CreditCardsBillCard(totalCreditCardsBill = "2300,00", cardBills = accounts)
         LastMonthDifferenceCard("-5435,99")
     }
