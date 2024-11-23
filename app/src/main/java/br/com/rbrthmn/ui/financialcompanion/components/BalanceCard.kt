@@ -59,9 +59,14 @@ fun BalanceCard(
     val showAddBalanceDialog = remember { mutableStateOf(false) }
 
     if (showAddBalanceDialog.value)
-        AddBalanceDialog(
-            onCancelButtonClick = { showAddBalanceDialog.value = false },
-            onSaveButtonClick = { showAddBalanceDialog.value = false })
+        AddBankAccountDialog(
+            viewModel = viewModel,
+            onCancelButtonClick = {
+                viewModel.cleanNewAccount()
+                showAddBalanceDialog.value = false
+            },
+            onSaveButtonClick = { viewModel.onSaveClick(showAddBalanceDialog) },
+        )
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -78,15 +83,14 @@ fun BalanceCard(
 }
 
 @Composable
-fun AddBalanceDialog(
+private fun AddBankAccountDialog(
     modifier: Modifier = Modifier,
+    viewModel: BalanceCardViewModel,
+    onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
-    onSaveButtonClick: () -> Unit
 ) {
     Dialog(onDismissRequest = onCancelButtonClick) {
-        Card(
-            modifier = modifier.fillMaxWidth()
-        ) {
+        Card(modifier = modifier.fillMaxWidth()) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier.padding(
@@ -98,17 +102,26 @@ fun AddBalanceDialog(
                     prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
                     label = { Text(text = stringResource(id = R.string.balance_input_hint)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    value = "",
-                    onValueChange = { },
-                    singleLine = true
+                    value = viewModel.newAccountBalance,
+                    onValueChange = { newValue ->
+                        val filteredValue = newValue.filter { it.isDigit() || it == '.' }
+                        viewModel.onInitialBalanceChange(filteredValue)
+                    },
+                    singleLine = true,
+                    isError = !viewModel.isNewAccountBalanceValid
                 )
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.balance_description_input_hint)) },
                     maxLines = 100,
-                    value = "",
-                    onValueChange = { }
+                    value = viewModel.newAccountDescription,
+                    onValueChange = { viewModel.onDescriptionChange(it) },
+                    isError = !viewModel.isNewAccountDescriptionValid
                 )
-                BanksDropdownMenu(modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small)))
+                BanksDropdownMenu(
+                    onBankSelected = viewModel::onBankChange,
+                    isValid = viewModel.isNewAccountBankValid,
+                    modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
+                )
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
@@ -139,6 +152,12 @@ fun BalanceCardPreview(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun AddBalanceDialogPreview(modifier: Modifier = Modifier) {
-    AddBalanceDialog(onSaveButtonClick = { }, onCancelButtonClick = { })
+fun AddBankAccountDialogPreview(modifier: Modifier = Modifier) {
+    AddBankAccountDialog(
+        viewModel = BalanceCardViewModel(),
+        onSaveButtonClick = { },
+        onCancelButtonClick = { },
+        modifier = modifier,
+
+        )
 }

@@ -38,7 +38,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.components.Account
 import br.com.rbrthmn.ui.financialcompanion.components.BalanceCard
 import br.com.rbrthmn.ui.financialcompanion.components.CreditCardsBillCard
 import br.com.rbrthmn.ui.financialcompanion.components.LastMonthDifferenceCard
@@ -81,7 +80,6 @@ private fun HomeScreenContent(
         FinancialOverviewUiState("Banco B", "1.000.000,00", "R$"),
         FinancialOverviewUiState("Banco C", "5,00", "R$")
     )
-    val totalBalance = "1.000,00"
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -46,8 +46,6 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 import br.com.rbrthmn.ui.financialcompanion.viewmodels.FinancialOverviewUiState
 
-data class Account(val id: Int, val name: String, val balance: String, val canValueBeEdited: Boolean = true)
-
 @Composable
 fun ValuesList(
     modifier: Modifier = Modifier,

@@ -114,7 +114,7 @@ fun AddCardBillDialog(
                     value = "",
                     onValueChange = { }
                 )
-                BanksDropdownMenu(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small)))
+                BanksDropdownMenu(onBankSelected = { _, _ -> }, isValid = true, modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small)))
                 CardBillCloseDayDropdownMenu()
                 Row(
                     modifier = modifier

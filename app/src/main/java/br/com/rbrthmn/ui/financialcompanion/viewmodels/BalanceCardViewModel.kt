@@ -20,8 +20,15 @@
 
 package br.com.rbrthmn.ui.financialcompanion.viewmodels
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import br.com.rbrthmn.ui.financialcompanion.utils.formatNumber
+import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
+import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,16 +37,76 @@ class BalanceCardViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(BalanceCardUiState())
     val uiState: StateFlow<BalanceCardUiState> = _uiState.asStateFlow()
 
+    var newAccountBalance by mutableStateOf("")
+        private set
+    var isNewAccountBalanceValid by mutableStateOf(true)
+
+    var newAccountDescription by mutableStateOf("")
+        private set
+    var isNewAccountDescriptionValid by mutableStateOf(true)
+
+    private var newAccountBank by mutableStateOf("")
+    private var newAccountIcon by mutableIntStateOf(-1)
+    var isNewAccountBankValid by mutableStateOf(true)
+
     init {
         val accounts = listOf(
-            FinancialOverviewUiState("Banco A", formatNumber(5000.00), "R$"),
-            FinancialOverviewUiState("Banco B", formatNumber(10000.00), "R$"),
-            FinancialOverviewUiState("Banco C", formatNumber(5.00), "R$")
+            FinancialOverviewUiState("Banco A", formatDouble(5000.00), "R$"),
+            FinancialOverviewUiState("Banco B", formatDouble(10000.00), "R$"),
+            FinancialOverviewUiState("Banco C", formatDouble(5.00), "R$")
         )
         _uiState.value = BalanceCardUiState(
-            totalBalance = formatNumber(100000.00),
-            accounts = accounts
+            totalBalance = formatDouble(100000.00),
+            accounts = accounts,
         )
+    }
+
+    fun onInitialBalanceChange(balance: String) {
+        formatDouble(balance.toDouble())
+        isNewAccountBalanceValid = balance.isNotEmpty()
+        newAccountBalance = balance
+    }
+
+    fun onDescriptionChange(description: String) {
+        isNewAccountDescriptionValid = description.isNotEmpty()
+        newAccountDescription = description
+    }
+
+    fun onBankChange(bankId: Int, bankName: String) {
+        isNewAccountBankValid = bankName.isNotEmpty()
+        newAccountBank = bankName
+        newAccountIcon = bankId
+    }
+
+    private fun areValidInputs(): Boolean {
+        isNewAccountBalanceValid = newAccountBalance.isNotEmpty()
+        isNewAccountDescriptionValid = newAccountDescription.isNotEmpty()
+        isNewAccountBankValid = newAccountBank.isNotEmpty()
+
+        return isNewAccountBalanceValid && isNewAccountDescriptionValid && isNewAccountBankValid
+    }
+
+    fun onSaveClick(showDialog: MutableState<Boolean>) {
+        if (areValidInputs()) {
+            showDialog.value = false
+            val newAccount = FinancialOverviewUiState(
+                name = newAccountDescription,
+                value = formatString(newAccountBalance),
+                financialInstitutionName = newAccountBank,
+                balanceCurrency = "R$"
+            )
+            _uiState.value = _uiState.value.copy(accounts = _uiState.value.accounts + newAccount)
+            cleanNewAccount()
+        }
+    }
+
+    fun cleanNewAccount() {
+        newAccountBalance = ""
+        newAccountDescription = ""
+        isNewAccountBalanceValid = true
+        isNewAccountDescriptionValid = true
+        isNewAccountBankValid = true
+
     }
 }
 
@@ -51,6 +118,8 @@ data class BalanceCardUiState(
 data class FinancialOverviewUiState(
     val name: String = "",
     val value: String = "",
-    val balanceCurrency: String,
+    val balanceCurrency: String = "",
+    val financialInstitutionName: String = "",
+    val financialInstitutionIcon: Int = R.drawable.account_balance,
     val canValueBeEdited: Boolean = true
 )
