@@ -20,8 +20,8 @@
 
 package br.com.rbrthmn.ui.financialcompanion.components
 
-import android.graphics.drawable.shapes.Shape
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
@@ -40,7 +40,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import br.com.rbrthmn.R
-
 
 @Composable
 fun BanksDropdownMenu(
@@ -100,7 +99,7 @@ fun BanksDropdownMenu(
                         Icon(
                             painter = painterResource(id = R.drawable.account_balance),
                             contentDescription = "Balance Icon",
-                            modifier = Modifier.clip(shape = Shape)
+                            modifier = Modifier.clip(CircleShape)
                         )
                     }
                 )

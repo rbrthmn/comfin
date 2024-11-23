@@ -62,9 +62,20 @@ class BalanceCardViewModel : ViewModel() {
     }
 
     fun onInitialBalanceChange(balance: String) {
-        formatDouble(balance.toDouble())
-        isNewAccountBalanceValid = balance.isNotEmpty()
-        newAccountBalance = balance
+        if (validateBalance(balance)) {
+            isNewAccountBalanceValid = balance.isNotEmpty()
+            newAccountBalance = balance
+        }
+    }
+
+    private fun validateBalance(balance: String): Boolean {
+        return try {
+            formatString(balance)
+            true
+        } catch (e: NumberFormatException) {
+            println("Invalid number format: $e")
+            false
+        }
     }
 
     fun onDescriptionChange(description: String) {
@@ -78,16 +89,16 @@ class BalanceCardViewModel : ViewModel() {
         newAccountIcon = bankId
     }
 
-    private fun areValidInputs(): Boolean {
+    private fun validateInputs(): Boolean {
         isNewAccountBalanceValid = newAccountBalance.isNotEmpty()
         isNewAccountDescriptionValid = newAccountDescription.isNotEmpty()
         isNewAccountBankValid = newAccountBank.isNotEmpty()
 
-        return isNewAccountBalanceValid && isNewAccountDescriptionValid && isNewAccountBankValid
+        return validateBalance(newAccountBalance) && isNewAccountBalanceValid && isNewAccountDescriptionValid && isNewAccountBankValid
     }
 
     fun onSaveClick(showDialog: MutableState<Boolean>) {
-        if (areValidInputs()) {
+        if (validateInputs()) {
             showDialog.value = false
             val newAccount = FinancialOverviewUiState(
                 name = newAccountDescription,
@@ -103,10 +114,10 @@ class BalanceCardViewModel : ViewModel() {
     fun cleanNewAccount() {
         newAccountBalance = ""
         newAccountDescription = ""
+        newAccountBank = ""
         isNewAccountBalanceValid = true
         isNewAccountDescriptionValid = true
         isNewAccountBankValid = true
-
     }
 }
 
