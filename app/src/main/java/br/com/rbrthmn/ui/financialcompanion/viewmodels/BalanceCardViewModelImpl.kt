@@ -27,6 +27,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.financialcompanion.uistates.BalanceCardUiState
+import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import kotlinx.coroutines.flow.MutableStateFlow
