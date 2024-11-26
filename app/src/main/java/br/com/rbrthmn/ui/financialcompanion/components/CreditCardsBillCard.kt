@@ -53,7 +53,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.viewmodels.FinancialOverviewUiState
+import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
 
 
 @Composable
