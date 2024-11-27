@@ -41,8 +41,8 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.BalanceCard
 import br.com.rbrthmn.ui.financialcompanion.components.CreditCardsBillCard
 import br.com.rbrthmn.ui.financialcompanion.components.LastMonthDifferenceCard
-import br.com.rbrthmn.ui.financialcompanion.components.MonthlyLimitCard
 import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
+import br.com.rbrthmn.ui.financialcompanion.components.MonthlyLimitCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear

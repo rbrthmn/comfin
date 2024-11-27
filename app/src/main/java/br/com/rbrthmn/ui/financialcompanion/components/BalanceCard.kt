@@ -46,14 +46,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
-import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModelImpl
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BalanceCard(
     modifier: Modifier = Modifier,
-    viewModel: BalanceCardViewModel = viewModel()
+    viewModel: BalanceCardViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddBalanceDialog = remember { mutableStateOf(false) }
@@ -145,7 +146,7 @@ private fun AddBankAccountDialog(
 @Composable
 fun BalanceCardPreview(modifier: Modifier = Modifier) {
     BalanceCard(
-        viewModel = BalanceCardViewModel(),
+        viewModel = BalanceCardViewModelImpl(),
         modifier = modifier
     )
 }
@@ -154,7 +155,7 @@ fun BalanceCardPreview(modifier: Modifier = Modifier) {
 @Composable
 fun AddBankAccountDialogPreview(modifier: Modifier = Modifier) {
     AddBankAccountDialog(
-        viewModel = BalanceCardViewModel(),
+        viewModel = BalanceCardViewModelImpl(),
         onSaveButtonClick = { },
         onCancelButtonClick = { },
         modifier = modifier,

@@ -18,22 +18,13 @@
  *
  */
 
-package br.com.rbrthmn
+package br.com.rbrthmn.data.di
 
-import android.app.Application
-import br.com.rbrthmn.data.di.appModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModelImpl
+import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.dsl.module
 
-class ComFin : Application() {
-    override fun onCreate() {
-        super.onCreate()
-
-        startKoin {
-            androidLogger()
-            androidContext(this@ComFin)
-            modules(appModule)
-        }
-    }
+val appModule = module {
+    viewModelOf<BalanceCardViewModel>(::BalanceCardViewModelImpl)
 }

@@ -24,22 +24,25 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale
 
+val formatter = NumberFormat.getNumberInstance(Locale("pt", "BR")) as DecimalFormat
+
 fun formatDouble(number: Double): String {
-    val formatter = NumberFormat.getNumberInstance(Locale("pt", "BR")) as DecimalFormat
     formatter.applyPattern("#,##0.00")
     val formattedDouble: String
+
     try {
         formattedDouble = formatter.format(number)
     } catch (e: ArithmeticException) {
         throw e
     }
+
     return formattedDouble
 }
 
 fun formatString(string: String): String {
-    val formatter = NumberFormat.getNumberInstance(Locale("pt", "BR")) as DecimalFormat
     formatter.applyPattern("#,##0.00")
     val formattedString: String
+
     try {
         formattedString = formatter.format(string.toDouble())
     } catch (e: NumberFormatException) {
@@ -47,5 +50,6 @@ fun formatString(string: String): String {
     } catch (e: ArithmeticException) {
         throw e
     }
+
     return formattedString
 }

@@ -26,30 +26,46 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.uistates.BalanceCardUiState
 import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
-class BalanceCardViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(BalanceCardUiState())
-    val uiState: StateFlow<BalanceCardUiState> = _uiState.asStateFlow()
+abstract class BalanceCardViewModel : ViewModel() {
+    abstract val uiState: MutableStateFlow<BalanceCardUiState>
+    abstract val newAccountBalance: String
+    abstract val isNewAccountBalanceValid: Boolean
+    abstract val newAccountDescription: String
+    abstract val isNewAccountDescriptionValid: Boolean
+    abstract val newAccountBank: String
+    abstract val isNewAccountBankValid: Boolean
+    abstract fun onInitialBalanceChange(balance: String)
+    abstract fun onDescriptionChange(description: String)
+    abstract fun onBankChange(bankId: Int, bankName: String)
+    abstract fun onSaveClick(showDialog: MutableState<Boolean>)
+    abstract fun cleanNewAccount()
+}
 
-    var newAccountBalance by mutableStateOf("")
+class BalanceCardViewModelImpl : BalanceCardViewModel() {
+    override var uiState = MutableStateFlow(BalanceCardUiState())
         private set
-    var isNewAccountBalanceValid by mutableStateOf(true)
 
-    var newAccountDescription by mutableStateOf("")
+    override var newAccountBalance by mutableStateOf("")
         private set
-    var isNewAccountDescriptionValid by mutableStateOf(true)
+    override var isNewAccountBalanceValid by mutableStateOf(true)
+        private set
 
-    private var newAccountBank by mutableStateOf("")
+    override var newAccountDescription by mutableStateOf("")
+        private set
+    override var isNewAccountDescriptionValid by mutableStateOf(true)
+        private set
+
+    override var newAccountBank by mutableStateOf("")
+        private set
     private var newAccountIcon by mutableIntStateOf(-1)
-    var isNewAccountBankValid by mutableStateOf(true)
+    override var isNewAccountBankValid by mutableStateOf(true)
+        private set
 
     init {
         val accounts = listOf(
@@ -57,13 +73,13 @@ class BalanceCardViewModel : ViewModel() {
             FinancialOverviewUiState("Banco B", formatDouble(10000.00), "R$"),
             FinancialOverviewUiState("Banco C", formatDouble(5.00), "R$")
         )
-        _uiState.value = BalanceCardUiState(
+        uiState.value = BalanceCardUiState(
             totalBalance = formatDouble(100000.00),
             accounts = accounts,
         )
     }
 
-    fun onInitialBalanceChange(balance: String) {
+    override fun onInitialBalanceChange(balance: String) {
         if (validateBalance(balance)) {
             isNewAccountBalanceValid = balance.isNotEmpty()
             newAccountBalance = balance
@@ -80,12 +96,12 @@ class BalanceCardViewModel : ViewModel() {
         }
     }
 
-    fun onDescriptionChange(description: String) {
+    override fun onDescriptionChange(description: String) {
         isNewAccountDescriptionValid = description.isNotEmpty()
         newAccountDescription = description
     }
 
-    fun onBankChange(bankId: Int, bankName: String) {
+    override fun onBankChange(bankId: Int, bankName: String) {
         isNewAccountBankValid = bankName.isNotEmpty()
         newAccountBank = bankName
         newAccountIcon = bankId
@@ -99,7 +115,7 @@ class BalanceCardViewModel : ViewModel() {
         return validateBalance(newAccountBalance) && isNewAccountBalanceValid && isNewAccountDescriptionValid && isNewAccountBankValid
     }
 
-    fun onSaveClick(showDialog: MutableState<Boolean>) {
+    override fun onSaveClick(showDialog: MutableState<Boolean>) {
         if (validateInputs()) {
             showDialog.value = false
             val newAccount = FinancialOverviewUiState(
@@ -108,12 +124,12 @@ class BalanceCardViewModel : ViewModel() {
                 financialInstitutionName = newAccountBank,
                 balanceCurrency = "R$"
             )
-            _uiState.value = _uiState.value.copy(accounts = _uiState.value.accounts + newAccount)
+            uiState.value = uiState.value.copy(accounts = uiState.value.accounts + newAccount)
             cleanNewAccount()
         }
     }
 
-    fun cleanNewAccount() {
+    override fun cleanNewAccount() {
         newAccountBalance = ""
         newAccountDescription = ""
         newAccountBank = ""
