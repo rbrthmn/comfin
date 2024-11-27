@@ -53,17 +53,21 @@ class BalanceCardViewModelImpl : BalanceCardViewModel() {
 
     override var newAccountBalance by mutableStateOf("")
         private set
+
     override var isNewAccountBalanceValid by mutableStateOf(true)
         private set
 
     override var newAccountDescription by mutableStateOf("")
         private set
+
     override var isNewAccountDescriptionValid by mutableStateOf(true)
         private set
 
     override var newAccountBank by mutableStateOf("")
         private set
+
     private var newAccountIcon by mutableIntStateOf(-1)
+
     override var isNewAccountBankValid by mutableStateOf(true)
         private set
 
