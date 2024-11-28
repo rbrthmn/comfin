@@ -20,11 +20,15 @@
 
 package br.com.rbrthmn.data.di
 
+import br.com.rbrthmn.ui.financialcompanion.utils.DecimalFormatter
 import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModelImpl
 import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val appModule = module {
     viewModelOf<BalanceCardViewModel>(::BalanceCardViewModelImpl)
+
+    factoryOf(::DecimalFormatter)
 }

@@ -84,20 +84,8 @@ class BalanceCardViewModelImpl : BalanceCardViewModel() {
     }
 
     override fun onInitialBalanceChange(balance: String) {
-        if (validateBalance(balance)) {
-            isNewAccountBalanceValid = balance.isNotEmpty()
-            newAccountBalance = balance
-        }
-    }
-
-    private fun validateBalance(balance: String): Boolean {
-        return try {
-            formatString(balance)
-            true
-        } catch (e: NumberFormatException) {
-            println("Invalid number format: $e")
-            false
-        }
+        isNewAccountBalanceValid = balance.isNotEmpty()
+        newAccountBalance = balance
     }
 
     override fun onDescriptionChange(description: String) {
@@ -116,7 +104,7 @@ class BalanceCardViewModelImpl : BalanceCardViewModel() {
         isNewAccountDescriptionValid = newAccountDescription.isNotEmpty()
         isNewAccountBankValid = newAccountBank.isNotEmpty()
 
-        return validateBalance(newAccountBalance) && isNewAccountBalanceValid && isNewAccountDescriptionValid && isNewAccountBankValid
+        return isNewAccountBalanceValid && isNewAccountDescriptionValid && isNewAccountBankValid
     }
 
     override fun onSaveClick(showDialog: MutableState<Boolean>) {

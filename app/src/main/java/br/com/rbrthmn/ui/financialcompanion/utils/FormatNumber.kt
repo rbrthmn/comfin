@@ -24,9 +24,9 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale
 
-val formatter = NumberFormat.getNumberInstance(Locale("pt", "BR")) as DecimalFormat
-
 fun formatDouble(number: Double): String {
+    val formatter = NumberFormat.getNumberInstance(Locale.getDefault()) as DecimalFormat
+
     formatter.applyPattern("#,##0.00")
     val formattedDouble: String
 
@@ -40,11 +40,14 @@ fun formatDouble(number: Double): String {
 }
 
 fun formatString(string: String): String {
+    val formatter = NumberFormat.getNumberInstance(Locale.getDefault()) as DecimalFormat
+
     formatter.applyPattern("#,##0.00")
     val formattedString: String
 
     try {
-        formattedString = formatter.format(string.toDouble())
+        val newString = string.replace(',', '.')
+        formattedString = formatter.format(newString.toDouble())
     } catch (e: NumberFormatException) {
         throw e
     } catch (e: ArithmeticException) {
