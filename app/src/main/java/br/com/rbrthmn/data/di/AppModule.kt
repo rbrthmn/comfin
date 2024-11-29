@@ -22,12 +22,17 @@ package br.com.rbrthmn.data.di
 
 import br.com.rbrthmn.contracts.BalanceContract
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalFormatter
+import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
+import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProviderImpl
 import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val appModule = module {
     viewModelOf<BalanceContract.BalanceCardViewModel>(::BalanceCardViewModel)
 
     factory { DecimalFormatter() }
+
+    singleOf<SnackBarProvider>(::SnackBarProviderImpl)
 }

@@ -29,6 +29,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -46,6 +47,8 @@ import br.com.rbrthmn.ui.financialcompanion.components.MonthlyLimitCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
+import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
+import org.koin.compose.koinInject
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -57,14 +60,18 @@ fun HomeScreen(
     onMonthlyLimitCardClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val snackBarProvider: SnackBarProvider = koinInject()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
-    Scaffold(topBar = {
-        MonthSelectionTopBar(
-            currentMonth = MonthsOfTheYear.JANUARY,
-            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-        )
-    }, modifier = modifier) { innerPadding ->
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackBarProvider.hostState) },
+        topBar = {
+            MonthSelectionTopBar(
+                currentMonth = MonthsOfTheYear.JANUARY,
+                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+            )
+        }, modifier = modifier
+    ) { innerPadding ->
         HomeScreenContent(onMonthlyLimitCardClick, innerPadding, modifier)
     }
 }
