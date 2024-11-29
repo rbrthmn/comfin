@@ -56,16 +56,16 @@ fun BalanceCard(
     viewModel: BalanceContract.BalanceCardViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val showAddBalanceDialog = rememberSaveable { mutableStateOf(false) }
+    val showAddAccountDialog = rememberSaveable { mutableStateOf(false) }
 
-    if (showAddBalanceDialog.value)
+    if (showAddAccountDialog.value)
         AddBankAccountDialog(
             viewModel = viewModel,
             onCancelButtonClick = {
                 viewModel.cleanNewAccount()
-                showAddBalanceDialog.value = false
+                showAddAccountDialog.value = false
             },
-            onSaveButtonClick = { viewModel.onSaveClick(showAddBalanceDialog) },
+            onSaveButtonClick = { viewModel.onSaveClick(showDialog = showAddAccountDialog) },
         )
 
     Card(
@@ -76,7 +76,7 @@ fun BalanceCard(
             totalValue = uiState.totalBalance,
             totalValueTitle = stringResource(id = R.string.total_balance_title),
             values = uiState.accounts,
-            onAddItemButtonClick = { showAddBalanceDialog.value = true },
+            onAddItemButtonClick = { showAddAccountDialog.value = true },
             addItemButtonText = stringResource(id = R.string.add_account_button)
         )
     }

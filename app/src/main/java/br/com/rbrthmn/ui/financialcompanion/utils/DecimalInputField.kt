@@ -47,9 +47,7 @@ fun DecimalInputField(
         modifier = modifier,
         value = value,
         onValueChange = {
-            println("value $it")
             val newValue = decimalFormatter.cleanup(it)
-            println("new value $newValue")
             onValueChange(newValue)
         },
         prefix = { Text(text = prefix)},
