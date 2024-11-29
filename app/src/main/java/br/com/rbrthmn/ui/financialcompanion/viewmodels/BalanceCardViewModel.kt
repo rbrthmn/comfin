@@ -25,29 +25,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import br.com.rbrthmn.contracts.BalanceContract
 import br.com.rbrthmn.ui.financialcompanion.uistates.BalanceCardUiState
 import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import kotlinx.coroutines.flow.MutableStateFlow
 
-abstract class BalanceCardViewModel : ViewModel() {
-    abstract val uiState: MutableStateFlow<BalanceCardUiState>
-    abstract val newAccountBalance: String
-    abstract val isNewAccountBalanceValid: Boolean
-    abstract val newAccountDescription: String
-    abstract val isNewAccountDescriptionValid: Boolean
-    abstract val newAccountBank: String
-    abstract val isNewAccountBankValid: Boolean
-    abstract fun onInitialBalanceChange(balance: String)
-    abstract fun onDescriptionChange(description: String)
-    abstract fun onBankChange(bankId: Int, bankName: String)
-    abstract fun onSaveClick(showDialog: MutableState<Boolean>)
-    abstract fun cleanNewAccount()
-}
-
-class BalanceCardViewModelImpl : BalanceCardViewModel() {
+class BalanceCardViewModel : BalanceContract.BalanceCardViewModel() {
     override var uiState = MutableStateFlow(BalanceCardUiState())
         private set
 

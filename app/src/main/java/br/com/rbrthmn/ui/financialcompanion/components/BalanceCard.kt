@@ -45,15 +45,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
+import br.com.rbrthmn.contracts.BalanceContract
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalInputField
 import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
-import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModelImpl
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BalanceCard(
     modifier: Modifier = Modifier,
-    viewModel: BalanceCardViewModel = koinViewModel()
+    viewModel: BalanceContract.BalanceCardViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddBalanceDialog = rememberSaveable { mutableStateOf(false) }
@@ -85,7 +85,7 @@ fun BalanceCard(
 @Composable
 private fun AddBankAccountDialog(
     modifier: Modifier = Modifier,
-    viewModel: BalanceCardViewModel,
+    viewModel: BalanceContract.BalanceCardViewModel,
     onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
 ) {
@@ -140,7 +140,7 @@ private fun AddBankAccountDialog(
 @Composable
 fun BalanceCardPreview(modifier: Modifier = Modifier) {
     BalanceCard(
-        viewModel = BalanceCardViewModelImpl(),
+        viewModel = BalanceCardViewModel(),
         modifier = modifier
     )
 }
@@ -149,10 +149,9 @@ fun BalanceCardPreview(modifier: Modifier = Modifier) {
 @Composable
 fun AddBankAccountDialogPreview(modifier: Modifier = Modifier) {
     AddBankAccountDialog(
-        viewModel = BalanceCardViewModelImpl(),
+        viewModel = BalanceCardViewModel(),
         onSaveButtonClick = { },
         onCancelButtonClick = { },
-        modifier = modifier,
-
-        )
+        modifier = modifier
+    )
 }
