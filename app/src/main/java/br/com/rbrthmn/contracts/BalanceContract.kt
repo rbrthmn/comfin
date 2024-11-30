@@ -34,6 +34,7 @@ interface BalanceContract {
         abstract val isNewAccountDescriptionValid: Boolean
         abstract val newAccountBank: String
         abstract val isNewAccountBankValid: Boolean
+        abstract val newAccountBankIcon: Int
         abstract fun onInitialBalanceChange(balance: String)
         abstract fun onDescriptionChange(description: String)
         abstract fun onBankChange(bankId: Int, bankName: String)

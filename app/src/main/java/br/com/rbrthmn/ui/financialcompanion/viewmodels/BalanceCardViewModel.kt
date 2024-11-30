@@ -51,7 +51,8 @@ class BalanceCardViewModel : BalanceContract.BalanceCardViewModel() {
     override var newAccountBank by mutableStateOf("")
         private set
 
-    private var newAccountIcon by mutableIntStateOf(-1)
+    override var newAccountBankIcon by mutableIntStateOf(-1)
+        private set
 
     override var isNewAccountBankValid by mutableStateOf(true)
         private set
@@ -81,7 +82,7 @@ class BalanceCardViewModel : BalanceContract.BalanceCardViewModel() {
     override fun onBankChange(bankId: Int, bankName: String) {
         isNewAccountBankValid = bankName.isNotEmpty()
         newAccountBank = bankName
-        newAccountIcon = bankId
+        newAccountBankIcon = bankId
     }
 
     private fun validateInputs(): Boolean {
@@ -99,7 +100,6 @@ class BalanceCardViewModel : BalanceContract.BalanceCardViewModel() {
                 name = newAccountDescription,
                 value = formatString(newAccountBalance),
                 financialInstitutionName = newAccountBank,
-                balanceCurrency = "R$"
             )
             uiState.value = uiState.value.copy(accounts = uiState.value.accounts + newAccount)
             cleanNewAccount()
@@ -110,6 +110,7 @@ class BalanceCardViewModel : BalanceContract.BalanceCardViewModel() {
         newAccountBalance = ""
         newAccountDescription = ""
         newAccountBank = ""
+        newAccountBankIcon = -1
         isNewAccountBalanceValid = true
         isNewAccountDescriptionValid = true
         isNewAccountBankValid = true
