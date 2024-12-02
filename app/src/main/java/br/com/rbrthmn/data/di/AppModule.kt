@@ -22,6 +22,7 @@ package br.com.rbrthmn.data.di
 
 import br.com.rbrthmn.contracts.BalanceContract
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalFormatter
+import br.com.rbrthmn.ui.financialcompanion.utils.DecimalInputFieldFormatter
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProviderImpl
 import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
@@ -32,7 +33,7 @@ import org.koin.dsl.module
 val appModule = module {
     viewModelOf<BalanceContract.BalanceCardViewModel>(::BalanceCardViewModel)
 
-    factory { DecimalFormatter() }
+    factory<DecimalInputFieldFormatter> { DecimalFormatter() }
 
     singleOf<SnackBarProvider>(::SnackBarProviderImpl)
 }

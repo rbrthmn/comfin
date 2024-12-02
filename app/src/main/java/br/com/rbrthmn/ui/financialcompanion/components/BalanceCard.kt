@@ -46,7 +46,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.contracts.BalanceContract
-import br.com.rbrthmn.ui.financialcompanion.utils.DecimalInputField
 import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
 import org.koin.androidx.compose.koinViewModel
 
