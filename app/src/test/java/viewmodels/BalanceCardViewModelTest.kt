@@ -108,7 +108,7 @@ class BalanceCardViewModelTest {
         val mock = mutableStateOf(true)
         val newAccount = FinancialOverviewUiState(
             name = VALID_STRING,
-            value = VALID_BALANCE_STRING,
+            value = FORMATTED_BALANCE_STRING,
             financialInstitutionName = VALID_STRING
         )
         val newAccountList = viewModel.uiState.value.accounts + newAccount
@@ -141,7 +141,8 @@ class BalanceCardViewModelTest {
     }
 
     private companion object {
-        const val VALID_BALANCE_STRING = "123,00"
+        const val VALID_BALANCE_STRING = "123"
+        const val FORMATTED_BALANCE_STRING = "123.00"
         const val EMPTY_STRING = ""
         const val VALID_STRING = "test"
         const val VALID_ID_STRING = 1
