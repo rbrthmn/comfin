@@ -18,16 +18,26 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.viewmodels
+package br.com.rbrthmn.ui.financialcompanion
 
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalFormatter
 import junit.framework.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import java.text.DecimalFormatSymbols
 import java.util.Locale
 
 class DecimalFormatterTest {
-    private var formatter = DecimalFormatter()
+    private lateinit var formatter: DecimalFormatter
+
+    @Before
+    fun setUpWithUsLocale() {
+        formatter = DecimalFormatter(DecimalFormatSymbols(Locale.US))
+    }
+
+    private fun setUpWithBrLocale() {
+        formatter = DecimalFormatter(DecimalFormatSymbols(Locale("pt", "BR")))
+    }
 
     @Test
     fun cleanup_should_return_empty_string_when_input_is_empty() {
@@ -87,7 +97,7 @@ class DecimalFormatterTest {
 
     @Test
     fun cleanup_with_br_locale_and_decimal_value_should_return_correct_string() {
-        formatter = DecimalFormatter(DecimalFormatSymbols(Locale("pt", "BR")))
+        setUpWithBrLocale()
 
         val actual = formatter.cleanup(BR_DECIMAL_VALUE)
 
@@ -96,11 +106,46 @@ class DecimalFormatterTest {
 
     @Test
     fun cleanup_with_us_locale_and_decimal_value_should_return_correct_string() {
-        formatter = DecimalFormatter(DecimalFormatSymbols(Locale.US))
-
         val actual = formatter.cleanup(US_DECIMAL_VALUE)
 
         assertEquals(US_DECIMAL_VALUE, actual)
+    }
+
+    @Test
+    fun formatForVisual_with_empty_string_should_return_empty_string() {
+        val actual = formatter.formatForVisual(EMPTY_STRING)
+
+        assertEquals(EMPTY_STRING, actual)
+    }
+
+    @Test
+    fun formatForVisual_with_input_less_than_four_digits_should_return_input() {
+        val actual = formatter.formatForVisual(NUMERIC_STRING_WITH_LESS_THAN_FOUR_DIGITS)
+
+        assertEquals(NUMERIC_STRING_WITH_LESS_THAN_FOUR_DIGITS, actual)
+    }
+
+    @Test
+    fun formatForVisual_with_more_than_three_digits_should_return_formatted_string() {
+        setUpWithBrLocale()
+        val actual = formatter.formatForVisual(INPUT_1234567)
+
+        assertEquals(EXPECTED_1_234_567, actual)
+    }
+
+    @Test
+    fun formatForVisual_with_br_locale_and_input_has_decimal_part_should_return_formatted_string_with_decimal_separator() {
+        setUpWithBrLocale()
+        val actual = formatter.formatForVisual(INPUT_1234_56)
+
+        assertEquals(EXPECTED_1_234_56, actual)
+    }
+
+    @Test
+    fun formatForVisual_with_us_locale_and_input_has_decimal_part_should_return_formatted_string_with_decimal_separator() {
+        val actual = formatter.formatForVisual(INPUT_1234_DOT_56)
+
+        assertEquals(EXPECTED_1_COMMA_234_DOT_56, actual)
     }
 
     private companion object {
@@ -109,12 +154,19 @@ class DecimalFormatterTest {
         const val MANY_ZEROS = "0000"
         const val ZERO_STRING = "0"
         const val NUMERIC_STRING = "123456"
-        private const val INPUT_WITH_DECIMAL_SEPARATOR = "12.34.56"
-        private const val EXPECTED_WITH_DECIMAL_SEPARATOR = "12.3456"
-        private const val INPUT_WITH_LEADING_DECIMAL_SEPARATOR = ".123456"
-        private const val INPUT_WITH_MULTIPLE_DECIMAL_SEPARATORS = "12..34..56"
-        private const val INPUT_WITH_NON_NUMERIC_AND_DECIMAL_SEPARATORS = "a12.b34.c56"
+        const val INPUT_WITH_DECIMAL_SEPARATOR = "12.34.56"
+        const val EXPECTED_WITH_DECIMAL_SEPARATOR = "12.3456"
+        const val INPUT_WITH_LEADING_DECIMAL_SEPARATOR = ".123456"
+        const val INPUT_WITH_MULTIPLE_DECIMAL_SEPARATORS = "12..34..56"
+        const val INPUT_WITH_NON_NUMERIC_AND_DECIMAL_SEPARATORS = "a12.b34.c56"
         const val BR_DECIMAL_VALUE = "123,45"
         const val US_DECIMAL_VALUE = "123.45"
+        const val NUMERIC_STRING_WITH_LESS_THAN_FOUR_DIGITS = "123"
+        const val INPUT_1234567 = "1234567"
+        const val EXPECTED_1_234_567 = "1.234.567"
+        const val INPUT_1234_56 = "1234,56"
+        const val EXPECTED_1_234_56 = "1.234,56"
+        const val INPUT_1234_DOT_56 = "1234.56"
+        const val EXPECTED_1_COMMA_234_DOT_56 = "1,234.56"
     }
 }
