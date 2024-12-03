@@ -21,6 +21,7 @@
 package br.com.rbrthmn.ui.financialcompanion.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
@@ -35,34 +36,37 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import br.com.rbrthmn.R
 
-
 @Composable
-fun BanksDropdownMenu(modifier: Modifier = Modifier) {
+fun BanksDropdownMenu(
+    onBankSelected: (Int, String) -> Unit,
+    isValid: Boolean,
+    modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText: String? by remember { mutableStateOf(null) }
-    val options = listOf(
-        "Banco Inter",
-        "Banco Interpanamericano latino das americas",
-        "Banco Santander",
-        "Banco Bradesco",
-        "Banco do Brasil",
-        "Banco Itaú",
-        "Banco BMG",
-        "Banco do Nordeste",
-        "Banco do ddasdsad",
-        "Banco Inter",
-        "Banco Interpanamericano latino das americas",
-        "Banco Santander",
-        "Banco Bradesco",
-        "Banco do Brasil",
-        "Banco Itaú",
-        "Banco BMG",
-        "Banco do Nordeste",
-        "Banco do ddasdsad",
+    val bankList: List<Pair<Int, String>> = listOf(
+        Pair(0, "Banco Inter"),
+        Pair(1, "Banco Interpanamericano latino das americas"),
+        Pair(2, "Banco Santander"),
+        Pair(3, "Banco Bradesco"),
+        Pair(4, "Banco do Brasil"),
+        Pair(5, "Banco Itaú"),
+        Pair(6, "Banco BMG"),
+        Pair(7, "Banco do Nordeste"),
+        Pair(8, "Banco do ddasdsad"),
+        Pair(9, "Banco Inter"),
+        Pair(10, "Banco Interpanamericano latino das americas"),
+        Pair(11, "Banco Santander"),
+        Pair(12, "Banco Bradesco"),
+        Pair(13, "Banco do Brasil"),
+        Pair(14, "Banco Itaú"),
+        Pair(15, "Banco BMG"),
+        Pair(16, "Banco do Nordeste"),
+        Pair(17, "Banco do ddasdsad")
     )
 
     Column(modifier = modifier) {
@@ -76,23 +80,26 @@ fun BanksDropdownMenu(modifier: Modifier = Modifier) {
                     Icon(Icons.Filled.ArrowDropDown, "contentDescription")
                 }
             },
-            singleLine = true
+            singleLine = true,
+            isError = !isValid
         )
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            options.forEach { selectionOption ->
+            bankList.forEach { selectionOption ->
                 DropdownMenuItem(
                     onClick = {
-                        selectedOptionText = selectionOption
+                        selectedOptionText = selectionOption.second
+                        onBankSelected(selectionOption.first, selectionOption.second)
                         expanded = false
                     },
-                    text = { Text(text = selectionOption) },
+                    text = { Text(text = selectionOption.second) },
                     leadingIcon = {
                         Icon(
-                            painter = painterResource(id = R.drawable.help),
-                            contentDescription = "Balance Icon"
+                            painter = painterResource(id = R.drawable.account_balance),
+                            contentDescription = "Balance Icon",
+                            modifier = Modifier.clip(CircleShape)
                         )
                     }
                 )

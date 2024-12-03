@@ -18,22 +18,9 @@
  *
  */
 
-package br.com.rbrthmn
+package br.com.rbrthmn.ui.financialcompanion.uistates
 
-import android.app.Application
-import br.com.rbrthmn.data.di.appModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
-
-class ComFin : Application() {
-    override fun onCreate() {
-        super.onCreate()
-
-        startKoin {
-            androidLogger()
-            androidContext(this@ComFin)
-            modules(appModule)
-        }
-    }
-}
+data class BalanceCardUiState(
+    val totalBalance: String = "",
+    val accounts: List<FinancialOverviewUiState> = listOf()
+)

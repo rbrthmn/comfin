@@ -53,12 +53,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
 
 
 @Composable
 fun CreditCardsBillCard(
     totalCreditCardsBill: String,
-    cardBills: List<Account>,
+    cardBills: List<FinancialOverviewUiState>,
     modifier: Modifier = Modifier
 ) {
     val showAddCardBillDialog = remember { mutableStateOf(false) }
@@ -108,12 +109,12 @@ fun AddCardBillDialog(
                     singleLine = true
                 )
                 OutlinedTextField(
-                    label = { Text(text = stringResource(id = R.string.balance_description_input_hint)) },
+                    label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
                     maxLines = 100,
                     value = "",
                     onValueChange = { }
                 )
-                BanksDropdownMenu(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small)))
+                BanksDropdownMenu(onBankSelected = { _, _ -> }, isValid = true, modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small)))
                 CardBillCloseDayDropdownMenu()
                 Row(
                     modifier = modifier
@@ -171,7 +172,7 @@ private fun CardBillCloseDayDropdownMenu() {
 @Preview
 @Composable
 fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
-    val accounts = listOf(Account(1, "Banco A", "500,00"), Account(2, "Banco B", "1.000,00"))
+    val accounts = listOf(FinancialOverviewUiState( "Banco A", "500,00", "R$"), FinancialOverviewUiState("Banco B", "1.000,00", "R$"))
     val totalCreditCardsBill = "12234.00"
     CreditCardsBillCard(
         totalCreditCardsBill = totalCreditCardsBill,
