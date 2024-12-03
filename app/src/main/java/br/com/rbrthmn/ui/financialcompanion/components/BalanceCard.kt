@@ -97,19 +97,19 @@ private fun AddBankAccountDialog(
                     vertical = dimensionResource(id = R.dimen.padding_medium)
                 )
             ) {
+                OutlinedTextField(
+                    label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
+                    maxLines = 100,
+                    value = viewModel.newAccountDescription,
+                    onValueChange = { viewModel.onDescriptionChange(it) },
+                    isError = !viewModel.isNewAccountDescriptionValid
+                )
                 DecimalInputField(
                     onValueChange = viewModel::onInitialBalanceChange,
                     value = viewModel.newAccountBalance,
                     label = stringResource(id = R.string.balance_input_hint),
                     prefix = stringResource(id = R.string.brl_currency),
                     isError = !viewModel.isNewAccountBalanceValid
-                )
-                OutlinedTextField(
-                    label = { Text(text = stringResource(id = R.string.balance_description_input_hint)) },
-                    maxLines = 100,
-                    value = viewModel.newAccountDescription,
-                    onValueChange = { viewModel.onDescriptionChange(it) },
-                    isError = !viewModel.isNewAccountDescriptionValid
                 )
                 BanksDropdownMenu(
                     onBankSelected = viewModel::onBankChange,
