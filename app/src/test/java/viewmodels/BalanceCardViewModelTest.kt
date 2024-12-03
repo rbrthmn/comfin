@@ -18,10 +18,11 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.viewmodels
+package viewmodels
 
 import androidx.compose.runtime.mutableStateOf
 import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -53,7 +54,7 @@ class BalanceCardViewModelTest {
     }
 
     @Test
-    fun   onDescriptionChange_with_value_should_assign_correctly() {
+    fun onDescriptionChange_with_value_should_assign_correctly() {
         viewModel.onDescriptionChange(VALID_STRING)
 
         assertEquals(true, viewModel.isNewAccountDescriptionValid)

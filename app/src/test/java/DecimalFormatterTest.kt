@@ -18,8 +18,6 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion
-
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalFormatter
 import junit.framework.Assert.assertEquals
 import org.junit.Before
