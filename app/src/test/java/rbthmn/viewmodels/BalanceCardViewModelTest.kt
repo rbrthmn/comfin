@@ -18,7 +18,7 @@
  *
  */
 
-package viewmodels
+package rbthmn.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
 import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
