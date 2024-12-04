@@ -27,6 +27,6 @@ data class FinancialOverviewUiState(
     val value: String = "",
     val balanceCurrency: String = "",
     val financialInstitutionName: String = "",
-    val financialInstitutionIcon: Int = R.drawable.account_balance,
+    val financialInstitutionIcon: Int = R.drawable.bank_icon,
     val canValueBeEdited: Boolean = true
 )

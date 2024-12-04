@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import br.com.rbrthmn.R
 import br.com.rbrthmn.contracts.BalanceContract
 import br.com.rbrthmn.ui.financialcompanion.uistates.BalanceCardUiState
 import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
@@ -51,7 +52,7 @@ class BalanceCardViewModel : BalanceContract.BalanceCardViewModel() {
     override var newAccountBank by mutableStateOf("")
         private set
 
-    override var newAccountBankIcon by mutableIntStateOf(-1)
+    override var newAccountBankIcon by mutableIntStateOf(R.drawable.bank_icon)
         private set
 
     override var isNewAccountBankValid by mutableStateOf(true)
@@ -71,25 +72,25 @@ class BalanceCardViewModel : BalanceContract.BalanceCardViewModel() {
     }
 
     override fun onInitialBalanceChange(balance: String) {
-        isNewAccountBalanceValid = balance.isNotEmpty()
+        isNewAccountBalanceValid = balance.isNotBlank()
         newAccountBalance = balance
     }
 
     override fun onDescriptionChange(description: String) {
-        isNewAccountDescriptionValid = description.isNotEmpty()
+        isNewAccountDescriptionValid = description.isNotBlank()
         newAccountDescription = description
     }
 
     override fun onBankChange(bankId: Int, bankName: String) {
-        isNewAccountBankValid = bankName.isNotEmpty()
+        isNewAccountBankValid = bankName.isNotBlank()
         newAccountBank = bankName
         newAccountBankIcon = bankId
     }
 
     private fun validateInputs(): Boolean {
-        isNewAccountBalanceValid = newAccountBalance.isNotEmpty()
-        isNewAccountDescriptionValid = newAccountDescription.isNotEmpty()
-        isNewAccountBankValid = newAccountBank.isNotEmpty()
+        isNewAccountBalanceValid = newAccountBalance.isNotBlank()
+        isNewAccountDescriptionValid = newAccountDescription.isNotBlank()
+        isNewAccountBankValid = newAccountBank.isNotBlank()
 
         return isNewAccountBalanceValid && isNewAccountDescriptionValid && isNewAccountBankValid
     }
