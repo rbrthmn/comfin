@@ -63,8 +63,9 @@ class BalanceCardViewModel : BalanceContract.BalanceCardViewModel() {
             FinancialOverviewUiState("Banco B", formatDouble(10000.00), "R$"),
             FinancialOverviewUiState("Banco C", formatDouble(5.00), "R$")
         )
+        val totalBalance = 100000.00
         uiState.value = BalanceCardUiState(
-            totalBalance = formatDouble(100000.00),
+            totalBalance = formatDouble(totalBalance),
             accounts = accounts,
         )
     }

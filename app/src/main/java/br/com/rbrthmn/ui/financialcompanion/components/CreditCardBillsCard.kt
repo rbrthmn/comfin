@@ -39,6 +39,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,15 +54,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
-
+import br.com.rbrthmn.contracts.CreditCardContract
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CreditCardsBillCard(
-    totalCreditCardsBill: String,
-    cardBills: List<FinancialOverviewUiState>,
-    modifier: Modifier = Modifier
+fun CreditCardBillsCard(
+    modifier: Modifier = Modifier,
+    viewModel: CreditCardContract.CreditCardsBillCardViewModel = koinViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
     val showAddCardBillDialog = remember { mutableStateOf(false) }
 
     if (showAddCardBillDialog.value)
@@ -74,9 +75,9 @@ fun CreditCardsBillCard(
         modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
         ValuesList(
-            totalValue = totalCreditCardsBill,
+            totalValue = uiState.totalBill,
             totalValueTitle = stringResource(id = R.string.total_bills_title),
-            values = cardBills,
+            values = uiState.bills,
             onAddItemButtonClick = { showAddCardBillDialog.value = true },
             addItemButtonText = stringResource(id = R.string.add_card_button)
         )
@@ -172,11 +173,7 @@ private fun CardBillCloseDayDropdownMenu() {
 @Preview
 @Composable
 fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
-    val accounts = listOf(FinancialOverviewUiState( "Banco A", "500,00", "R$"), FinancialOverviewUiState("Banco B", "1.000,00", "R$"))
-    val totalCreditCardsBill = "12234.00"
-    CreditCardsBillCard(
-        totalCreditCardsBill = totalCreditCardsBill,
-        cardBills = accounts,
+    CreditCardBillsCard(
         modifier = modifier
     )
 }
