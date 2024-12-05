@@ -21,7 +21,7 @@
 package rbthmn.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
-import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
+import br.com.rbrthmn.ui.financialcompanion.uistates.BankAccountBalanceUiState
 import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
@@ -106,10 +106,10 @@ class BalanceCardViewModelTest {
     fun onSaveClick_with_valid_input_should_add_new_account() {
         assignValidInputs()
         val mock = mutableStateOf(true)
-        val newAccount = FinancialOverviewUiState(
+        val newAccount = BankAccountBalanceUiState(
             name = VALID_STRING,
             value = FORMATTED_BALANCE_STRING,
-            financialInstitutionName = VALID_STRING
+            bankName = VALID_STRING
         )
         val newAccountList = viewModel.uiState.value.accounts + newAccount
 

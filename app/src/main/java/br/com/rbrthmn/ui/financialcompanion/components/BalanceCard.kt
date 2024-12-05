@@ -25,12 +25,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -43,9 +48,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.contracts.BalanceContract
+import br.com.rbrthmn.ui.financialcompanion.uistates.BankAccountBalanceUiState
 import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -71,12 +78,81 @@ fun BalanceCard(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
-        ValuesList(
-            totalValue = uiState.totalBalance,
+        BalanceList(
+            totalBalance = uiState.totalBalance,
+            bankAccounts = uiState.accounts,
+            onAddItemButtonClick = { showAddAccountDialog.value = true })
+    }
+}
+
+@Composable
+private fun BalanceList(
+    modifier: Modifier = Modifier,
+    totalBalance: String,
+    bankAccounts: List<BankAccountBalanceUiState>,
+    onAddItemButtonClick: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+    ) {
+        TotalValueText(
             totalValueTitle = stringResource(id = R.string.total_balance_title),
-            values = uiState.accounts,
-            onAddItemButtonClick = { showAddAccountDialog.value = true },
-            addItemButtonText = stringResource(id = R.string.add_account_button)
+            totalValue = totalBalance,
+            modifier = modifier
+        )
+        HorizontalDivider()
+        Column(
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+            modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
+        ) {
+            for (account in bankAccounts) {
+                BankAccountBalanceItem(
+                    itemName = account.name,
+                    itemValue = account.value,
+                    canEditValue = account.canValueBeEdited
+                )
+            }
+            AddItemButton(
+                buttonText = stringResource(id = R.string.add_account_button),
+                onButtonClick = onAddItemButtonClick
+            )
+        }
+    }
+}
+
+@Composable
+private fun BankAccountBalanceItem(
+    itemName: String,
+    itemValue: String,
+    modifier: Modifier = Modifier,
+    canEditValue: Boolean
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier.weight(0.6f)) {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = stringResource(id = R.string.bank_icon_description),
+                tint = Color.Gray,
+                modifier = modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+            )
+            Text(
+                text = itemName,
+                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+            )
+        }
+        TextField(
+            prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
+            value = itemValue,
+            onValueChange = { },
+            readOnly = !canEditValue,
+            singleLine = true,
+            modifier = modifier.weight(0.4f)
         )
     }
 }

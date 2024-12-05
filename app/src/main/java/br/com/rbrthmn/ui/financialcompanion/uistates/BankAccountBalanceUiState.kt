@@ -20,7 +20,12 @@
 
 package br.com.rbrthmn.ui.financialcompanion.uistates
 
-data class BalanceCardUiState(
-    val totalBalance: String = "",
-    val accounts: List<BankAccountBalanceUiState> = listOf()
+import br.com.rbrthmn.R
+
+data class BankAccountBalanceUiState(
+    val name: String = "",
+    val value: String = "",
+    val bankName: String = "",
+    val bankIcon: Int = R.drawable.bank_icon,
+    val canValueBeEdited: Boolean = false
 )

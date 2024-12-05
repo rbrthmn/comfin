@@ -22,5 +22,5 @@ package br.com.rbrthmn.ui.financialcompanion.uistates
 
 data class CreditCardsBillCardUiState(
     val totalBill: String = "",
-    val bills: List<FinancialOverviewUiState> = listOf()
+    val bills: List<CreditCardBillUiState> = listOf()
 )

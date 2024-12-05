@@ -28,7 +28,7 @@ import androidx.compose.runtime.setValue
 import br.com.rbrthmn.R
 import br.com.rbrthmn.contracts.BalanceContract
 import br.com.rbrthmn.ui.financialcompanion.uistates.BalanceCardUiState
-import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
+import br.com.rbrthmn.ui.financialcompanion.uistates.BankAccountBalanceUiState
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,9 +60,9 @@ class BalanceCardViewModel : BalanceContract.BalanceCardViewModel() {
 
     init {
         val accounts = listOf(
-            FinancialOverviewUiState("Banco A", formatDouble(5000.00), "R$"),
-            FinancialOverviewUiState("Banco B", formatDouble(10000.00), "R$"),
-            FinancialOverviewUiState("Banco C", formatDouble(5.00), "R$")
+            BankAccountBalanceUiState("Banco A", formatDouble(5000.00), "R$"),
+            BankAccountBalanceUiState("Banco B", formatDouble(10000.00), "R$"),
+            BankAccountBalanceUiState("Banco C", formatDouble(5.00), "R$")
         )
         val totalBalance = 100000.00
         uiState.value = BalanceCardUiState(
@@ -98,10 +98,10 @@ class BalanceCardViewModel : BalanceContract.BalanceCardViewModel() {
     override fun onSaveClick(showDialog: MutableState<Boolean>) {
         if (validateInputs()) {
             showDialog.value = false
-            val newAccount = FinancialOverviewUiState(
+            val newAccount = BankAccountBalanceUiState(
                 name = newAccountDescription,
                 value = formatString(newAccountBalance),
-                financialInstitutionName = newAccountBank,
+                bankName = newAccountBank,
             )
             uiState.value = uiState.value.copy(accounts = uiState.value.accounts + newAccount)
             cleanNewAccount()

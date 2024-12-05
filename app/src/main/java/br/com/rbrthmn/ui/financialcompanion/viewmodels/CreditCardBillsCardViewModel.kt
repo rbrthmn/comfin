@@ -28,7 +28,7 @@ import androidx.compose.runtime.setValue
 import br.com.rbrthmn.R
 import br.com.rbrthmn.contracts.CreditCardContract
 import br.com.rbrthmn.ui.financialcompanion.uistates.CreditCardsBillCardUiState
-import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
+import br.com.rbrthmn.ui.financialcompanion.uistates.CreditCardBillUiState
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -87,11 +87,11 @@ class CreditCardBillsCardViewModel : CreditCardContract.CreditCardsBillCardViewM
     override fun onSaveClick(showDialog: MutableState<Boolean>) {
         if (validateInputs()) {
             showDialog.value = false
-            val newCreditCard = FinancialOverviewUiState(
+            val newCreditCard = CreditCardBillUiState(
                 name = newCreditCardName,
                 value = newCreditCardBill,
-                financialInstitutionName = newCreditCardBankName,
-                financialInstitutionIcon = newCreditCardBankIcon
+                bankName = newCreditCardBankName,
+                bankIcon = newCreditCardBankIcon
             )
             uiState.value = uiState.value.copy(bills = uiState.value.bills + newCreditCard)
             cleanInputs()
@@ -121,9 +121,9 @@ class CreditCardBillsCardViewModel : CreditCardContract.CreditCardsBillCardViewM
 
     init {
         val bills = listOf(
-            FinancialOverviewUiState("Cartao A", formatDouble(5000.00), "R$"),
-            FinancialOverviewUiState("Cartao B", formatDouble(10000.00), "R$"),
-            FinancialOverviewUiState("Cartao C", formatDouble(5.00), "R$")
+            CreditCardBillUiState("Cartao A", formatDouble(5000.00), "R$"),
+            CreditCardBillUiState("Cartao B", formatDouble(10000.00), "R$"),
+            CreditCardBillUiState("Cartao C", formatDouble(5.00), "R$")
         )
         val totalBill = 1200.00
 
