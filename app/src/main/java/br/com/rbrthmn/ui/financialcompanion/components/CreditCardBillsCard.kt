@@ -188,6 +188,7 @@ private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isErr
 @Composable
 fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
     CreditCardBillsCard(
+        viewModel = CreditCardBillsCardViewModel(),
         modifier = modifier
     )
 }
