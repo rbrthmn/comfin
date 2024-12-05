@@ -26,12 +26,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -40,7 +44,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -51,45 +57,45 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.contracts.BalanceContract
-import br.com.rbrthmn.ui.financialcompanion.uistates.BankAccountBalanceUiState
-import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
+import br.com.rbrthmn.contracts.CreditCardContract
+import br.com.rbrthmn.ui.financialcompanion.uistates.CreditCardBillUiState
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.CreditCardBillsCardViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun BalanceCard(
+fun CreditCardBillsCard(
     modifier: Modifier = Modifier,
-    viewModel: BalanceContract.BalanceCardViewModel = koinViewModel()
+    viewModel: CreditCardContract.CreditCardsBillCardViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val showAddAccountDialog = rememberSaveable { mutableStateOf(false) }
+    val showAddCardDialog = rememberSaveable { mutableStateOf(false) }
 
-    if (showAddAccountDialog.value)
-        AddBankAccountDialog(
+    if (showAddCardDialog.value)
+        AddCreditCardDialog(
             viewModel = viewModel,
             onCancelButtonClick = {
-                viewModel.cleanNewAccount()
-                showAddAccountDialog.value = false
+                viewModel.cleanInputs()
+                showAddCardDialog.value = false
             },
-            onSaveButtonClick = { viewModel.onSaveClick(showDialog = showAddAccountDialog) },
-        )
+            onSaveButtonClick = { viewModel.onSaveClick(showAddCardDialog) })
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
-        BalanceList(
-            totalBalance = uiState.totalBalance,
-            bankAccounts = uiState.accounts,
-            onAddItemButtonClick = { showAddAccountDialog.value = true })
+        CreditCardBillsList(
+            totalBill = uiState.totalBill,
+            creditCards = uiState.bills,
+            onAddItemButtonClick = { showAddCardDialog.value = true },
+        )
     }
 }
 
 @Composable
-private fun BalanceList(
+private fun CreditCardBillsList(
     modifier: Modifier = Modifier,
-    totalBalance: String,
-    bankAccounts: List<BankAccountBalanceUiState>,
+    totalBill: String,
+    creditCards: List<CreditCardBillUiState>,
     onAddItemButtonClick: () -> Unit
 ) {
     Column(
@@ -97,8 +103,8 @@ private fun BalanceList(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
     ) {
         TotalValueText(
-            totalValueTitle = stringResource(id = R.string.total_balance_title),
-            totalValue = totalBalance,
+            totalValueTitle = stringResource(id = R.string.total_bills_title),
+            totalValue = totalBill,
             modifier = modifier
         )
         HorizontalDivider()
@@ -106,15 +112,16 @@ private fun BalanceList(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
             modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
         ) {
-            for (account in bankAccounts) {
-                BankAccountBalanceItem(
-                    itemName = account.name,
-                    itemValue = account.value,
-                    canEditValue = account.canValueBeEdited
+            for (card in creditCards) {
+                CreditCardItem(
+                    itemName = card.name,
+                    itemValue = card.value,
+                    canEditValue = card.canValueBeEdited,
+                    dueDay = card.dueDay.toString()
                 )
             }
             AddItemButton(
-                buttonText = stringResource(id = R.string.add_account_button),
+                buttonText = stringResource(id = R.string.add_card_button),
                 onButtonClick = onAddItemButtonClick
             )
         }
@@ -122,11 +129,12 @@ private fun BalanceList(
 }
 
 @Composable
-private fun BankAccountBalanceItem(
+private fun CreditCardItem(
+    modifier: Modifier = Modifier,
     itemName: String,
     itemValue: String,
-    modifier: Modifier = Modifier,
-    canEditValue: Boolean
+    canEditValue: Boolean,
+    dueDay: String
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -138,13 +146,18 @@ private fun BankAccountBalanceItem(
                 imageVector = Icons.Default.Info,
                 contentDescription = stringResource(id = R.string.bank_icon_description),
                 tint = Color.Gray,
-                modifier = modifier
-                    .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+                modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
             )
-            Text(
-                text = itemName,
-                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
-            )
+            Column(verticalArrangement = Arrangement.Center) {
+                Text(
+                    text = itemName,
+                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                )
+                Text(
+                    text = stringResource(id = R.string.credit_card_due_day_label) + dueDay,
+                    fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
+                )
+            }
         }
         TextField(
             prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
@@ -157,15 +170,18 @@ private fun BankAccountBalanceItem(
     }
 }
 
+
 @Composable
-private fun AddBankAccountDialog(
+private fun AddCreditCardDialog(
     modifier: Modifier = Modifier,
-    viewModel: BalanceContract.BalanceCardViewModel,
-    onSaveButtonClick: () -> Unit,
+    viewModel: CreditCardContract.CreditCardsBillCardViewModel,
     onCancelButtonClick: () -> Unit,
+    onSaveButtonClick: () -> Unit
 ) {
     Dialog(onDismissRequest = onCancelButtonClick) {
-        Card(modifier = modifier.fillMaxWidth()) {
+        Card(
+            modifier = modifier.fillMaxWidth()
+        ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier.padding(
@@ -176,21 +192,25 @@ private fun AddBankAccountDialog(
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
                     maxLines = 100,
-                    value = viewModel.newAccountDescription,
-                    onValueChange = { viewModel.onDescriptionChange(it) },
-                    isError = !viewModel.isNewAccountDescriptionValid
+                    value = viewModel.newCreditCardName,
+                    onValueChange = viewModel::onNewCreditCardNameChange,
+                    isError = !viewModel.isNewCreditCardNameValid,
                 )
                 DecimalInputField(
-                    onValueChange = viewModel::onInitialBalanceChange,
-                    value = viewModel.newAccountBalance,
-                    label = stringResource(id = R.string.balance_input_hint),
+                    onValueChange = viewModel::onNewCreditCardBillChange,
+                    value = viewModel.newCreditCardBill,
+                    label = stringResource(id = R.string.card_bill_input_hint),
                     prefix = stringResource(id = R.string.brl_currency),
-                    isError = !viewModel.isNewAccountBalanceValid
+                    isError = !viewModel.isNewCreditCardBillValid
                 )
                 BanksDropdownMenu(
                     onBankSelected = viewModel::onBankChange,
-                    isValid = viewModel.isNewAccountBankValid,
-                    modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
+                    isValid = viewModel.isNewCreditCardBankNameValid,
+                    modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small))
+                )
+                CardBillCloseDayDropdownMenu(
+                    onDayClicked = viewModel::onNewCreditCardBillDueDayChange,
+                    isError = !viewModel.isNewCreditCardBillDueDayValid
                 )
                 Row(
                     modifier = modifier
@@ -211,22 +231,57 @@ private fun AddBankAccountDialog(
     }
 }
 
+@Composable
+private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isError: Boolean) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOptionText: String? by remember { mutableStateOf(null) }
+    val options = List(31) { (it + 1) }
+
+    OutlinedTextField(
+        value = selectedOptionText ?: stringResource(id = R.string.blank),
+        label = { Text(text = stringResource(id = R.string.card_bill_close_day_hint)) },
+        onValueChange = { selectedOptionText = it },
+        readOnly = true,
+        trailingIcon = {
+            IconButton(onClick = { expanded = true }) {
+                Icon(Icons.Filled.ArrowDropDown, "contentDescription")
+            }
+        },
+        singleLine = true,
+        isError = isError
+    )
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { expanded = false }
+    ) {
+        options.forEach { selectionOption ->
+            DropdownMenuItem(
+                onClick = {
+                    selectedOptionText = selectionOption.toString()
+                    onDayClicked(selectionOption)
+                    expanded = false
+                },
+                text = { Text(text = selectionOption.toString()) }
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
-fun BalanceCardPreview(modifier: Modifier = Modifier) {
-    BalanceCard(
-        viewModel = BalanceCardViewModel(),
+fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
+    CreditCardBillsCard(
+        viewModel = CreditCardBillsCardViewModel(),
         modifier = modifier
     )
 }
 
 @Preview
 @Composable
-fun AddBankAccountDialogPreview(modifier: Modifier = Modifier) {
-    AddBankAccountDialog(
-        viewModel = BalanceCardViewModel(),
+fun AddCardBillDialogPreview(modifier: Modifier = Modifier) {
+    AddCreditCardDialog(
         onSaveButtonClick = { },
-        onCancelButtonClick = { },
-        modifier = modifier
+        onCancelButtonClick = {},
+        viewModel = CreditCardBillsCardViewModel()
     )
 }

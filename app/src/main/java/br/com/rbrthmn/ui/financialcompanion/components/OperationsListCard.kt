@@ -193,7 +193,7 @@ fun AddOperationDialog(
                     }
                 }
                 OutlinedTextField(
-                    label = { Text(text = stringResource(id = R.string.balance_description_input_hint)) },
+                    label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
                     maxLines = 100,
                     value = "",
                     onValueChange = { }
