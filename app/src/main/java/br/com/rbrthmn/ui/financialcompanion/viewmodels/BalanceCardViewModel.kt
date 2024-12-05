@@ -112,7 +112,7 @@ class BalanceCardViewModel : BalanceContract.BalanceCardViewModel() {
         newAccountBalance = ""
         newAccountDescription = ""
         newAccountBank = ""
-        newAccountBankIcon = -1
+        newAccountBankIcon = R.drawable.bank_icon
         isNewAccountBalanceValid = true
         isNewAccountDescriptionValid = true
         isNewAccountBankValid = true

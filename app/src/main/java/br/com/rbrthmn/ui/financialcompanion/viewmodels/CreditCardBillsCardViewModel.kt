@@ -64,7 +64,7 @@ class CreditCardBillsCardViewModel : CreditCardContract.CreditCardsBillCardViewM
         private set
 
     override fun onNewCreditCardNameChange(name: String) {
-        isNewCreditCardBankNameValid = name.isNotBlank()
+        isNewCreditCardNameValid = name.isNotBlank()
         newCreditCardName = name
     }
 

@@ -21,6 +21,7 @@
 package rbthmn.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
+import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.uistates.BankAccountBalanceUiState
 import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
 import junit.framework.TestCase.assertEquals
@@ -83,13 +84,7 @@ class BalanceCardViewModelTest {
     fun cleanNewAccount_should_assign_default_values() {
         viewModel.cleanNewAccount()
 
-        assertEquals(EMPTY_STRING, viewModel.newAccountBalance)
-        assertEquals(EMPTY_STRING, viewModel.newAccountDescription)
-        assertEquals(EMPTY_STRING, viewModel.newAccountBank)
-        assertEquals(-1, viewModel.newAccountBankIcon)
-        assertEquals(true, viewModel.isNewAccountBankValid)
-        assertEquals(true, viewModel.isNewAccountDescriptionValid)
-        assertEquals(true, viewModel.isNewAccountBalanceValid)
+        assertCleanedInputs()
     }
 
     @Test
@@ -125,10 +120,14 @@ class BalanceCardViewModelTest {
 
         viewModel.onSaveClick(mock)
 
+        assertCleanedInputs()
+    }
+
+    private fun assertCleanedInputs() {
         assertEquals(EMPTY_STRING, viewModel.newAccountBalance)
         assertEquals(EMPTY_STRING, viewModel.newAccountDescription)
         assertEquals(EMPTY_STRING, viewModel.newAccountBank)
-        assertEquals(-1, viewModel.newAccountBankIcon)
+        assertEquals(R.drawable.bank_icon, viewModel.newAccountBankIcon)
         assertEquals(true, viewModel.isNewAccountBankValid)
         assertEquals(true, viewModel.isNewAccountDescriptionValid)
         assertEquals(true, viewModel.isNewAccountBalanceValid)
