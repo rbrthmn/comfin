@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.viewmodels
+package br.com.rbrthmn.ui.financialcompanion.screens.home.components
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -26,13 +26,12 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import br.com.rbrthmn.R
-import br.com.rbrthmn.contracts.CreditCardContract
 import br.com.rbrthmn.ui.financialcompanion.uistates.CreditCardsBillCardUiState
 import br.com.rbrthmn.ui.financialcompanion.uistates.CreditCardBillUiState
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class CreditCardBillsCardViewModel : CreditCardContract.CreditCardsBillCardViewModel() {
+class CreditCardBillsCardViewModel : CreditCardBillsCardContract.CreditCardsBillCardViewModel() {
     override var uiState = MutableStateFlow(CreditCardsBillCardUiState())
         private set
 

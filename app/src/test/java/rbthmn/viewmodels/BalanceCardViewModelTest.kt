@@ -23,7 +23,7 @@ package rbthmn.viewmodels
 import androidx.compose.runtime.mutableStateOf
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.uistates.BankAccountBalanceUiState
-import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BalanceCardViewModel
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 

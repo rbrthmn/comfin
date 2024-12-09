@@ -18,14 +18,14 @@
  *
  */
 
-package br.com.rbrthmn.contracts
+package br.com.rbrthmn.ui.financialcompanion.screens.home.components
 
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import br.com.rbrthmn.ui.financialcompanion.uistates.CreditCardsBillCardUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 
-interface CreditCardContract {
+interface CreditCardBillsCardContract {
     abstract class CreditCardsBillCardViewModel : ViewModel() {
         abstract val uiState: MutableStateFlow<CreditCardsBillCardUiState>
         abstract val newCreditCardName: String

@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.components
+package br.com.rbrthmn.ui.financialcompanion.screens.home.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,16 +26,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -44,9 +40,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -57,45 +51,47 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.contracts.CreditCardContract
-import br.com.rbrthmn.ui.financialcompanion.uistates.CreditCardBillUiState
-import br.com.rbrthmn.ui.financialcompanion.viewmodels.CreditCardBillsCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.components.AddItemButton
+import br.com.rbrthmn.ui.financialcompanion.components.BanksDropdownMenu
+import br.com.rbrthmn.ui.financialcompanion.components.DecimalInputField
+import br.com.rbrthmn.ui.financialcompanion.components.TotalValueText
+import br.com.rbrthmn.ui.financialcompanion.uistates.BankAccountBalanceUiState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CreditCardBillsCard(
+fun BalanceCard(
     modifier: Modifier = Modifier,
-    viewModel: CreditCardContract.CreditCardsBillCardViewModel = koinViewModel()
+    viewModel: BalanceCardContract.BalanceCardViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val showAddCardDialog = rememberSaveable { mutableStateOf(false) }
+    val showAddAccountDialog = rememberSaveable { mutableStateOf(false) }
 
-    if (showAddCardDialog.value)
-        AddCreditCardDialog(
+    if (showAddAccountDialog.value)
+        AddBankAccountDialog(
             viewModel = viewModel,
             onCancelButtonClick = {
-                viewModel.cleanInputs()
-                showAddCardDialog.value = false
+                viewModel.cleanNewAccount()
+                showAddAccountDialog.value = false
             },
-            onSaveButtonClick = { viewModel.onSaveClick(showAddCardDialog) })
+            onSaveButtonClick = { viewModel.onSaveClick(showDialog = showAddAccountDialog) },
+        )
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
-        CreditCardBillsList(
-            totalBill = uiState.totalBill,
-            creditCards = uiState.bills,
-            onAddItemButtonClick = { showAddCardDialog.value = true },
-        )
+        BalanceList(
+            totalBalance = uiState.totalBalance,
+            bankAccounts = uiState.accounts,
+            onAddItemButtonClick = { showAddAccountDialog.value = true })
     }
 }
 
 @Composable
-private fun CreditCardBillsList(
+private fun BalanceList(
     modifier: Modifier = Modifier,
-    totalBill: String,
-    creditCards: List<CreditCardBillUiState>,
+    totalBalance: String,
+    bankAccounts: List<BankAccountBalanceUiState>,
     onAddItemButtonClick: () -> Unit
 ) {
     Column(
@@ -103,8 +99,8 @@ private fun CreditCardBillsList(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
     ) {
         TotalValueText(
-            totalValueTitle = stringResource(id = R.string.total_bills_title),
-            totalValue = totalBill,
+            totalValueTitle = stringResource(id = R.string.total_balance_title),
+            totalValue = totalBalance,
             modifier = modifier
         )
         HorizontalDivider()
@@ -112,16 +108,15 @@ private fun CreditCardBillsList(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
             modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
         ) {
-            for (card in creditCards) {
-                CreditCardItem(
-                    itemName = card.name,
-                    itemValue = card.value,
-                    canEditValue = card.canValueBeEdited,
-                    dueDay = card.dueDay.toString()
+            for (account in bankAccounts) {
+                BankAccountBalanceItem(
+                    itemName = account.name,
+                    itemValue = account.value,
+                    canEditValue = account.canValueBeEdited
                 )
             }
             AddItemButton(
-                buttonText = stringResource(id = R.string.add_card_button),
+                buttonText = stringResource(id = R.string.add_account_button),
                 onButtonClick = onAddItemButtonClick
             )
         }
@@ -129,12 +124,11 @@ private fun CreditCardBillsList(
 }
 
 @Composable
-private fun CreditCardItem(
-    modifier: Modifier = Modifier,
+private fun BankAccountBalanceItem(
     itemName: String,
     itemValue: String,
-    canEditValue: Boolean,
-    dueDay: String
+    modifier: Modifier = Modifier,
+    canEditValue: Boolean
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -146,18 +140,13 @@ private fun CreditCardItem(
                 imageVector = Icons.Default.Info,
                 contentDescription = stringResource(id = R.string.bank_icon_description),
                 tint = Color.Gray,
-                modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+                modifier = modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
             )
-            Column(verticalArrangement = Arrangement.Center) {
-                Text(
-                    text = itemName,
-                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
-                )
-                Text(
-                    text = stringResource(id = R.string.credit_card_due_day_label) + dueDay,
-                    fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
-                )
-            }
+            Text(
+                text = itemName,
+                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+            )
         }
         TextField(
             prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
@@ -170,18 +159,15 @@ private fun CreditCardItem(
     }
 }
 
-
 @Composable
-private fun AddCreditCardDialog(
+private fun AddBankAccountDialog(
     modifier: Modifier = Modifier,
-    viewModel: CreditCardContract.CreditCardsBillCardViewModel,
+    viewModel: BalanceCardContract.BalanceCardViewModel,
+    onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
-    onSaveButtonClick: () -> Unit
 ) {
     Dialog(onDismissRequest = onCancelButtonClick) {
-        Card(
-            modifier = modifier.fillMaxWidth()
-        ) {
+        Card(modifier = modifier.fillMaxWidth()) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier.padding(
@@ -192,25 +178,21 @@ private fun AddCreditCardDialog(
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
                     maxLines = 100,
-                    value = viewModel.newCreditCardName,
-                    onValueChange = viewModel::onNewCreditCardNameChange,
-                    isError = !viewModel.isNewCreditCardNameValid,
+                    value = viewModel.newAccountDescription,
+                    onValueChange = { viewModel.onDescriptionChange(it) },
+                    isError = !viewModel.isNewAccountDescriptionValid
                 )
                 DecimalInputField(
-                    onValueChange = viewModel::onNewCreditCardBillChange,
-                    value = viewModel.newCreditCardBill,
-                    label = stringResource(id = R.string.card_bill_input_hint),
+                    onValueChange = viewModel::onInitialBalanceChange,
+                    value = viewModel.newAccountBalance,
+                    label = stringResource(id = R.string.balance_input_hint),
                     prefix = stringResource(id = R.string.brl_currency),
-                    isError = !viewModel.isNewCreditCardBillValid
+                    isError = !viewModel.isNewAccountBalanceValid
                 )
                 BanksDropdownMenu(
                     onBankSelected = viewModel::onBankChange,
-                    isValid = viewModel.isNewCreditCardBankNameValid,
-                    modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small))
-                )
-                CardBillCloseDayDropdownMenu(
-                    onDayClicked = viewModel::onNewCreditCardBillDueDayChange,
-                    isError = !viewModel.isNewCreditCardBillDueDayValid
+                    isValid = viewModel.isNewAccountBankValid,
+                    modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
                 )
                 Row(
                     modifier = modifier
@@ -231,57 +213,22 @@ private fun AddCreditCardDialog(
     }
 }
 
-@Composable
-private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isError: Boolean) {
-    var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText: String? by remember { mutableStateOf(null) }
-    val options = List(31) { (it + 1) }
-
-    OutlinedTextField(
-        value = selectedOptionText ?: stringResource(id = R.string.blank),
-        label = { Text(text = stringResource(id = R.string.card_bill_close_day_hint)) },
-        onValueChange = { selectedOptionText = it },
-        readOnly = true,
-        trailingIcon = {
-            IconButton(onClick = { expanded = true }) {
-                Icon(Icons.Filled.ArrowDropDown, "contentDescription")
-            }
-        },
-        singleLine = true,
-        isError = isError
-    )
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = { expanded = false }
-    ) {
-        options.forEach { selectionOption ->
-            DropdownMenuItem(
-                onClick = {
-                    selectedOptionText = selectionOption.toString()
-                    onDayClicked(selectionOption)
-                    expanded = false
-                },
-                text = { Text(text = selectionOption.toString()) }
-            )
-        }
-    }
-}
-
 @Preview
 @Composable
-fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
-    CreditCardBillsCard(
-        viewModel = CreditCardBillsCardViewModel(),
+fun BalanceCardPreview(modifier: Modifier = Modifier) {
+    BalanceCard(
+        viewModel = BalanceCardViewModel(),
         modifier = modifier
     )
 }
 
 @Preview
 @Composable
-fun AddCardBillDialogPreview(modifier: Modifier = Modifier) {
-    AddCreditCardDialog(
+fun AddBankAccountDialogPreview(modifier: Modifier = Modifier) {
+    AddBankAccountDialog(
+        viewModel = BalanceCardViewModel(),
         onSaveButtonClick = { },
-        onCancelButtonClick = {},
-        viewModel = CreditCardBillsCardViewModel()
+        onCancelButtonClick = { },
+        modifier = modifier
     )
 }

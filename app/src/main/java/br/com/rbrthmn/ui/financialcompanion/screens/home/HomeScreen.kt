@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens
+package br.com.rbrthmn.ui.financialcompanion.screens.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,11 +39,11 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.components.BalanceCard
-import br.com.rbrthmn.ui.financialcompanion.components.CreditCardBillsCard
-import br.com.rbrthmn.ui.financialcompanion.components.LastMonthDifferenceCard
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BalanceCard
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.CreditCardBillsCard
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.LastMonthDifferenceCard
 import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
-import br.com.rbrthmn.ui.financialcompanion.components.MonthlyLimitCard
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.MonthlyLimitCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider

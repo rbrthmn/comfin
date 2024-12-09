@@ -18,14 +18,14 @@
  *
  */
 
-package br.com.rbrthmn.contracts
+package br.com.rbrthmn.ui.financialcompanion.screens.home.components
 
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import br.com.rbrthmn.ui.financialcompanion.uistates.BalanceCardUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 
-interface BalanceContract {
+interface BalanceCardContract {
     abstract class BalanceCardViewModel : ViewModel() {
         abstract val uiState: MutableStateFlow<BalanceCardUiState>
         abstract val newAccountBalance: String

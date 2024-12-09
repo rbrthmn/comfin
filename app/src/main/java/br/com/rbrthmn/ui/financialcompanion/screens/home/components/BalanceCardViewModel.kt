@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.viewmodels
+package br.com.rbrthmn.ui.financialcompanion.screens.home.components
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -26,14 +26,13 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import br.com.rbrthmn.R
-import br.com.rbrthmn.contracts.BalanceContract
 import br.com.rbrthmn.ui.financialcompanion.uistates.BalanceCardUiState
 import br.com.rbrthmn.ui.financialcompanion.uistates.BankAccountBalanceUiState
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class BalanceCardViewModel : BalanceContract.BalanceCardViewModel() {
+class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
     override var uiState = MutableStateFlow(BalanceCardUiState())
         private set
 
