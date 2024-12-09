@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens
+package br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

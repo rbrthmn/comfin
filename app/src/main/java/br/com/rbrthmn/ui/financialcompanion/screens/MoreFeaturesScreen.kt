@@ -43,6 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
 
 data class FeatureLabel(val name: String, val route: String)
 
