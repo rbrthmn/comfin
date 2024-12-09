@@ -22,7 +22,7 @@ package rbthmn.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.uistates.CreditCardBillUiState
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.CreditCardBillUiState
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.CreditCardBillsCardViewModel
 import junit.framework.TestCase
 import org.junit.Test

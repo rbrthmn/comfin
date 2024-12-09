@@ -22,7 +22,6 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components
 
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
-import br.com.rbrthmn.ui.financialcompanion.uistates.CreditCardsBillCardUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 
 interface CreditCardBillsCardContract {

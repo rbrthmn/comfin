@@ -61,7 +61,6 @@ import br.com.rbrthmn.ui.financialcompanion.components.AddItemButton
 import br.com.rbrthmn.ui.financialcompanion.components.BanksDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.components.DecimalInputField
 import br.com.rbrthmn.ui.financialcompanion.components.TotalValueText
-import br.com.rbrthmn.ui.financialcompanion.uistates.CreditCardBillUiState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

@@ -18,14 +18,15 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.uistates
+package br.com.rbrthmn.ui.financialcompanion.screens.home.components
 
 import br.com.rbrthmn.R
 
-data class BankAccountBalanceUiState(
+data class CreditCardBillUiState(
     val name: String = "",
     val value: String = "",
     val bankName: String = "",
     val bankIcon: Int = R.drawable.bank_icon,
-    val canValueBeEdited: Boolean = false
+    val canValueBeEdited: Boolean = false,
+    val dueDay: Int = 0
 )

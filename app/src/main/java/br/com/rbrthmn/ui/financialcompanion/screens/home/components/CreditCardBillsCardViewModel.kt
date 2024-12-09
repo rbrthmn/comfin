@@ -26,8 +26,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.uistates.CreditCardsBillCardUiState
-import br.com.rbrthmn.ui.financialcompanion.uistates.CreditCardBillUiState
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import kotlinx.coroutines.flow.MutableStateFlow
 

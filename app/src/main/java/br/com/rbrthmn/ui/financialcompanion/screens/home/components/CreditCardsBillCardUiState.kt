@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.uistates
+package br.com.rbrthmn.ui.financialcompanion.screens.home.components
 
 data class CreditCardsBillCardUiState(
     val totalBill: String = "",
