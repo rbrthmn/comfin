@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.components
+package br.com.rbrthmn.ui.financialcompanion.commoncomponents
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons

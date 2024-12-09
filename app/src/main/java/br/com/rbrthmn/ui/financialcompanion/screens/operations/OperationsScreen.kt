@@ -39,7 +39,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationsListCard
-import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
+import br.com.rbrthmn.ui.financialcompanion.commoncomponents.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.TotalBalanceCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
