@@ -35,7 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.MoreFeaturesDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.OperationsDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.ComFinNavigationType
 

@@ -29,8 +29,8 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsScreen
-import br.com.rbrthmn.ui.financialcompanion.screens.MoreFeaturesDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.MoreFeaturesScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.OperationsDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.OperationsScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.RecurringExpenses

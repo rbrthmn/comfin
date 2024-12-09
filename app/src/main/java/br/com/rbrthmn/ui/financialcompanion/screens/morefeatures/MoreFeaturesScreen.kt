@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens
+package br.com.rbrthmn.ui.financialcompanion.screens.morefeatures
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,6 +43,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.RecurringExpensesDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.ReservesDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.SettingsDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
 
 data class FeatureLabel(val name: String, val route: String)
