@@ -64,7 +64,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.components.DatePickerDocked
 import br.com.rbrthmn.ui.financialcompanion.components.ReservesDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.Operation
 import br.com.rbrthmn.ui.financialcompanion.utils.OperationType
