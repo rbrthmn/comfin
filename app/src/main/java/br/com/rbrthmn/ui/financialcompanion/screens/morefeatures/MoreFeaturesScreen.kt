@@ -45,7 +45,7 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpensesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.SettingsDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.settings.SettingsDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
 
 data class FeatureLabel(val name: String, val route: String)

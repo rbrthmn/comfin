@@ -37,8 +37,8 @@ import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringE
 import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpensesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesScreen
-import br.com.rbrthmn.ui.financialcompanion.screens.SettingsDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.SettingsScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.settings.SettingsDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.settings.SettingsScreen
 
 @Composable
 fun ComFinNavGraph(
