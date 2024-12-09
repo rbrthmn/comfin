@@ -35,8 +35,8 @@ import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsDestina
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpenses
 import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpensesDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.ReservesDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.ReservesScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.SettingsDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.SettingsScreen
 
