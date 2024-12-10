@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.commoncomponents
+package br.com.rbrthmn.ui.financialcompanion.common
 
 import InfiniteHorizontalCircularList
 import InfiniteVerticalCircularList
