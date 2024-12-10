@@ -25,20 +25,20 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import br.com.rbrthmn.ui.financialcompanion.screens.HomeDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.HomeScreen
-import br.com.rbrthmn.ui.financialcompanion.screens.IncomeDivisionsDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.IncomeDivisionsScreen
-import br.com.rbrthmn.ui.financialcompanion.screens.MoreFeaturesDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.MoreFeaturesScreen
-import br.com.rbrthmn.ui.financialcompanion.screens.OperationsDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.OperationsScreen
-import br.com.rbrthmn.ui.financialcompanion.screens.RecurringExpenses
-import br.com.rbrthmn.ui.financialcompanion.screens.RecurringExpensesDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.ReservesDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.ReservesScreen
-import br.com.rbrthmn.ui.financialcompanion.screens.SettingsDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.SettingsScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpenses
+import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpensesDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesScreen
+import br.com.rbrthmn.ui.financialcompanion.screens.settings.SettingsDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.settings.SettingsScreen
 
 @Composable
 fun ComFinNavGraph(
