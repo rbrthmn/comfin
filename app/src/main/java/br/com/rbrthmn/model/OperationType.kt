@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.utils
+package br.com.rbrthmn.model
 
 import androidx.annotation.StringRes
 import br.com.rbrthmn.R
