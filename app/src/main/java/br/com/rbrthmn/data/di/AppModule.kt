@@ -28,6 +28,8 @@ import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProviderImpl
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardContract
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -36,6 +38,7 @@ import org.koin.dsl.module
 val appModule = module {
     viewModelOf<BalanceCardContract.BalanceCardViewModel>(::BalanceCardViewModel)
     viewModelOf<CreditCardBillsCardContract.CreditCardsBillCardViewModel>(::CreditCardBillsCardViewModel)
+    viewModelOf<LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel>(::LastMonthDifferenceCardViewModel)
 
     factoryOf<DecimalInputFieldFormatter>(::DecimalFormatter)
 

@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components
+package br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -28,6 +28,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -39,10 +41,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
-
+import kotlinx.coroutines.flow.asStateFlow
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun LastMonthDifferenceCard(differenceValue: String, modifier: Modifier = Modifier) {
+fun LastMonthDifferenceCard(
+    modifier: Modifier = Modifier,
+    viewModel: LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel = koinViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
@@ -68,7 +76,7 @@ fun LastMonthDifferenceCard(differenceValue: String, modifier: Modifier = Modifi
                 Text(
                     text = valueWithCurrencyString(
                         currencyStringId = R.string.brl_currency,
-                        value = differenceValue
+                        value = uiState.valueOfLastMonth
                     ),
                     fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
                 )
@@ -80,5 +88,5 @@ fun LastMonthDifferenceCard(differenceValue: String, modifier: Modifier = Modifi
 @Preview
 @Composable
 fun LastMonthDifferenceCardPreview(modifier: Modifier = Modifier) {
-    LastMonthDifferenceCard(differenceValue = "-4.00", modifier = modifier)
+    LastMonthDifferenceCard(modifier = modifier, viewModel = LastMonthDifferenceCardViewModel())
 }

@@ -41,7 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCard
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCard
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.LastMonthDifferenceCard
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCard
 import br.com.rbrthmn.ui.financialcompanion.common.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.MonthlyLimitCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
@@ -97,7 +97,7 @@ private fun HomeScreenContent(
         )
         BalanceCard()
         CreditCardBillsCard()
-        LastMonthDifferenceCard("-5435,99")
+        LastMonthDifferenceCard()
     }
 }
 
