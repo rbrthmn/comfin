@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components
+package br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,6 +35,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -50,14 +52,15 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MonthlyLimitCard(
-    onCardClick: () -> Unit,
-    monthLimit: String,
-    monthDifference: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: MonthlyLimitCardContract.MonthlyLimitCardViewModel = koinViewModel(),
+    onCardClick: () -> Unit
 ) {
+    val uiState by viewModel.uiState.collectAsState()
     val showMonthlyLimitDialog = remember { mutableStateOf(false) }
     val showMonthlyDifferenceDialog = remember { mutableStateOf(false) }
 
@@ -104,7 +107,7 @@ fun MonthlyLimitCard(
             Text(
                 text = valueWithCurrencyString(
                     currencyStringId = R.string.brl_currency,
-                    value = monthLimit
+                    value = uiState.monthLimit
                 ),
                 fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
                 fontWeight = FontWeight.Bold,
@@ -135,7 +138,7 @@ fun MonthlyLimitCard(
             Text(
                 text = valueWithCurrencyString(
                     currencyStringId = R.string.brl_currency,
-                    value = monthDifference
+                    value = uiState.monthDifference
                 ),
                 fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
                 fontWeight = FontWeight.Bold,
@@ -179,7 +182,7 @@ private fun InfoDialog(dialogText: String, onCloseButtonClick: () -> Unit) {
 @Preview
 @Composable
 fun MonthlyLimitCardPreview(modifier: Modifier = Modifier) {
-    MonthlyLimitCard({}, "323", "323")
+    MonthlyLimitCard(onCardClick = {}, viewModel = MonthlyLimitCardViewModel())
 }
 
 @Preview
