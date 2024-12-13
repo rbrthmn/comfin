@@ -39,8 +39,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BalanceCard
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.CreditCardBillsCard
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCard
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCard
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.LastMonthDifferenceCard
 import br.com.rbrthmn.ui.financialcompanion.common.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.MonthlyLimitCard

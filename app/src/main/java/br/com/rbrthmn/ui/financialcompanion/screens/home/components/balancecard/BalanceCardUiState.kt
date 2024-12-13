@@ -18,9 +18,9 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components
+package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
 
-data class CreditCardsBillCardUiState(
-    val totalBill: String = "",
-    val bills: List<CreditCardBillUiState> = listOf()
+data class BalanceCardUiState(
+    val totalBalance: String = "",
+    val accounts: List<BankAccountBalanceUiState> = listOf()
 )

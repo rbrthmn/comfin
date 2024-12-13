@@ -20,14 +20,14 @@
 
 package br.com.rbrthmn.data.di
 
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BalanceCardContract
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.CreditCardBillsCardContract
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalFormatter
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalInputFieldFormatter
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProviderImpl
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BalanceCardViewModel
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.CreditCardBillsCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
