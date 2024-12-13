@@ -41,7 +41,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
-import kotlinx.coroutines.flow.asStateFlow
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

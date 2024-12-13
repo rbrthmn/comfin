@@ -18,21 +18,25 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard
+package rbthmn.viewmodels
 
-import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
-import kotlinx.coroutines.flow.MutableStateFlow
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
-class LastMonthDifferenceCardViewModel :
-    LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel() {
-    override var uiState = MutableStateFlow(LastMonthDifferenceCardUiState())
-        private set
+class LastMonthDifferenceCardViewModelTest {
 
-    init {
-        uiState.value = LastMonthDifferenceCardUiState(formatDouble(MOCK))
+    @Test
+    fun uiState_initialValue_isCorrect() = runBlocking {
+        val viewModel = LastMonthDifferenceCardViewModel()
+        val uiState = viewModel.uiState.first()
+
+        assertEquals(EXPECTED_FIRST_VALUE, uiState.valueOfLastMonth)
     }
 
     private companion object {
-        const val MOCK = -100.00
+        const val EXPECTED_FIRST_VALUE = "-100.00"
     }
 }
