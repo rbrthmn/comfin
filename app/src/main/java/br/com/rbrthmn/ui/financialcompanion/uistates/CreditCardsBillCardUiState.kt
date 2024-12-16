@@ -20,7 +20,7 @@
 
 package br.com.rbrthmn.ui.financialcompanion.uistates
 
-data class BalanceCardUiState(
-    val totalBalance: String = "",
-    val accounts: List<BankAccountBalanceUiState> = listOf()
+data class CreditCardsBillCardUiState(
+    val totalBill: String = "",
+    val bills: List<CreditCardBillUiState> = listOf()
 )

@@ -22,11 +22,11 @@ package br.com.rbrthmn.ui.financialcompanion.uistates
 
 import br.com.rbrthmn.R
 
-data class FinancialOverviewUiState(
+data class CreditCardBillUiState(
     val name: String = "",
     val value: String = "",
-    val balanceCurrency: String = "",
-    val financialInstitutionName: String = "",
-    val financialInstitutionIcon: Int = R.drawable.account_balance,
-    val canValueBeEdited: Boolean = true
+    val bankName: String = "",
+    val bankIcon: Int = R.drawable.bank_icon,
+    val canValueBeEdited: Boolean = false,
+    val dueDay: Int = 0
 )
