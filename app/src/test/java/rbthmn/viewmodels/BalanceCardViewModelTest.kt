@@ -21,8 +21,9 @@
 package rbthmn.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
-import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
-import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
+import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BankAccountBalanceUiState
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -83,13 +84,7 @@ class BalanceCardViewModelTest {
     fun cleanNewAccount_should_assign_default_values() {
         viewModel.cleanNewAccount()
 
-        assertEquals(EMPTY_STRING, viewModel.newAccountBalance)
-        assertEquals(EMPTY_STRING, viewModel.newAccountDescription)
-        assertEquals(EMPTY_STRING, viewModel.newAccountBank)
-        assertEquals(-1, viewModel.newAccountBankIcon)
-        assertEquals(true, viewModel.isNewAccountBankValid)
-        assertEquals(true, viewModel.isNewAccountDescriptionValid)
-        assertEquals(true, viewModel.isNewAccountBalanceValid)
+        assertCleanedInputs()
     }
 
     @Test
@@ -106,10 +101,10 @@ class BalanceCardViewModelTest {
     fun onSaveClick_with_valid_input_should_add_new_account() {
         assignValidInputs()
         val mock = mutableStateOf(true)
-        val newAccount = FinancialOverviewUiState(
+        val newAccount = BankAccountBalanceUiState(
             name = VALID_STRING,
             value = FORMATTED_BALANCE_STRING,
-            financialInstitutionName = VALID_STRING
+            bankName = VALID_STRING
         )
         val newAccountList = viewModel.uiState.value.accounts + newAccount
 
@@ -125,10 +120,14 @@ class BalanceCardViewModelTest {
 
         viewModel.onSaveClick(mock)
 
+        assertCleanedInputs()
+    }
+
+    private fun assertCleanedInputs() {
         assertEquals(EMPTY_STRING, viewModel.newAccountBalance)
         assertEquals(EMPTY_STRING, viewModel.newAccountDescription)
         assertEquals(EMPTY_STRING, viewModel.newAccountBank)
-        assertEquals(-1, viewModel.newAccountBankIcon)
+        assertEquals(R.drawable.bank_icon, viewModel.newAccountBankIcon)
         assertEquals(true, viewModel.isNewAccountBankValid)
         assertEquals(true, viewModel.isNewAccountDescriptionValid)
         assertEquals(true, viewModel.isNewAccountBalanceValid)
