@@ -30,7 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import br.com.rbrthmn.ui.financialcompanion.components.NavigationBar
+import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
 import br.com.rbrthmn.ui.financialcompanion.utils.ComFinNavigationType
 
