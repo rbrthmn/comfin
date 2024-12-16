@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -33,56 +32,64 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
+import br.com.rbrthmn.contracts.BalanceContract
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BalanceCard(
-    totalBalance: String,
-    accounts: List<Account>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: BalanceContract.BalanceCardViewModel = koinViewModel()
 ) {
-    val showAddBalanceDialog = remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsState()
+    val showAddAccountDialog = rememberSaveable { mutableStateOf(false) }
 
-    if (showAddBalanceDialog.value)
-        AddBalanceDialog(
-            onCancelButtonClick = { showAddBalanceDialog.value = false },
-            onSaveButtonClick = { showAddBalanceDialog.value = false })
+    if (showAddAccountDialog.value)
+        AddBankAccountDialog(
+            viewModel = viewModel,
+            onCancelButtonClick = {
+                viewModel.cleanNewAccount()
+                showAddAccountDialog.value = false
+            },
+            onSaveButtonClick = { viewModel.onSaveClick(showDialog = showAddAccountDialog) },
+        )
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
         ValuesList(
-            totalValue = totalBalance,
+            totalValue = uiState.totalBalance,
             totalValueTitle = stringResource(id = R.string.total_balance_title),
-            values = accounts,
-            onAddItemButtonClick = { showAddBalanceDialog.value = true },
+            values = uiState.accounts,
+            onAddItemButtonClick = { showAddAccountDialog.value = true },
             addItemButtonText = stringResource(id = R.string.add_account_button)
         )
     }
 }
 
 @Composable
-fun AddBalanceDialog(
+private fun AddBankAccountDialog(
     modifier: Modifier = Modifier,
+    viewModel: BalanceContract.BalanceCardViewModel,
+    onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
-    onSaveButtonClick: () -> Unit
 ) {
     Dialog(onDismissRequest = onCancelButtonClick) {
-        Card(
-            modifier = modifier.fillMaxWidth()
-        ) {
+        Card(modifier = modifier.fillMaxWidth()) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier.padding(
@@ -91,20 +98,24 @@ fun AddBalanceDialog(
                 )
             ) {
                 OutlinedTextField(
-                    prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
-                    label = { Text(text = stringResource(id = R.string.balance_input_hint)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    value = "",
-                    onValueChange = { },
-                    singleLine = true
-                )
-                OutlinedTextField(
-                    label = { Text(text = stringResource(id = R.string.balance_description_input_hint)) },
+                    label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
                     maxLines = 100,
-                    value = "",
-                    onValueChange = { }
+                    value = viewModel.newAccountDescription,
+                    onValueChange = { viewModel.onDescriptionChange(it) },
+                    isError = !viewModel.isNewAccountDescriptionValid
                 )
-                BanksDropdownMenu(modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small)))
+                DecimalInputField(
+                    onValueChange = viewModel::onInitialBalanceChange,
+                    value = viewModel.newAccountBalance,
+                    label = stringResource(id = R.string.balance_input_hint),
+                    prefix = stringResource(id = R.string.brl_currency),
+                    isError = !viewModel.isNewAccountBalanceValid
+                )
+                BanksDropdownMenu(
+                    onBankSelected = viewModel::onBankChange,
+                    isValid = viewModel.isNewAccountBankValid,
+                    modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
+                )
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
@@ -127,17 +138,19 @@ fun AddBalanceDialog(
 @Preview
 @Composable
 fun BalanceCardPreview(modifier: Modifier = Modifier) {
-    val accounts = listOf(Account(1, "Banco A", "500,00"), Account(2, "Banco B", "1.000,00"))
-    val totalBalance = "1234.00"
     BalanceCard(
-        totalBalance = totalBalance,
-        accounts = accounts,
+        viewModel = BalanceCardViewModel(),
         modifier = modifier
     )
 }
 
 @Preview
 @Composable
-fun AddBalanceDialogPreview(modifier: Modifier = Modifier) {
-    AddBalanceDialog(onSaveButtonClick = { }, onCancelButtonClick = { })
+fun AddBankAccountDialogPreview(modifier: Modifier = Modifier) {
+    AddBankAccountDialog(
+        viewModel = BalanceCardViewModel(),
+        onSaveButtonClick = { },
+        onCancelButtonClick = { },
+        modifier = modifier
+    )
 }
