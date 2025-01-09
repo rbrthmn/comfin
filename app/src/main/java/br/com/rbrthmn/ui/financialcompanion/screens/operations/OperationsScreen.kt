@@ -40,7 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationsListCard
 import br.com.rbrthmn.ui.financialcompanion.common.MonthSelectionTopBar
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.TotalBalanceCard
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard.TotalBalanceCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
 import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
@@ -83,10 +83,6 @@ private fun OperationsScreenContent(
     innerPaddingValues: PaddingValues,
     modifier: Modifier = Modifier
 ) {
-    val totalBalance = "R$ 1.000,00"
-    val incomes = "R$ 2.000,00"
-    val outflow = "R$ 1.000,00"
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
@@ -96,12 +92,7 @@ private fun OperationsScreenContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        TotalBalanceCard(
-            modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_medium)),
-            totalBalance = totalBalance,
-            incomes = incomes,
-            outflow = outflow
-        )
+        TotalBalanceCard(modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_medium)),)
         OperationsListCard(operations = operations.sortedByDescending { it.date })
     }
 }

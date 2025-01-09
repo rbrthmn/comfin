@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.operations.components
+package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,6 +30,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -40,15 +42,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun TotalBalanceCard(
     modifier: Modifier = Modifier,
-    totalBalance: String,
-    incomes: String,
-    outflow: String
+    viewModel: TotalBalanceCardContract.TotalBalanceCardViewModel = koinViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
@@ -62,7 +66,7 @@ fun TotalBalanceCard(
                 modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_small))
             ) {
                 Text(
-                    text = totalBalance,
+                    text = valueWithCurrencyString(currencyStringId = R.string.brl_currency, value = uiState.totalBalance),
                     fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp,
                 )
                 Text(
@@ -81,7 +85,7 @@ fun TotalBalanceCard(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = incomes,
+                        text = valueWithCurrencyString(currencyStringId = R.string.brl_currency, value = uiState.totalIncome),
                         fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
                     )
                     Text(
@@ -92,7 +96,7 @@ fun TotalBalanceCard(
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = outflow,
+                        text = valueWithCurrencyString(currencyStringId = R.string.brl_currency, value = uiState.totalOutcome),
                         fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
                     )
                     Text(
@@ -109,9 +113,5 @@ fun TotalBalanceCard(
 @Preview
 @Composable
 private fun TotalBalanceCardPreview(modifier: Modifier = Modifier) {
-    TotalBalanceCard(
-        totalBalance = "R$ 1.000,00",
-        incomes = "R$ 2.000,00",
-        outflow = "R$ 1.000"
-    )
+    TotalBalanceCard(viewModel = TotalBalanceCardViewModel())
 }
