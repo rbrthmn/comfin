@@ -69,6 +69,7 @@ import br.com.rbrthmn.model.OperationType
 import br.com.rbrthmn.ui.financialcompanion.common.ReservesDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.DatePickerDocked
 import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
+import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -428,25 +429,34 @@ private fun OperationItem(
         ) {
             Text(
                 text = description,
-                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+                lineHeight = dimensionResource(id = R.dimen.font_size_medium).value.sp,
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = type,
-                    fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
+                    fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp,
+                    lineHeight = dimensionResource(id = R.dimen.font_size_small).value.sp,
                 )
                 extras?.let {
-                    VerticalDivider(modifier = Modifier
-                        .height(dimensionResource(id = R.dimen.padding_small))
-                        .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small)))
+                    VerticalDivider(
+                        modifier = Modifier
+                            .height(dimensionResource(id = R.dimen.padding_small))
+                            .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+                    )
                     Text(
                         text = it,
-                        fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
+                        fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp,
+                        lineHeight = dimensionResource(id = R.dimen.font_size_small).value.sp,
                     )
                 }
             }
         }
-        Text(text = value, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp)
+        Text(
+            text = valueWithCurrencyString(currencyStringId = R.string.brl_currency, value = value),
+            fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+            lineHeight = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+        )
     }
 }
 
