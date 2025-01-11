@@ -47,6 +47,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,7 +67,6 @@ import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.model.OperationType
 import br.com.rbrthmn.ui.financialcompanion.common.ReservesDropdownMenu
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.Operation
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.DatePickerDocked
 import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
 import org.koin.androidx.compose.koinViewModel
@@ -80,6 +80,7 @@ fun OperationsListCard(
     viewModel: OperationsListCardContract.OperationsListCardViewModel = koinViewModel(),
     operations: List<Operation>
 ) {
+    val uiState by viewModel.uiState.collectAsState()
     val showAddOperationDialog = remember { mutableStateOf(false) }
     if (showAddOperationDialog.value)
         AddOperationDialog(

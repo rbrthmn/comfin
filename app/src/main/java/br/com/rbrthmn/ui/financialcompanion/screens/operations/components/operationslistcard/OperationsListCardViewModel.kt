@@ -20,5 +20,9 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard
 
+import kotlinx.coroutines.flow.MutableStateFlow
+
 class OperationsListCardViewModel : OperationsListCardContract.OperationsListCardViewModel() {
+    override var uiState = MutableStateFlow(OperationsListCardUiState())
+        private set
 }

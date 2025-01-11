@@ -42,17 +42,10 @@ import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operat
 import br.com.rbrthmn.ui.financialcompanion.common.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard.TotalBalanceCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.Operation
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
 import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
 import java.util.Date
-
-data class Operation(
-    val extras: String? = null,
-    val description: String,
-    val value: String,
-    val date: Date,
-    val type: String
-)
 
 object OperationsDestination : NavigationDestination {
     override val route = "operations"

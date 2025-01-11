@@ -23,7 +23,7 @@ package br.com.rbrthmn.ui.financialcompanion.utils
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import br.com.rbrthmn.model.OperationType
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.Operation
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.Operation
 import java.util.Calendar
 import kotlin.random.Random
 

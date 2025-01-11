@@ -20,11 +20,16 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard
 
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import java.util.Date
 
-interface OperationsListCardContract {
-    abstract class OperationsListCardViewModel : ViewModel() {
-        abstract val uiState: MutableStateFlow<OperationsListCardUiState>
-    }
-}
+data class OperationsListCardUiState(
+    val operations: List<Operation> = listOf()
+)
+
+data class Operation(
+    val extras: String? = null,
+    val description: String,
+    val value: String,
+    val date: Date,
+    val type: String
+)
