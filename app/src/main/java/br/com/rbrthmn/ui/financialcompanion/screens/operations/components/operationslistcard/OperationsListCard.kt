@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.operations.components
+package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -67,14 +67,19 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.model.OperationType
 import br.com.rbrthmn.ui.financialcompanion.common.ReservesDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.Operation
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.DatePickerDocked
 import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
+import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 
 @Composable
-fun OperationsListCard(operations: List<Operation>) {
+fun OperationsListCard(
+    viewModel: OperationsListCardContract.OperationsListCardViewModel = koinViewModel(),
+    operations: List<Operation>
+) {
     val showAddOperationDialog = remember { mutableStateOf(false) }
     if (showAddOperationDialog.value)
         AddOperationDialog(
@@ -431,7 +436,9 @@ private fun OperationItem(
                     fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
                 )
                 extras?.let {
-                    VerticalDivider(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)).padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small)))
+                    VerticalDivider(modifier = Modifier
+                        .height(dimensionResource(id = R.dimen.padding_small))
+                        .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small)))
                     Text(
                         text = it,
                         fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
@@ -446,7 +453,7 @@ private fun OperationItem(
 @Preview
 @Composable
 fun OperationsListCardPreview(modifier: Modifier = Modifier) {
-    OperationsListCard(operations = getOperationsMock())
+    OperationsListCard(viewModel = OperationsListCardViewModel(), operations = getOperationsMock())
 }
 
 @Preview

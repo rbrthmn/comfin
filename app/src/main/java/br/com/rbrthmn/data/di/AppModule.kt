@@ -32,6 +32,8 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdif
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardContract
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.OperationsListCardContract
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.OperationsListCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard.TotalBalanceCardContract
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard.TotalBalanceCardViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -45,6 +47,7 @@ val appModule = module {
     viewModelOf<LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel>(::LastMonthDifferenceCardViewModel)
     viewModelOf<MonthlyLimitCardContract.MonthlyLimitCardViewModel>(::MonthlyLimitCardViewModel)
     viewModelOf<TotalBalanceCardContract.TotalBalanceCardViewModel>(::TotalBalanceCardViewModel)
+    viewModelOf<OperationsListCardContract.OperationsListCardViewModel>(::OperationsListCardViewModel)
 
     factoryOf<DecimalInputFieldFormatter>(::DecimalFormatter)
 
