@@ -22,6 +22,7 @@ package br.com.rbrthmn.model
 
 import androidx.annotation.StringRes
 import br.com.rbrthmn.R
+import java.util.Locale
 
 enum class OperationType(@StringRes val stringId: Int) {
     TRANSFER(stringId = R.string.operation_type_transfer),

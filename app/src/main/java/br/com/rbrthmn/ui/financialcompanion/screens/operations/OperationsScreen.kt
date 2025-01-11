@@ -38,14 +38,11 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.OperationsListCard
 import br.com.rbrthmn.ui.financialcompanion.common.MonthSelectionTopBar
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard.TotalBalanceCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.Operation
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.OperationsListCard
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard.TotalBalanceCard
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
-import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
-import java.util.Date
 
 object OperationsDestination : NavigationDestination {
     override val route = "operations"
@@ -56,7 +53,6 @@ object OperationsDestination : NavigationDestination {
 fun OperationsScreen(
     modifier: Modifier = Modifier
 ) {
-    val operations = getOperationsMock()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(topBar = {
@@ -65,14 +61,13 @@ fun OperationsScreen(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
     }, modifier = modifier) { innerPadding ->
-        OperationsScreenContent(operations, innerPadding, modifier)
+        OperationsScreenContent(innerPadding, modifier)
     }
 }
 
 
 @Composable
 private fun OperationsScreenContent(
-    operations: List<Operation>,
     innerPaddingValues: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -85,8 +80,8 @@ private fun OperationsScreenContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        TotalBalanceCard(modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_medium)),)
-        OperationsListCard(operations = operations.sortedByDescending { it.date })
+        TotalBalanceCard(modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_medium)))
+        OperationsListCard()
     }
 }
 
@@ -94,7 +89,7 @@ private fun OperationsScreenContent(
 @Composable
 private fun OperationsScreenPreview(modifier: Modifier = Modifier) {
     OperationsScreenContent(
-        operations = getOperationsMock(),
+//        operations = getOperationsMock(),
         innerPaddingValues = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
     )
 }

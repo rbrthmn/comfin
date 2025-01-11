@@ -78,7 +78,6 @@ import java.util.Locale
 @Composable
 fun OperationsListCard(
     viewModel: OperationsListCardContract.OperationsListCardViewModel = koinViewModel(),
-    operations: List<Operation>
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddOperationDialog = remember { mutableStateOf(false) }
@@ -128,9 +127,9 @@ fun OperationsListCard(
                     )
                 }
             }
-            if (operations.isNotEmpty()) {
+            if (uiState.operations.isNotEmpty()) {
                 HorizontalDivider()
-                OperationsList(operations = operations)
+                OperationsList(operations = uiState.operations)
             }
         }
     }
@@ -402,7 +401,7 @@ private fun OperationsList(operations: List<Operation>) {
 
 @Composable
 private fun DayOfWeekAndMonthText(date: Date) {
-    val formatter = SimpleDateFormat("EEE, dd", Locale.getDefault())
+    val formatter = SimpleDateFormat("EEEE, dd", Locale("pt", "BR"))
     val formattedDate = formatter.format(date)
     Text(
         text = formattedDate, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
@@ -453,8 +452,8 @@ private fun OperationItem(
 
 @Preview
 @Composable
-fun OperationsListCardPreview(modifier: Modifier = Modifier) {
-    OperationsListCard(viewModel = OperationsListCardViewModel(), operations = getOperationsMock())
+fun OperationsListCardPreview() {
+    OperationsListCard(viewModel = OperationsListCardViewModel())
 }
 
 @Preview
