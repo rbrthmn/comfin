@@ -63,15 +63,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.model.OperationType
-import br.com.rbrthmn.ui.financialcompanion.common.ReservesDropdownMenu
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.DatePickerDocked
-import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.DatePickerField
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
 
 @Composable
 fun OperationsListCard(
@@ -79,10 +76,13 @@ fun OperationsListCard(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddOperationDialog = remember { mutableStateOf(false) }
+
     if (showAddOperationDialog.value)
         AddOperationDialog(
-            onCancelButtonClick = { showAddOperationDialog.value = false },
-            onSaveButtonClick = { showAddOperationDialog.value = false })
+            viewModel = viewModel,
+            uiState = uiState,
+            onCancelButtonClick = { showAddOperationDialog.value = false }
+        )
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -136,11 +136,11 @@ fun OperationsListCard(
 @Composable
 fun AddOperationDialog(
     modifier: Modifier = Modifier,
+    viewModel: OperationsListCardContract.OperationsListCardViewModel,
+    uiState: OperationsListCardUiState,
     onCancelButtonClick: () -> Unit,
-    onSaveButtonClick: () -> Unit,
     availableOperationTypes: List<OperationType> = OperationType.entries
 ) {
-    var operationType: OperationType? by remember { mutableStateOf(availableOperationTypes.first()) }
 
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
@@ -154,55 +154,27 @@ fun AddOperationDialog(
                 )
             ) {
                 OutlinedTextField(
+                    label = { Text(text = stringResource(id = R.string.operation_description_hint)) },
+                    maxLines = 100,
+                    value = viewModel.newOperationDescription,
+                    onValueChange = viewModel::onDescriptionChange
+                )
+                OutlinedTextField(
                     prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
                     label = { Text(text = stringResource(id = R.string.operation_value_hint)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    value = "",
-                    onValueChange = { },
+                    value = viewModel.newOperationValue,
+                    onValueChange = viewModel::onValueChange,
                     singleLine = true
                 )
                 OperationTypeDropdownMenu(
-                    onTypeClicked = { operationType = it },
+                    onTypeClicked = { viewModel.onOperationTypeChange(it) },
                     operationTypes = availableOperationTypes
                 )
-                when (operationType) {
-                    OperationType.TRANSFER -> {
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.origin_account_hint))
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.aimed_account_hint))
-                    }
-
-                    OperationType.DEBIT_PURCHASE,
-                    OperationType.BILL_PAYMENT,
-                    OperationType.WITHDRAWAL -> {
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.origin_account_hint))
-                    }
-
-                    OperationType.DEPOSIT,
-                    OperationType.INCOME -> {
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.aimed_account_hint))
-                    }
-
-                    OperationType.RESERVE_ALLOCATION -> {
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.origin_account_hint))
-                        ReservesDropdownMenu()
-                    }
-
-                    OperationType.RESERVE_WITHDRAWAL -> {
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.aimed_account_hint))
-                        ReservesDropdownMenu()
-                    }
-
-                    OperationType.OTHER, null -> {
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.origin_account_hint))
-                    }
+                uiState.dialogFields.forEach { composableFunction ->
+                    composableFunction()
                 }
-                OutlinedTextField(
-                    label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
-                    maxLines = 100,
-                    value = "",
-                    onValueChange = { }
-                )
-                DatePickerDocked()
+                DatePickerField(onDateSelected = { viewModel.onOperationDateChange(it) })
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
@@ -213,7 +185,7 @@ fun AddOperationDialog(
                     TextButton(onClick = onCancelButtonClick) {
                         Text(text = stringResource(id = R.string.cancel_button))
                     }
-                    Button(onClick = onSaveButtonClick) {
+                    Button(onClick = { viewModel.onSaveButtonClick() }) {
                         Text(text = stringResource(id = R.string.save_button))
                     }
                 }
@@ -358,5 +330,9 @@ fun OperationsListCardPreview() {
 @Preview
 @Composable
 fun AddOperationDialogPreview(modifier: Modifier = Modifier) {
-    AddOperationDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
+    AddOperationDialog(
+        viewModel = OperationsListCardViewModel(),
+        uiState = OperationsListCardUiState(),
+        onCancelButtonClick = {}
+    )
 }

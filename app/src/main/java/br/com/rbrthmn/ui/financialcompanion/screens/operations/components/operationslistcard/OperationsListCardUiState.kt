@@ -20,10 +20,12 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard
 
+import androidx.compose.runtime.Composable
 import java.util.Date
 
 data class OperationsListCardUiState(
-    val operations: List<Operation> = listOf()
+    val operations: List<Operation> = listOf(),
+    val dialogFields: MutableList<@Composable () -> Unit> = mutableListOf()
 )
 
 data class Operation(

@@ -39,7 +39,7 @@ import androidx.compose.ui.res.stringResource
 import br.com.rbrthmn.R
 
 @Composable
-fun ReservesDropdownMenu(modifier: Modifier = Modifier) {
+fun ReservesDropdownMenu(modifier: Modifier = Modifier, onReserveClicked: (String) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText: String? by remember { mutableStateOf(null) }
     val options = listOf(
@@ -72,6 +72,7 @@ fun ReservesDropdownMenu(modifier: Modifier = Modifier) {
                     onClick = {
                         selectedOptionText = selectedOption
                         expanded = false
+                        onReserveClicked(selectedOption)
                     },
                     text = { Text(text = selectedOption) },
                 )

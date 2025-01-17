@@ -21,10 +21,33 @@
 package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard
 
 import androidx.lifecycle.ViewModel
+import br.com.rbrthmn.model.OperationType
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.util.Date
 
 interface OperationsListCardContract {
     abstract class OperationsListCardViewModel : ViewModel() {
         abstract val uiState: MutableStateFlow<OperationsListCardUiState>
+        abstract val newOperationDescription: String
+        abstract val isNewOperationDescriptionValid: Boolean
+        abstract val newOperationValue: String
+        abstract val isNewOperationValueValid: Boolean
+        abstract val newOperationType: OperationType
+        abstract val isNewOperationTypeValid: Boolean
+        abstract val newOriginAccount: String
+        abstract val isNewOriginAccountValid: Boolean
+        abstract val newDestinationAccount: String
+        abstract val isNewDestinationAccountValid: Boolean
+        abstract val newOperationDate: Date
+        abstract val newReserve: String
+        abstract val isNewReserveValid: Boolean
+        abstract fun onDescriptionChange(description: String)
+        abstract fun onValueChange(value: String)
+        abstract fun onOperationTypeChange(operationType: OperationType)
+        abstract fun onOriginAccountChange(originAccount: String)
+        abstract fun onDestinationAccountChange(destinationAccount: String)
+        abstract fun onOperationDateChange(operationDate: Long?)
+        abstract fun onReserveChange(reserve: String)
+        abstract fun onSaveButtonClick()
     }
 }
