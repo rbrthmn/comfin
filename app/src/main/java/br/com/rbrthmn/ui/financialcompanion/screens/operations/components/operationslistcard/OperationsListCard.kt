@@ -31,8 +31,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -57,7 +55,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -266,114 +263,6 @@ private fun OperationTypeDropdownMenu(
     }
 }
 
-@Composable
-private fun AccountsDropdownMenu(modifier: Modifier = Modifier, accountType: String) {
-    var expanded by remember { mutableStateOf(false) }
-    var showAddAccountDialog by remember { mutableStateOf(false) }
-    val options = listOf(
-        "Conta A",
-        "Conta B",
-        "Conta C",
-        "Conta D",
-        "Conta E",
-        "Conta F",
-        "Conta G",
-    ).plus(stringResource(id = R.string.add_account_option))
-    var selectedOptionText: String? by remember { mutableStateOf(null) }
-
-    if (showAddAccountDialog) {
-        AddSimpleAccountDialog(
-            onCancelButtonClick = { showAddAccountDialog = false },
-            onSaveButtonClick = { showAddAccountDialog = false })
-    }
-
-    Column(modifier = modifier) {
-        OutlinedTextField(
-            value = selectedOptionText ?: stringResource(id = R.string.blank),
-            label = { Text(text = accountType) },
-            onValueChange = { selectedOptionText = it },
-            readOnly = true,
-            trailingIcon = {
-                IconButton(onClick = { expanded = true }) {
-                    Icon(Icons.Filled.ArrowDropDown, "contentDescription")
-                }
-            },
-            singleLine = true
-        )
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            options.forEach { selectedOption ->
-                DropdownMenuItem(
-                    onClick = {
-                        selectedOptionText = selectedOption
-                        expanded = false
-                        if (selectedOptionText == options.last()) showAddAccountDialog = true
-                    },
-                    text = { Text(text = selectedOption) },
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.help),
-                            contentDescription = "Balance Icon"
-                        )
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun AddSimpleAccountDialog(
-    modifier: Modifier = Modifier,
-    onCancelButtonClick: () -> Unit,
-    onSaveButtonClick: () -> Unit
-) {
-    var accountHolder by remember { mutableStateOf("") }
-
-    Dialog(onDismissRequest = onCancelButtonClick) {
-        Card(
-            modifier = modifier.fillMaxWidth()
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_large),
-                    vertical = dimensionResource(id = R.dimen.padding_medium)
-                )
-            ) {
-                OutlinedTextField(
-                    label = { Text(text = stringResource(id = R.string.account_holder_hint)) },
-                    value = accountHolder,
-                    onValueChange = { accountHolder = it },
-                )
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(top = dimensionResource(id = R.dimen.padding_small)),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceAround,
-                ) {
-                    Button(onClick = onCancelButtonClick) {
-                        Icon(
-                            imageVector = Icons.Default.Close, contentDescription = stringResource(
-                                id = R.string.close_icon_description
-                            )
-                        )
-                    }
-                    Button(onClick = onSaveButtonClick) {
-                        Icon(
-                            imageVector = Icons.Default.Check, contentDescription = stringResource(
-                                id = R.string.check_icon_description
-                            )
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
 
 @Composable
 private fun OperationsList(operations: List<Operation>) {
@@ -470,10 +359,4 @@ fun OperationsListCardPreview() {
 @Composable
 fun AddOperationDialogPreview(modifier: Modifier = Modifier) {
     AddOperationDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
-}
-
-@Preview
-@Composable
-fun AddSimpleAccountDialogPreview(modifier: Modifier = Modifier) {
-    AddSimpleAccountDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
 }
