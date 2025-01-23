@@ -20,6 +20,7 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard
 
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import br.com.rbrthmn.model.OperationType
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,15 +33,16 @@ interface OperationsListCardContract {
         abstract val isNewOperationDescriptionValid: Boolean
         abstract val newOperationValue: String
         abstract val isNewOperationValueValid: Boolean
-        abstract val newOperationType: OperationType
+        abstract val newOperationType: OperationType?
         abstract val isNewOperationTypeValid: Boolean
-        abstract val newOriginAccount: String
-        abstract val isNewOriginAccountValid: Boolean
-        abstract val newDestinationAccount: String
-        abstract val isNewDestinationAccountValid: Boolean
+        abstract val newOperationOriginAccount: String
+        abstract val isNewOperationOriginAccountValid: Boolean
+        abstract val newOperationDestinationAccount: String
+        abstract val isNewOperationDestinationAccountValid: Boolean
         abstract val newOperationDate: Date
-        abstract val newReserve: String
-        abstract val isNewReserveValid: Boolean
+        abstract var isNewOperationDateValid: Boolean
+        abstract val newOperationReserve: String
+        abstract val isNewOperationReserveValid: Boolean
         abstract fun onDescriptionChange(description: String)
         abstract fun onValueChange(value: String)
         abstract fun onOperationTypeChange(operationType: OperationType)
@@ -48,6 +50,7 @@ interface OperationsListCardContract {
         abstract fun onDestinationAccountChange(destinationAccount: String)
         abstract fun onOperationDateChange(operationDate: Long?)
         abstract fun onReserveChange(reserve: String)
-        abstract fun onSaveButtonClick()
+        abstract fun onSaveButtonClick(showDialog: MutableState<Boolean>)
+        abstract fun resetDialogFields()
     }
 }

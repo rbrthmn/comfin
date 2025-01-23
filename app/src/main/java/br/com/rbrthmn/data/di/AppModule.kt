@@ -36,20 +36,27 @@ import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operat
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.OperationsListCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard.TotalBalanceCardContract
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard.TotalBalanceCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
+import br.com.rbrthmn.ui.financialcompanion.utils.StringProvider
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val appModule = module {
+    singleOf<SnackBarProvider>(::SnackBarProviderImpl)
+    single<StringProvider> { ResourceStringProvider(context = androidContext()) }
+
     viewModelOf<BalanceCardContract.BalanceCardViewModel>(::BalanceCardViewModel)
     viewModelOf<CreditCardBillsCardContract.CreditCardsBillCardViewModel>(::CreditCardBillsCardViewModel)
     viewModelOf<LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel>(::LastMonthDifferenceCardViewModel)
     viewModelOf<MonthlyLimitCardContract.MonthlyLimitCardViewModel>(::MonthlyLimitCardViewModel)
     viewModelOf<TotalBalanceCardContract.TotalBalanceCardViewModel>(::TotalBalanceCardViewModel)
-    viewModelOf<OperationsListCardContract.OperationsListCardViewModel>(::OperationsListCardViewModel)
+    viewModel<OperationsListCardContract.OperationsListCardViewModel> {
+        OperationsListCardViewModel(stringProvider = get())
+    }
 
     factoryOf<DecimalInputFieldFormatter>(::DecimalFormatter)
-
-    singleOf<SnackBarProvider>(::SnackBarProviderImpl)
 }

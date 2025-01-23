@@ -51,12 +51,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 
-sealed class AccountType(val stringId: Int)
-data object AimedAccount : AccountType(R.string.aimed_account_hint)
-data object OriginAccount : AccountType(R.string.origin_account_hint)
+sealed class OperationAccountType(val stringId: Int)
+data object OperationAimedAccount : OperationAccountType(R.string.aimed_account_hint)
+data object OperationOriginAccount : OperationAccountType(R.string.origin_account_hint)
 
 @Composable
-fun AccountsDropdownMenu(modifier: Modifier = Modifier, accountType: AccountType) {
+fun AccountsDropdownMenu(
+    modifier: Modifier = Modifier,
+    operationAccountType: OperationAccountType,
+    onAccountSelected: (String) -> Unit,
+    isError: Boolean
+) {
     var expanded by remember { mutableStateOf(false) }
     var showAddAccountDialog by remember { mutableStateOf(false) }
     val options = listOf(
@@ -79,7 +84,7 @@ fun AccountsDropdownMenu(modifier: Modifier = Modifier, accountType: AccountType
     Column(modifier = modifier) {
         OutlinedTextField(
             value = selectedOptionText ?: stringResource(id = R.string.blank),
-            label = { Text(text = stringResource(id = accountType.stringId)) },
+            label = { Text(text = stringResource(id = operationAccountType.stringId)) },
             onValueChange = { selectedOptionText = it },
             readOnly = true,
             trailingIcon = {
@@ -87,7 +92,8 @@ fun AccountsDropdownMenu(modifier: Modifier = Modifier, accountType: AccountType
                     Icon(Icons.Filled.ArrowDropDown, "contentDescription")
                 }
             },
-            singleLine = true
+            singleLine = true,
+            isError = isError
         )
         DropdownMenu(
             expanded = expanded,
@@ -98,6 +104,7 @@ fun AccountsDropdownMenu(modifier: Modifier = Modifier, accountType: AccountType
                     onClick = {
                         selectedOptionText = selectedOption
                         expanded = false
+                        onAccountSelected(selectedOption)
                         if (selectedOptionText == options.last()) showAddAccountDialog = true
                     },
                     text = { Text(text = selectedOption) },

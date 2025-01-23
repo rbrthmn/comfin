@@ -54,6 +54,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -64,6 +65,7 @@ import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.model.OperationType
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.DatePickerField
+import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
@@ -81,7 +83,11 @@ fun OperationsListCard(
         AddOperationDialog(
             viewModel = viewModel,
             uiState = uiState,
-            onCancelButtonClick = { showAddOperationDialog.value = false }
+            onSaveButtonClick = { viewModel.onSaveButtonClick(showAddOperationDialog) },
+            onCancelButtonClick = {
+                viewModel.resetDialogFields()
+                showAddOperationDialog.value = false
+            }
         )
 
     Card(
@@ -138,6 +144,7 @@ fun AddOperationDialog(
     modifier: Modifier = Modifier,
     viewModel: OperationsListCardContract.OperationsListCardViewModel,
     uiState: OperationsListCardUiState,
+    onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
     availableOperationTypes: List<OperationType> = OperationType.entries
 ) {
@@ -155,9 +162,10 @@ fun AddOperationDialog(
             ) {
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.operation_description_hint)) },
-                    maxLines = 100,
                     value = viewModel.newOperationDescription,
-                    onValueChange = viewModel::onDescriptionChange
+                    onValueChange = viewModel::onDescriptionChange,
+                    isError = !viewModel.isNewOperationDescriptionValid,
+                    singleLine = true
                 )
                 OutlinedTextField(
                     prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
@@ -165,16 +173,21 @@ fun AddOperationDialog(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = viewModel.newOperationValue,
                     onValueChange = viewModel::onValueChange,
+                    isError = !viewModel.isNewOperationValueValid,
                     singleLine = true
                 )
                 OperationTypeDropdownMenu(
                     onTypeClicked = { viewModel.onOperationTypeChange(it) },
-                    operationTypes = availableOperationTypes
+                    operationTypes = availableOperationTypes,
+                    isError = !viewModel.isNewOperationTypeValid
                 )
                 uiState.dialogFields.forEach { composableFunction ->
                     composableFunction()
                 }
-                DatePickerField(onDateSelected = { viewModel.onOperationDateChange(it) })
+                DatePickerField(
+                    onDateSelected = { viewModel.onOperationDateChange(it) },
+                    isError = !viewModel.isNewOperationDateValid
+                )
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
@@ -185,7 +198,7 @@ fun AddOperationDialog(
                     TextButton(onClick = onCancelButtonClick) {
                         Text(text = stringResource(id = R.string.cancel_button))
                     }
-                    Button(onClick = { viewModel.onSaveButtonClick() }) {
+                    Button(onClick = onSaveButtonClick) {
                         Text(text = stringResource(id = R.string.save_button))
                     }
                 }
@@ -198,7 +211,8 @@ fun AddOperationDialog(
 private fun OperationTypeDropdownMenu(
     modifier: Modifier = Modifier,
     onTypeClicked: (type: OperationType) -> Unit,
-    operationTypes: List<OperationType>
+    operationTypes: List<OperationType>,
+    isError: Boolean
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText: String? by remember { mutableStateOf(null) }
@@ -214,7 +228,8 @@ private fun OperationTypeDropdownMenu(
                     Icon(Icons.Filled.ArrowDropDown, "contentDescription")
                 }
             },
-            singleLine = true
+            singleLine = true,
+            isError = isError
         )
         DropdownMenu(
             expanded = expanded,
@@ -324,15 +339,22 @@ private fun OperationItem(
 @Preview
 @Composable
 fun OperationsListCardPreview() {
-    OperationsListCard(viewModel = OperationsListCardViewModel())
+    val context = LocalContext.current
+    val stringProvider = ResourceStringProvider(context)
+
+    OperationsListCard(viewModel = OperationsListCardViewModel(stringProvider))
 }
 
 @Preview
 @Composable
 fun AddOperationDialogPreview(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val stringProvider = ResourceStringProvider(context)
+    
     AddOperationDialog(
-        viewModel = OperationsListCardViewModel(),
+        viewModel = OperationsListCardViewModel(stringProvider),
         uiState = OperationsListCardUiState(),
+        onSaveButtonClick = {},
         onCancelButtonClick = {}
     )
 }

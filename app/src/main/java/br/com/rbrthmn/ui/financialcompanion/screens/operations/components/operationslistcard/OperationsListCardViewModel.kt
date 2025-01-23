@@ -21,33 +21,40 @@
 package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import br.com.rbrthmn.R
 import br.com.rbrthmn.model.OperationType
 import br.com.rbrthmn.ui.financialcompanion.common.ReservesDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AccountsDropdownMenu
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AimedAccount
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OriginAccount
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationAimedAccount
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationOriginAccount
+import br.com.rbrthmn.ui.financialcompanion.utils.StringProvider
+import br.com.rbrthmn.ui.financialcompanion.utils.canBeFormatted
+import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.Date
 
-class OperationsListCardViewModel : OperationsListCardContract.OperationsListCardViewModel() {
+class OperationsListCardViewModel(val stringProvider: StringProvider) :
+    OperationsListCardContract.OperationsListCardViewModel() {
     override var uiState = MutableStateFlow(OperationsListCardUiState())
     override var newOperationDescription: String by mutableStateOf("")
     override var isNewOperationDescriptionValid: Boolean by mutableStateOf(true)
     override var newOperationValue: String by mutableStateOf("")
     override var isNewOperationValueValid: Boolean by mutableStateOf(true)
-    override var newOperationType: OperationType by mutableStateOf(OperationType.DEPOSIT)
+    override var newOperationType: OperationType? by mutableStateOf(null)
     override var isNewOperationTypeValid: Boolean by mutableStateOf(true)
-    override var newOriginAccount: String by mutableStateOf("")
-    override var isNewOriginAccountValid: Boolean by mutableStateOf(true)
-    override var newDestinationAccount: String by mutableStateOf("")
-    override var isNewDestinationAccountValid: Boolean by mutableStateOf(true)
+    override var newOperationOriginAccount: String by mutableStateOf("")
+    override var isNewOperationOriginAccountValid: Boolean by mutableStateOf(true)
+    override var newOperationDestinationAccount: String by mutableStateOf("")
+    override var isNewOperationDestinationAccountValid: Boolean by mutableStateOf(true)
     override var newOperationDate: Date by mutableStateOf(Date())
-    override var newReserve: String by mutableStateOf("")
-    override var isNewReserveValid: Boolean by mutableStateOf(true)
+    override var isNewOperationDateValid: Boolean by mutableStateOf(true)
+    override var newOperationReserve: String by mutableStateOf("")
+    override var isNewOperationReserveValid: Boolean by mutableStateOf(true)
 
     init {
         uiState.value =
@@ -56,72 +63,246 @@ class OperationsListCardViewModel : OperationsListCardContract.OperationsListCar
     }
 
     override fun onDescriptionChange(description: String) {
+        isNewOperationDescriptionValid = description.isNotBlank()
         newOperationDescription = description
     }
 
     override fun onValueChange(value: String) {
+        isNewOperationValueValid = canBeFormatted(value)
         newOperationValue = value
     }
 
     override fun onOperationTypeChange(operationType: OperationType) {
+        isNewOperationTypeValid = true
         newOperationType = operationType
         updateDialogFields()
     }
 
     override fun onOriginAccountChange(originAccount: String) {
-        newOriginAccount = originAccount
+        if (newOperationType == OperationType.TRANSFER ||
+            newOperationType == OperationType.DEBIT_PURCHASE ||
+            newOperationType == OperationType.BILL_PAYMENT ||
+            newOperationType == OperationType.WITHDRAWAL ||
+            newOperationType == OperationType.RESERVE_ALLOCATION ||
+            newOperationType == OperationType.OTHER
+        ) {
+            isNewOperationOriginAccountValid = originAccount.isNotBlank()
+            newOperationOriginAccount = originAccount
+        }
     }
 
     override fun onDestinationAccountChange(destinationAccount: String) {
-       newDestinationAccount = destinationAccount
+        if (newOperationType == OperationType.TRANSFER ||
+            newOperationType == OperationType.DEPOSIT ||
+            newOperationType == OperationType.INCOME ||
+            newOperationType == OperationType.RESERVE_WITHDRAWAL
+        ) {
+            isNewOperationDestinationAccountValid = destinationAccount.isNotBlank()
+            newOperationDestinationAccount = destinationAccount
+        }
     }
 
     override fun onOperationDateChange(operationDate: Long?) {
         operationDate?.let {
             newOperationDate = Date(it)
+            isNewOperationDateValid = true
         }
     }
 
     override fun onReserveChange(reserve: String) {
-        newReserve = reserve
+        if (newOperationType == OperationType.RESERVE_ALLOCATION ||
+            newOperationType == OperationType.RESERVE_WITHDRAWAL
+        ) {
+            isNewOperationReserveValid = reserve.isNotBlank()
+            newOperationReserve = reserve
+        }
     }
 
-    override fun onSaveButtonClick() {
+    override fun onSaveButtonClick(showDialog: MutableState<Boolean>) {
+        if (validateFields()) {
+            val newOperation = Operation(
+                description = newOperationDescription,
+                value = formatString(newOperationValue),
+                type = stringProvider.getString(
+                    newOperationType?.stringId ?: R.string.operation_type_other
+                ),
+                date = newOperationDate,
+                extras = newOperationOriginAccount.ifBlank { newOperationDestinationAccount }
+            )
+
+            val newOperations = uiState.value.operations.toMutableList()
+            with(newOperations) {
+                add(newOperation)
+                sortByDescending { it.date }
+            }
+            uiState.value = uiState.value.copy(operations = newOperations)
+
+            resetDialogFields()
+            showDialog.value = false
+        }
+    }
+
+    private fun validateFields(): Boolean {
+        isNewOperationDescriptionValid = newOperationDescription.isNotBlank()
+        isNewOperationValueValid = canBeFormatted(newOperationValue)
+        isNewOperationTypeValid = newOperationType != null
+
+        return isNewOperationDescriptionValid &&
+                isNewOperationValueValid &&
+                isNewOperationDateValid &&
+                when (newOperationType) {
+                    OperationType.TRANSFER -> {
+                        isNewOperationOriginAccountValid = newOperationOriginAccount.isNotBlank()
+                        isNewOperationDestinationAccountValid =
+                            newOperationDestinationAccount.isNotBlank()
+                        isNewOperationOriginAccountValid && isNewOperationDestinationAccountValid
+                    }
+
+                    OperationType.DEBIT_PURCHASE,
+                    OperationType.BILL_PAYMENT,
+                    OperationType.WITHDRAWAL -> {
+                        isNewOperationOriginAccountValid = newOperationOriginAccount.isNotBlank()
+                        isNewOperationOriginAccountValid
+                    }
+
+                    OperationType.DEPOSIT,
+                    OperationType.INCOME -> {
+                        isNewOperationDestinationAccountValid =
+                            newOperationDestinationAccount.isNotBlank()
+                        isNewOperationDestinationAccountValid
+                    }
+
+                    OperationType.RESERVE_ALLOCATION -> {
+                        isNewOperationReserveValid = newOperationReserve.isNotBlank()
+                        isNewOperationOriginAccountValid = newOperationOriginAccount.isNotBlank()
+                        isNewOperationReserveValid && isNewOperationOriginAccountValid
+                    }
+
+                    OperationType.RESERVE_WITHDRAWAL -> {
+                        isNewOperationReserveValid = newOperationReserve.isNotBlank()
+                        isNewOperationDestinationAccountValid =
+                            newOperationDestinationAccount.isNotBlank()
+                        isNewOperationReserveValid && isNewOperationDestinationAccountValid
+                    }
+
+                    OperationType.OTHER -> {
+                        isNewOperationOriginAccountValid = newOperationOriginAccount.isNotBlank()
+                        isNewOperationOriginAccountValid
+                    }
+
+                    null -> false
+                }
+    }
+
+    override fun resetDialogFields() {
+        newOperationDescription = ""
+        isNewOperationDescriptionValid = true
+        newOperationValue = ""
+        isNewOperationValueValid = true
+        newOperationType = null
+        isNewOperationTypeValid = true
+        newOperationOriginAccount = ""
+        isNewOperationOriginAccountValid = true
+        newOperationDestinationAccount = ""
+        isNewOperationDestinationAccountValid = true
+        newOperationDate = Date()
+        isNewOperationDateValid = true
+        newOperationReserve = ""
+        isNewOperationReserveValid = true
+        uiState.value = uiState.value.copy(dialogFields = mutableListOf())
     }
 
     private fun updateDialogFields() {
-        val newDialogFields = mutableListOf<@Composable () -> Unit>()
+        val newOperationDialogFields = mutableListOf<@Composable () -> Unit>()
+        newOperationOriginAccount = ""
+        newOperationDestinationAccount = ""
+        newOperationReserve = ""
+
         when (newOperationType) {
             OperationType.TRANSFER -> {
-                newDialogFields.add { AccountsDropdownMenu(accountType = OriginAccount) }
-                newDialogFields.add { AccountsDropdownMenu(accountType = AimedAccount) }
+                newOperationDialogFields.add {
+                    AccountsDropdownMenu(
+                        operationAccountType = OperationOriginAccount,
+                        onAccountSelected = ::onOriginAccountChange,
+                        isError = !isNewOperationOriginAccountValid
+                    )
+                }
+                newOperationDialogFields.add {
+                    AccountsDropdownMenu(
+                        operationAccountType = OperationAimedAccount,
+                        onAccountSelected = ::onDestinationAccountChange,
+                        isError = !isNewOperationDestinationAccountValid
+                    )
+                }
             }
 
             OperationType.DEBIT_PURCHASE,
             OperationType.BILL_PAYMENT,
             OperationType.WITHDRAWAL -> {
-                newDialogFields.add { AccountsDropdownMenu(accountType = OriginAccount) }
+                newOperationDialogFields.add {
+                    AccountsDropdownMenu(
+                        operationAccountType = OperationOriginAccount,
+                        onAccountSelected = ::onOriginAccountChange,
+                        isError = !isNewOperationOriginAccountValid
+                    )
+                }
             }
 
             OperationType.DEPOSIT,
             OperationType.INCOME -> {
-                newDialogFields.add { AccountsDropdownMenu(accountType = AimedAccount) }
+                newOperationDialogFields.add {
+                    AccountsDropdownMenu(
+                        operationAccountType = OperationAimedAccount,
+                        onAccountSelected = ::onDestinationAccountChange,
+                        isError = !isNewOperationDestinationAccountValid
+                    )
+                }
             }
 
             OperationType.RESERVE_ALLOCATION -> {
-                newDialogFields.add { AccountsDropdownMenu(accountType = OriginAccount) }
-                newDialogFields.add { ReservesDropdownMenu(onReserveClicked = ::onReserveChange) }
+                newOperationDialogFields.add {
+                    AccountsDropdownMenu(
+                        operationAccountType = OperationOriginAccount,
+                        onAccountSelected = ::onOriginAccountChange,
+                        isError = !isNewOperationOriginAccountValid
+                    )
+                }
+                newOperationDialogFields.add {
+                    ReservesDropdownMenu(
+                        onReserveClicked = ::onReserveChange,
+                        isError = !isNewOperationReserveValid
+                    )
+                }
             }
 
             OperationType.RESERVE_WITHDRAWAL -> {
-                newDialogFields.add { AccountsDropdownMenu(accountType = AimedAccount) }
-                newDialogFields.add { ReservesDropdownMenu(onReserveClicked = ::onReserveChange) }
+                newOperationDialogFields.add {
+                    AccountsDropdownMenu(
+                        operationAccountType = OperationAimedAccount,
+                        onAccountSelected = ::onDestinationAccountChange,
+                        isError = !isNewOperationDestinationAccountValid
+                    )
+                }
+                newOperationDialogFields.add {
+                    ReservesDropdownMenu(
+                        onReserveClicked = ::onReserveChange,
+                        isError = !isNewOperationReserveValid
+                    )
+                }
             }
 
             OperationType.OTHER -> {
-                newDialogFields.add { AccountsDropdownMenu(accountType = OriginAccount) }
+                newOperationDialogFields.add {
+                    AccountsDropdownMenu(
+                        operationAccountType = OperationOriginAccount,
+                        onAccountSelected = ::onOriginAccountChange,
+                        isError = !isNewOperationOriginAccountValid
+                    )
+                }
             }
+
+            null -> Unit
         }
-        uiState.value = uiState.value.copy(dialogFields = newDialogFields)
+        uiState.value = uiState.value.copy(dialogFields = newOperationDialogFields)
     }
 }

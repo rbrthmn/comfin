@@ -52,6 +52,7 @@ import java.util.TimeZone
 @Composable
 fun DatePickerField(
     onDateSelected: (Long?) -> Unit,
+    isError: Boolean
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
@@ -77,6 +78,7 @@ fun DatePickerField(
                     )
                 }
             },
+            isError = isError,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(dimensionResource(id = R.dimen.date_picker_field_height))
