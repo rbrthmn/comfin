@@ -68,9 +68,8 @@ import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.DatePi
 import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun OperationsListCard(
@@ -253,9 +252,7 @@ private fun OperationTypeDropdownMenu(
 
 @Composable
 private fun OperationsList(operations: List<Operation>) {
-    val groupedOperations = operations.groupBy {
-        SimpleDateFormat("EEE, dd", Locale.getDefault()).format(it.date)
-    }
+    val groupedOperations = operations.groupBy { it.date }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
@@ -277,9 +274,8 @@ private fun OperationsList(operations: List<Operation>) {
 }
 
 @Composable
-private fun DayOfWeekAndMonthText(date: Date) {
-    val formatter = SimpleDateFormat("EEEE, dd", Locale("pt", "BR"))
-    val formattedDate = formatter.format(date)
+private fun DayOfWeekAndMonthText(date: LocalDate) {
+    val formattedDate = date.format(DateTimeFormatter.ofPattern("EEEE, dd"))
     Text(
         text = formattedDate, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
         fontWeight = FontWeight.ExtraBold
@@ -350,7 +346,7 @@ fun OperationsListCardPreview() {
 fun AddOperationDialogPreview(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val stringProvider = ResourceStringProvider(context)
-    
+
     AddOperationDialog(
         viewModel = OperationsListCardViewModel(stringProvider),
         uiState = OperationsListCardUiState(),

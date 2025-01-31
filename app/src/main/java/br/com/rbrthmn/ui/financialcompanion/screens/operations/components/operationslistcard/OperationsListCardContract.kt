@@ -24,7 +24,7 @@ import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import br.com.rbrthmn.model.OperationType
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.util.Date
+import java.time.LocalDate
 
 interface OperationsListCardContract {
     abstract class OperationsListCardViewModel : ViewModel() {
@@ -39,7 +39,7 @@ interface OperationsListCardContract {
         abstract val isNewOperationOriginAccountValid: Boolean
         abstract val newOperationDestinationAccount: String
         abstract val isNewOperationDestinationAccountValid: Boolean
-        abstract val newOperationDate: Date
+        abstract val newOperationDate: LocalDate
         abstract var isNewOperationDateValid: Boolean
         abstract val newOperationReserve: String
         abstract val isNewOperationReserveValid: Boolean
@@ -48,7 +48,7 @@ interface OperationsListCardContract {
         abstract fun onOperationTypeChange(operationType: OperationType)
         abstract fun onOriginAccountChange(originAccount: String)
         abstract fun onDestinationAccountChange(destinationAccount: String)
-        abstract fun onOperationDateChange(operationDate: Long?)
+        abstract fun onOperationDateChange(operationDate: LocalDate)
         abstract fun onReserveChange(reserve: String)
         abstract fun onSaveButtonClick(showDialog: MutableState<Boolean>)
         abstract fun resetDialogFields()

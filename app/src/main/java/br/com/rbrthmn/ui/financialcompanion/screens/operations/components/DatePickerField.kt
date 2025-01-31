@@ -43,30 +43,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import br.com.rbrthmn.R
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+
+const val DAY_IN_MILLISECONDS = 86400000
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerField(
-    onDateSelected: (Long?) -> Unit,
+    onDateSelected: (LocalDate) -> Unit,
     isError: Boolean
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
-    var selectedDate by remember { mutableStateOf(convertMillisToDate(System.currentTimeMillis())) }
+    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
+    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
-    fun onDismiss() {
-        showDatePicker = false
-    }
+    fun onDismiss() { showDatePicker = false }
 
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
         OutlinedTextField(
-            value = selectedDate,
+            value = selectedDate.format(formatter),
             onValueChange = { },
             label = { Text(stringResource(id = R.string.date_picker_label)) },
             readOnly = true,
@@ -89,10 +90,11 @@ fun DatePickerField(
                 onDismissRequest = { onDismiss() },
                 confirmButton = {
                     TextButton(onClick = {
-                        onDateSelected(datePickerState.selectedDateMillis)
-                        selectedDate = datePickerState.selectedDateMillis?.let {
-                            convertMillisToDate(it)
-                        } ?: ""
+                        val localDate = datePickerState.selectedDateMillis?.let {
+                            convertMillisToLocalDate(it + DAY_IN_MILLISECONDS)
+                        } ?: LocalDate.now()
+                        onDateSelected(localDate)
+                        selectedDate = localDate ?: LocalDate.now()
                         onDismiss()
                     }) {
                         Text(stringResource(id = R.string.date_picker_ok))
@@ -110,8 +112,6 @@ fun DatePickerField(
     }
 }
 
-private fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    formatter.timeZone = TimeZone.getTimeZone("UTC")
-    return formatter.format(Date(millis))
+private fun convertMillisToLocalDate(millis: Long): LocalDate {
+    return Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).toLocalDate()
 }

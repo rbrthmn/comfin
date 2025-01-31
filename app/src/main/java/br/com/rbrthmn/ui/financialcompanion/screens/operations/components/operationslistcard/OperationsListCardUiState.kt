@@ -21,7 +21,7 @@
 package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard
 
 import androidx.compose.runtime.Composable
-import java.util.Date
+import java.time.LocalDate
 
 data class OperationsListCardUiState(
     val operations: List<Operation> = listOf(),
@@ -32,6 +32,6 @@ data class Operation(
     val extras: String? = null,
     val description: String,
     val value: String,
-    val date: Date,
+    val date: LocalDate,
     val type: String
 )

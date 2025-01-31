@@ -20,6 +20,8 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -36,7 +38,7 @@ import br.com.rbrthmn.ui.financialcompanion.utils.canBeFormatted
 import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.util.Date
+import java.time.LocalDate
 
 class OperationsListCardViewModel(val stringProvider: StringProvider) :
     OperationsListCardContract.OperationsListCardViewModel() {
@@ -51,7 +53,7 @@ class OperationsListCardViewModel(val stringProvider: StringProvider) :
     override var isNewOperationOriginAccountValid: Boolean by mutableStateOf(true)
     override var newOperationDestinationAccount: String by mutableStateOf("")
     override var isNewOperationDestinationAccountValid: Boolean by mutableStateOf(true)
-    override var newOperationDate: Date by mutableStateOf(Date())
+    override var newOperationDate: LocalDate by mutableStateOf(LocalDate.now())
     override var isNewOperationDateValid: Boolean by mutableStateOf(true)
     override var newOperationReserve: String by mutableStateOf("")
     override var isNewOperationReserveValid: Boolean by mutableStateOf(true)
@@ -102,11 +104,9 @@ class OperationsListCardViewModel(val stringProvider: StringProvider) :
         }
     }
 
-    override fun onOperationDateChange(operationDate: Long?) {
-        operationDate?.let {
-            newOperationDate = Date(it)
-            isNewOperationDateValid = true
-        }
+    override fun onOperationDateChange(operationDate: LocalDate) {
+        newOperationDate = operationDate
+        isNewOperationDateValid = true
     }
 
     override fun onReserveChange(reserve: String) {
@@ -205,7 +205,7 @@ class OperationsListCardViewModel(val stringProvider: StringProvider) :
         isNewOperationOriginAccountValid = true
         newOperationDestinationAccount = ""
         isNewOperationDestinationAccountValid = true
-        newOperationDate = Date()
+        newOperationDate = LocalDate.now()
         isNewOperationDateValid = true
         newOperationReserve = ""
         isNewOperationReserveValid = true
