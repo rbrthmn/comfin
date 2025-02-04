@@ -143,55 +143,64 @@ class OperationsListCardViewModel(val stringProvider: StringProvider) :
     }
 
     private fun validateFields(): Boolean {
+        if (newOperationType == null) validateCommonFields()
+
+        return when (newOperationType) {
+            OperationType.TRANSFER -> {
+                validateCommonFields()
+                isNewOperationOriginAccountValid = newOperationOriginAccount.isNotBlank()
+                isNewOperationDestinationAccountValid =
+                    newOperationDestinationAccount.isNotBlank()
+                isNewOperationOriginAccountValid && isNewOperationDestinationAccountValid
+            }
+
+            OperationType.DEBIT_PURCHASE,
+            OperationType.BILL_PAYMENT,
+            OperationType.WITHDRAWAL -> {
+                validateCommonFields()
+                isNewOperationOriginAccountValid = newOperationOriginAccount.isNotBlank()
+                isNewOperationOriginAccountValid
+            }
+
+            OperationType.DEPOSIT,
+            OperationType.INCOME -> {
+                validateCommonFields()
+                isNewOperationDestinationAccountValid =
+                    newOperationDestinationAccount.isNotBlank()
+                isNewOperationDestinationAccountValid
+            }
+
+            OperationType.RESERVE_ALLOCATION -> {
+                validateCommonFields()
+                isNewOperationReserveValid = newOperationReserve.isNotBlank()
+                isNewOperationOriginAccountValid = newOperationOriginAccount.isNotBlank()
+                isNewOperationReserveValid && isNewOperationOriginAccountValid
+            }
+
+            OperationType.RESERVE_WITHDRAWAL -> {
+                validateCommonFields()
+                isNewOperationReserveValid = newOperationReserve.isNotBlank()
+                isNewOperationDestinationAccountValid =
+                    newOperationDestinationAccount.isNotBlank()
+                isNewOperationReserveValid && isNewOperationDestinationAccountValid
+            }
+
+            OperationType.OTHER -> {
+                validateCommonFields()
+                isNewOperationOriginAccountValid = newOperationOriginAccount.isNotBlank()
+                isNewOperationOriginAccountValid
+            }
+
+            null -> false
+        } && isNewOperationDescriptionValid &&
+                isNewOperationValueValid &&
+                isNewOperationDateValid
+    }
+
+    private fun validateCommonFields() {
         isNewOperationDescriptionValid = newOperationDescription.isNotBlank()
         isNewOperationValueValid = canBeFormatted(newOperationValue)
         isNewOperationTypeValid = newOperationType != null
-
-        return isNewOperationDescriptionValid &&
-                isNewOperationValueValid &&
-                isNewOperationDateValid &&
-                when (newOperationType) {
-                    OperationType.TRANSFER -> {
-                        isNewOperationOriginAccountValid = newOperationOriginAccount.isNotBlank()
-                        isNewOperationDestinationAccountValid =
-                            newOperationDestinationAccount.isNotBlank()
-                        isNewOperationOriginAccountValid && isNewOperationDestinationAccountValid
-                    }
-
-                    OperationType.DEBIT_PURCHASE,
-                    OperationType.BILL_PAYMENT,
-                    OperationType.WITHDRAWAL -> {
-                        isNewOperationOriginAccountValid = newOperationOriginAccount.isNotBlank()
-                        isNewOperationOriginAccountValid
-                    }
-
-                    OperationType.DEPOSIT,
-                    OperationType.INCOME -> {
-                        isNewOperationDestinationAccountValid =
-                            newOperationDestinationAccount.isNotBlank()
-                        isNewOperationDestinationAccountValid
-                    }
-
-                    OperationType.RESERVE_ALLOCATION -> {
-                        isNewOperationReserveValid = newOperationReserve.isNotBlank()
-                        isNewOperationOriginAccountValid = newOperationOriginAccount.isNotBlank()
-                        isNewOperationReserveValid && isNewOperationOriginAccountValid
-                    }
-
-                    OperationType.RESERVE_WITHDRAWAL -> {
-                        isNewOperationReserveValid = newOperationReserve.isNotBlank()
-                        isNewOperationDestinationAccountValid =
-                            newOperationDestinationAccount.isNotBlank()
-                        isNewOperationReserveValid && isNewOperationDestinationAccountValid
-                    }
-
-                    OperationType.OTHER -> {
-                        isNewOperationOriginAccountValid = newOperationOriginAccount.isNotBlank()
-                        isNewOperationOriginAccountValid
-                    }
-
-                    null -> false
-                }
     }
 
     override fun resetDialogFields() {

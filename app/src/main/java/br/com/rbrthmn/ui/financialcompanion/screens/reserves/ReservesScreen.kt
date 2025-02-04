@@ -68,7 +68,9 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.AddOperationDialog
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.model.OperationType
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.OperationsListCardContract
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
+import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -306,11 +308,17 @@ private fun ReserveOperationsList(
     modifier: Modifier = Modifier
 ) {
     val showDialog = remember { mutableStateOf(false) }
+    val operationsListCardViewModel: OperationsListCardContract.OperationsListCardViewModel =
+        koinViewModel()
 
     if (showDialog.value) {
         AddOperationDialog(
-            onSaveButtonClick = { showDialog.value = false },
-            onCancelButtonClick = { showDialog.value = false },
+            viewModel = operationsListCardViewModel,
+            onSaveButtonClick = { operationsListCardViewModel.onSaveButtonClick(showDialog) },
+            onCancelButtonClick = {
+                showDialog.value = false
+                operationsListCardViewModel.resetDialogFields()
+            },
             availableOperationTypes = listOf(
                 OperationType.RESERVE_ALLOCATION,
                 OperationType.RESERVE_WITHDRAWAL

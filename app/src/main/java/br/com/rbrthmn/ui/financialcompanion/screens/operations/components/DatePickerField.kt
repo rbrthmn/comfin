@@ -57,11 +57,19 @@ fun DatePickerField(
     isError: Boolean
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState()
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = LocalDate
+            .now()
+            .atStartOfDay(ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
+    )
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
-    fun onDismiss() { showDatePicker = false }
+    fun onDismiss() {
+        showDatePicker = false
+    }
 
     Box(
         modifier = Modifier.fillMaxWidth()

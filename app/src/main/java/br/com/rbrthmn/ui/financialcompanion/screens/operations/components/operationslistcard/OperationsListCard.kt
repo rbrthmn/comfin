@@ -49,6 +49,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -76,12 +77,11 @@ fun OperationsListCard(
     viewModel: OperationsListCardContract.OperationsListCardViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val showAddOperationDialog = remember { mutableStateOf(false) }
+    val showAddOperationDialog = rememberSaveable { mutableStateOf(false) }
 
     if (showAddOperationDialog.value)
         AddOperationDialog(
             viewModel = viewModel,
-            uiState = uiState,
             onSaveButtonClick = { viewModel.onSaveButtonClick(showAddOperationDialog) },
             onCancelButtonClick = {
                 viewModel.resetDialogFields()
@@ -142,12 +142,11 @@ fun OperationsListCard(
 fun AddOperationDialog(
     modifier: Modifier = Modifier,
     viewModel: OperationsListCardContract.OperationsListCardViewModel,
-    uiState: OperationsListCardUiState,
     onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
     availableOperationTypes: List<OperationType> = OperationType.entries
 ) {
-
+    val uiState by viewModel.uiState.collectAsState()
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
             modifier = modifier.fillMaxWidth()
@@ -349,7 +348,6 @@ fun AddOperationDialogPreview(modifier: Modifier = Modifier) {
 
     AddOperationDialog(
         viewModel = OperationsListCardViewModel(stringProvider),
-        uiState = OperationsListCardUiState(),
         onSaveButtonClick = {},
         onCancelButtonClick = {}
     )
