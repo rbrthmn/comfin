@@ -20,8 +20,6 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -38,6 +36,7 @@ import br.com.rbrthmn.ui.financialcompanion.utils.canBeFormatted
 import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 
 class OperationsListCardViewModel(val stringProvider: StringProvider) :
@@ -57,6 +56,7 @@ class OperationsListCardViewModel(val stringProvider: StringProvider) :
     override var isNewOperationDateValid: Boolean by mutableStateOf(true)
     override var newOperationReserve: String by mutableStateOf("")
     override var isNewOperationReserveValid: Boolean by mutableStateOf(true)
+    override var searchQuery: String by mutableStateOf("")
 
     init {
         uiState.value =
@@ -313,5 +313,22 @@ class OperationsListCardViewModel(val stringProvider: StringProvider) :
             null -> Unit
         }
         uiState.value = uiState.value.copy(dialogFields = newOperationDialogFields)
+    }
+
+    override fun onSearchQueryChange(query: String) {
+        searchQuery = query
+        uiState.update { currentState ->
+            val filteredList = if (query.isBlank()) {
+                uiState.value.operations
+            } else {
+                uiState.value.operations.filter { operation ->
+                    operation.description.contains(query, ignoreCase = true) ||
+                            operation.type.contains(query, ignoreCase = true) ||
+                            operation.value.contains(query, ignoreCase = true) ||
+                            operation.extras?.contains(query, ignoreCase = true) == true
+                }
+            }
+            currentState.copy(operations = filteredList)
+        }
     }
 }

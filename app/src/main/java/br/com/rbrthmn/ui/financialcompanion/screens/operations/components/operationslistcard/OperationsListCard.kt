@@ -103,10 +103,11 @@ fun OperationsListCard(
             )
         ) {
             TextField(
-                value = "",
-                onValueChange = { },
+                value = viewModel.searchQuery,
+                onValueChange = viewModel::onSearchQueryChange,
                 label = { Text(text = stringResource(id = R.string.search_hint)) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
             )
             HorizontalDivider()
             TextButton(

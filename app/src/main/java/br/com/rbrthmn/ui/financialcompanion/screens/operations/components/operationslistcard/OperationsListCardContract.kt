@@ -43,6 +43,7 @@ interface OperationsListCardContract {
         abstract var isNewOperationDateValid: Boolean
         abstract val newOperationReserve: String
         abstract val isNewOperationReserveValid: Boolean
+        abstract val searchQuery: String
         abstract fun onDescriptionChange(description: String)
         abstract fun onValueChange(value: String)
         abstract fun onOperationTypeChange(operationType: OperationType)
@@ -52,5 +53,6 @@ interface OperationsListCardContract {
         abstract fun onReserveChange(reserve: String)
         abstract fun onSaveButtonClick(showDialog: MutableState<Boolean>)
         abstract fun resetDialogFields()
+        abstract fun onSearchQueryChange(query: String)
     }
 }
