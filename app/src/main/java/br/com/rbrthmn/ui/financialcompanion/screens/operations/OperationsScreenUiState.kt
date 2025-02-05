@@ -18,10 +18,23 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard
+package br.com.rbrthmn.ui.financialcompanion.screens.operations
 
-data class TotalBalanceCardUiState(
+import androidx.compose.runtime.Composable
+import java.time.LocalDate
+
+data class OperationsScreenUiState(
+    val operations: List<Operation> = listOf(),
+    val dialogFields: MutableList<@Composable () -> Unit> = mutableListOf(),
     val totalBalance: String = "",
     val totalIncome: String = "",
     val totalOutcome: String = ""
+)
+
+data class Operation(
+    val extras: String? = null,
+    val description: String,
+    val value: String,
+    val date: LocalDate,
+    val type: String
 )

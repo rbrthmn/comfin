@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard
+package br.com.rbrthmn.ui.financialcompanion.screens.operations
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -33,15 +33,16 @@ import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.Operat
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationOriginAccount
 import br.com.rbrthmn.ui.financialcompanion.utils.StringProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.canBeFormatted
+import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 
-class OperationsListCardViewModel(val stringProvider: StringProvider) :
-    OperationsListCardContract.OperationsListCardViewModel() {
-    override var uiState = MutableStateFlow(OperationsListCardUiState())
+class OperationsScreenViewModel(val stringProvider: StringProvider) :
+    OperationsScreenContract.OperationsScreenViewModel() {
+    override var uiState = MutableStateFlow(OperationsScreenUiState())
     override var newOperationDescription: String by mutableStateOf("")
     override var isNewOperationDescriptionValid: Boolean by mutableStateOf(true)
     override var newOperationValue: String by mutableStateOf("")
@@ -60,7 +61,12 @@ class OperationsListCardViewModel(val stringProvider: StringProvider) :
 
     init {
         uiState.value =
-            OperationsListCardUiState(operations = getOperationsMock().sortedByDescending { it.date })
+            OperationsScreenUiState(
+                operations = getOperationsMock().sortedByDescending { it.date },
+                totalBalance = formatDouble(TOTAL_BALANCE_MOCK),
+                totalIncome = formatDouble(TOTAL_INCOME_MOCK),
+                totalOutcome = formatDouble(TOTAL_OUTCOME_MOCK)
+            )
         updateDialogFields()
     }
 
@@ -330,5 +336,12 @@ class OperationsListCardViewModel(val stringProvider: StringProvider) :
             }
             currentState.copy(operations = filteredList)
         }
+    }
+
+    private companion object {
+        const val TOTAL_BALANCE_MOCK = 1000.0
+        const val TOTAL_INCOME_MOCK = 1500.0
+        const val TOTAL_OUTCOME_MOCK = 500.0
+
     }
 }

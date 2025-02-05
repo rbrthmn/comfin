@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard
+package br.com.rbrthmn.ui.financialcompanion.screens.operations.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -65,16 +65,17 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.model.OperationType
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.DatePickerField
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.Operation
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
 import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
-import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun OperationsListCard(
-    viewModel: OperationsListCardContract.OperationsListCardViewModel = koinViewModel(),
+    viewModel: OperationsScreenContract.OperationsScreenViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddOperationDialog = rememberSaveable { mutableStateOf(false) }
@@ -142,7 +143,7 @@ fun OperationsListCard(
 @Composable
 fun AddOperationDialog(
     modifier: Modifier = Modifier,
-    viewModel: OperationsListCardContract.OperationsListCardViewModel,
+    viewModel: OperationsScreenContract.OperationsScreenViewModel,
     onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
     availableOperationTypes: List<OperationType> = OperationType.entries
@@ -338,7 +339,7 @@ fun OperationsListCardPreview() {
     val context = LocalContext.current
     val stringProvider = ResourceStringProvider(context)
 
-    OperationsListCard(viewModel = OperationsListCardViewModel(stringProvider))
+    OperationsListCard(viewModel = OperationsScreenViewModel(stringProvider))
 }
 
 @Preview
@@ -348,7 +349,7 @@ fun AddOperationDialogPreview(modifier: Modifier = Modifier) {
     val stringProvider = ResourceStringProvider(context)
 
     AddOperationDialog(
-        viewModel = OperationsListCardViewModel(stringProvider),
+        viewModel = OperationsScreenViewModel(stringProvider),
         onSaveButtonClick = {},
         onCancelButtonClick = {}
     )

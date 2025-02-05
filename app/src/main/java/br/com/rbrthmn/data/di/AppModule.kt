@@ -32,10 +32,8 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdif
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardContract
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.OperationsListCardContract
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.OperationsListCardViewModel
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard.TotalBalanceCardContract
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard.TotalBalanceCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
 import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.StringProvider
 import org.koin.android.ext.koin.androidContext
@@ -53,9 +51,8 @@ val appModule = module {
     viewModelOf<CreditCardBillsCardContract.CreditCardsBillCardViewModel>(::CreditCardBillsCardViewModel)
     viewModelOf<LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel>(::LastMonthDifferenceCardViewModel)
     viewModelOf<MonthlyLimitCardContract.MonthlyLimitCardViewModel>(::MonthlyLimitCardViewModel)
-    viewModelOf<TotalBalanceCardContract.TotalBalanceCardViewModel>(::TotalBalanceCardViewModel)
-    viewModel<OperationsListCardContract.OperationsListCardViewModel> {
-        OperationsListCardViewModel(stringProvider = get())
+    viewModel<OperationsScreenContract.OperationsScreenViewModel> {
+        OperationsScreenViewModel(stringProvider = get())
     }
 
     factoryOf<DecimalInputFieldFormatter>(::DecimalFormatter)

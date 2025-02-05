@@ -21,7 +21,7 @@
 package br.com.rbrthmn.ui.financialcompanion.utils
 
 import br.com.rbrthmn.model.OperationType
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.Operation
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.Operation
 import java.time.ZoneId
 import java.util.Calendar
 import java.util.Locale
@@ -36,7 +36,7 @@ fun getOperationsMock(): List<Operation> {
     val fixedYear = Calendar.getInstance().get(Calendar.YEAR)
 
     repeat(12) { index ->
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        val calendar = Calendar.getInstance()
         calendar.set(Calendar.YEAR, fixedYear)
         calendar.set(Calendar.MONTH, fixedMonth)
         calendar.set(Calendar.DAY_OF_MONTH, Random.nextInt(1,fixedDay))

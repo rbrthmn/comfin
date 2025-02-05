@@ -65,10 +65,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.AddOperationDialog
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AddOperationDialog
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.model.OperationType
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.operationslistcard.OperationsListCardContract
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
@@ -308,16 +308,16 @@ private fun ReserveOperationsList(
     modifier: Modifier = Modifier
 ) {
     val showDialog = remember { mutableStateOf(false) }
-    val operationsListCardViewModel: OperationsListCardContract.OperationsListCardViewModel =
+    val operationsScreenViewModel: OperationsScreenContract.OperationsScreenViewModel =
         koinViewModel()
 
     if (showDialog.value) {
         AddOperationDialog(
-            viewModel = operationsListCardViewModel,
-            onSaveButtonClick = { operationsListCardViewModel.onSaveButtonClick(showDialog) },
+            viewModel = operationsScreenViewModel,
+            onSaveButtonClick = { operationsScreenViewModel.onSaveButtonClick(showDialog) },
             onCancelButtonClick = {
                 showDialog.value = false
-                operationsListCardViewModel.resetDialogFields()
+                operationsScreenViewModel.resetDialogFields()
             },
             availableOperationTypes = listOf(
                 OperationType.RESERVE_ALLOCATION,
