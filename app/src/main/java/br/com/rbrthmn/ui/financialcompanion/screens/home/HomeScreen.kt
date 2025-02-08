@@ -45,9 +45,9 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdif
 import br.com.rbrthmn.ui.financialcompanion.common.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
-import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
 import org.koin.compose.koinInject
+import java.time.LocalDate
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -66,7 +66,8 @@ fun HomeScreen(
         snackbarHost = { SnackbarHost(hostState = snackBarProvider.hostState) },
         topBar = {
             MonthSelectionTopBar(
-                currentMonth = MonthsOfTheYear.JANUARY,
+                initialDate = LocalDate.now(),
+                onDateSelected = { },
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
             )
         }, modifier = modifier

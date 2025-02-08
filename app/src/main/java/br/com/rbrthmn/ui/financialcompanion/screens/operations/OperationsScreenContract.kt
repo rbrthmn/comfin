@@ -44,6 +44,7 @@ interface OperationsScreenContract {
         abstract val newOperationReserve: String
         abstract val isNewOperationReserveValid: Boolean
         abstract val searchQuery: String
+        abstract val currentDate: LocalDate
         abstract fun onDescriptionChange(description: String)
         abstract fun onValueChange(value: String)
         abstract fun onOperationTypeChange(operationType: OperationType)
@@ -54,5 +55,6 @@ interface OperationsScreenContract {
         abstract fun onSaveButtonClick(showDialog: MutableState<Boolean>)
         abstract fun resetDialogFields()
         abstract fun onSearchQueryChange(query: String)
+        abstract fun onDateFilterChange(localDate: LocalDate)
     }
 }

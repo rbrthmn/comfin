@@ -58,6 +58,7 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
     override var newOperationReserve: String by mutableStateOf("")
     override var isNewOperationReserveValid: Boolean by mutableStateOf(true)
     override var searchQuery: String by mutableStateOf("")
+    override var currentDate: LocalDate by mutableStateOf(LocalDate.now())
 
     init {
         uiState.value =
@@ -336,6 +337,10 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
             }
             currentState.copy(operations = filteredList)
         }
+    }
+
+    override fun onDateFilterChange(localDate: LocalDate) {
+        currentDate = localDate
     }
 
     private companion object {

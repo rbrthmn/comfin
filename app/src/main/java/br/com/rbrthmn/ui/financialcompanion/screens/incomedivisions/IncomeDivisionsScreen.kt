@@ -63,7 +63,7 @@ import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.common.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
-import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
+import java.time.LocalDate
 
 object IncomeDivisionsDestination : NavigationDestination {
     override val route = "income_divisions"
@@ -79,7 +79,8 @@ fun IncomeDivisionsScreen(
 
     Scaffold(topBar = {
         MonthSelectionTopBar(
-            currentMonth = MonthsOfTheYear.JANUARY,
+            initialDate = LocalDate.now(),
+            onDateSelected = {},
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
     }, modifier = modifier) { innerPadding ->

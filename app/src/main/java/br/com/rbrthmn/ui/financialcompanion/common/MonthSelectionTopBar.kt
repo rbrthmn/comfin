@@ -42,8 +42,9 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,23 +58,38 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
+import java.time.LocalDate
+import java.time.Month
+import java.time.format.TextStyle
 import java.util.Calendar
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MonthSelectionTopBar(
-    currentMonth: MonthsOfTheYear,
+    initialDate: LocalDate,
+    onDateSelected: (LocalDate) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-    var showDialog by remember { mutableStateOf(false) }
+    var currentMonth by rememberSaveable { mutableStateOf(initialDate.month) }
+    var currentYear by rememberSaveable { mutableIntStateOf(initialDate.year) }
+    var showDialog by rememberSaveable { mutableStateOf(false) }
 
     if (showDialog)
         MonthSelectionDialog(
             onDismissRequest = { showDialog = false },
-            currentYear = currentYear,
-            currentMonth = currentMonth
+            initialYear = currentYear,
+            initialMonth = currentMonth,
+            onYearSelected = { year -> currentYear = year },
+            onMonthSelected = { month -> currentMonth = month },
+            onCurrentMonthButtonClick = {
+                currentMonth = initialDate.month
+                onDateSelected(LocalDate.now())
+            },
+            onApplyButtonClick = {
+                val selectedDate = LocalDate.of(currentYear, currentMonth, 1)
+                onDateSelected(selectedDate)
+            }
         )
 
     CenterAlignedTopAppBar(
@@ -81,15 +97,19 @@ fun MonthSelectionTopBar(
             InfiniteHorizontalCircularList(
                 height = dimensionResource(id = R.dimen.dates_circular_list_item_height),
                 itemWidth = 80.dp,
-                items = MonthsOfTheYear.entries.map { stringResource(id = it.shortStringId) },
-                initialItem = currentMonth,
+                items = getMonthsOfYearShort(),
+                initialItem = getMonthsOfYearShort()[currentMonth.value - 1],
                 fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
                 textColor = Color.LightGray,
                 selectedTextColor = Color.Black,
                 modifier = Modifier
                     .clip(RoundedCornerShape(dimensionResource(id = R.dimen.month_top_bar_corner_shape_round)))
                     .clickable { showDialog = true },
-                onItemSelected = { _, _ -> }
+                onItemSelected = { index, _ ->
+                    currentMonth = Month.entries[index]
+                    val selectedDate = LocalDate.of(currentYear, index + 1, 1)
+                    onDateSelected(selectedDate)
+                }
             )
         },
         modifier = modifier
@@ -106,8 +126,12 @@ fun MonthSelectionTopBar(
 @Composable
 private fun MonthSelectionDialog(
     onDismissRequest: () -> Unit,
-    currentYear: Int = Calendar.getInstance().get(Calendar.YEAR),
-    currentMonth: MonthsOfTheYear = MonthsOfTheYear.entries.first(),
+    onApplyButtonClick: () -> Unit,
+    onCurrentMonthButtonClick: () -> Unit,
+    initialYear: Int,
+    onYearSelected: (Int) -> Unit,
+    initialMonth: Month,
+    onMonthSelected: (Month) -> Unit
 ) {
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card {
@@ -126,35 +150,40 @@ private fun MonthSelectionDialog(
                             width = dimensionResource(id = R.dimen.dates_circular_list_width),
                             itemHeight = dimensionResource(id = R.dimen.dates_circular_list_item_height),
                             items = getYearsList(),
-                            initialItem = currentYear,
+                            initialItem = initialYear,
                             fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
                             textColor = Color.LightGray,
                             selectedTextColor = Color.Black,
-                            onItemSelected = { _, _ -> }
+                            onItemSelected = { _, year ->
+                                onYearSelected(year)
+                            }
                         )
                         InfiniteVerticalCircularList(
                             width = dimensionResource(id = R.dimen.dates_circular_list_width),
                             itemHeight = dimensionResource(id = R.dimen.dates_circular_list_item_height),
-                            items = MonthsOfTheYear.entries.map { stringResource(id = it.longStringId) },
-                            initialItem = currentMonth,
+                            items = getMonthsOfYear(),
+                            initialItem = getMonthsOfYear()[initialMonth.value - 1],
                             fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
                             textColor = Color.LightGray,
                             selectedTextColor = Color.Black,
-                            onItemSelected = { _, _ -> }
+                            onItemSelected = { index, _ ->
+                                onMonthSelected(Month.entries[index])
+                            }
                         )
                     }
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
-                        Button(onClick = { onDismissRequest() }) {
-                            Text(text = stringResource(id = R.string.apply_date_button))
-                        }
-                        OutlinedButton(onClick = { onDismissRequest() }) {
-                            Text(text = stringResource(id = R.string.current_month_button))
-                        }
+                        OutlinedButton(onClick = {
+                            onCurrentMonthButtonClick()
+                            onDismissRequest()
+                        }) { Text(text = stringResource(id = R.string.current_month_button)) }
+                        Button(onClick = {
+                            onApplyButtonClick()
+                            onDismissRequest()
+                        }) { Text(text = stringResource(id = R.string.apply_date_button)) }
                     }
                 }
                 IconButton(
@@ -174,21 +203,43 @@ private fun MonthSelectionDialog(
     }
 }
 
+private fun getMonthsOfYear(): List<String> {
+    return Month.entries.map { month ->
+        month.getDisplayName(TextStyle.FULL, Locale.getDefault())
+    }
+}
+
+private fun getMonthsOfYearShort(): List<String> {
+    return Month.entries.map { month ->
+        month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+            .uppercase()
+            .removeSuffix(".")
+    }
+}
+
 private fun getYearsList(): List<Int> {
     val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-    return (currentYear - 20..currentYear + 10).toList()
+    return (currentYear - 20..currentYear + 1).toList()
 }
 
 @Preview
 @Composable
 fun MonthSelectionTopBarPreview(modifier: Modifier = Modifier) {
     MonthSelectionTopBar(
-        currentMonth = MonthsOfTheYear.DECEMBER,
+        initialDate = LocalDate.now(),
+        onDateSelected = {}
     )
 }
 
 @Preview
 @Composable
 fun MonthSelectionDialogPreview(modifier: Modifier = Modifier) {
-    MonthSelectionDialog(onDismissRequest = {})
+    MonthSelectionDialog(onDismissRequest = {},
+        initialMonth = Month.JULY,
+        initialYear = 2025,
+        onMonthSelected = {},
+        onYearSelected = {},
+        onCurrentMonthButtonClick = {},
+        onApplyButtonClick = {}
+    )
 }

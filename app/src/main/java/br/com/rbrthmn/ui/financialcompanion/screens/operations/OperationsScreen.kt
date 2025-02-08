@@ -43,7 +43,6 @@ import br.com.rbrthmn.ui.financialcompanion.common.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationsListCard
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.TotalBalanceCard
-import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
 import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
 import org.koin.androidx.compose.koinViewModel
 
@@ -61,7 +60,8 @@ fun OperationsScreen(
 
     Scaffold(topBar = {
         MonthSelectionTopBar(
-            currentMonth = MonthsOfTheYear.JANUARY,
+            initialDate = viewModel.currentDate,
+            onDateSelected = viewModel::onDateFilterChange,
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
     }, modifier = modifier) { innerPadding ->
