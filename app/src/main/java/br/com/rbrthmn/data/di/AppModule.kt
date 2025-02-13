@@ -20,6 +20,8 @@
 
 package br.com.rbrthmn.data.di
 
+import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenContract
+import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalFormatter
@@ -47,6 +49,7 @@ val appModule = module {
     singleOf<SnackBarProvider>(::SnackBarProviderImpl)
     single<StringProvider> { ResourceStringProvider(context = androidContext()) }
 
+    viewModelOf<HomeScreenContract.HomeScreenViewModel>(::HomeScreenViewModel)
     viewModelOf<BalanceCardContract.BalanceCardViewModel>(::BalanceCardViewModel)
     viewModelOf<CreditCardBillsCardContract.CreditCardsBillCardViewModel>(::CreditCardBillsCardViewModel)
     viewModelOf<LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel>(::LastMonthDifferenceCardViewModel)

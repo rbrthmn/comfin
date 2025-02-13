@@ -46,8 +46,8 @@ import br.com.rbrthmn.ui.financialcompanion.common.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
+import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
-import java.time.LocalDate
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -56,8 +56,9 @@ object HomeDestination : NavigationDestination {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    modifier: Modifier = Modifier,
     onMonthlyLimitCardClick: () -> Unit,
-    modifier: Modifier = Modifier
+    viewModel: HomeScreenContract.HomeScreenViewModel = koinViewModel()
 ) {
     val snackBarProvider: SnackBarProvider = koinInject()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -66,8 +67,8 @@ fun HomeScreen(
         snackbarHost = { SnackbarHost(hostState = snackBarProvider.hostState) },
         topBar = {
             MonthSelectionTopBar(
-                initialDate = LocalDate.now(),
-                onDateSelected = { },
+                initialDate = viewModel.currentDateFilter,
+                onDateSelected =  viewModel::onDateFilterChange,
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
             )
         }, modifier = modifier
@@ -100,6 +101,6 @@ private fun HomeScreenContent(
 
 @Preview
 @Composable
-private fun HomeScreenPreview(modifier: Modifier = Modifier) {
+private fun HomeScreenContentPreview(modifier: Modifier = Modifier) {
     HomeScreen(onMonthlyLimitCardClick = {}, modifier = modifier)
 }
