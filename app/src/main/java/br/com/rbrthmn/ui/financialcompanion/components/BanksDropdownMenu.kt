@@ -45,7 +45,8 @@ import br.com.rbrthmn.R
 fun BanksDropdownMenu(
     onBankSelected: (Int, String) -> Unit,
     isValid: Boolean,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText: String? by remember { mutableStateOf(null) }
     val bankList: List<Pair<Int, String>> = listOf(
@@ -97,7 +98,7 @@ fun BanksDropdownMenu(
                     text = { Text(text = selectionOption.second) },
                     leadingIcon = {
                         Icon(
-                            painter = painterResource(id = R.drawable.account_balance),
+                            painter = painterResource(id = R.drawable.bank_icon),
                             contentDescription = "Balance Icon",
                             modifier = Modifier.clip(CircleShape)
                         )

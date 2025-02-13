@@ -40,12 +40,11 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.BalanceCard
-import br.com.rbrthmn.ui.financialcompanion.components.CreditCardsBillCard
+import br.com.rbrthmn.ui.financialcompanion.components.CreditCardBillsCard
 import br.com.rbrthmn.ui.financialcompanion.components.LastMonthDifferenceCard
 import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.components.MonthlyLimitCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
-import br.com.rbrthmn.ui.financialcompanion.uistates.FinancialOverviewUiState
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
 import org.koin.compose.koinInject
@@ -82,12 +81,6 @@ private fun HomeScreenContent(
     innerPaddingValues: PaddingValues,
     modifier: Modifier = Modifier
 ) {
-    val accounts = listOf(
-        FinancialOverviewUiState("Banco A", "500,00", "R$"),
-        FinancialOverviewUiState("Banco B", "1.000.000,00", "R$"),
-        FinancialOverviewUiState("Banco C", "5,00", "R$")
-    )
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
@@ -103,7 +96,7 @@ private fun HomeScreenContent(
             monthDifference = "-5435,99"
         )
         BalanceCard()
-        CreditCardsBillCard(totalCreditCardsBill = "2300,00", cardBills = accounts)
+        CreditCardBillsCard()
         LastMonthDifferenceCard("-5435,99")
     }
 }

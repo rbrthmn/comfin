@@ -21,19 +21,23 @@
 package br.com.rbrthmn.data.di
 
 import br.com.rbrthmn.contracts.BalanceContract
+import br.com.rbrthmn.contracts.CreditCardContract
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalFormatter
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalInputFieldFormatter
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProviderImpl
 import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.viewmodels.CreditCardBillsCardViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val appModule = module {
     viewModelOf<BalanceContract.BalanceCardViewModel>(::BalanceCardViewModel)
+    viewModelOf<CreditCardContract.CreditCardsBillCardViewModel>(::CreditCardBillsCardViewModel)
 
-    factory<DecimalInputFieldFormatter> { DecimalFormatter() }
+    factoryOf<DecimalInputFieldFormatter>(::DecimalFormatter)
 
     singleOf<SnackBarProvider>(::SnackBarProviderImpl)
 }
