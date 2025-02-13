@@ -20,6 +20,7 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.operations
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -149,7 +150,8 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
         }
     }
 
-    private fun validateFields(): Boolean {
+    @VisibleForTesting
+    fun validateFields(): Boolean {
         if (newOperationType == null) validateCommonFields()
 
         return when (newOperationType) {
