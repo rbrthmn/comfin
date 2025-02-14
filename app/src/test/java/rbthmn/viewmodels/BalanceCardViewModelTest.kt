@@ -26,12 +26,13 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
+import java.time.LocalDate
 
 class BalanceCardViewModelTest {
     private val viewModel = BalanceCardViewModel()
 
     @Test
-    fun onInitialBalanceChange_with_empty_value_should_assign_correctly() {
+    fun `onInitialBalanceChange with empty value should assign correctly`() {
         viewModel.onInitialBalanceChange(EMPTY_STRING)
 
         assertEquals(false, viewModel.isNewAccountBalanceValid)
@@ -39,7 +40,7 @@ class BalanceCardViewModelTest {
     }
 
     @Test
-    fun onInitialBalanceChange_with_value_should_assign_correctly() {
+    fun `onInitialBalanceChange with value should assign correctly`() {
         viewModel.onInitialBalanceChange(VALID_BALANCE_STRING)
 
         assertEquals(true, viewModel.isNewAccountBalanceValid)
@@ -47,7 +48,7 @@ class BalanceCardViewModelTest {
     }
 
     @Test
-    fun onDescriptionChange_with_empty_value_should_assign_correctly() {
+    fun `onDescriptionChange with empty value should assign correctly`() {
         viewModel.onDescriptionChange(EMPTY_STRING)
 
         assertEquals(false, viewModel.isNewAccountDescriptionValid)
@@ -55,7 +56,7 @@ class BalanceCardViewModelTest {
     }
 
     @Test
-    fun onDescriptionChange_with_value_should_assign_correctly() {
+    fun `onDescriptionChange with value should assign correctly`() {
         viewModel.onDescriptionChange(VALID_STRING)
 
         assertEquals(true, viewModel.isNewAccountDescriptionValid)
@@ -63,7 +64,7 @@ class BalanceCardViewModelTest {
     }
 
     @Test
-    fun onBankChange_with_empty_value_should_assign_correctly() {
+    fun `onBankChange with empty value should assign correctly`() {
         viewModel.onBankChange(VALID_ID_STRING, EMPTY_STRING)
 
         assertEquals(false, viewModel.isNewAccountBankValid)
@@ -72,7 +73,7 @@ class BalanceCardViewModelTest {
     }
 
     @Test
-    fun onBankChange_with_value_should_assign_correctly() {
+    fun `onBankChange with value should assign correctly`() {
         viewModel.onBankChange(VALID_ID_STRING, VALID_BALANCE_STRING)
 
         assertEquals(true, viewModel.isNewAccountBankValid)
@@ -81,14 +82,14 @@ class BalanceCardViewModelTest {
     }
 
     @Test
-    fun cleanNewAccount_should_assign_default_values() {
+    fun `cleanNewAccount should assign default values`() {
         viewModel.cleanNewAccount()
 
         assertCleanedInputs()
     }
 
     @Test
-    fun onSaveClick_with_valid_input_should_assign_false_to_dialog() {
+    fun `onSaveClick with valid input should assign false to dialog`() {
         assignValidInputs()
         val mock = mutableStateOf(true)
 
@@ -98,7 +99,7 @@ class BalanceCardViewModelTest {
     }
 
     @Test
-    fun onSaveClick_with_valid_input_should_add_new_account() {
+    fun `onSaveClick with valid input should add new account`() {
         assignValidInputs()
         val mock = mutableStateOf(true)
         val newAccount = BankAccountBalanceUiState(
@@ -114,7 +115,7 @@ class BalanceCardViewModelTest {
     }
 
     @Test
-    fun onSaveClick_with_valid_input_should_clean_inputs() {
+    fun `onSaveClick with valid input should clean inputs`() {
         assignValidInputs()
         val mock = mutableStateOf(true)
 
@@ -139,12 +140,20 @@ class BalanceCardViewModelTest {
         viewModel.onBankChange(VALID_ID_STRING, VALID_STRING)
     }
 
+    @Test
+    fun `setDateFilter should assign value correctly`() {
+        viewModel.setDateFilter(VALID_DATE)
+
+        assertEquals(VALID_DATE, viewModel.currentDateFilter)
+    }
+
     private companion object {
         const val VALID_BALANCE_STRING = "123"
         const val FORMATTED_BALANCE_STRING = "123.00"
         const val EMPTY_STRING = ""
         const val VALID_STRING = "test"
         const val VALID_ID_STRING = 1
+        val VALID_DATE: LocalDate = LocalDate.of(1998, 10, 20)
     }
 }
 

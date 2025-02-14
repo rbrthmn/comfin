@@ -20,37 +20,24 @@
 
 package rbthmn.viewmodels
 
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
-import junit.framework.TestCase
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
+import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenContract
+import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenViewModel
 import org.junit.Test
 import java.time.LocalDate
+import kotlin.test.assertEquals
 
-class LastMonthDifferenceCardViewModelTest {
-    private val viewModel = LastMonthDifferenceCardViewModel()
-
-    @Test
-    fun `init should assign ui state value correctly`() = runBlocking {
-        val uiState = viewModel.uiState.first()
-
-        assertEquals(EXPECTED_FIRST_VALUE, uiState.valueOfLastMonth)
-    }
+class HomeScreenViewModelTest {
+    private val viewModel: HomeScreenContract.HomeScreenViewModel = HomeScreenViewModel()
 
     @Test
-    fun `setDateFilter should assign value correctly`() {
-        viewModel.setDateFilter(VALID_DATE)
+    fun `onDateFilterChange should assign value correctly`() {
+        viewModel.onDateFilterChange(VALID_DATE)
 
-        TestCase.assertEquals(
-            VALID_DATE,
-            viewModel.currentDateFilter
-        )
+        assertEquals(VALID_DATE, viewModel.currentDateFilter)
+
     }
-
 
     private companion object {
-        const val EXPECTED_FIRST_VALUE = "-100.00"
         val VALID_DATE: LocalDate = LocalDate.of(1998, 10, 20)
     }
 }
