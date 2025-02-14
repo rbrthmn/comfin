@@ -22,9 +22,12 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimi
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.LocalDate
 
 interface MonthlyLimitCardContract {
     abstract class MonthlyLimitCardViewModel : ViewModel() {
         abstract val uiState: MutableStateFlow<MonthlyLimitCardUiState>
+        abstract val currentDateFilter: LocalDate
+        abstract fun setDateFilter(date: LocalDate)
     }
 }

@@ -23,6 +23,7 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.LocalDate
 
 interface BalanceCardContract {
     abstract class BalanceCardViewModel : ViewModel() {
@@ -34,10 +35,12 @@ interface BalanceCardContract {
         abstract val newAccountBank: String
         abstract val isNewAccountBankValid: Boolean
         abstract val newAccountBankIcon: Int
+        abstract val currentDateFilter: LocalDate
         abstract fun onInitialBalanceChange(balance: String)
         abstract fun onDescriptionChange(description: String)
         abstract fun onBankChange(bankId: Int, bankName: String)
         abstract fun onSaveClick(showDialog: MutableState<Boolean>)
         abstract fun cleanNewAccount()
+        abstract fun setDateFilter(date: LocalDate)
     }
 }

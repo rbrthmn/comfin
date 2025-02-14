@@ -53,16 +53,19 @@ import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDate
 
 @Composable
 fun MonthlyLimitCard(
     modifier: Modifier = Modifier,
     viewModel: MonthlyLimitCardContract.MonthlyLimitCardViewModel = koinViewModel(),
-    onCardClick: () -> Unit
+    onCardClick: () -> Unit,
+    currentDateFilter: LocalDate
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val showMonthlyLimitDialog = remember { mutableStateOf(false) }
     val showMonthlyDifferenceDialog = remember { mutableStateOf(false) }
+    viewModel.setDateFilter(currentDateFilter)
 
     if (showMonthlyLimitDialog.value)
         InfoDialog(
@@ -182,7 +185,11 @@ private fun InfoDialog(dialogText: String, onCloseButtonClick: () -> Unit) {
 @Preview
 @Composable
 fun MonthlyLimitCardPreview(modifier: Modifier = Modifier) {
-    MonthlyLimitCard(onCardClick = {}, viewModel = MonthlyLimitCardViewModel())
+    MonthlyLimitCard(
+        onCardClick = {},
+        viewModel = MonthlyLimitCardViewModel(),
+        currentDateFilter = LocalDate.now()
+    )
 }
 
 @Preview

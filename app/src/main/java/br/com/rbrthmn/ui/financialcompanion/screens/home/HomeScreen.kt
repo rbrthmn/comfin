@@ -48,6 +48,7 @@ import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
+import java.time.LocalDate
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -73,15 +74,16 @@ fun HomeScreen(
             )
         }, modifier = modifier
     ) { innerPadding ->
-        HomeScreenContent(onMonthlyLimitCardClick, innerPadding, modifier)
+        HomeScreenContent(modifier, onMonthlyLimitCardClick, innerPadding, currentDate = viewModel.currentDateFilter)
     }
 }
 
 @Composable
 private fun HomeScreenContent(
+    modifier: Modifier = Modifier,
     onMonthlyLimitCardClick: () -> Unit,
     innerPaddingValues: PaddingValues,
-    modifier: Modifier = Modifier
+    currentDate: LocalDate
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -92,10 +94,10 @@ private fun HomeScreenContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        MonthlyLimitCard(onCardClick = onMonthlyLimitCardClick)
-        BalanceCard()
-        CreditCardBillsCard()
-        LastMonthDifferenceCard()
+        MonthlyLimitCard(onCardClick = onMonthlyLimitCardClick, currentDateFilter = currentDate)
+        BalanceCard(currentDateFilter = currentDate)
+        CreditCardBillsCard(currentDateFilter = currentDate)
+        LastMonthDifferenceCard(currentDateFilter = currentDate)
     }
 }
 

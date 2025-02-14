@@ -28,37 +28,32 @@ import androidx.compose.runtime.setValue
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.LocalDate
 
 class CreditCardBillsCardViewModel : CreditCardBillsCardContract.CreditCardsBillCardViewModel() {
     override var uiState = MutableStateFlow(CreditCardsBillCardUiState())
-        private set
-
     override var newCreditCardName: String by mutableStateOf("")
-        private set
-
     override var isNewCreditCardNameValid: Boolean by mutableStateOf(true)
-        private set
-
     override var newCreditCardBill: String by mutableStateOf("")
-        private set
-
     override var isNewCreditCardBillValid: Boolean by mutableStateOf(true)
-        private set
-
     override var newCreditCardBillDueDay: Int by mutableIntStateOf(0)
-        private set
-
     override var isNewCreditCardBillDueDayValid: Boolean by mutableStateOf(true)
-        private set
-
     override var newCreditCardBankName: String by mutableStateOf("")
-        private set
-
     override var isNewCreditCardBankNameValid: Boolean by mutableStateOf(true)
-        private set
-
     override var newCreditCardBankIcon: Int by mutableIntStateOf(R.drawable.bank_icon)
-        private set
+    override var currentDateFilter: LocalDate by mutableStateOf(LocalDate.now())
+
+    init {
+        val bills = listOf(
+            CreditCardBillUiState("Cartao A", formatDouble(5000.00), "R$"),
+            CreditCardBillUiState("Cartao B", formatDouble(10000.00), "R$"),
+            CreditCardBillUiState("Cartao C", formatDouble(5.00), "R$")
+        )
+        val totalBill = 1200.00
+
+        uiState.value =
+            CreditCardsBillCardUiState(totalBill = formatDouble(totalBill), bills = bills)
+    }
 
     override fun onNewCreditCardNameChange(name: String) {
         isNewCreditCardNameValid = name.isNotBlank()
@@ -116,16 +111,8 @@ class CreditCardBillsCardViewModel : CreditCardBillsCardContract.CreditCardsBill
         isNewCreditCardBankNameValid = true
     }
 
-    init {
-        val bills = listOf(
-            CreditCardBillUiState("Cartao A", formatDouble(5000.00), "R$"),
-            CreditCardBillUiState("Cartao B", formatDouble(10000.00), "R$"),
-            CreditCardBillUiState("Cartao C", formatDouble(5.00), "R$")
-        )
-        val totalBill = 1200.00
-
-        uiState.value =
-            CreditCardsBillCardUiState(totalBill = formatDouble(totalBill), bills = bills)
+    override fun setDateFilter(date: LocalDate) {
+        currentDateFilter = date
     }
 
     private companion object {

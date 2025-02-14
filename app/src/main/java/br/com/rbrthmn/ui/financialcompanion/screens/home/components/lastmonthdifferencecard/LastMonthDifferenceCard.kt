@@ -42,13 +42,16 @@ import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDate
 
 @Composable
 fun LastMonthDifferenceCard(
     modifier: Modifier = Modifier,
-    viewModel: LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel = koinViewModel()
+    viewModel: LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel = koinViewModel(),
+    currentDateFilter: LocalDate
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    viewModel.setDateFilter(currentDateFilter)
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -87,5 +90,9 @@ fun LastMonthDifferenceCard(
 @Preview
 @Composable
 fun LastMonthDifferenceCardPreview(modifier: Modifier = Modifier) {
-    LastMonthDifferenceCard(modifier = modifier, viewModel = LastMonthDifferenceCardViewModel())
+    LastMonthDifferenceCard(
+        modifier = modifier,
+        viewModel = LastMonthDifferenceCardViewModel(),
+        currentDateFilter = LocalDate.now()
+    )
 }
