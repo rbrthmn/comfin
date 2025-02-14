@@ -43,7 +43,7 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCard
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCard
 import br.com.rbrthmn.ui.financialcompanion.common.MonthSelectionTopBar
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.MonthlyLimitCard
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
@@ -90,11 +90,7 @@ private fun HomeScreenContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        MonthlyLimitCard(
-            onCardClick = onMonthlyLimitCardClick,
-            monthLimit = "1.000,00",
-            monthDifference = "-5435,99"
-        )
+        MonthlyLimitCard(onCardClick = onMonthlyLimitCardClick)
         BalanceCard()
         CreditCardBillsCard()
         LastMonthDifferenceCard()

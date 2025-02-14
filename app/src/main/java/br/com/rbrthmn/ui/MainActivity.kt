@@ -28,16 +28,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.Modifier
-import br.com.rbrthmn.data.di.appModule
 import br.com.rbrthmn.ui.financialcompanion.ComFinApp
 import br.com.rbrthmn.ui.theme.ComFinTheme
 import br.com.rbrthmn.ui.theme.LocalTheme
 import dagger.hilt.android.AndroidEntryPoint
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.compose.KoinAndroidContext
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.context.startKoin
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
