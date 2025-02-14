@@ -20,22 +20,25 @@
 
 package br.com.rbrthmn.data.di
 
-import br.com.rbrthmn.contracts.BalanceContract
-import br.com.rbrthmn.contracts.CreditCardContract
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalFormatter
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalInputFieldFormatter
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProviderImpl
-import br.com.rbrthmn.ui.financialcompanion.viewmodels.BalanceCardViewModel
-import br.com.rbrthmn.ui.financialcompanion.viewmodels.CreditCardBillsCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardContract
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val appModule = module {
-    viewModelOf<BalanceContract.BalanceCardViewModel>(::BalanceCardViewModel)
-    viewModelOf<CreditCardContract.CreditCardsBillCardViewModel>(::CreditCardBillsCardViewModel)
+    viewModelOf<BalanceCardContract.BalanceCardViewModel>(::BalanceCardViewModel)
+    viewModelOf<CreditCardBillsCardContract.CreditCardsBillCardViewModel>(::CreditCardBillsCardViewModel)
+    viewModelOf<LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel>(::LastMonthDifferenceCardViewModel)
 
     factoryOf<DecimalInputFieldFormatter>(::DecimalFormatter)
 
