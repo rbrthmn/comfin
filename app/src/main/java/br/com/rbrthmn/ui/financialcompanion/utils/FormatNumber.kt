@@ -56,3 +56,14 @@ fun formatString(string: String): String {
 
     return formattedString
 }
+
+fun canBeFormatted(string: String): Boolean {
+    return try {
+        formatString(string)
+        true
+    } catch (e: NumberFormatException) {
+        false
+    } catch (e: ArithmeticException) {
+        false
+    }
+}

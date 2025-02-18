@@ -35,24 +35,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationsListCard
 import br.com.rbrthmn.ui.financialcompanion.common.MonthSelectionTopBar
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard.TotalBalanceCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
-import br.com.rbrthmn.ui.financialcompanion.utils.MonthsOfTheYear
-import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
-import java.util.Date
-
-data class Operation(
-    val extras: String? = null,
-    val description: String,
-    val value: String,
-    val date: Date,
-    val type: String
-)
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationsListCard
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.TotalBalanceCard
+import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
+import org.koin.androidx.compose.koinViewModel
 
 object OperationsDestination : NavigationDestination {
     override val route = "operations"
@@ -61,27 +53,28 @@ object OperationsDestination : NavigationDestination {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OperationsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: OperationsScreenContract.OperationsScreenViewModel = koinViewModel(),
 ) {
-    val operations = getOperationsMock()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(topBar = {
         MonthSelectionTopBar(
-            currentMonth = MonthsOfTheYear.JANUARY,
+            initialDate = viewModel.currentDate,
+            onDateSelected = viewModel::onDateFilterChange,
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
     }, modifier = modifier) { innerPadding ->
-        OperationsScreenContent(operations, innerPadding, modifier)
+        OperationsScreenContent(innerPadding, modifier, viewModel)
     }
 }
 
 
 @Composable
 private fun OperationsScreenContent(
-    operations: List<Operation>,
     innerPaddingValues: PaddingValues,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: OperationsScreenContract.OperationsScreenViewModel,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -92,16 +85,19 @@ private fun OperationsScreenContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        TotalBalanceCard(modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_medium)),)
-        OperationsListCard(operations = operations.sortedByDescending { it.date })
+        TotalBalanceCard(
+            modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_medium)),
+            viewModel = viewModel
+        )
+        OperationsListCard(viewModel)
     }
 }
 
 @Preview
 @Composable
 private fun OperationsScreenPreview(modifier: Modifier = Modifier) {
-    OperationsScreenContent(
-        operations = getOperationsMock(),
-        innerPaddingValues = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
-    )
+    val context = LocalContext.current
+    val stringProvider = ResourceStringProvider(context)
+
+    OperationsScreen(viewModel = OperationsScreenViewModel(stringProvider))
 }

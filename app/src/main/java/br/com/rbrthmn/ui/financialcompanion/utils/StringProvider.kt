@@ -18,13 +18,17 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.operations.components.totalbalancecard
+package br.com.rbrthmn.ui.financialcompanion.utils
 
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import android.content.Context
+import androidx.annotation.StringRes
 
-interface TotalBalanceCardContract {
-    abstract class TotalBalanceCardViewModel : ViewModel() {
-        abstract val uiState: MutableStateFlow<TotalBalanceCardUiState>
+interface StringProvider {
+    fun getString(@StringRes stringId: Int): String
+}
+
+class ResourceStringProvider(private val context: Context) : StringProvider {
+    override fun getString(@StringRes stringId: Int): String {
+        return context.getString(stringId)
     }
 }

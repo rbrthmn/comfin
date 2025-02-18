@@ -31,8 +31,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -47,16 +45,18 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -65,21 +65,30 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.model.OperationType
-import br.com.rbrthmn.ui.financialcompanion.common.ReservesDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.Operation
-import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
+import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
+import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
-fun OperationsListCard(operations: List<Operation>) {
-    val showAddOperationDialog = remember { mutableStateOf(false) }
+fun OperationsListCard(
+    viewModel: OperationsScreenContract.OperationsScreenViewModel
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    val showAddOperationDialog = rememberSaveable { mutableStateOf(false) }
+
     if (showAddOperationDialog.value)
         AddOperationDialog(
-            onCancelButtonClick = { showAddOperationDialog.value = false },
-            onSaveButtonClick = { showAddOperationDialog.value = false })
+            viewModel = viewModel,
+            onSaveButtonClick = { viewModel.onSaveButtonClick(showAddOperationDialog) },
+            onCancelButtonClick = {
+                viewModel.resetDialogFields()
+                showAddOperationDialog.value = false
+            }
+        )
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -95,10 +104,11 @@ fun OperationsListCard(operations: List<Operation>) {
             )
         ) {
             TextField(
-                value = "",
-                onValueChange = { },
+                value = viewModel.searchQuery,
+                onValueChange = viewModel::onSearchQueryChange,
                 label = { Text(text = stringResource(id = R.string.search_hint)) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
             )
             HorizontalDivider()
             TextButton(
@@ -122,9 +132,9 @@ fun OperationsListCard(operations: List<Operation>) {
                     )
                 }
             }
-            if (operations.isNotEmpty()) {
+            if (uiState.operations.isNotEmpty()) {
                 HorizontalDivider()
-                OperationsList(operations = operations)
+                OperationsList(operations = uiState.operations)
             }
         }
     }
@@ -133,12 +143,12 @@ fun OperationsListCard(operations: List<Operation>) {
 @Composable
 fun AddOperationDialog(
     modifier: Modifier = Modifier,
-    onCancelButtonClick: () -> Unit,
+    viewModel: OperationsScreenContract.OperationsScreenViewModel,
     onSaveButtonClick: () -> Unit,
+    onCancelButtonClick: () -> Unit,
     availableOperationTypes: List<OperationType> = OperationType.entries
 ) {
-    var operationType: OperationType? by remember { mutableStateOf(availableOperationTypes.first()) }
-
+    val uiState by viewModel.uiState.collectAsState()
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
             modifier = modifier.fillMaxWidth()
@@ -151,55 +161,33 @@ fun AddOperationDialog(
                 )
             ) {
                 OutlinedTextField(
+                    label = { Text(text = stringResource(id = R.string.operation_description_hint)) },
+                    value = viewModel.newOperationDescription,
+                    onValueChange = viewModel::onDescriptionChange,
+                    isError = !viewModel.isNewOperationDescriptionValid,
+                    singleLine = true
+                )
+                OutlinedTextField(
                     prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
                     label = { Text(text = stringResource(id = R.string.operation_value_hint)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    value = "",
-                    onValueChange = { },
+                    value = viewModel.newOperationValue,
+                    onValueChange = viewModel::onValueChange,
+                    isError = !viewModel.isNewOperationValueValid,
                     singleLine = true
                 )
                 OperationTypeDropdownMenu(
-                    onTypeClicked = { operationType = it },
-                    operationTypes = availableOperationTypes
+                    onTypeClicked = { viewModel.onOperationTypeChange(it) },
+                    operationTypes = availableOperationTypes,
+                    isError = !viewModel.isNewOperationTypeValid
                 )
-                when (operationType) {
-                    OperationType.TRANSFER -> {
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.origin_account_hint))
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.aimed_account_hint))
-                    }
-
-                    OperationType.DEBIT_PURCHASE,
-                    OperationType.BILL_PAYMENT,
-                    OperationType.WITHDRAWAL -> {
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.origin_account_hint))
-                    }
-
-                    OperationType.DEPOSIT,
-                    OperationType.INCOME -> {
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.aimed_account_hint))
-                    }
-
-                    OperationType.RESERVE_ALLOCATION -> {
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.origin_account_hint))
-                        ReservesDropdownMenu()
-                    }
-
-                    OperationType.RESERVE_WITHDRAWAL -> {
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.aimed_account_hint))
-                        ReservesDropdownMenu()
-                    }
-
-                    OperationType.OTHER, null -> {
-                        AccountsDropdownMenu(accountType = stringResource(id = R.string.origin_account_hint))
-                    }
+                uiState.dialogFields.forEach { composableFunction ->
+                    composableFunction()
                 }
-                OutlinedTextField(
-                    label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
-                    maxLines = 100,
-                    value = "",
-                    onValueChange = { }
+                DatePickerField(
+                    onDateSelected = { viewModel.onOperationDateChange(it) },
+                    isError = !viewModel.isNewOperationDateValid
                 )
-                DatePickerDocked()
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
@@ -223,7 +211,8 @@ fun AddOperationDialog(
 private fun OperationTypeDropdownMenu(
     modifier: Modifier = Modifier,
     onTypeClicked: (type: OperationType) -> Unit,
-    operationTypes: List<OperationType>
+    operationTypes: List<OperationType>,
+    isError: Boolean
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText: String? by remember { mutableStateOf(null) }
@@ -239,7 +228,8 @@ private fun OperationTypeDropdownMenu(
                     Icon(Icons.Filled.ArrowDropDown, "contentDescription")
                 }
             },
-            singleLine = true
+            singleLine = true,
+            isError = isError
         )
         DropdownMenu(
             expanded = expanded,
@@ -260,120 +250,10 @@ private fun OperationTypeDropdownMenu(
     }
 }
 
-@Composable
-private fun AccountsDropdownMenu(modifier: Modifier = Modifier, accountType: String) {
-    var expanded by remember { mutableStateOf(false) }
-    var showAddAccountDialog by remember { mutableStateOf(false) }
-    val options = listOf(
-        "Conta A",
-        "Conta B",
-        "Conta C",
-        "Conta D",
-        "Conta E",
-        "Conta F",
-        "Conta G",
-    ).plus(stringResource(id = R.string.add_account_option))
-    var selectedOptionText: String? by remember { mutableStateOf(null) }
-
-    if (showAddAccountDialog) {
-        AddSimpleAccountDialog(
-            onCancelButtonClick = { showAddAccountDialog = false },
-            onSaveButtonClick = { showAddAccountDialog = false })
-    }
-
-    Column(modifier = modifier) {
-        OutlinedTextField(
-            value = selectedOptionText ?: stringResource(id = R.string.blank),
-            label = { Text(text = accountType) },
-            onValueChange = { selectedOptionText = it },
-            readOnly = true,
-            trailingIcon = {
-                IconButton(onClick = { expanded = true }) {
-                    Icon(Icons.Filled.ArrowDropDown, "contentDescription")
-                }
-            },
-            singleLine = true
-        )
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            options.forEach { selectedOption ->
-                DropdownMenuItem(
-                    onClick = {
-                        selectedOptionText = selectedOption
-                        expanded = false
-                        if (selectedOptionText == options.last()) showAddAccountDialog = true
-                    },
-                    text = { Text(text = selectedOption) },
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.help),
-                            contentDescription = "Balance Icon"
-                        )
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun AddSimpleAccountDialog(
-    modifier: Modifier = Modifier,
-    onCancelButtonClick: () -> Unit,
-    onSaveButtonClick: () -> Unit
-) {
-    var accountHolder by remember { mutableStateOf("") }
-
-    Dialog(onDismissRequest = onCancelButtonClick) {
-        Card(
-            modifier = modifier.fillMaxWidth()
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_large),
-                    vertical = dimensionResource(id = R.dimen.padding_medium)
-                )
-            ) {
-                OutlinedTextField(
-                    label = { Text(text = stringResource(id = R.string.account_holder_hint)) },
-                    value = accountHolder,
-                    onValueChange = { accountHolder = it },
-                )
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(top = dimensionResource(id = R.dimen.padding_small)),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceAround,
-                ) {
-                    Button(onClick = onCancelButtonClick) {
-                        Icon(
-                            imageVector = Icons.Default.Close, contentDescription = stringResource(
-                                id = R.string.close_icon_description
-                            )
-                        )
-                    }
-                    Button(onClick = onSaveButtonClick) {
-                        Icon(
-                            imageVector = Icons.Default.Check, contentDescription = stringResource(
-                                id = R.string.check_icon_description
-                            )
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
 
 @Composable
 private fun OperationsList(operations: List<Operation>) {
-    val groupedOperations = operations.groupBy {
-        SimpleDateFormat("EEE, dd", Locale.getDefault()).format(it.date)
-    }
+    val groupedOperations = operations.groupBy { it.date }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
@@ -395,9 +275,8 @@ private fun OperationsList(operations: List<Operation>) {
 }
 
 @Composable
-private fun DayOfWeekAndMonthText(date: Date) {
-    val formatter = SimpleDateFormat("EEE, dd", Locale.getDefault())
-    val formattedDate = formatter.format(date)
+private fun DayOfWeekAndMonthText(date: LocalDate) {
+    val formattedDate = date.format(DateTimeFormatter.ofPattern("EEEE, dd"))
     Text(
         text = formattedDate, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
         fontWeight = FontWeight.ExtraBold
@@ -423,40 +302,55 @@ private fun OperationItem(
         ) {
             Text(
                 text = description,
-                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+                lineHeight = dimensionResource(id = R.dimen.font_size_medium).value.sp,
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = type,
-                    fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
+                    fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp,
+                    lineHeight = dimensionResource(id = R.dimen.font_size_small).value.sp,
                 )
                 extras?.let {
-                    VerticalDivider(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)).padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small)))
+                    VerticalDivider(
+                        modifier = Modifier
+                            .height(dimensionResource(id = R.dimen.padding_small))
+                            .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+                    )
                     Text(
                         text = it,
-                        fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
+                        fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp,
+                        lineHeight = dimensionResource(id = R.dimen.font_size_small).value.sp,
                     )
                 }
             }
         }
-        Text(text = value, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp)
+        Text(
+            text = valueWithCurrencyString(currencyStringId = R.string.brl_currency, value = value),
+            fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+            lineHeight = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+        )
     }
 }
 
 @Preview
 @Composable
-fun OperationsListCardPreview(modifier: Modifier = Modifier) {
-    OperationsListCard(operations = getOperationsMock())
+fun OperationsListCardPreview() {
+    val context = LocalContext.current
+    val stringProvider = ResourceStringProvider(context)
+
+    OperationsListCard(viewModel = OperationsScreenViewModel(stringProvider))
 }
 
 @Preview
 @Composable
 fun AddOperationDialogPreview(modifier: Modifier = Modifier) {
-    AddOperationDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
-}
+    val context = LocalContext.current
+    val stringProvider = ResourceStringProvider(context)
 
-@Preview
-@Composable
-fun AddSimpleAccountDialogPreview(modifier: Modifier = Modifier) {
-    AddSimpleAccountDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
+    AddOperationDialog(
+        viewModel = OperationsScreenViewModel(stringProvider),
+        onSaveButtonClick = {},
+        onCancelButtonClick = {}
+    )
 }

@@ -97,6 +97,7 @@
     <string name="operation_type_other">Outros</string>
     <string name="account_holder_hint">Titular</string>
     <string name="add_account_option">Adicionar outra conta</string>
+    <string name="operation_description_hint">Descrição</string>
 
     <string name="feature_label_reserves">Reservas</string>
     <string name="feature_label_recurring_expenses">Gastos Recorrentes</string>
@@ -134,4 +135,10 @@
     <string name="recurring_total_title">Total:</string>
 
     <string name="settings_dark_mode">Modo escuro</string>
+
+    <string name="date_picker_title">Selecione uma data</string>
+    <string name="date_picker_label">Data da operação</string>
+    <string name="date_picker_cancel">Cancelar</string>
+    <string name="date_picker_ok">OK</string>
+
 </resources>
