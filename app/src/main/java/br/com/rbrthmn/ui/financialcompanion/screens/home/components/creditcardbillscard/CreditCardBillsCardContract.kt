@@ -23,6 +23,7 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardb
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.LocalDate
 
 interface CreditCardBillsCardContract {
     abstract class CreditCardsBillCardViewModel : ViewModel() {
@@ -36,12 +37,13 @@ interface CreditCardBillsCardContract {
         abstract val newCreditCardBankName: String
         abstract val isNewCreditCardBankNameValid: Boolean
         abstract val newCreditCardBankIcon: Int
+        abstract var currentDateFilter: LocalDate
         abstract fun onNewCreditCardNameChange(name: String)
         abstract fun onNewCreditCardBillChange(bill: String)
         abstract fun onBankChange(bankIcon: Int, bankName: String)
         abstract fun onNewCreditCardBillDueDayChange(day: Int)
         abstract fun onSaveClick(showDialog: MutableState<Boolean>)
         abstract fun cleanInputs()
-
+        abstract fun setDateFilter(date: LocalDate)
     }
 }

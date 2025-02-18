@@ -56,14 +56,17 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.AddItemButto
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BanksDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.TotalValueText
 import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDate
 
 @Composable
 fun BalanceCard(
     modifier: Modifier = Modifier,
-    viewModel: BalanceCardContract.BalanceCardViewModel = koinViewModel()
+    viewModel: BalanceCardContract.BalanceCardViewModel = koinViewModel(),
+    currentDateFilter: LocalDate
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddAccountDialog = rememberSaveable { mutableStateOf(false) }
+    viewModel.setDateFilter(currentDateFilter)
 
     if (showAddAccountDialog.value)
         AddBankAccountDialog(
@@ -217,7 +220,8 @@ private fun AddBankAccountDialog(
 fun BalanceCardPreview(modifier: Modifier = Modifier) {
     BalanceCard(
         viewModel = BalanceCardViewModel(),
-        modifier = modifier
+        modifier = modifier,
+        currentDateFilter = LocalDate.now()
     )
 }
 

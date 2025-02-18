@@ -20,18 +20,26 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.LocalDate
 
 class MonthlyLimitCardViewModel : MonthlyLimitCardContract.MonthlyLimitCardViewModel() {
     override var uiState: MutableStateFlow<MonthlyLimitCardUiState> = MutableStateFlow(MonthlyLimitCardUiState())
-        private set
+    override var currentDateFilter: LocalDate by mutableStateOf(LocalDate.now())
 
     init {
         uiState.value = MonthlyLimitCardUiState(
             monthLimit = formatDouble(MONTH_LIMIT_MOCK),
             monthDifference = formatDouble(MONTH_DIFFERENCE_MOCK)
         )
+    }
+
+    override fun setDateFilter(date: LocalDate) {
+        currentDateFilter = date
     }
 
     private companion object {

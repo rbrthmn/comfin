@@ -62,14 +62,17 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.AddItemButto
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BanksDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.TotalValueText
 import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDate
 
 @Composable
 fun CreditCardBillsCard(
     modifier: Modifier = Modifier,
-    viewModel: CreditCardBillsCardContract.CreditCardsBillCardViewModel = koinViewModel()
+    viewModel: CreditCardBillsCardContract.CreditCardsBillCardViewModel = koinViewModel(),
+    currentDateFilter: LocalDate
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddCardDialog = rememberSaveable { mutableStateOf(false) }
+    viewModel.setDateFilter(currentDateFilter)
 
     if (showAddCardDialog.value)
         AddCreditCardDialog(
@@ -273,7 +276,8 @@ private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isErr
 fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
     CreditCardBillsCard(
         viewModel = CreditCardBillsCardViewModel(),
-        modifier = modifier
+        modifier = modifier,
+        currentDateFilter = LocalDate.now()
     )
 }
 

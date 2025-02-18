@@ -46,6 +46,7 @@ import br.com.rbrthmn.ui.financialcompanion.common.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
+import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import java.time.LocalDate
 
@@ -56,8 +57,9 @@ object HomeDestination : NavigationDestination {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    modifier: Modifier = Modifier,
     onMonthlyLimitCardClick: () -> Unit,
-    modifier: Modifier = Modifier
+    viewModel: HomeScreenContract.HomeScreenViewModel = koinViewModel()
 ) {
     val snackBarProvider: SnackBarProvider = koinInject()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -66,21 +68,22 @@ fun HomeScreen(
         snackbarHost = { SnackbarHost(hostState = snackBarProvider.hostState) },
         topBar = {
             MonthSelectionTopBar(
-                initialDate = LocalDate.now(),
-                onDateSelected = { },
+                initialDate = viewModel.currentDateFilter,
+                onDateSelected =  viewModel::onDateFilterChange,
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
             )
         }, modifier = modifier
     ) { innerPadding ->
-        HomeScreenContent(onMonthlyLimitCardClick, innerPadding, modifier)
+        HomeScreenContent(modifier, onMonthlyLimitCardClick, innerPadding, currentDate = viewModel.currentDateFilter)
     }
 }
 
 @Composable
 private fun HomeScreenContent(
+    modifier: Modifier = Modifier,
     onMonthlyLimitCardClick: () -> Unit,
     innerPaddingValues: PaddingValues,
-    modifier: Modifier = Modifier
+    currentDate: LocalDate
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -91,15 +94,15 @@ private fun HomeScreenContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        MonthlyLimitCard(onCardClick = onMonthlyLimitCardClick)
-        BalanceCard()
-        CreditCardBillsCard()
-        LastMonthDifferenceCard()
+        MonthlyLimitCard(onCardClick = onMonthlyLimitCardClick, currentDateFilter = currentDate)
+        BalanceCard(currentDateFilter = currentDate)
+        CreditCardBillsCard(currentDateFilter = currentDate)
+        LastMonthDifferenceCard(currentDateFilter = currentDate)
     }
 }
 
 @Preview
 @Composable
-private fun HomeScreenPreview(modifier: Modifier = Modifier) {
+private fun HomeScreenContentPreview(modifier: Modifier = Modifier) {
     HomeScreen(onMonthlyLimitCardClick = {}, modifier = modifier)
 }

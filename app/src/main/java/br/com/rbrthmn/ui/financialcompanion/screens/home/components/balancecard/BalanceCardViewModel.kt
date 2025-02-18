@@ -29,31 +29,18 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.LocalDate
 
 class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
     override var uiState = MutableStateFlow(BalanceCardUiState())
-        private set
-
     override var newAccountBalance by mutableStateOf("")
-        private set
-
     override var isNewAccountBalanceValid by mutableStateOf(true)
-        private set
-
     override var newAccountDescription by mutableStateOf("")
-        private set
-
     override var isNewAccountDescriptionValid by mutableStateOf(true)
-        private set
-
     override var newAccountBank by mutableStateOf("")
-        private set
-
     override var newAccountBankIcon by mutableIntStateOf(R.drawable.bank_icon)
-        private set
-
     override var isNewAccountBankValid by mutableStateOf(true)
-        private set
+    override var currentDateFilter: LocalDate by mutableStateOf(LocalDate.now())
 
     init {
         val accounts = listOf(
@@ -113,5 +100,9 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
         isNewAccountBalanceValid = true
         isNewAccountDescriptionValid = true
         isNewAccountBankValid = true
+    }
+
+    override fun setDateFilter(date: LocalDate) {
+        currentDateFilter = date
     }
 }

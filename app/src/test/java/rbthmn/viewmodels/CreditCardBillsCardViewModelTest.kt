@@ -24,97 +24,98 @@ import androidx.compose.runtime.mutableStateOf
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillUiState
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel
-import junit.framework.TestCase
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
+import java.time.LocalDate
 
 class CreditCardBillsCardViewModelTest {
     private val viewModel = CreditCardBillsCardViewModel()
     
     @Test
-    fun onNewCreditCardBillChange_with_empty_value_should_assign_correctly() {
+    fun `onNewCreditCardBillChange with empty value should assign correctly`() { 
         viewModel.onNewCreditCardBillChange(EMPTY_STRING)
 
-        TestCase.assertEquals(false, viewModel.isNewCreditCardBillValid)
-        TestCase.assertEquals(EMPTY_STRING, viewModel.newCreditCardBill)
+        assertEquals(false, viewModel.isNewCreditCardBillValid)
+        assertEquals(EMPTY_STRING, viewModel.newCreditCardBill)
     }
 
     @Test
-    fun onNewCreditCardBillChange_with_value_should_assign_correctly() {
+    fun `onNewCreditCardBillChange with value should assign correctly`() { 
         viewModel.onNewCreditCardBillChange(VALID_BILL_STRING)
 
-        TestCase.assertEquals(true, viewModel.isNewCreditCardBillValid)
-        TestCase.assertEquals(VALID_BILL_STRING, viewModel.newCreditCardBill)
+        assertEquals(true, viewModel.isNewCreditCardBillValid)
+        assertEquals(VALID_BILL_STRING, viewModel.newCreditCardBill)
     }
 
     @Test
-    fun onNewCreditCardNameChange_with_empty_value_should_assign_correctly() {
+    fun `onNewCreditCardNameChange with empty value should assign correctly`() { 
         viewModel.onNewCreditCardNameChange(EMPTY_STRING)
 
-        TestCase.assertEquals(false, viewModel.isNewCreditCardNameValid)
-        TestCase.assertEquals(EMPTY_STRING, viewModel.newCreditCardName)
+        assertEquals(false, viewModel.isNewCreditCardNameValid)
+        assertEquals(EMPTY_STRING, viewModel.newCreditCardName)
     }
 
     @Test
-    fun onNewCreditCardNameChange_with_value_should_assign_correctly() {
+    fun `onNewCreditCardNameChange with value should assign correctly`() { 
         viewModel.onNewCreditCardNameChange(VALID_STRING)
 
-        TestCase.assertEquals(true, viewModel.isNewCreditCardNameValid)
-        TestCase.assertEquals(VALID_STRING, viewModel.newCreditCardName)
+        assertEquals(true, viewModel.isNewCreditCardNameValid)
+        assertEquals(VALID_STRING, viewModel.newCreditCardName)
     }
 
     @Test
-    fun onBankChange_with_empty_value_should_assign_correctly() {
+    fun `onBankChange with empty value should assign correctly`() { 
         viewModel.onBankChange(VALID_ID_STRING, EMPTY_STRING)
 
-        TestCase.assertEquals(false, viewModel.isNewCreditCardBankNameValid)
-        TestCase.assertEquals(EMPTY_STRING, viewModel.newCreditCardBankName)
-        TestCase.assertEquals(VALID_ID_STRING, viewModel.newCreditCardBankIcon)
+        assertEquals(false, viewModel.isNewCreditCardBankNameValid)
+        assertEquals(EMPTY_STRING, viewModel.newCreditCardBankName)
+        assertEquals(VALID_ID_STRING, viewModel.newCreditCardBankIcon)
     }
 
     @Test
-    fun onBankChange_with_value_should_assign_correctly() {
+    fun `onBankChange with value should assign correctly`() { 
         viewModel.onBankChange(VALID_ID_STRING, VALID_BILL_STRING)
 
-        TestCase.assertEquals(true, viewModel.isNewCreditCardBankNameValid)
-        TestCase.assertEquals(VALID_BILL_STRING, viewModel.newCreditCardBankName)
-        TestCase.assertEquals(VALID_ID_STRING, viewModel.newCreditCardBankIcon)
+        assertEquals(true, viewModel.isNewCreditCardBankNameValid)
+        assertEquals(VALID_BILL_STRING, viewModel.newCreditCardBankName)
+        assertEquals(VALID_ID_STRING, viewModel.newCreditCardBankIcon)
     }
 
     @Test
-    fun onNewCreditCardBillDueDayChange_with_zero_value_should_assign_correctly() {
+    fun `onNewCreditCardBillDueDayChange with zero value should assign correctly`() { 
         viewModel.onNewCreditCardBillDueDayChange(INVALID_DUE_DAY)
 
-        TestCase.assertEquals(false, viewModel.isNewCreditCardBillDueDayValid)
-        TestCase.assertEquals(INVALID_DUE_DAY, viewModel.newCreditCardBillDueDay)
+        assertEquals(false, viewModel.isNewCreditCardBillDueDayValid)
+        assertEquals(INVALID_DUE_DAY, viewModel.newCreditCardBillDueDay)
     }
 
     @Test
-    fun onNewCreditCardBillDueDayChange_with_value_should_assign_correctly() {
+    fun `onNewCreditCardBillDueDayChange with value should assign correctly`() { 
         viewModel.onNewCreditCardBillDueDayChange(VALID_DUE_DAY)
 
-        TestCase.assertEquals(true, viewModel.isNewCreditCardBillDueDayValid)
-        TestCase.assertEquals(VALID_DUE_DAY, viewModel.newCreditCardBillDueDay)
+        assertEquals(true, viewModel.isNewCreditCardBillDueDayValid)
+        assertEquals(VALID_DUE_DAY, viewModel.newCreditCardBillDueDay)
     }
 
     @Test
-    fun cleanNewAccount_should_assign_default_values() {
+    fun `cleanNewAccount should assign default values`() {
         viewModel.cleanInputs()
 
         assertCleanedInputs()
     }
 
     @Test
-    fun onSaveClick_with_valid_input_should_assign_false_to_dialog() {
+    fun `onSaveClick with valid input should assign false to dialog`() {
         assignValidInputs()
         val mock = mutableStateOf(true)
 
         viewModel.onSaveClick(mock)
 
-        TestCase.assertEquals(false, mock.value)
+        assertEquals(false, mock.value)
     }
 
     @Test
-    fun onSaveClick_with_valid_input_should_add_new_account() {
+    fun `onSaveClick with valid input should add new account`() {
         assignValidInputs()
         val mock = mutableStateOf(true)
         val newCard = CreditCardBillUiState(
@@ -126,11 +127,11 @@ class CreditCardBillsCardViewModelTest {
 
         viewModel.onSaveClick(mock)
 
-        TestCase.assertEquals(newCardsList, viewModel.uiState.value.bills)
+        assertEquals(newCardsList, viewModel.uiState.value.bills)
     }
 
     @Test
-    fun onSaveClick_with_valid_input_should_clean_inputs() {
+    fun `onSaveClick with valid input should clean inputs`() {
         assignValidInputs()
         val mock = mutableStateOf(true)
 
@@ -140,15 +141,15 @@ class CreditCardBillsCardViewModelTest {
     }
 
     private fun assertCleanedInputs() {
-        TestCase.assertEquals(EMPTY_STRING, viewModel.newCreditCardName)
-        TestCase.assertEquals(EMPTY_STRING, viewModel.newCreditCardBill)
-        TestCase.assertEquals(EMPTY_STRING, viewModel.newCreditCardBankName)
-        TestCase.assertEquals(R.drawable.bank_icon, viewModel.newCreditCardBankIcon)
-        TestCase.assertEquals(0, viewModel.newCreditCardBillDueDay)
-        TestCase.assertEquals(true, viewModel.isNewCreditCardBankNameValid)
-        TestCase.assertEquals(true, viewModel.isNewCreditCardNameValid)
-        TestCase.assertEquals(true, viewModel.isNewCreditCardBillValid)
-        TestCase.assertEquals(true, viewModel.isNewCreditCardBillDueDayValid)
+        assertEquals(EMPTY_STRING, viewModel.newCreditCardName)
+        assertEquals(EMPTY_STRING, viewModel.newCreditCardBill)
+        assertEquals(EMPTY_STRING, viewModel.newCreditCardBankName)
+        assertEquals(R.drawable.bank_icon, viewModel.newCreditCardBankIcon)
+        assertEquals(0, viewModel.newCreditCardBillDueDay)
+        assertEquals(true, viewModel.isNewCreditCardBankNameValid)
+        assertEquals(true, viewModel.isNewCreditCardNameValid)
+        assertEquals(true, viewModel.isNewCreditCardBillValid)
+        assertEquals(true, viewModel.isNewCreditCardBillDueDayValid)
     }
 
     private fun assignValidInputs() {
@@ -156,6 +157,13 @@ class CreditCardBillsCardViewModelTest {
         viewModel.onNewCreditCardNameChange(VALID_STRING)
         viewModel.onBankChange(R.drawable.bank_icon, VALID_STRING)
         viewModel.onNewCreditCardBillDueDayChange(VALID_DUE_DAY)
+    }
+
+    @Test
+    fun `setDateFilter should assign value correctly`() {
+        viewModel.setDateFilter(VALID_DATE)
+
+        assertEquals(VALID_DATE, viewModel.currentDateFilter)
     }
 
     private companion object {
@@ -166,5 +174,6 @@ class CreditCardBillsCardViewModelTest {
         const val VALID_ID_STRING = 1
         const val VALID_DUE_DAY = 1
         const val INVALID_DUE_DAY = 0
+        val VALID_DATE: LocalDate = LocalDate.of(1998, 10, 20)
     }
 }

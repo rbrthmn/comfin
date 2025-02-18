@@ -18,16 +18,26 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard
+package rbthmn.viewmodels
 
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenContract
+import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenViewModel
+import org.junit.Test
 import java.time.LocalDate
+import kotlin.test.assertEquals
 
-interface LastMonthDifferenceCardContract {
-    abstract class LastMonthDifferenceCardViewModel : ViewModel() {
-        abstract val uiState: MutableStateFlow<LastMonthDifferenceCardUiState>
-        abstract val currentDateFilter: LocalDate
-        abstract fun setDateFilter(date: LocalDate)
+class HomeScreenViewModelTest {
+    private val viewModel: HomeScreenContract.HomeScreenViewModel = HomeScreenViewModel()
+
+    @Test
+    fun `onDateFilterChange should assign value correctly`() {
+        viewModel.onDateFilterChange(VALID_DATE)
+
+        assertEquals(VALID_DATE, viewModel.currentDateFilter)
+
+    }
+
+    private companion object {
+        val VALID_DATE: LocalDate = LocalDate.of(1998, 10, 20)
     }
 }
