@@ -21,7 +21,7 @@
 package br.com.rbrthmn
 
 import android.app.Application
-import br.com.rbrthmn.data.di.appModule
+import br.com.rbrthmn.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

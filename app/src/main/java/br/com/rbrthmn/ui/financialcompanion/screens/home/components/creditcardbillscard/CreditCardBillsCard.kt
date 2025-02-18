@@ -57,7 +57,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.common.DecimalInputField
+import br.com.rbrthmn.ui.financialcompanion.components.DecimalInputField
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.AddItemButton
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BanksDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.TotalValueText

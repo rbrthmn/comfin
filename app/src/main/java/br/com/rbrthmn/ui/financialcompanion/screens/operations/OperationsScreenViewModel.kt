@@ -28,7 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import br.com.rbrthmn.R
 import br.com.rbrthmn.model.OperationType
-import br.com.rbrthmn.ui.financialcompanion.common.ReservesDropdownMenu
+import br.com.rbrthmn.ui.financialcompanion.components.ReservesDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AccountsDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationAimedAccount
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationOriginAccount

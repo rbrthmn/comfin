@@ -42,7 +42,7 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCard
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCard
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCard
-import br.com.rbrthmn.ui.financialcompanion.common.MonthSelectionTopBar
+import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCard
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
