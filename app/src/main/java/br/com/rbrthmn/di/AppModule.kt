@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.data.di
+package br.com.rbrthmn.di
 
 import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenContract
 import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenViewModel
