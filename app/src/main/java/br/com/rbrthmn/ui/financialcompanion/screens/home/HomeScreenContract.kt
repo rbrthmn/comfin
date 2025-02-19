@@ -21,11 +21,12 @@
 package br.com.rbrthmn.ui.financialcompanion.screens.home
 
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
 
 interface HomeScreenContract {
     abstract class HomeScreenViewModel : ViewModel() {
-        abstract val currentDateFilter: LocalDate
+        abstract val uiState: StateFlow<HomeScreenUiState>
         abstract fun onDateFilterChange(date: LocalDate)
     }
 }

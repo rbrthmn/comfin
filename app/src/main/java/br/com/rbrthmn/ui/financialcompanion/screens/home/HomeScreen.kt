@@ -33,6 +33,8 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -63,18 +65,19 @@ fun HomeScreen(
 ) {
     val snackBarProvider: SnackBarProvider = koinInject()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarProvider.hostState) },
         topBar = {
             MonthSelectionTopBar(
-                initialDate = viewModel.currentDateFilter,
+                initialDate = uiState.currentDateFilter,
                 onDateSelected =  viewModel::onDateFilterChange,
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
             )
         }, modifier = modifier
     ) { innerPadding ->
-        HomeScreenContent(modifier, onMonthlyLimitCardClick, innerPadding, currentDate = viewModel.currentDateFilter)
+        HomeScreenContent(modifier, onMonthlyLimitCardClick, innerPadding, currentDate = uiState.currentDateFilter)
     }
 }
 
