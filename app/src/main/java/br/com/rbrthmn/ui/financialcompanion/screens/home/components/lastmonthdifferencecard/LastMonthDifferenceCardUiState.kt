@@ -20,6 +20,9 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard
 
+import java.time.LocalDate
+
 data class LastMonthDifferenceCardUiState(
-    val valueOfLastMonth: String = ""
+    val valueOfLastMonth: String = "",
+    val currentDateFilter: LocalDate = LocalDate.now()
 )
