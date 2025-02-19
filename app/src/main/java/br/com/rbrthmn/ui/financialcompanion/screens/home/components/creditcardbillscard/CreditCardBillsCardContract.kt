@@ -22,12 +22,12 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardb
 
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
 
 interface CreditCardBillsCardContract {
     abstract class CreditCardsBillCardViewModel : ViewModel() {
-        abstract val uiState: MutableStateFlow<CreditCardsBillCardUiState>
+        abstract val uiState: StateFlow<CreditCardsBillCardUiState>
         abstract val newCreditCardName: String
         abstract val isNewCreditCardNameValid: Boolean
         abstract val newCreditCardBill: String

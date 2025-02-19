@@ -22,12 +22,12 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
 
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
 
 interface BalanceCardContract {
     abstract class BalanceCardViewModel : ViewModel() {
-        abstract val uiState: MutableStateFlow<BalanceCardUiState>
+        abstract val uiState: StateFlow<BalanceCardUiState>
         abstract val newAccountBalance: String
         abstract val isNewAccountBalanceValid: Boolean
         abstract val newAccountDescription: String

@@ -23,12 +23,12 @@ package br.com.rbrthmn.ui.financialcompanion.screens.operations
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import br.com.rbrthmn.model.OperationType
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
 
 interface OperationsScreenContract {
     abstract class OperationsScreenViewModel : ViewModel() {
-        abstract val uiState: MutableStateFlow<OperationsScreenUiState>
+        abstract val uiState: StateFlow<OperationsScreenUiState>
         abstract val newOperationDescription: String
         abstract val isNewOperationDescriptionValid: Boolean
         abstract val newOperationValue: String
