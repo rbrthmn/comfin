@@ -27,7 +27,6 @@ import java.time.LocalDate
 interface MonthlyLimitCardContract {
     abstract class MonthlyLimitCardViewModel : ViewModel() {
         abstract val uiState: StateFlow<MonthlyLimitCardUiState>
-        abstract val currentDateFilter: LocalDate
         abstract fun setDateFilter(date: LocalDate)
     }
 }

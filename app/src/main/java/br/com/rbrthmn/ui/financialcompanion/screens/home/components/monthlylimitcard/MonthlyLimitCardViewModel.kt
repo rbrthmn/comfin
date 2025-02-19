@@ -25,11 +25,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 
 class MonthlyLimitCardViewModel : MonthlyLimitCardContract.MonthlyLimitCardViewModel() {
     override var uiState: MutableStateFlow<MonthlyLimitCardUiState> = MutableStateFlow(MonthlyLimitCardUiState())
-    override var currentDateFilter: LocalDate by mutableStateOf(LocalDate.now())
 
     init {
         uiState.value = MonthlyLimitCardUiState(
@@ -38,8 +38,8 @@ class MonthlyLimitCardViewModel : MonthlyLimitCardContract.MonthlyLimitCardViewM
         )
     }
 
-    override fun setDateFilter(date: LocalDate) {
-        currentDateFilter = date
+    override fun setDateFilter(date: LocalDate) = uiState.update {
+        it.copy(currentDateFilter = date)
     }
 
     private companion object {
