@@ -28,16 +28,6 @@ import java.time.LocalDate
 interface CreditCardBillsCardContract {
     abstract class CreditCardsBillCardViewModel : ViewModel() {
         abstract val uiState: StateFlow<CreditCardsBillCardUiState>
-        abstract val newCreditCardName: String
-        abstract val isNewCreditCardNameValid: Boolean
-        abstract val newCreditCardBill: String
-        abstract val isNewCreditCardBillValid: Boolean
-        abstract val newCreditCardBillDueDay: Int
-        abstract val isNewCreditCardBillDueDayValid: Boolean
-        abstract val newCreditCardBankName: String
-        abstract val isNewCreditCardBankNameValid: Boolean
-        abstract val newCreditCardBankIcon: Int
-        abstract var currentDateFilter: LocalDate
         abstract fun onNewCreditCardNameChange(name: String)
         abstract fun onNewCreditCardBillChange(bill: String)
         abstract fun onBankChange(bankIcon: Int, bankName: String)

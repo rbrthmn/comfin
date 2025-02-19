@@ -182,6 +182,7 @@ private fun AddCreditCardDialog(
     onCancelButtonClick: () -> Unit,
     onSaveButtonClick: () -> Unit
 ) {
+    val uiState by viewModel.uiState.collectAsState()
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
             modifier = modifier.fillMaxWidth()
@@ -196,25 +197,25 @@ private fun AddCreditCardDialog(
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
                     maxLines = 100,
-                    value = viewModel.newCreditCardName,
+                    value = uiState.newCreditCardName,
                     onValueChange = viewModel::onNewCreditCardNameChange,
-                    isError = !viewModel.isNewCreditCardNameValid,
+                    isError = !uiState.isNewCreditCardNameValid,
                 )
                 DecimalInputField(
                     onValueChange = viewModel::onNewCreditCardBillChange,
-                    value = viewModel.newCreditCardBill,
+                    value = uiState.newCreditCardBill,
                     label = stringResource(id = R.string.card_bill_input_hint),
                     prefix = stringResource(id = R.string.brl_currency),
-                    isError = !viewModel.isNewCreditCardBillValid
+                    isError = !uiState.isNewCreditCardBillValid
                 )
                 BanksDropdownMenu(
                     onBankSelected = viewModel::onBankChange,
-                    isValid = viewModel.isNewCreditCardBankNameValid,
+                    isValid = uiState.isNewCreditCardBankNameValid,
                     modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small))
                 )
                 CardBillCloseDayDropdownMenu(
                     onDayClicked = viewModel::onNewCreditCardBillDueDayChange,
-                    isError = !viewModel.isNewCreditCardBillDueDayValid
+                    isError = !uiState.isNewCreditCardBillDueDayValid
                 )
                 Row(
                     modifier = modifier
