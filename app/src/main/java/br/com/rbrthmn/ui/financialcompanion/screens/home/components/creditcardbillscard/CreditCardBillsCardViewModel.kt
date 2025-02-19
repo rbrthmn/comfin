@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDate
 
 class CreditCardBillsCardViewModel : CreditCardBillsCardContract.CreditCardsBillCardViewModel() {
-    override var uiState = MutableStateFlow(CreditCardsBillCardUiState())
+    override val uiState = MutableStateFlow(CreditCardsBillCardUiState())
     override var newCreditCardName: String by mutableStateOf("")
     override var isNewCreditCardNameValid: Boolean by mutableStateOf(true)
     override var newCreditCardBill: String by mutableStateOf("")
