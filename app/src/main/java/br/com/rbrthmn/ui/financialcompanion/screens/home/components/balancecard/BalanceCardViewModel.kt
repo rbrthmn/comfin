@@ -21,26 +21,15 @@
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
 
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 
 class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
-    override var uiState = MutableStateFlow(BalanceCardUiState())
-    override var newAccountBalance by mutableStateOf("")
-    override var isNewAccountBalanceValid by mutableStateOf(true)
-    override var newAccountDescription by mutableStateOf("")
-    override var isNewAccountDescriptionValid by mutableStateOf(true)
-    override var newAccountBank by mutableStateOf("")
-    override var newAccountBankIcon by mutableIntStateOf(R.drawable.bank_icon)
-    override var isNewAccountBankValid by mutableStateOf(true)
-    override var currentDateFilter: LocalDate by mutableStateOf(LocalDate.now())
+    override val uiState = MutableStateFlow(BalanceCardUiState())
 
     init {
         val accounts = listOf(
@@ -55,54 +44,71 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
         )
     }
 
-    override fun onInitialBalanceChange(balance: String) {
-        isNewAccountBalanceValid = balance.isNotBlank()
-        newAccountBalance = balance
+    override fun onInitialBalanceChange(balance: String) = uiState.update {
+        it.copy(
+            isNewAccountBalanceValid = balance.isNotBlank(),
+            newAccountBalance = balance
+        )
     }
 
-    override fun onDescriptionChange(description: String) {
-        isNewAccountDescriptionValid = description.isNotBlank()
-        newAccountDescription = description
+    override fun onDescriptionChange(description: String) = uiState.update {
+        it.copy(
+            isNewAccountDescriptionValid = description.isNotBlank(),
+            newAccountDescription = description
+        )
     }
 
-    override fun onBankChange(bankId: Int, bankName: String) {
-        isNewAccountBankValid = bankName.isNotBlank()
-        newAccountBank = bankName
-        newAccountBankIcon = bankId
+
+    override fun onBankChange(bankId: Int, bankName: String) = uiState.update {
+        it.copy(
+            isNewAccountBankValid = bankName.isNotBlank(),
+            newAccountBank = bankName,
+            newAccountBankIcon = bankId
+        )
     }
+
 
     private fun validateInputs(): Boolean {
-        isNewAccountBalanceValid = newAccountBalance.isNotBlank()
-        isNewAccountDescriptionValid = newAccountDescription.isNotBlank()
-        isNewAccountBankValid = newAccountBank.isNotBlank()
+        uiState.update {
+            it.copy(
+                isNewAccountBalanceValid = it.newAccountBalance.isNotBlank(),
+                isNewAccountDescriptionValid = it.newAccountDescription.isNotBlank(),
+                isNewAccountBankValid = it.newAccountBank.isNotBlank()
+            )
+        }
 
-        return isNewAccountBalanceValid && isNewAccountDescriptionValid && isNewAccountBankValid
+        return with(uiState.value) {
+            isNewAccountBalanceValid && isNewAccountDescriptionValid && isNewAccountBankValid
+        }
     }
 
     override fun onSaveClick(showDialog: MutableState<Boolean>) {
         if (validateInputs()) {
             showDialog.value = false
             val newAccount = BankAccountBalanceUiState(
-                name = newAccountDescription,
-                value = formatString(newAccountBalance),
-                bankName = newAccountBank,
+                name = uiState.value.newAccountDescription,
+                value = formatString(uiState.value.newAccountBalance),
+                bankName = uiState.value.newAccountBank,
             )
             uiState.value = uiState.value.copy(accounts = uiState.value.accounts + newAccount)
             cleanNewAccount()
         }
     }
 
-    override fun cleanNewAccount() {
-        newAccountBalance = ""
-        newAccountDescription = ""
-        newAccountBank = ""
-        newAccountBankIcon = R.drawable.bank_icon
-        isNewAccountBalanceValid = true
-        isNewAccountDescriptionValid = true
-        isNewAccountBankValid = true
-    }
+    override fun cleanNewAccount() =
+        uiState.update {
+            it.copy(
+                newAccountBalance = "",
+                newAccountDescription = "",
+                newAccountBank = "",
+                newAccountBankIcon = R.drawable.bank_icon,
+                isNewAccountBalanceValid = true,
+                isNewAccountDescriptionValid = true,
+                isNewAccountBankValid = true
+            )
+        }
 
-    override fun setDateFilter(date: LocalDate) {
-        currentDateFilter = date
+    override fun setDateFilter(date: LocalDate) = uiState.update {
+        it.copy(currentDateFilter = date)
     }
 }

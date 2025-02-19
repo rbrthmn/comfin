@@ -168,6 +168,8 @@ private fun AddBankAccountDialog(
     onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(modifier = modifier.fillMaxWidth()) {
             Column(
@@ -180,20 +182,20 @@ private fun AddBankAccountDialog(
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
                     maxLines = 100,
-                    value = viewModel.newAccountDescription,
+                    value = uiState.newAccountDescription,
                     onValueChange = { viewModel.onDescriptionChange(it) },
-                    isError = !viewModel.isNewAccountDescriptionValid
+                    isError = !uiState.isNewAccountDescriptionValid
                 )
                 DecimalInputField(
                     onValueChange = viewModel::onInitialBalanceChange,
-                    value = viewModel.newAccountBalance,
+                    value = uiState.newAccountBalance,
                     label = stringResource(id = R.string.balance_input_hint),
                     prefix = stringResource(id = R.string.brl_currency),
-                    isError = !viewModel.isNewAccountBalanceValid
+                    isError = !uiState.isNewAccountBalanceValid
                 )
                 BanksDropdownMenu(
                     onBankSelected = viewModel::onBankChange,
-                    isValid = viewModel.isNewAccountBankValid,
+                    isValid = uiState.isNewAccountBankValid,
                     modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
                 )
                 Row(
