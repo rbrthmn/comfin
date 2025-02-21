@@ -45,5 +45,6 @@ interface CreditCardBillsCardContract {
         abstract fun onSaveClick(showDialog: MutableState<Boolean>)
         abstract fun cleanInputs()
         abstract fun setDateFilter(date: LocalDate)
+        abstract fun doOnInit(): CreditCardBillsCardViewModel
     }
 }

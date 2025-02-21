@@ -31,11 +31,13 @@ class MonthlyLimitCardViewModel : MonthlyLimitCardContract.MonthlyLimitCardViewM
     override var uiState: MutableStateFlow<MonthlyLimitCardUiState> = MutableStateFlow(MonthlyLimitCardUiState())
     override var currentDateFilter: LocalDate by mutableStateOf(LocalDate.now())
 
-    init {
+    override fun doOnInit(): MonthlyLimitCardViewModel {
         uiState.value = MonthlyLimitCardUiState(
             monthLimit = formatDouble(MONTH_LIMIT_MOCK),
             monthDifference = formatDouble(MONTH_DIFFERENCE_MOCK)
         )
+
+        return this
     }
 
     override fun setDateFilter(date: LocalDate) {

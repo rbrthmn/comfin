@@ -42,7 +42,7 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
     override var isNewAccountBankValid by mutableStateOf(true)
     override var currentDateFilter: LocalDate by mutableStateOf(LocalDate.now())
 
-    init {
+    override fun doOnInit(): BalanceCardViewModel {
         val accounts = listOf(
             BankAccountBalanceUiState("Banco A", formatDouble(5000.00), "R$"),
             BankAccountBalanceUiState("Banco B", formatDouble(10000.00), "R$"),
@@ -53,6 +53,8 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
             totalBalance = formatDouble(totalBalance),
             accounts = accounts,
         )
+
+        return this
     }
 
     override fun onInitialBalanceChange(balance: String) {

@@ -43,7 +43,7 @@ class CreditCardBillsCardViewModel : CreditCardBillsCardContract.CreditCardsBill
     override var newCreditCardBankIcon: Int by mutableIntStateOf(R.drawable.bank_icon)
     override var currentDateFilter: LocalDate by mutableStateOf(LocalDate.now())
 
-    init {
+    override fun doOnInit(): CreditCardBillsCardViewModel {
         val bills = listOf(
             CreditCardBillUiState("Cartao A", formatDouble(5000.00), "R$"),
             CreditCardBillUiState("Cartao B", formatDouble(10000.00), "R$"),
@@ -51,8 +51,9 @@ class CreditCardBillsCardViewModel : CreditCardBillsCardContract.CreditCardsBill
         )
         val totalBill = 1200.00
 
-        uiState.value =
-            CreditCardsBillCardUiState(totalBill = formatDouble(totalBill), bills = bills)
+        uiState.value = CreditCardsBillCardUiState(totalBill = formatDouble(totalBill), bills = bills)
+
+        return this
     }
 
     override fun onNewCreditCardNameChange(name: String) {

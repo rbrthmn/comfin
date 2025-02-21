@@ -32,8 +32,10 @@ class LastMonthDifferenceCardViewModel :
     override var uiState = MutableStateFlow(LastMonthDifferenceCardUiState())
     override var currentDateFilter: LocalDate by mutableStateOf(LocalDate.now())
 
-    init {
+    override fun doOnInit(): LastMonthDifferenceCardViewModel {
         uiState.value = LastMonthDifferenceCardUiState(formatDouble(MOCK))
+
+        return this
     }
 
     override fun setDateFilter(date: LocalDate) {

@@ -61,7 +61,7 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
     override var searchQuery: String by mutableStateOf("")
     override var currentDate: LocalDate by mutableStateOf(LocalDate.now())
 
-    init {
+    override fun doOnInit(): OperationsScreenViewModel {
         uiState.value =
             OperationsScreenUiState(
                 operations = getOperationsMock().sortedByDescending { it.date },
@@ -70,6 +70,8 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
                 totalOutcome = formatDouble(TOTAL_OUTCOME_MOCK)
             )
         updateDialogFields()
+
+        return this
     }
 
     override fun onDescriptionChange(description: String) {
