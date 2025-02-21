@@ -347,7 +347,7 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
         currentDate = localDate
     }
 
-    private companion object {
+    companion object {
         const val TOTAL_BALANCE_MOCK = 1000.0
         const val TOTAL_INCOME_MOCK = 1500.0
         const val TOTAL_OUTCOME_MOCK = 500.0

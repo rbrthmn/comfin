@@ -20,10 +20,15 @@
 
 package rbthmn.viewmodels
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import br.com.rbrthmn.model.OperationType
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel.Companion.TOTAL_BALANCE_MOCK
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel.Companion.TOTAL_INCOME_MOCK
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel.Companion.TOTAL_OUTCOME_MOCK
 import br.com.rbrthmn.ui.financialcompanion.utils.StringProvider
+import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.first
@@ -43,6 +48,17 @@ class OperationsScreenViewModelTest {
     @Before
     fun setup() {
         viewModel = OperationsScreenViewModel(stringProvider)
+    }
+
+    @Test
+    fun `doOnInit should assign initial values`() {
+        viewModel.doOnInit()
+
+        assertEquals(formatDouble(TOTAL_BALANCE_MOCK), viewModel.uiState.value.totalBalance)
+        assertEquals(formatDouble(TOTAL_INCOME_MOCK), viewModel.uiState.value.totalIncome)
+        assertEquals(formatDouble(TOTAL_OUTCOME_MOCK), viewModel.uiState.value.totalOutcome)
+        assertEquals(emptyList<@Composable () -> Unit>(), viewModel.uiState.value.dialogFields)
+        assertTrue(viewModel.uiState.value.operations.isNotEmpty())
     }
 
     @Test
@@ -89,23 +105,23 @@ class OperationsScreenViewModelTest {
     fun `onOperationTypeChange with TRANSFER should have 2 new operation fields`() {
         viewModel.onOperationTypeChange(OperationType.TRANSFER)
         val fields = viewModel.uiState.value.dialogFields
-        
+
         assertEquals(2, fields.size)
     }
-    
+
     @Test
     fun `onOperationTypeChange with DEBIT_PURCHASE should have 1 new operation field`() {
         viewModel.onOperationTypeChange(OperationType.DEBIT_PURCHASE)
         val fields = viewModel.uiState.value.dialogFields
-        
+
         assertEquals(1, fields.size)
     }
-    
+
     @Test
     fun `onOperationTypeChange with BILL_PAYMENT should have 1 new operation field`() {
         viewModel.onOperationTypeChange(OperationType.BILL_PAYMENT)
         val fields = viewModel.uiState.value.dialogFields
-        
+
         assertEquals(1, fields.size)
     }
 
@@ -113,7 +129,7 @@ class OperationsScreenViewModelTest {
     fun `onOperationTypeChange with WITHDRAWAL should have 1 new operation field`() {
         viewModel.onOperationTypeChange(OperationType.WITHDRAWAL)
         val fields = viewModel.uiState.value.dialogFields
-        
+
         assertEquals(1, fields.size)
     }
 
@@ -121,7 +137,7 @@ class OperationsScreenViewModelTest {
     fun `onOperationTypeChange with DEPOSIT should have 1 new operation field`() {
         viewModel.onOperationTypeChange(OperationType.DEPOSIT)
         val fields = viewModel.uiState.value.dialogFields
-        
+
         assertEquals(1, fields.size)
     }
 
@@ -129,7 +145,7 @@ class OperationsScreenViewModelTest {
     fun `onOperationTypeChange with INCOME should have 1 new operation field`() {
         viewModel.onOperationTypeChange(OperationType.INCOME)
         val fields = viewModel.uiState.value.dialogFields
-        
+
         assertEquals(1, fields.size)
     }
 
@@ -137,7 +153,7 @@ class OperationsScreenViewModelTest {
     fun `onOperationTypeChange with RESERVE_ALLOCATION should have 2 new operation fields`() {
         viewModel.onOperationTypeChange(OperationType.RESERVE_ALLOCATION)
         val fields = viewModel.uiState.value.dialogFields
-        
+
         assertEquals(2, fields.size)
     }
 
@@ -145,7 +161,7 @@ class OperationsScreenViewModelTest {
     fun `onOperationTypeChange with RESERVE_WITHDRAWAL should have 2 new operation fields`() {
         viewModel.onOperationTypeChange(OperationType.RESERVE_WITHDRAWAL)
         val fields = viewModel.uiState.value.dialogFields
-        
+
         assertEquals(2, fields.size)
     }
 
@@ -153,7 +169,7 @@ class OperationsScreenViewModelTest {
     fun `onOperationTypeChange with OTHER should have 1 new operation field`() {
         viewModel.onOperationTypeChange(OperationType.OTHER)
         val fields = viewModel.uiState.value.dialogFields
-        
+
         assertEquals(1, fields.size)
     }
 
@@ -234,17 +250,18 @@ class OperationsScreenViewModelTest {
     }
 
     @Test
-    fun `onSearchQueryChange with operation description query should filter operations`() = runBlocking {
-        viewModel.onSearchQueryChange(VALID_DESCRIPTION)
-        val filteredOperations = viewModel.uiState.first().operations
+    fun `onSearchQueryChange with operation description query should filter operations`() =
+        runBlocking {
+            viewModel.onSearchQueryChange(VALID_DESCRIPTION)
+            val filteredOperations = viewModel.uiState.first().operations
 
-        assertTrue(filteredOperations.all {
-            it.description.contains(
-                VALID_DESCRIPTION,
-                ignoreCase = true
-            )
-        })
-    }
+            assertTrue(filteredOperations.all {
+                it.description.contains(
+                    VALID_DESCRIPTION,
+                    ignoreCase = true
+                )
+            })
+        }
 
     @Test
     fun `onSearchQueryChange with operation value query should filter operations`() = runBlocking {

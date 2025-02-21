@@ -42,7 +42,7 @@ class LastMonthDifferenceCardViewModel :
         currentDateFilter = date
     }
 
-    private companion object {
+    companion object {
         const val MOCK = -100.00
     }
 }
