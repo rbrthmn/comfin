@@ -32,6 +32,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -57,10 +59,11 @@ fun OperationsScreen(
     viewModel: OperationsScreenContract.OperationsScreenViewModel = koinViewModel(),
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(topBar = {
         MonthSelectionTopBar(
-            initialDate = viewModel.currentDate,
+            initialDate = uiState.currentDateFilter,
             onDateSelected = viewModel::onDateFilterChange,
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
@@ -87,7 +90,7 @@ private fun OperationsScreenContent(
     ) {
         TotalBalanceCard(
             modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_medium)),
-            viewModel = viewModel
+            uiState = viewModel.uiState.collectAsState().value
         )
         OperationsListCard(viewModel)
     }
