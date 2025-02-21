@@ -53,6 +53,9 @@ val appModule = module {
     viewModelOf<BalanceCardContract.BalanceCardViewModel>(::BalanceCardViewModel)
     viewModelOf<CreditCardBillsCardContract.CreditCardsBillCardViewModel>(::CreditCardBillsCardViewModel)
     viewModelOf<LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel>(::LastMonthDifferenceCardViewModel)
+//    viewModel<LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel> {
+//        LastMonthDifferenceCardViewModel().onInit(LastMonthDifferenceCardUiState())
+//    }
     viewModelOf<MonthlyLimitCardContract.MonthlyLimitCardViewModel>(::MonthlyLimitCardViewModel)
     viewModel<OperationsScreenContract.OperationsScreenViewModel> {
         OperationsScreenViewModel(stringProvider = get())

@@ -33,7 +33,7 @@ class HomeScreenViewModelTest {
     fun `onDateFilterChange should assign value correctly`() {
         viewModel.onDateFilterChange(VALID_DATE)
 
-        assertEquals(VALID_DATE, viewModel.currentDateFilter)
+        assertEquals(VALID_DATE, viewModel.uiState.value.currentDateFilter)
 
     }
 

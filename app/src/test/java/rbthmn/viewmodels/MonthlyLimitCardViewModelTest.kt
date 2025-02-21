@@ -45,7 +45,7 @@ class MonthlyLimitCardViewModelTest {
 
         assertEquals(
             VALID_DATE,
-            viewModel.currentDateFilter
+            viewModel.uiState.value.currentDateFilter
         )
     }
 
