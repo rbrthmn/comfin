@@ -66,16 +66,22 @@ fun BalanceCard(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddAccountDialog = rememberSaveable { mutableStateOf(false) }
-    viewModel.setDateFilter(currentDateFilter)
+    viewModel.onIntent(
+        BalanceCardContract.BalanceCardIntent.OnDateFilterChange(date = currentDateFilter)
+    )
 
     if (showAddAccountDialog.value)
         AddBankAccountDialog(
             viewModel = viewModel,
             onCancelButtonClick = {
-                viewModel.cleanNewAccount()
+                viewModel.onIntent(BalanceCardContract.BalanceCardIntent.CleanNewAccount)
                 showAddAccountDialog.value = false
             },
-            onSaveButtonClick = { viewModel.onSaveClick(showDialog = showAddAccountDialog) },
+            onSaveButtonClick = {
+                viewModel.onIntent(
+                    BalanceCardContract.BalanceCardIntent.OnSaveClick(showDialog = showAddAccountDialog)
+                )
+            },
         )
 
     Card(
@@ -183,18 +189,33 @@ private fun AddBankAccountDialog(
                     label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
                     maxLines = 100,
                     value = uiState.newAccountDescription,
-                    onValueChange = { viewModel.onDescriptionChange(it) },
+                    onValueChange = {
+                        viewModel.onIntent(
+                            BalanceCardContract.BalanceCardIntent.OnDescriptionChange(description = it)
+                        )
+                    },
                     isError = !uiState.isNewAccountDescriptionValid
                 )
                 DecimalInputField(
-                    onValueChange = viewModel::onInitialBalanceChange,
+                    onValueChange = {
+                        viewModel.onIntent(
+                            BalanceCardContract.BalanceCardIntent.OnInitialBalanceChange(balance = it)
+                        )
+                    },
                     value = uiState.newAccountBalance,
                     label = stringResource(id = R.string.balance_input_hint),
                     prefix = stringResource(id = R.string.brl_currency),
                     isError = !uiState.isNewAccountBalanceValid
                 )
                 BanksDropdownMenu(
-                    onBankSelected = viewModel::onBankChange,
+                    onBankSelected = { bankId, bankName ->
+                        viewModel.onIntent(
+                            BalanceCardContract.BalanceCardIntent.OnBankChange(
+                                bankId,
+                                bankName
+                            )
+                        )
+                    },
                     isValid = uiState.isNewAccountBankValid,
                     modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
                 )

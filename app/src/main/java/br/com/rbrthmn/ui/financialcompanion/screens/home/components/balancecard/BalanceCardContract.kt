@@ -28,12 +28,16 @@ import java.time.LocalDate
 interface BalanceCardContract {
     abstract class BalanceCardViewModel : ViewModel() {
         abstract val uiState: StateFlow<BalanceCardUiState>
-        abstract fun onInitialBalanceChange(balance: String)
-        abstract fun onDescriptionChange(description: String)
-        abstract fun onBankChange(bankId: Int, bankName: String)
-        abstract fun onSaveClick(showDialog: MutableState<Boolean>)
-        abstract fun cleanNewAccount()
-        abstract fun setDateFilter(date: LocalDate)
-        abstract fun doOnInit(): br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel
+        abstract fun doOnInit(): BalanceCardViewModel
+        abstract fun onIntent(intent: BalanceCardIntent)
+    }
+
+    sealed class BalanceCardIntent {
+        data class OnInitialBalanceChange(val balance: String) : BalanceCardIntent()
+        data class OnDescriptionChange(val description: String) : BalanceCardIntent()
+        data class OnBankChange(val bankId: Int, val bankName: String) : BalanceCardIntent()
+        data class OnSaveClick(val showDialog: MutableState<Boolean>) : BalanceCardIntent()
+        data object CleanNewAccount : BalanceCardIntent()
+        data class OnDateFilterChange(val date: LocalDate) : BalanceCardIntent()
     }
 }
