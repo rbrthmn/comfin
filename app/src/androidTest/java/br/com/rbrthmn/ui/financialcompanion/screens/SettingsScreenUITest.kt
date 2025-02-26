@@ -26,24 +26,22 @@ import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import br.com.rbrthmn.ui.financialcompanion.BaseUITest
 import br.com.rbrthmn.ui.financialcompanion.screens.settings.SETTINGS_LIST_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.settings.SettingsScreen
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-class SettingsScreenUITest {
-    @get:Rule
-    val composeTestRule = createComposeRule()
+class SettingsScreenUITest : BaseUITest() {
+    override val composeTestRule = createComposeRule()
 
-    @Test
-    fun settings_screen_should_have_a_list_of_settings() {
+    override fun setup() {
         composeTestRule.setContent {
             SettingsScreen(modifier = Modifier.fillMaxSize())
         }
+    }
 
+    @Test
+    fun settings_screen_should_have_a_list_of_settings() {
         val settingsList = composeTestRule.onNodeWithTag(SETTINGS_LIST_TAG)
         val childNodes = settingsList.onChildren()
 
