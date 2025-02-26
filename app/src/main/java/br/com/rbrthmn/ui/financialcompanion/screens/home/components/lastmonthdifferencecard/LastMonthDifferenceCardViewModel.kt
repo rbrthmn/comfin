@@ -29,15 +29,17 @@ class LastMonthDifferenceCardViewModel :
     LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel() {
     override var uiState = MutableStateFlow(LastMonthDifferenceCardUiState())
 
-    init {
+    override fun doOnInit(): LastMonthDifferenceCardViewModel {
         uiState.value = LastMonthDifferenceCardUiState(formatDouble(MOCK))
+
+        return this
     }
 
     override fun setDateFilter(date: LocalDate) = uiState.update {
         it.copy(currentDateFilter = date)
     }
 
-    private companion object {
+    companion object {
         const val MOCK = -100.00
     }
 }

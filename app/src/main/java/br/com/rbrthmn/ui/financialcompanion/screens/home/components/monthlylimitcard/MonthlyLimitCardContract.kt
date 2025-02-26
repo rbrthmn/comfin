@@ -28,5 +28,6 @@ interface MonthlyLimitCardContract {
     abstract class MonthlyLimitCardViewModel : ViewModel() {
         abstract val uiState: StateFlow<MonthlyLimitCardUiState>
         abstract fun setDateFilter(date: LocalDate)
+        abstract fun doOnInit(): br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel
     }
 }

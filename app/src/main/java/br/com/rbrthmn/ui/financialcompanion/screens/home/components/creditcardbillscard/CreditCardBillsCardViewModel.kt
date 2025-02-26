@@ -30,16 +30,18 @@ import java.time.LocalDate
 class CreditCardBillsCardViewModel : CreditCardBillsCardContract.CreditCardsBillCardViewModel() {
     override val uiState = MutableStateFlow(CreditCardsBillCardUiState())
 
-    init {
+    override fun doOnInit(): CreditCardBillsCardViewModel {
         val bills = listOf(
-            CreditCardBillUiState("Cartao A", formatDouble(5000.00), "R$"),
-            CreditCardBillUiState("Cartao B", formatDouble(10000.00), "R$"),
-            CreditCardBillUiState("Cartao C", formatDouble(5.00), "R$")
+            CreditCardBillUiState(
+                name = CREDIT_CARD_MOCK,
+                value = formatDouble(BILL_VALUE_MOCK),
+                dueDay = DUE_DAY_MOCK,
+                bankName = BANK_NAME_MOCK,
+            ),
         )
-        val totalBill = 1200.00
+        uiState.value = CreditCardsBillCardUiState(totalBill = formatDouble(TOTAL_BILL_MOCK), bills = bills)
 
-        uiState.value =
-            CreditCardsBillCardUiState(totalBill = formatDouble(totalBill), bills = bills)
+        return this
     }
 
     override fun onNewCreditCardNameChange(name: String) = uiState.update {
@@ -120,7 +122,12 @@ class CreditCardBillsCardViewModel : CreditCardBillsCardContract.CreditCardsBill
         it.copy(currentDateFilter = date)
     }
 
-    private companion object {
+    companion object {
         const val INVALID_BILL_DATE = 0
+        const val CREDIT_CARD_MOCK = "Cartao"
+        const val BILL_VALUE_MOCK = 1000.00
+        const val DUE_DAY_MOCK = 30
+        const val BANK_NAME_MOCK = "Meu Banco"
+        const val TOTAL_BILL_MOCK = 2000.00
     }
 }

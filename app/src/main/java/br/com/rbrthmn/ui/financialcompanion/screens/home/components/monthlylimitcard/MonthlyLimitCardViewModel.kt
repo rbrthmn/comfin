@@ -31,18 +31,20 @@ import java.time.LocalDate
 class MonthlyLimitCardViewModel : MonthlyLimitCardContract.MonthlyLimitCardViewModel() {
     override var uiState: MutableStateFlow<MonthlyLimitCardUiState> = MutableStateFlow(MonthlyLimitCardUiState())
 
-    init {
+    override fun doOnInit(): MonthlyLimitCardViewModel {
         uiState.value = MonthlyLimitCardUiState(
             monthLimit = formatDouble(MONTH_LIMIT_MOCK),
             monthDifference = formatDouble(MONTH_DIFFERENCE_MOCK)
         )
+
+        return this
     }
 
     override fun setDateFilter(date: LocalDate) = uiState.update {
         it.copy(currentDateFilter = date)
     }
 
-    private companion object {
+    companion object {
         const val MONTH_LIMIT_MOCK = 1000.0
         const val MONTH_DIFFERENCE_MOCK = 500.0
     }

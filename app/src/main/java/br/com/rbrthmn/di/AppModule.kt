@@ -50,12 +50,20 @@ val appModule = module {
     single<StringProvider> { ResourceStringProvider(context = androidContext()) }
 
     viewModelOf<HomeScreenContract.HomeScreenViewModel>(::HomeScreenViewModel)
-    viewModelOf<BalanceCardContract.BalanceCardViewModel>(::BalanceCardViewModel)
-    viewModelOf<CreditCardBillsCardContract.CreditCardsBillCardViewModel>(::CreditCardBillsCardViewModel)
-    viewModelOf<LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel>(::LastMonthDifferenceCardViewModel)
-    viewModelOf<MonthlyLimitCardContract.MonthlyLimitCardViewModel>(::MonthlyLimitCardViewModel)
+    viewModel<BalanceCardContract.BalanceCardViewModel> {
+        BalanceCardViewModel().doOnInit()
+    }
+    viewModel<CreditCardBillsCardContract.CreditCardsBillCardViewModel> {
+        CreditCardBillsCardViewModel().doOnInit()
+    }
+    viewModel<LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel> {
+        LastMonthDifferenceCardViewModel().doOnInit()
+    }
+    viewModel<MonthlyLimitCardContract.MonthlyLimitCardViewModel> {
+        MonthlyLimitCardViewModel().doOnInit()
+    }
     viewModel<OperationsScreenContract.OperationsScreenViewModel> {
-        OperationsScreenViewModel(stringProvider = get())
+        OperationsScreenViewModel(stringProvider = get()).doOnInit()
     }
 
     factoryOf<DecimalInputFieldFormatter>(::DecimalFormatter)

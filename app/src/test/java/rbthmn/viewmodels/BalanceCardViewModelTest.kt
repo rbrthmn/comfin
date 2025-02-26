@@ -24,12 +24,38 @@ import androidx.compose.runtime.mutableStateOf
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BankAccountBalanceUiState
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_NAME_MOCK
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_VALUE_MOCK
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel.Companion.BANK_NAME_MOCK
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel.Companion.TOTAL_BALANCE_MOCK
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillUiState
+import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.time.LocalDate
 
 class BalanceCardViewModelTest {
     private val viewModel = BalanceCardViewModel()
+
+    @Test
+    fun `doOnInit should assign initial values`() {
+        viewModel.doOnInit()
+        val expectedList = listOf(
+            CreditCardBillUiState(
+                name = ACCOUNT_NAME_MOCK,
+                value = formatDouble(ACCOUNT_VALUE_MOCK),
+                bankName = BANK_NAME_MOCK,
+            )
+        )
+
+        assertEquals(formatDouble(TOTAL_BALANCE_MOCK), viewModel.uiState.value.totalBalance)
+        assertEquals(expectedList.first().value, viewModel.uiState.value.accounts.first().value)
+        assertEquals(expectedList.first().name, viewModel.uiState.value.accounts.first().name)
+        assertEquals(
+            expectedList.first().bankName,
+            viewModel.uiState.value.accounts.first().bankName
+        )
+    }
 
     @Test
     fun `onInitialBalanceChange with empty value should assign correctly`() {

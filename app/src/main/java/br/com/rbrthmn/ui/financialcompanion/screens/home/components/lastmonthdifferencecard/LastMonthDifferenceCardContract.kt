@@ -28,5 +28,6 @@ interface LastMonthDifferenceCardContract {
     abstract class LastMonthDifferenceCardViewModel : ViewModel() {
         abstract val uiState: StateFlow<LastMonthDifferenceCardUiState>
         abstract fun setDateFilter(date: LocalDate)
+        abstract fun doOnInit(): br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
     }
 }

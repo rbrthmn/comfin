@@ -43,7 +43,7 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
     OperationsScreenContract.OperationsScreenViewModel() {
     override var uiState = MutableStateFlow(OperationsScreenUiState())
 
-    init {
+    override fun doOnInit(): OperationsScreenViewModel {
         uiState.value =
             OperationsScreenUiState(
                 operations = getOperationsMock().sortedByDescending { it.date },
@@ -52,6 +52,8 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
                 totalOutcome = formatDouble(TOTAL_OUTCOME_MOCK)
             )
         updateDialogFields(resetFields = true)
+
+        return this
     }
 
     override fun onDescriptionChange(description: String) = uiState.update {
@@ -270,7 +272,7 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
         it.copy(currentDateFilter = localDate)
     }
 
-    private companion object {
+    companion object {
         const val TOTAL_BALANCE_MOCK = 1000.0
         const val TOTAL_INCOME_MOCK = 1500.0
         const val TOTAL_OUTCOME_MOCK = 500.0

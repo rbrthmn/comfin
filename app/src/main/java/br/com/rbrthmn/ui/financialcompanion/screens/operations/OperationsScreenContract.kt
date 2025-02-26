@@ -40,5 +40,6 @@ interface OperationsScreenContract {
         abstract fun resetDialogFields()
         abstract fun onSearchQueryChange(query: String)
         abstract fun onDateFilterChange(localDate: LocalDate)
+        abstract fun doOnInit(): br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
     }
 }

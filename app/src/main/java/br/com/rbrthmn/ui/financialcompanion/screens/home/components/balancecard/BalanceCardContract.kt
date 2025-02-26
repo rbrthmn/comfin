@@ -34,5 +34,6 @@ interface BalanceCardContract {
         abstract fun onSaveClick(showDialog: MutableState<Boolean>)
         abstract fun cleanNewAccount()
         abstract fun setDateFilter(date: LocalDate)
+        abstract fun doOnInit(): br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel
     }
 }
