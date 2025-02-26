@@ -65,40 +65,40 @@ class OperationsScreenViewModelTest {
     fun `onDescriptionChange with empty value should be invalid`() {
         viewModel.onDescriptionChange(EMPTY_STRING)
 
-        assertFalse(viewModel.isNewOperationDescriptionValid)
-        assertEquals(EMPTY_STRING, viewModel.newOperationDescription)
+        assertFalse(viewModel.uiState.value.isNewOperationDescriptionValid)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newOperationDescription)
     }
 
     @Test
     fun `onDescriptionChange with valid value should be valid`() {
         viewModel.onDescriptionChange(VALID_DESCRIPTION)
 
-        assertTrue(viewModel.isNewOperationDescriptionValid)
-        assertEquals(VALID_DESCRIPTION, viewModel.newOperationDescription)
+        assertTrue(viewModel.uiState.value.isNewOperationDescriptionValid)
+        assertEquals(VALID_DESCRIPTION, viewModel.uiState.value.newOperationDescription)
     }
 
     @Test
     fun `onValueChange with invalid format should be invalid`() {
         viewModel.onValueChange(INVALID_VALUE)
 
-        assertFalse(viewModel.isNewOperationValueValid)
-        assertEquals(INVALID_VALUE, viewModel.newOperationValue)
+        assertFalse(viewModel.uiState.value.isNewOperationValueValid)
+        assertEquals(INVALID_VALUE, viewModel.uiState.value.newOperationValue)
     }
 
     @Test
     fun `onValueChange with valid format should be valid`() {
         viewModel.onValueChange(VALID_VALUE)
 
-        assertTrue(viewModel.isNewOperationValueValid)
-        assertEquals(VALID_VALUE, viewModel.newOperationValue)
+        assertTrue(viewModel.uiState.value.isNewOperationValueValid)
+        assertEquals(VALID_VALUE, viewModel.uiState.value.newOperationValue)
     }
 
     @Test
     fun `onOperationTypeChange should update type and be valid`() {
         viewModel.onOperationTypeChange(VALID_OPERATION_TYPE)
 
-        assertTrue(viewModel.isNewOperationTypeValid)
-        assertEquals(VALID_OPERATION_TYPE, viewModel.newOperationType)
+        assertTrue(viewModel.uiState.value.isNewOperationTypeValid)
+        assertEquals(VALID_OPERATION_TYPE, viewModel.uiState.value.newOperationType)
     }
 
     @Test
@@ -178,8 +178,8 @@ class OperationsScreenViewModelTest {
         viewModel.onOperationTypeChange(OperationType.DEBIT_PURCHASE)
         viewModel.onOriginAccountChange(VALID_ACCOUNT)
 
-        assertTrue(viewModel.isNewOperationOriginAccountValid)
-        assertEquals(VALID_ACCOUNT, viewModel.newOperationOriginAccount)
+        assertTrue(viewModel.uiState.value.isNewOperationOriginAccountValid)
+        assertEquals(VALID_ACCOUNT, viewModel.uiState.value.newOperationOriginAccount)
     }
 
     @Test
@@ -187,8 +187,8 @@ class OperationsScreenViewModelTest {
         viewModel.onOperationTypeChange(OperationType.DEBIT_PURCHASE)
         viewModel.onOriginAccountChange(EMPTY_STRING)
 
-        assertFalse(viewModel.isNewOperationOriginAccountValid)
-        assertEquals(EMPTY_STRING, viewModel.newOperationOriginAccount)
+        assertFalse(viewModel.uiState.value.isNewOperationOriginAccountValid)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newOperationOriginAccount)
     }
 
     @Test
@@ -196,8 +196,8 @@ class OperationsScreenViewModelTest {
         viewModel.onOperationTypeChange(OperationType.DEPOSIT)
         viewModel.onDestinationAccountChange(EMPTY_STRING)
 
-        assertFalse(viewModel.isNewOperationDestinationAccountValid)
-        assertEquals(EMPTY_STRING, viewModel.newOperationDestinationAccount)
+        assertFalse(viewModel.uiState.value.isNewOperationDestinationAccountValid)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newOperationDestinationAccount)
     }
 
     @Test
@@ -205,8 +205,8 @@ class OperationsScreenViewModelTest {
         viewModel.onOperationTypeChange(OperationType.DEPOSIT)
         viewModel.onDestinationAccountChange(VALID_DESTINATION_ACCOUNT)
 
-        assertTrue(viewModel.isNewOperationDestinationAccountValid)
-        assertEquals(VALID_DESTINATION_ACCOUNT, viewModel.newOperationDestinationAccount)
+        assertTrue(viewModel.uiState.value.isNewOperationDestinationAccountValid)
+        assertEquals(VALID_DESTINATION_ACCOUNT, viewModel.uiState.value.newOperationDestinationAccount)
     }
 
     @Test
@@ -214,8 +214,8 @@ class OperationsScreenViewModelTest {
         viewModel.onOperationTypeChange(OperationType.RESERVE_ALLOCATION)
         viewModel.onReserveChange(VALID_RESERVE)
 
-        assertTrue(viewModel.isNewOperationReserveValid)
-        assertEquals(VALID_RESERVE, viewModel.newOperationReserve)
+        assertTrue(viewModel.uiState.value.isNewOperationReserveValid)
+        assertEquals(VALID_RESERVE, viewModel.uiState.value.newOperationReserve)
     }
 
     @Test
@@ -230,10 +230,10 @@ class OperationsScreenViewModelTest {
         viewModel.onSaveButtonClick(mockDialog)
 
         verify { mockDialog.value = false }
-        assertEquals(EMPTY_STRING, viewModel.newOperationDescription)
-        assertEquals(EMPTY_STRING, viewModel.newOperationValue)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newOperationDescription)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newOperationValue)
         assertEquals(expectedNewOperationsSize, viewModel.uiState.value.operations.size)
-        assertNull(viewModel.newOperationType)
+        assertNull(viewModel.uiState.value.newOperationType)
     }
 
     @Test
@@ -411,7 +411,7 @@ class OperationsScreenViewModelTest {
     fun `onDateFilterChange should update currentDate`() {
         viewModel.onDateFilterChange(VALID_DATE)
 
-        assertEquals(VALID_DATE, viewModel.currentDate)
+        assertEquals(VALID_DATE, viewModel.uiState.value.currentDateFilter)
     }
 
     private companion object {

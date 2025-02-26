@@ -60,66 +60,66 @@ class CreditCardBillsCardViewModelTest {
     fun `onNewCreditCardBillChange with empty value should assign correctly`() {
         viewModel.onNewCreditCardBillChange(EMPTY_STRING)
 
-        assertEquals(false, viewModel.isNewCreditCardBillValid)
-        assertEquals(EMPTY_STRING, viewModel.newCreditCardBill)
+        assertEquals(false, viewModel.uiState.value.isNewCreditCardBillValid)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newCreditCardBill)
     }
 
     @Test
     fun `onNewCreditCardBillChange with value should assign correctly`() {
         viewModel.onNewCreditCardBillChange(VALID_BILL_STRING)
 
-        assertEquals(true, viewModel.isNewCreditCardBillValid)
-        assertEquals(VALID_BILL_STRING, viewModel.newCreditCardBill)
+        assertEquals(true, viewModel.uiState.value.isNewCreditCardBillValid)
+        assertEquals(VALID_BILL_STRING, viewModel.uiState.value.newCreditCardBill)
     }
 
     @Test
     fun `onNewCreditCardNameChange with empty value should assign correctly`() {
         viewModel.onNewCreditCardNameChange(EMPTY_STRING)
 
-        assertEquals(false, viewModel.isNewCreditCardNameValid)
-        assertEquals(EMPTY_STRING, viewModel.newCreditCardName)
+        assertEquals(false, viewModel.uiState.value.isNewCreditCardNameValid)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newCreditCardName)
     }
 
     @Test
     fun `onNewCreditCardNameChange with value should assign correctly`() {
         viewModel.onNewCreditCardNameChange(VALID_STRING)
 
-        assertEquals(true, viewModel.isNewCreditCardNameValid)
-        assertEquals(VALID_STRING, viewModel.newCreditCardName)
+        assertEquals(true, viewModel.uiState.value.isNewCreditCardNameValid)
+        assertEquals(VALID_STRING, viewModel.uiState.value.newCreditCardName)
     }
 
     @Test
     fun `onBankChange with empty value should assign correctly`() {
         viewModel.onBankChange(VALID_ID_STRING, EMPTY_STRING)
 
-        assertEquals(false, viewModel.isNewCreditCardBankNameValid)
-        assertEquals(EMPTY_STRING, viewModel.newCreditCardBankName)
-        assertEquals(VALID_ID_STRING, viewModel.newCreditCardBankIcon)
+        assertEquals(false, viewModel.uiState.value.isNewCreditCardBankNameValid)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newCreditCardBankName)
+        assertEquals(VALID_ID_STRING, viewModel.uiState.value.newCreditCardBankIcon)
     }
 
     @Test
     fun `onBankChange with value should assign correctly`() {
         viewModel.onBankChange(VALID_ID_STRING, VALID_BILL_STRING)
 
-        assertEquals(true, viewModel.isNewCreditCardBankNameValid)
-        assertEquals(VALID_BILL_STRING, viewModel.newCreditCardBankName)
-        assertEquals(VALID_ID_STRING, viewModel.newCreditCardBankIcon)
+        assertEquals(true, viewModel.uiState.value.isNewCreditCardBankNameValid)
+        assertEquals(VALID_BILL_STRING, viewModel.uiState.value.newCreditCardBankName)
+        assertEquals(VALID_ID_STRING, viewModel.uiState.value.newCreditCardBankIcon)
     }
 
     @Test
     fun `onNewCreditCardBillDueDayChange with zero value should assign correctly`() {
         viewModel.onNewCreditCardBillDueDayChange(INVALID_DUE_DAY)
 
-        assertEquals(false, viewModel.isNewCreditCardBillDueDayValid)
-        assertEquals(INVALID_DUE_DAY, viewModel.newCreditCardBillDueDay)
+        assertEquals(false, viewModel.uiState.value.isNewCreditCardBillDueDayValid)
+        assertEquals(INVALID_DUE_DAY, viewModel.uiState.value.newCreditCardBillDueDay)
     }
 
     @Test
     fun `onNewCreditCardBillDueDayChange with value should assign correctly`() {
         viewModel.onNewCreditCardBillDueDayChange(VALID_DUE_DAY)
 
-        assertEquals(true, viewModel.isNewCreditCardBillDueDayValid)
-        assertEquals(VALID_DUE_DAY, viewModel.newCreditCardBillDueDay)
+        assertEquals(true, viewModel.uiState.value.isNewCreditCardBillDueDayValid)
+        assertEquals(VALID_DUE_DAY, viewModel.uiState.value.newCreditCardBillDueDay)
     }
 
     @Test
@@ -166,15 +166,15 @@ class CreditCardBillsCardViewModelTest {
     }
 
     private fun assertCleanedInputs() {
-        assertEquals(EMPTY_STRING, viewModel.newCreditCardName)
-        assertEquals(EMPTY_STRING, viewModel.newCreditCardBill)
-        assertEquals(EMPTY_STRING, viewModel.newCreditCardBankName)
-        assertEquals(R.drawable.bank_icon, viewModel.newCreditCardBankIcon)
-        assertEquals(0, viewModel.newCreditCardBillDueDay)
-        assertEquals(true, viewModel.isNewCreditCardBankNameValid)
-        assertEquals(true, viewModel.isNewCreditCardNameValid)
-        assertEquals(true, viewModel.isNewCreditCardBillValid)
-        assertEquals(true, viewModel.isNewCreditCardBillDueDayValid)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newCreditCardName)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newCreditCardBill)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newCreditCardBankName)
+        assertEquals(R.drawable.bank_icon, viewModel.uiState.value.newCreditCardBankIcon)
+        assertEquals(0, viewModel.uiState.value.newCreditCardBillDueDay)
+        assertEquals(true, viewModel.uiState.value.isNewCreditCardBankNameValid)
+        assertEquals(true, viewModel.uiState.value.isNewCreditCardNameValid)
+        assertEquals(true, viewModel.uiState.value.isNewCreditCardBillValid)
+        assertEquals(true, viewModel.uiState.value.isNewCreditCardBillDueDayValid)
     }
 
     private fun assignValidInputs() {
@@ -188,7 +188,7 @@ class CreditCardBillsCardViewModelTest {
     fun `setDateFilter should assign value correctly`() {
         viewModel.setDateFilter(VALID_DATE)
 
-        assertEquals(VALID_DATE, viewModel.currentDateFilter)
+        assertEquals(VALID_DATE, viewModel.uiState.value.currentDateFilter)
     }
 
     private companion object {

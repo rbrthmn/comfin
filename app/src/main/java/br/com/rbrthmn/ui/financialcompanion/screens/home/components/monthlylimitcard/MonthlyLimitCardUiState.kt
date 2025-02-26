@@ -20,4 +20,10 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard
 
-data class MonthlyLimitCardUiState(val monthLimit: String = "", val monthDifference: String = "")
+import java.time.LocalDate
+
+data class MonthlyLimitCardUiState(
+    val monthLimit: String = "",
+    val monthDifference: String = "",
+    val currentDateFilter: LocalDate = LocalDate.now()
+)

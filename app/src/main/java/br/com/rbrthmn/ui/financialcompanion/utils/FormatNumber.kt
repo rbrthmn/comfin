@@ -40,10 +40,11 @@ fun formatDouble(number: Double): String {
 }
 
 fun formatString(string: String): String {
-    val formatter = NumberFormat.getNumberInstance(Locale.getDefault()) as DecimalFormat
+    if (string.isBlank()) return ""
 
-    formatter.applyPattern("#,##0.00")
+    val formatter = NumberFormat.getNumberInstance(Locale.getDefault()) as DecimalFormat
     val formattedString: String
+    formatter.applyPattern("#,##0.00")
 
     try {
         val newString = string.replace(',', '.')
@@ -58,6 +59,8 @@ fun formatString(string: String): String {
 }
 
 fun canBeFormatted(string: String): Boolean {
+    if (string.isBlank()) return false
+
     return try {
         formatString(string)
         true

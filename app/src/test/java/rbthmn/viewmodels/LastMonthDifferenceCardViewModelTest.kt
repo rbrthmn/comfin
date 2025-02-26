@@ -44,7 +44,7 @@ class LastMonthDifferenceCardViewModelTest {
 
         TestCase.assertEquals(
             VALID_DATE,
-            viewModel.currentDateFilter
+            viewModel.uiState.value.currentDateFilter
         )
     }
 

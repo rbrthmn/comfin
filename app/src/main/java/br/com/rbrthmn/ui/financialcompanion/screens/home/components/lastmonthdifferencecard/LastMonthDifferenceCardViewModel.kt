@@ -20,17 +20,14 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 
 class LastMonthDifferenceCardViewModel :
     LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel() {
     override var uiState = MutableStateFlow(LastMonthDifferenceCardUiState())
-    override var currentDateFilter: LocalDate by mutableStateOf(LocalDate.now())
 
     override fun doOnInit(): LastMonthDifferenceCardViewModel {
         uiState.value = LastMonthDifferenceCardUiState(formatDouble(MOCK))
@@ -38,8 +35,8 @@ class LastMonthDifferenceCardViewModel :
         return this
     }
 
-    override fun setDateFilter(date: LocalDate) {
-        currentDateFilter = date
+    override fun setDateFilter(date: LocalDate) = uiState.update {
+        it.copy(currentDateFilter = date)
     }
 
     companion object {

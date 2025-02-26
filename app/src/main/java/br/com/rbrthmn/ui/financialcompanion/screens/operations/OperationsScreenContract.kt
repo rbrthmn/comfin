@@ -29,22 +29,6 @@ import java.time.LocalDate
 interface OperationsScreenContract {
     abstract class OperationsScreenViewModel : ViewModel() {
         abstract val uiState: StateFlow<OperationsScreenUiState>
-        abstract val newOperationDescription: String
-        abstract val isNewOperationDescriptionValid: Boolean
-        abstract val newOperationValue: String
-        abstract val isNewOperationValueValid: Boolean
-        abstract val newOperationType: OperationType?
-        abstract val isNewOperationTypeValid: Boolean
-        abstract val newOperationOriginAccount: String
-        abstract val isNewOperationOriginAccountValid: Boolean
-        abstract val newOperationDestinationAccount: String
-        abstract val isNewOperationDestinationAccountValid: Boolean
-        abstract val newOperationDate: LocalDate
-        abstract var isNewOperationDateValid: Boolean
-        abstract val newOperationReserve: String
-        abstract val isNewOperationReserveValid: Boolean
-        abstract val searchQuery: String
-        abstract val currentDate: LocalDate
         abstract fun onDescriptionChange(description: String)
         abstract fun onValueChange(value: String)
         abstract fun onOperationTypeChange(operationType: OperationType)

@@ -61,50 +61,50 @@ class BalanceCardViewModelTest {
     fun `onInitialBalanceChange with empty value should assign correctly`() {
         viewModel.onInitialBalanceChange(EMPTY_STRING)
 
-        assertEquals(false, viewModel.isNewAccountBalanceValid)
-        assertEquals(EMPTY_STRING, viewModel.newAccountBalance)
+        assertEquals(false, viewModel.uiState.value.isNewAccountBalanceValid)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newAccountBalance)
     }
 
     @Test
     fun `onInitialBalanceChange with value should assign correctly`() {
         viewModel.onInitialBalanceChange(VALID_BALANCE_STRING)
 
-        assertEquals(true, viewModel.isNewAccountBalanceValid)
-        assertEquals(VALID_BALANCE_STRING, viewModel.newAccountBalance)
+        assertEquals(true, viewModel.uiState.value.isNewAccountBalanceValid)
+        assertEquals(VALID_BALANCE_STRING, viewModel.uiState.value.newAccountBalance)
     }
 
     @Test
     fun `onDescriptionChange with empty value should assign correctly`() {
         viewModel.onDescriptionChange(EMPTY_STRING)
 
-        assertEquals(false, viewModel.isNewAccountDescriptionValid)
-        assertEquals(EMPTY_STRING, viewModel.newAccountDescription)
+        assertEquals(false, viewModel.uiState.value.isNewAccountDescriptionValid)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newAccountDescription)
     }
 
     @Test
     fun `onDescriptionChange with value should assign correctly`() {
         viewModel.onDescriptionChange(VALID_STRING)
 
-        assertEquals(true, viewModel.isNewAccountDescriptionValid)
-        assertEquals(VALID_STRING, viewModel.newAccountDescription)
+        assertEquals(true, viewModel.uiState.value.isNewAccountDescriptionValid)
+        assertEquals(VALID_STRING, viewModel.uiState.value.newAccountDescription)
     }
 
     @Test
     fun `onBankChange with empty value should assign correctly`() {
         viewModel.onBankChange(VALID_ID_STRING, EMPTY_STRING)
 
-        assertEquals(false, viewModel.isNewAccountBankValid)
-        assertEquals(EMPTY_STRING, viewModel.newAccountBank)
-        assertEquals(VALID_ID_STRING, viewModel.newAccountBankIcon)
+        assertEquals(false, viewModel.uiState.value.isNewAccountBankValid)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newAccountBank)
+        assertEquals(VALID_ID_STRING, viewModel.uiState.value.newAccountBankIcon)
     }
 
     @Test
     fun `onBankChange with value should assign correctly`() {
         viewModel.onBankChange(VALID_ID_STRING, VALID_BALANCE_STRING)
 
-        assertEquals(true, viewModel.isNewAccountBankValid)
-        assertEquals(VALID_BALANCE_STRING, viewModel.newAccountBank)
-        assertEquals(VALID_ID_STRING, viewModel.newAccountBankIcon)
+        assertEquals(true, viewModel.uiState.value.isNewAccountBankValid)
+        assertEquals(VALID_BALANCE_STRING, viewModel.uiState.value.newAccountBank)
+        assertEquals(VALID_ID_STRING, viewModel.uiState.value.newAccountBankIcon)
     }
 
     @Test
@@ -151,13 +151,13 @@ class BalanceCardViewModelTest {
     }
 
     private fun assertCleanedInputs() {
-        assertEquals(EMPTY_STRING, viewModel.newAccountBalance)
-        assertEquals(EMPTY_STRING, viewModel.newAccountDescription)
-        assertEquals(EMPTY_STRING, viewModel.newAccountBank)
-        assertEquals(R.drawable.bank_icon, viewModel.newAccountBankIcon)
-        assertEquals(true, viewModel.isNewAccountBankValid)
-        assertEquals(true, viewModel.isNewAccountDescriptionValid)
-        assertEquals(true, viewModel.isNewAccountBalanceValid)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newAccountBalance)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newAccountDescription)
+        assertEquals(EMPTY_STRING, viewModel.uiState.value.newAccountBank)
+        assertEquals(R.drawable.bank_icon, viewModel.uiState.value.newAccountBankIcon)
+        assertEquals(true, viewModel.uiState.value.isNewAccountBankValid)
+        assertEquals(true, viewModel.uiState.value.isNewAccountDescriptionValid)
+        assertEquals(true, viewModel.uiState.value.isNewAccountBalanceValid)
     }
 
     private fun assignValidInputs() {
@@ -170,7 +170,7 @@ class BalanceCardViewModelTest {
     fun `setDateFilter should assign value correctly`() {
         viewModel.setDateFilter(VALID_DATE)
 
-        assertEquals(VALID_DATE, viewModel.currentDateFilter)
+        assertEquals(VALID_DATE, viewModel.uiState.value.currentDateFilter)
     }
 
     private companion object {

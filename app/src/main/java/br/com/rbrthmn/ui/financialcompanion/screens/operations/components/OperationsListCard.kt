@@ -74,9 +74,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun OperationsListCard(
-    viewModel: OperationsScreenContract.OperationsScreenViewModel
-) {
+fun OperationsListCard(viewModel: OperationsScreenContract.OperationsScreenViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddOperationDialog = rememberSaveable { mutableStateOf(false) }
 
@@ -104,7 +102,7 @@ fun OperationsListCard(
             )
         ) {
             TextField(
-                value = viewModel.searchQuery,
+                value = uiState.searchQuery,
                 onValueChange = viewModel::onSearchQueryChange,
                 label = { Text(text = stringResource(id = R.string.search_hint)) },
                 modifier = Modifier.fillMaxWidth(),
@@ -162,31 +160,31 @@ fun AddOperationDialog(
             ) {
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.operation_description_hint)) },
-                    value = viewModel.newOperationDescription,
+                    value = uiState.newOperationDescription,
                     onValueChange = viewModel::onDescriptionChange,
-                    isError = !viewModel.isNewOperationDescriptionValid,
+                    isError = !uiState.isNewOperationDescriptionValid,
                     singleLine = true
                 )
                 OutlinedTextField(
                     prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
                     label = { Text(text = stringResource(id = R.string.operation_value_hint)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    value = viewModel.newOperationValue,
+                    value = uiState.newOperationValue,
                     onValueChange = viewModel::onValueChange,
-                    isError = !viewModel.isNewOperationValueValid,
+                    isError = !uiState.isNewOperationValueValid,
                     singleLine = true
                 )
                 OperationTypeDropdownMenu(
                     onTypeClicked = { viewModel.onOperationTypeChange(it) },
                     operationTypes = availableOperationTypes,
-                    isError = !viewModel.isNewOperationTypeValid
+                    isError = !uiState.isNewOperationTypeValid
                 )
                 uiState.dialogFields.forEach { composableFunction ->
                     composableFunction()
                 }
                 DatePickerField(
                     onDateSelected = { viewModel.onOperationDateChange(it) },
-                    isError = !viewModel.isNewOperationDateValid
+                    isError = !uiState.isNewOperationDateValid
                 )
                 Row(
                     modifier = modifier

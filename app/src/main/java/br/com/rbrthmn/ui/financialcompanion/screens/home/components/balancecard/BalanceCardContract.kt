@@ -28,14 +28,6 @@ import java.time.LocalDate
 interface BalanceCardContract {
     abstract class BalanceCardViewModel : ViewModel() {
         abstract val uiState: StateFlow<BalanceCardUiState>
-        abstract val newAccountBalance: String
-        abstract val isNewAccountBalanceValid: Boolean
-        abstract val newAccountDescription: String
-        abstract val isNewAccountDescriptionValid: Boolean
-        abstract val newAccountBank: String
-        abstract val isNewAccountBankValid: Boolean
-        abstract val newAccountBankIcon: Int
-        abstract val currentDateFilter: LocalDate
         abstract fun onInitialBalanceChange(balance: String)
         abstract fun onDescriptionChange(description: String)
         abstract fun onBankChange(bankId: Int, bankName: String)

@@ -20,7 +20,20 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard
 
+import br.com.rbrthmn.R
+import java.time.LocalDate
+
 data class CreditCardsBillCardUiState(
     val totalBill: String = "",
-    val bills: List<CreditCardBillUiState> = listOf()
+    val bills: List<CreditCardBillUiState> = listOf(),
+    val newCreditCardName: String = "",
+    val isNewCreditCardNameValid: Boolean = true,
+    val newCreditCardBill: String = "",
+    val isNewCreditCardBillValid: Boolean = true,
+    val newCreditCardBillDueDay: Int = 0,
+    val isNewCreditCardBillDueDayValid: Boolean = true,
+    val newCreditCardBankName: String = "",
+    val isNewCreditCardBankNameValid: Boolean = true,
+    val newCreditCardBankIcon: Int = R.drawable.bank_icon,
+    var currentDateFilter: LocalDate = LocalDate.now()
 )
