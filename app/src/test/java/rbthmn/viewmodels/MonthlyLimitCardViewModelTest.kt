@@ -22,9 +22,10 @@ package rbthmn.viewmodels
 
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardContract
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel.Companion.MONTH_DIFFERENCE_MOCK
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel.Companion.MONTH_LIMIT_MOCK
+import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.time.LocalDate
 
@@ -32,11 +33,12 @@ class MonthlyLimitCardViewModelTest {
     private val viewModel: MonthlyLimitCardContract.MonthlyLimitCardViewModel = MonthlyLimitCardViewModel()
 
     @Test
-    fun `init should assign ui state value correctly`() = runBlocking {
-        val uiState = viewModel.uiState.first()
+    fun `doOnInit should assign initial values`() {
+        viewModel.doOnInit()
 
-        assertEquals("1,000.00", uiState.monthLimit)
-        assertEquals("500.00", uiState.monthDifference)
+        assertEquals(
+            formatDouble(MONTH_LIMIT_MOCK), viewModel.uiState.value.monthLimit)
+        assertEquals(formatDouble(MONTH_DIFFERENCE_MOCK), viewModel.uiState.value.monthDifference)
     }
 
     @Test

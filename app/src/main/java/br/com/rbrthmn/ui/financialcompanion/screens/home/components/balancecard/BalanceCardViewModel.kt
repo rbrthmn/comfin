@@ -42,17 +42,20 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
     override var isNewAccountBankValid by mutableStateOf(true)
     override var currentDateFilter: LocalDate by mutableStateOf(LocalDate.now())
 
-    init {
+    override fun doOnInit(): BalanceCardViewModel {
         val accounts = listOf(
-            BankAccountBalanceUiState("Banco A", formatDouble(5000.00), "R$"),
-            BankAccountBalanceUiState("Banco B", formatDouble(10000.00), "R$"),
-            BankAccountBalanceUiState("Banco C", formatDouble(5.00), "R$")
+            BankAccountBalanceUiState(
+                name = ACCOUNT_NAME_MOCK,
+                value = formatDouble(ACCOUNT_VALUE_MOCK),
+                bankName = BANK_NAME_MOCK,
+            )
         )
-        val totalBalance = 100000.00
         uiState.value = BalanceCardUiState(
-            totalBalance = formatDouble(totalBalance),
+            totalBalance = formatDouble(TOTAL_BALANCE_MOCK),
             accounts = accounts,
         )
+
+        return this
     }
 
     override fun onInitialBalanceChange(balance: String) {
@@ -104,5 +107,12 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
 
     override fun setDateFilter(date: LocalDate) {
         currentDateFilter = date
+    }
+
+    companion object {
+        const val ACCOUNT_NAME_MOCK = "Conta"
+        const val ACCOUNT_VALUE_MOCK = 1000.00
+        const val BANK_NAME_MOCK = "Meu Banco"
+        const val TOTAL_BALANCE_MOCK = 2000.00
     }
 }
