@@ -74,7 +74,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun OperationsListCard(viewModel: OperationsScreenContract.OperationsScreenViewModel) {
+fun OperationsListCard(modifier: Modifier = Modifier, viewModel: OperationsScreenContract.OperationsScreenViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddOperationDialog = rememberSaveable { mutableStateOf(false) }
 
@@ -90,7 +90,7 @@ fun OperationsListCard(viewModel: OperationsScreenContract.OperationsScreenViewM
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = Modifier
+        modifier = modifier
             .padding(bottom = dimensionResource(id = R.dimen.padding_medium))
             .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {

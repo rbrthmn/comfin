@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
@@ -52,6 +53,10 @@ object OperationsDestination : NavigationDestination {
     override val route = "operations"
 }
 
+const val DATE_FILTER_TAG = "date_filter"
+const val OPERATIONS_CARD_TAG = "operation_card"
+const val TOTAL_BALANCE_CARD_TAG = "total_balance_card"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OperationsScreen(
@@ -65,7 +70,9 @@ fun OperationsScreen(
         MonthSelectionTopBar(
             initialDate = uiState.currentDateFilter,
             onDateSelected = viewModel::onDateFilterChange,
-            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+            modifier = Modifier
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .testTag(DATE_FILTER_TAG)
         )
     }, modifier = modifier) { innerPadding ->
         OperationsScreenContent(innerPadding, modifier, viewModel)
@@ -89,10 +96,15 @@ private fun OperationsScreenContent(
             .verticalScroll(rememberScrollState())
     ) {
         TotalBalanceCard(
-            modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_medium)),
+            modifier = modifier
+                .padding(top = dimensionResource(id = R.dimen.padding_medium))
+                .testTag(TOTAL_BALANCE_CARD_TAG),
             uiState = viewModel.uiState.collectAsState().value
         )
-        OperationsListCard(viewModel)
+        OperationsListCard(
+            modifier = modifier.testTag(OPERATIONS_CARD_TAG),
+            viewModel = viewModel
+        )
     }
 }
 
