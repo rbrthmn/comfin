@@ -57,6 +57,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -85,6 +86,8 @@ data class ReserveOperation(val date: String, val value: String, val isWithdrawa
 object ReservesDestination : NavigationDestination {
     override val route = "reserves"
 }
+
+const val NEW_RESERVE_DIALOG_TAG = "new_reserve_dialog"
 
 @Composable
 fun ReservesScreen(modifier: Modifier = Modifier) {
@@ -215,7 +218,8 @@ private fun NewReserveDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick:
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(dimensionResource(id = R.dimen.padding_medium)),
+                .padding(dimensionResource(id = R.dimen.padding_medium))
+                .testTag(NEW_RESERVE_DIALOG_TAG),
             shape = RoundedCornerShape(dimensionResource(id = R.dimen.padding_medium)),
         ) {
             Column(
