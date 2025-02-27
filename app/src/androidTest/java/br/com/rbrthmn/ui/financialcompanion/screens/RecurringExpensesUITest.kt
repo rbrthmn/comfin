@@ -31,7 +31,6 @@ import br.com.rbrthmn.ui.financialcompanion.BaseUITest
 import br.com.rbrthmn.ui.financialcompanion.onNodeWithStringId
 import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.NEW_RECURRING_EXPENSE_DIALOG_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpenses
-import br.com.rbrthmn.ui.financialcompanion.screens.reserves.NEW_RESERVE_DIALOG_TAG
 import org.junit.Test
 
 class RecurringExpensesUITest : BaseUITest() {

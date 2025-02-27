@@ -33,7 +33,7 @@ import br.com.rbrthmn.ui.financialcompanion.screens.reserves.NEW_RESERVE_DIALOG_
 import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesScreen
 import org.junit.Test
 
-class ReservesScreenUITest : BaseUITest() {
+class ReservesUITest : BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     override fun setup() = composeTestRule.setContent { ReservesScreen() }

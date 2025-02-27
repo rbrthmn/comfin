@@ -31,7 +31,7 @@ import br.com.rbrthmn.ui.financialcompanion.screens.settings.SETTINGS_LIST_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.settings.SettingsScreen
 import org.junit.Test
 
-class SettingsScreenUITest : BaseUITest() {
+class SettingsUITest : BaseUITest() {
     override val composeTestRule = createComposeRule()
 
     override fun setup() {
