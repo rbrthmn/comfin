@@ -28,8 +28,6 @@ import br.com.rbrthmn.model.OperationType
 import br.com.rbrthmn.ui.financialcompanion.components.ReservesDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AccountsDropdownMenu
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationAimedAccount
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationOriginAccount
 import br.com.rbrthmn.ui.financialcompanion.utils.StringProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.canBeFormatted
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble

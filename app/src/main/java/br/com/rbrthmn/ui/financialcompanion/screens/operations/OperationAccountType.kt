@@ -18,15 +18,10 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion
+package br.com.rbrthmn.ui.financialcompanion.screens.operations
 
-import androidx.activity.ComponentActivity
-import androidx.annotation.StringRes
-import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.compose.ui.test.onNodeWithText
-import androidx.test.ext.junit.rules.ActivityScenarioRule
+import br.com.rbrthmn.R
 
-fun <A : ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<A>, A>.onNodeWithStringId(
-    @StringRes id: Int
-): SemanticsNodeInteraction = onNodeWithText(activity.getString(id))
+sealed class OperationAccountType(val stringId: Int)
+data object OperationAimedAccount : OperationAccountType(R.string.aimed_account_hint)
+data object OperationOriginAccount : OperationAccountType(R.string.origin_account_hint)

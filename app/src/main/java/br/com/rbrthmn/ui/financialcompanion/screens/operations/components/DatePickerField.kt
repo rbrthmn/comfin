@@ -40,6 +40,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import br.com.rbrthmn.R
@@ -49,6 +50,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 const val DAY_IN_MILLISECONDS = 86400000
+const val CALENDAR_TEST_TAG = "dialog"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,6 +97,7 @@ fun DatePickerField(
 
         if (showDatePicker) {
             DatePickerDialog(
+                modifier = Modifier.testTag(CALENDAR_TEST_TAG),
                 onDismissRequest = { onDismiss() },
                 confirmButton = {
                     TextButton(onClick = {

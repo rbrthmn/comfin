@@ -44,16 +44,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationAccountType
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationAimedAccount
 
-sealed class OperationAccountType(val stringId: Int)
-data object OperationAimedAccount : OperationAccountType(R.string.aimed_account_hint)
-data object OperationOriginAccount : OperationAccountType(R.string.origin_account_hint)
+const val ACCOUNTS_DROPDOWN_MENU_TAG = "accounts_dropdown_menu"
+const val ACCOUNTS_DROPDOWN_ICON_TAG = "accounts_dropdown_icon"
 
 @Composable
 fun AccountsDropdownMenu(
@@ -88,8 +90,14 @@ fun AccountsDropdownMenu(
             onValueChange = { selectedOptionText = it },
             readOnly = true,
             trailingIcon = {
-                IconButton(onClick = { expanded = true }) {
-                    Icon(Icons.Filled.ArrowDropDown, "contentDescription")
+                IconButton(
+                    onClick = { expanded = true },
+                    modifier.testTag(ACCOUNTS_DROPDOWN_ICON_TAG)
+                ) {
+                    Icon(
+                        Icons.Filled.ArrowDropDown,
+                        stringResource(R.string.drop_down_arrow_icon_description),
+                    )
                 }
             },
             singleLine = true,
@@ -97,7 +105,8 @@ fun AccountsDropdownMenu(
         )
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.testTag(ACCOUNTS_DROPDOWN_MENU_TAG)
         ) {
             options.forEach { selectedOption ->
                 DropdownMenuItem(
@@ -169,6 +178,16 @@ private fun AddSimpleAccountDialog(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AccountsDropdownMenuPreview(modifier: Modifier = Modifier) {
+    AccountsDropdownMenu(
+        operationAccountType = OperationAimedAccount,
+        onAccountSelected = {},
+        isError = false
+    )
 }
 
 @Preview
