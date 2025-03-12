@@ -205,7 +205,17 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
     }
 
     private fun updateDialogFields(resetFields: Boolean) {
+        val accounts = listOf(
+            "Conta A",
+            "Conta B",
+            "Conta C",
+            "Conta D",
+            "Conta E",
+            "Conta F",
+            "Conta G",
+        )
         val newOperationDialogFields = mutableListOf<@Composable () -> Unit>()
+
         if (resetFields) {
             uiState.update {
                 it.copy(
@@ -222,7 +232,8 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
                     AccountsDropdownMenu(
                         operationAccountType = OperationOriginAccount,
                         onAccountSelected = ::onOriginAccountChange,
-                        isError = !isNewOperationOriginAccountValid
+                        isError = !isNewOperationOriginAccountValid,
+                        accounts = accounts
                     )
                 }
             }
@@ -232,7 +243,8 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
                     AccountsDropdownMenu(
                         operationAccountType = OperationAimedAccount,
                         onAccountSelected = ::onDestinationAccountChange,
-                        isError = !isNewOperationDestinationAccountValid
+                        isError = !isNewOperationDestinationAccountValid,
+                        accounts = accounts
                     )
                 }
             }

@@ -56,26 +56,21 @@ import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationAimedAcc
 
 const val ACCOUNTS_DROPDOWN_MENU_TAG = "accounts_dropdown_menu"
 const val ACCOUNTS_DROPDOWN_ICON_TAG = "accounts_dropdown_icon"
+const val ACCOUNTS_DROPDOWN_MENU_ITEM_TAG = "accounts_dropdown_menu_item"
+const val ADD_SIMPLE_ACCOUNT_DIALOG_TAG = "add_simple_account_dialog"
 
 @Composable
 fun AccountsDropdownMenu(
     modifier: Modifier = Modifier,
     operationAccountType: OperationAccountType,
     onAccountSelected: (String) -> Unit,
-    isError: Boolean
+    isError: Boolean,
+    accounts: List<String>
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showAddAccountDialog by remember { mutableStateOf(false) }
-    val options = listOf(
-        "Conta A",
-        "Conta B",
-        "Conta C",
-        "Conta D",
-        "Conta E",
-        "Conta F",
-        "Conta G",
-    ).plus(stringResource(id = R.string.add_account_option))
     var selectedOptionText: String? by remember { mutableStateOf(null) }
+    val newAccountsList = accounts.plus(stringResource(R.string.add_account_option))
 
     if (showAddAccountDialog) {
         AddSimpleAccountDialog(
@@ -108,19 +103,21 @@ fun AccountsDropdownMenu(
             onDismissRequest = { expanded = false },
             modifier = Modifier.testTag(ACCOUNTS_DROPDOWN_MENU_TAG)
         ) {
-            options.forEach { selectedOption ->
+            newAccountsList.forEach { selectedOption ->
                 DropdownMenuItem(
+                    modifier = Modifier.testTag(ACCOUNTS_DROPDOWN_MENU_ITEM_TAG),
                     onClick = {
                         selectedOptionText = selectedOption
                         expanded = false
                         onAccountSelected(selectedOption)
-                        if (selectedOptionText == options.last()) showAddAccountDialog = true
+                        if (selectedOptionText == newAccountsList.last()) showAddAccountDialog =
+                            true
                     },
                     text = { Text(text = selectedOption) },
                     leadingIcon = {
                         Icon(
-                            painter = painterResource(id = R.drawable.help),
-                            contentDescription = "Balance Icon"
+                            painter = painterResource(id = R.drawable.bank_icon),
+                            contentDescription = stringResource(R.string.operation_account_icon_description)
                         )
                     }
                 )
@@ -139,7 +136,9 @@ private fun AddSimpleAccountDialog(
 
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
+                .testTag(ADD_SIMPLE_ACCOUNT_DIALOG_TAG)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -162,16 +161,14 @@ private fun AddSimpleAccountDialog(
                 ) {
                     Button(onClick = onCancelButtonClick) {
                         Icon(
-                            imageVector = Icons.Default.Close, contentDescription = stringResource(
-                                id = R.string.close_icon_description
-                            )
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(id = R.string.close_icon_description)
                         )
                     }
                     Button(onClick = onSaveButtonClick) {
                         Icon(
-                            imageVector = Icons.Default.Check, contentDescription = stringResource(
-                                id = R.string.check_icon_description
-                            )
+                            imageVector = Icons.Default.Check,
+                            contentDescription = stringResource(id = R.string.check_icon_description)
                         )
                     }
                 }
@@ -186,7 +183,8 @@ fun AccountsDropdownMenuPreview(modifier: Modifier = Modifier) {
     AccountsDropdownMenu(
         operationAccountType = OperationAimedAccount,
         onAccountSelected = {},
-        isError = false
+        isError = false,
+        accounts = listOf("Conta A", "Conta B", "Conta C", "Conta D", "Conta E")
     )
 }
 
