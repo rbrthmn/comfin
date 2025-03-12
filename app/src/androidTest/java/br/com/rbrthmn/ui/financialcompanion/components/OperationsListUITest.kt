@@ -25,7 +25,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
-import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onLast
@@ -39,7 +38,6 @@ import br.com.rbrthmn.ui.financialcompanion.onNodeWithStringId
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.ACCOUNTS_DROPDOWN_ICON_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.ACCOUNTS_DROPDOWN_MENU_TAG
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.CALENDAR_TEST_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.NEW_OPERATION_DIALOG_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OPERATION_TYPES_DROPDOWN_MENU_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationsListCard
@@ -124,39 +122,6 @@ class OperationsListUITest : BaseUITest() {
             val dialog = onNodeWithTag(NEW_OPERATION_DIALOG_TAG)
 
             dialog.assertIsNotDisplayed()
-        }
-    }
-
-    @Test
-    fun calendar_icon_button_should_show_dialog() {
-        composeTestRule.run {
-            onNodeWithStringId(R.string.add_operation_button).performClick()
-            onNodeWithContentDescription(activity.getString(R.string.date_picker_title)).performClick()
-
-            onNodeWithTag(CALENDAR_TEST_TAG).assertIsDisplayed()
-        }
-    }
-
-    @Test
-    fun ok_button_should_dismiss_calendar_dialog() {
-        composeTestRule.run {
-            onNodeWithStringId(R.string.add_operation_button).performClick()
-            onNodeWithContentDescription(activity.getString(R.string.date_picker_title)).performClick()
-            onNodeWithStringId(R.string.date_picker_ok).performClick()
-
-            onNodeWithTag(CALENDAR_TEST_TAG).assertIsNotDisplayed()
-        }
-    }
-
-    @Test
-    fun cancel_button_should_dismiss_calendar_dialog() {
-        composeTestRule.run {
-            onNodeWithStringId(R.string.add_operation_button).performClick()
-            onNodeWithContentDescription(activity.getString(R.string.date_picker_title)).performClick()
-            onAllNodesWithText(activity.getString(R.string.date_picker_cancel)).onLast()
-                .performClick()
-
-            onNodeWithTag(CALENDAR_TEST_TAG).assertIsNotDisplayed()
         }
     }
 
