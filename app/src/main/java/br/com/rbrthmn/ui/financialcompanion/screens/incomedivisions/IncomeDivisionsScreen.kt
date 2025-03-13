@@ -55,6 +55,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -150,7 +151,7 @@ private fun IncomeDivisionsScreenContent(
                             canEditPercentage = canEditPercentage,
                             isRecurringExpenses = isRecurringExpenses,
                             onRecurringExpensesClick = onRecurringExpensesDivisionClick,
-                            modifier = modifier
+                            modifier = modifier.testTag(name)
                         )
                     }
                     if (incomeDivisions.indexOf(division) == incomeDivisions.lastIndex - 1) {
@@ -322,12 +323,3 @@ fun IncomeDivisionsScreenPreview(modifier: Modifier = Modifier) {
 fun NewDivisionDialogPreview(modifier: Modifier = Modifier) {
     NewDivisionDialog(onSaveButtonClick = { }, onCancelButtonClick = { })
 }
-
-class IncomeDivision(
-    val name: String,
-    val value: String,
-    val canEditValue: Boolean = true,
-    val percentage: String,
-    val canEditPercentage: Boolean = true,
-    val isRecurringExpenses: Boolean = false
-)
