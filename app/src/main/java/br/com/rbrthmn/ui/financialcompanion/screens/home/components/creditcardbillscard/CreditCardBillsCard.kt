@@ -23,6 +23,7 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardb
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -51,6 +52,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,6 +65,9 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BanksDropdow
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.TotalValueText
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
+
+const val ADD_CARD_DIALOG_TAG = "add_card_dialog"
+const val BILL_CLOSE_DAY_DROPDOWN_MENU_TAG = "bill_close_day_dropdown_menu"
 
 @Composable
 fun CreditCardBillsCard(
@@ -157,8 +162,9 @@ private fun CreditCardItem(
                     text = itemName,
                     fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
                 )
+                Spacer(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_extra_small)))
                 Text(
-                    text = stringResource(id = R.string.credit_card_due_day_label) + dueDay,
+                    text = stringResource(id = R.string.credit_card_due_day_label) + " " + dueDay,
                     fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
                 )
             }
@@ -183,9 +189,12 @@ private fun AddCreditCardDialog(
     onSaveButtonClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
+                .testTag(ADD_CARD_DIALOG_TAG)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -249,7 +258,10 @@ private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isErr
         readOnly = true,
         trailingIcon = {
             IconButton(onClick = { expanded = true }) {
-                Icon(Icons.Filled.ArrowDropDown, "contentDescription")
+                Icon(
+                    Icons.Filled.ArrowDropDown,
+                    "${stringResource(id = R.string.card_bill_close_day_hint)} ${stringResource(R.string.drop_down_arrow_icon_description)}"
+                )
             }
         },
         singleLine = true,
@@ -257,7 +269,8 @@ private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isErr
     )
     DropdownMenu(
         expanded = expanded,
-        onDismissRequest = { expanded = false }
+        onDismissRequest = { expanded = false },
+        modifier = Modifier.testTag(BILL_CLOSE_DAY_DROPDOWN_MENU_TAG)
     ) {
         options.forEach { selectionOption ->
             DropdownMenuItem(
@@ -276,7 +289,7 @@ private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isErr
 @Composable
 fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
     CreditCardBillsCard(
-        viewModel = CreditCardBillsCardViewModel(),
+        viewModel = CreditCardBillsCardViewModel().doOnInit(),
         modifier = modifier,
         currentDateFilter = LocalDate.now()
     )
@@ -288,6 +301,6 @@ fun AddCardBillDialogPreview(modifier: Modifier = Modifier) {
     AddCreditCardDialog(
         onSaveButtonClick = { },
         onCancelButtonClick = {},
-        viewModel = CreditCardBillsCardViewModel()
+        viewModel = CreditCardBillsCardViewModel().doOnInit()
     )
 }
