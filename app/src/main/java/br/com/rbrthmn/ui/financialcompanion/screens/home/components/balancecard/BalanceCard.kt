@@ -45,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,6 +58,8 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BanksDropdow
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.TotalValueText
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
+
+const val ADD_BANK_ACCOUNT_DIALOG_TAG = "add_bank_account_dialog"
 
 @Composable
 fun BalanceCard(
@@ -171,7 +174,9 @@ private fun AddBankAccountDialog(
     val uiState by viewModel.uiState.collectAsState()
 
     Dialog(onDismissRequest = onCancelButtonClick) {
-        Card(modifier = modifier.fillMaxWidth()) {
+        Card(modifier = modifier
+            .fillMaxWidth()
+            .testTag(ADD_BANK_ACCOUNT_DIALOG_TAG)) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier.padding(
@@ -221,7 +226,7 @@ private fun AddBankAccountDialog(
 @Composable
 fun BalanceCardPreview(modifier: Modifier = Modifier) {
     BalanceCard(
-        viewModel = BalanceCardViewModel(),
+        viewModel = BalanceCardViewModel().doOnInit(),
         modifier = modifier,
         currentDateFilter = LocalDate.now()
     )
@@ -231,7 +236,7 @@ fun BalanceCardPreview(modifier: Modifier = Modifier) {
 @Composable
 fun AddBankAccountDialogPreview(modifier: Modifier = Modifier) {
     AddBankAccountDialog(
-        viewModel = BalanceCardViewModel(),
+        viewModel = BalanceCardViewModel().doOnInit(),
         onSaveButtonClick = { },
         onCancelButtonClick = { },
         modifier = modifier

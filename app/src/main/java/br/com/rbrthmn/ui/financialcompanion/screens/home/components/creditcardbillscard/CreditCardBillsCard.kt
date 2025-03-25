@@ -23,7 +23,6 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardb
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -160,12 +159,13 @@ private fun CreditCardItem(
             Column(verticalArrangement = Arrangement.Center) {
                 Text(
                     text = itemName,
-                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+                    lineHeight = dimensionResource(id = R.dimen.font_size_medium).value.sp
                 )
-                Spacer(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_extra_small)))
                 Text(
                     text = stringResource(id = R.string.credit_card_due_day_label) + " " + dueDay,
-                    fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
+                    fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp,
+                    lineHeight = dimensionResource(id = R.dimen.font_size_small).value.sp
                 )
             }
         }

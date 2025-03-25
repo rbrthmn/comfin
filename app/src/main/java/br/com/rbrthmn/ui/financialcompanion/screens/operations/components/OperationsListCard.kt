@@ -347,7 +347,7 @@ fun OperationsListCardPreview() {
     val context = LocalContext.current
     val stringProvider = ResourceStringProvider(context)
 
-    OperationsListCard(viewModel = OperationsScreenViewModel(stringProvider))
+    OperationsListCard(viewModel = OperationsScreenViewModel(stringProvider).doOnInit())
 }
 
 @Preview
@@ -357,7 +357,7 @@ fun AddOperationDialogPreview(modifier: Modifier = Modifier) {
     val stringProvider = ResourceStringProvider(context)
 
     AddOperationDialog(
-        viewModel = OperationsScreenViewModel(stringProvider),
+        viewModel = OperationsScreenViewModel(stringProvider).doOnInit(),
         onSaveButtonClick = {},
         onCancelButtonClick = {}
     )
