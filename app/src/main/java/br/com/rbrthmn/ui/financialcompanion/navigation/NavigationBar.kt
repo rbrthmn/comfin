@@ -30,7 +30,6 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
@@ -84,9 +83,7 @@ private fun ComFinBottomNavigationBar(
         for (navItem in navigationItemContentList) {
             NavigationBarItem(
                 selected = false,
-                onClick = {
-                    onItemPressed(navItem.route)
-                },
+                onClick = { onItemPressed(navItem.route) },
                 icon = {
                     Icon(
                         imageVector = navItem.icon,
@@ -105,9 +102,3 @@ fun ComFinNavigationBarPreview(modifier: Modifier = Modifier) {
         navigationType = ComFinNavigationType.BOTTOM_NAVIGATION,
         navigateToDestination = {})
 }
-
-data class NavigationItemContent(
-    val icon: ImageVector,
-    val text: String,
-    val route: String
-)
