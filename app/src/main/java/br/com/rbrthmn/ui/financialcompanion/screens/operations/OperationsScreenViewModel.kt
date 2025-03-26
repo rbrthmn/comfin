@@ -214,6 +214,13 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
             "Conta F",
             "Conta G",
         )
+        val reserves = listOf(
+            "Reserva A",
+            "Reserva B",
+            "Reserva C",
+            "Reserva D",
+            "Reserva E",
+        )
         val newOperationDialogFields = mutableListOf<@Composable () -> Unit>()
 
         if (resetFields) {
@@ -253,7 +260,8 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
                 newOperationDialogFields.add {
                     ReservesDropdownMenu(
                         onReserveClicked = ::onReserveChange,
-                        isError = !isNewOperationReserveValid
+                        isError = !isNewOperationReserveValid,
+                        reserves = reserves
                     )
                 }
             }

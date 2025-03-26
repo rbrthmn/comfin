@@ -42,17 +42,11 @@ import br.com.rbrthmn.R
 fun ReservesDropdownMenu(
     modifier: Modifier = Modifier,
     onReserveClicked: (String) -> Unit,
-    isError: Boolean
+    isError: Boolean,
+    reserves: List<String>
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText: String? by remember { mutableStateOf(null) }
-    val options = listOf(
-        "Reserva A",
-        "Reserva B",
-        "Reserva C",
-        "Reserva D",
-        "Reserva E",
-    )
 
     Column(modifier = modifier) {
         OutlinedTextField(
@@ -62,7 +56,11 @@ fun ReservesDropdownMenu(
             readOnly = true,
             trailingIcon = {
                 IconButton(onClick = { expanded = true }) {
-                    Icon(Icons.Filled.ArrowDropDown, "contentDescription")
+                    Icon(
+                        imageVector = Icons.Filled.ArrowDropDown,
+                        contentDescription =
+                        "${stringResource(id = R.string.reserve_hint)} ${stringResource(R.string.drop_down_arrow_icon_description)}"
+                    )
                 }
             },
             singleLine = true,
@@ -72,7 +70,7 @@ fun ReservesDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            options.forEach { selectedOption ->
+            reserves.forEach { selectedOption ->
                 DropdownMenuItem(
                     onClick = {
                         selectedOptionText = selectedOption
