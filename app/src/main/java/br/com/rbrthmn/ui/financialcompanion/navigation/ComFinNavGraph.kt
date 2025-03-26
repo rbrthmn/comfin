@@ -60,11 +60,11 @@ fun ComFinNavGraph(
             MoreFeaturesScreen(onFeatureClick = navController::navigate)
         }
         composable(route = IncomeDivisionsDestination.route) {
-            IncomeDivisionsScreen(onRecurringExpensesDivisionClick = {
-                navController.navigate(
-                    RecurringExpensesDestination.route
-                )
-            })
+            IncomeDivisionsScreen(
+                onRecurringExpensesDivisionClick = {
+                    navController.navigate(RecurringExpensesDestination.route)
+                }
+            )
         }
         composable(route = ReservesDestination.route) {
             ReservesScreen()

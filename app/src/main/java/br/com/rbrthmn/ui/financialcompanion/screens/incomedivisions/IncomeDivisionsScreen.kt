@@ -66,6 +66,8 @@ import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import java.time.LocalDate
 
+const val RECURRING_EXPENSES_DIVISION_TAG = "recurring_expenses_division"
+
 object IncomeDivisionsDestination : NavigationDestination {
     override val route = "income_divisions"
 }
@@ -111,7 +113,8 @@ private fun IncomeDivisionsScreenContent(
             value = "100",
             percentage = "10",
             canEditValue = false,
-            isRecurringExpenses = true
+            isRecurringExpenses = true,
+            onRecurringExpensesClick = onRecurringExpensesDivisionClick
         ),
         IncomeDivision(
             name = stringResource(id = R.string.remaining_month),
@@ -141,24 +144,13 @@ private fun IncomeDivisionsScreenContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             ) {
-                for (division in incomeDivisions) {
-                    with(division) {
-                        IncomeDivision(
-                            divisionName = name,
-                            divisionValue = value,
-                            divisionPercentage = percentage,
-                            canEditValue = canEditValue,
-                            canEditPercentage = canEditPercentage,
-                            isRecurringExpenses = isRecurringExpenses,
-                            onRecurringExpensesClick = onRecurringExpensesDivisionClick,
-                            modifier = modifier.testTag(name)
-                        )
-                    }
-                    if (incomeDivisions.indexOf(division) == incomeDivisions.lastIndex - 1) {
+                incomeDivisions.forEachIndexed { index, division ->
+                    IncomeDivision(data = division)
+                    if (index == incomeDivisions.lastIndex - 1) {
                         HorizontalDivider(modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small)))
                         AddDivisionButton(modifier = modifier)
                     }
-                    if (division != incomeDivisions.last()) {
+                    if (index != incomeDivisions.lastIndex) {
                         HorizontalDivider(modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small)))
                     }
                 }
@@ -170,29 +162,23 @@ private fun IncomeDivisionsScreenContent(
 @Composable
 private fun IncomeDivision(
     modifier: Modifier = Modifier,
-    divisionName: String,
-    divisionValue: String,
-    divisionPercentage: String,
-    canEditValue: Boolean,
-    canEditPercentage: Boolean,
-    isRecurringExpenses: Boolean = false,
-    onRecurringExpensesClick: () -> Unit = { }
+    data: IncomeDivision,
 ) {
-    var value = divisionValue
-    var percentage = divisionPercentage
+    var value = data.value
+    var percentage = data.percentage
 
     Row(
-        modifier = if (isRecurringExpenses.not()) {
-            modifier.fillMaxWidth()
+        modifier = if (data.isRecurringExpenses) {
+            modifier
+                .testTag(RECURRING_EXPENSES_DIVISION_TAG)
+                .fillMaxWidth()
+                .clickable { data.onRecurringExpensesClick() }
         } else modifier
-            .fillMaxWidth()
-            .clickable {
-                onRecurringExpensesClick()
-            },
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = divisionName.plus(stringResource(id = R.string.colon)),
+            text = data.name.plus(stringResource(id = R.string.colon)),
             fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
             modifier = modifier.weight(0.4F)
         )
@@ -205,7 +191,7 @@ private fun IncomeDivision(
                 prefix = { Text(text = "R$") },
                 value = value,
                 onValueChange = { value = it },
-                readOnly = canEditValue,
+                readOnly = data.canEditValue,
                 maxLines = 1,
                 modifier = modifier.weight(0.5f)
             )
@@ -214,7 +200,7 @@ private fun IncomeDivision(
                 suffix = { Text(text = "%") },
                 value = percentage,
                 onValueChange = { percentage = it },
-                readOnly = canEditPercentage,
+                readOnly = data.canEditPercentage,
                 maxLines = 1,
                 modifier = modifier.weight(0.5f)
             )

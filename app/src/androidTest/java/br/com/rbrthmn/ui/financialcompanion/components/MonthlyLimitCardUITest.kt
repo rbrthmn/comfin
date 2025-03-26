@@ -21,6 +21,7 @@
 package br.com.rbrthmn.ui.financialcompanion.components
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -29,26 +30,29 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.testing.TestNavHostController
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.BaseUITest
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCard
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel
+import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
+import br.com.rbrthmn.ui.financialcompanion.onNodeWithStringId
+import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.time.LocalDate
 
 class MonthlyLimitCardUITest : BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-    private var isMonthlyLimitCardClicked = false
+    private lateinit var navController: TestNavHostController
 
-    override fun setup() {
-        composeTestRule.setContent {
-            MonthlyLimitCard(
-                onCardClick = { isMonthlyLimitCardClicked = true },
-                currentDateFilter = LocalDate.now(),
-                viewModel = MonthlyLimitCardViewModel()
-            )
-        }
+    override fun setup() = composeTestRule.setContent {
+        navController = TestNavHostController(LocalContext.current)
+        navController.navigatorProvider.addNavigator(ComposeNavigator())
+
+        ComFinNavGraph(navController = navController)
+        navController.navigate(HomeDestination.route)
     }
+
 
     @Test
     fun monthlyLimitCard_displaysCorrectTitles() {
@@ -59,13 +63,15 @@ class MonthlyLimitCardUITest : BaseUITest() {
     }
 
     @Test
-    fun monthlyLimitCard_clickOnCard_shouldCall_onCardClick() {
-        val monthlyLimitTitle =
-            composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.monthly_limit_title))
+    fun monthlyLimitCard_clickOnCard_shouldGoToIncomeDivisions() {
+        val monthlyLimitTitle = composeTestRule.onNodeWithStringId(R.string.monthly_limit_title)
 
         monthlyLimitTitle.performClick()
 
-        assert(isMonthlyLimitCardClicked)
+        assertEquals(
+            IncomeDivisionsDestination.route,
+            navController.currentBackStackEntry?.destination?.route
+        )
     }
 
     @Test

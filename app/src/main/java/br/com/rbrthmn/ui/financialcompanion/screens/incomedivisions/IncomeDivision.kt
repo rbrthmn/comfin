@@ -26,5 +26,6 @@ class IncomeDivision(
     val canEditValue: Boolean = true,
     val percentage: String,
     val canEditPercentage: Boolean = true,
-    val isRecurringExpenses: Boolean = false
+    val isRecurringExpenses: Boolean = false,
+    val onRecurringExpensesClick: () -> Unit = { }
 )

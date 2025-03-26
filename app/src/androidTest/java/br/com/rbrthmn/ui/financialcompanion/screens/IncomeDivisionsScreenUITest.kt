@@ -21,21 +21,34 @@
 package br.com.rbrthmn.ui.financialcompanion.screens
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.testing.TestNavHostController
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.BaseUITest
-import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsScreen
+import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
+import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
 import org.junit.Test
 
 class IncomeDivisionsScreenUITest : BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    override fun setup() =
-        composeTestRule.setContent { IncomeDivisionsScreen(onRecurringExpensesDivisionClick = {}) }
+    private lateinit var navController: TestNavHostController
+
+    override fun setup() {
+        composeTestRule.setContent {
+            navController = TestNavHostController(LocalContext.current)
+            navController.navigatorProvider.addNavigator(ComposeNavigator())
+            ComFinNavGraph(navController = navController)
+
+            navController.navigate(IncomeDivisionsDestination.route)
+        }
+    }
 
     @Test
     fun add_new_division_button_should_show_dialog() {

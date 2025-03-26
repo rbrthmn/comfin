@@ -21,12 +21,16 @@
 package br.com.rbrthmn.ui.financialcompanion.components
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.testing.TestNavHostController
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.BaseUITest
+import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationBar
 import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesDestination
@@ -37,14 +41,18 @@ import org.junit.Test
 class NavigationBarUITest : BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
+    private lateinit var navController: TestNavHostController
+
     override fun setup() = composeTestRule.setContent {
+        navController = TestNavHostController(LocalContext.current)
+        navController.navigatorProvider.addNavigator(ComposeNavigator())
+
         NavigationBar(
             navigationType = ComFinNavigationType.BOTTOM_NAVIGATION,
-            navigateToDestination = { route -> navigatedRoute = route },
+            navigateToDestination = { route -> navController.navigate(route) },
         )
+        ComFinNavGraph(navController = navController)
     }
-
-    private var navigatedRoute: String? = null
 
     @Test
     fun navigationBar_displaysCorrectItems() {
@@ -60,7 +68,7 @@ class NavigationBarUITest : BaseUITest() {
         composeTestRule.run {
             onNodeWithContentDescription(activity.getString(R.string.home)).performClick()
 
-            assert(navigatedRoute == HomeDestination.route)
+            assert(navController.currentBackStackEntry?.destination?.route == HomeDestination.route)
         }
     }
 
@@ -69,7 +77,7 @@ class NavigationBarUITest : BaseUITest() {
         composeTestRule.run {
             onNodeWithContentDescription(activity.getString(R.string.operations)).performClick()
 
-            assert(navigatedRoute == OperationsDestination.route)
+            assert(navController.currentBackStackEntry?.destination?.route == OperationsDestination.route)
         }
     }
 
@@ -78,7 +86,7 @@ class NavigationBarUITest : BaseUITest() {
         composeTestRule.run {
             onNodeWithContentDescription(activity.getString(R.string.more)).performClick()
 
-            assert(navigatedRoute == MoreFeaturesDestination.route)
+            assert(navController.currentBackStackEntry?.destination?.route == MoreFeaturesDestination.route)
         }
     }
 }
