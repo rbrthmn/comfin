@@ -47,11 +47,11 @@ class NavigationBarUITest : BaseUITest() {
         navController = TestNavHostController(LocalContext.current)
         navController.navigatorProvider.addNavigator(ComposeNavigator())
 
+        ComFinNavGraph(navController = navController)
         NavigationBar(
             navigationType = ComFinNavigationType.BOTTOM_NAVIGATION,
             navigateToDestination = { route -> navController.navigate(route) },
         )
-        ComFinNavGraph(navController = navController)
     }
 
     @Test
