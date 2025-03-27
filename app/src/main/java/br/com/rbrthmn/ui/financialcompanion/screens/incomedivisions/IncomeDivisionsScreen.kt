@@ -300,12 +300,12 @@ private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick
 
 @Preview
 @Composable
-fun IncomeDivisionsScreenPreview(modifier: Modifier = Modifier) {
+fun IncomeDivisionsScreenPreview() {
     IncomeDivisionsScreen(modifier = Modifier, onRecurringExpensesDivisionClick = {})
 }
 
 @Preview
 @Composable
-fun NewDivisionDialogPreview(modifier: Modifier = Modifier) {
+fun NewDivisionDialogPreview() {
     NewDivisionDialog(onSaveButtonClick = { }, onCancelButtonClick = { })
 }

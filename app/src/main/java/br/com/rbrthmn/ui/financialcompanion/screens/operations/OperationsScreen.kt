@@ -110,7 +110,7 @@ private fun OperationsScreenContent(
 
 @Preview
 @Composable
-private fun OperationsScreenPreview(modifier: Modifier = Modifier) {
+private fun OperationsScreenPreview() {
     val context = LocalContext.current
     val stringProvider = ResourceStringProvider(context)
 

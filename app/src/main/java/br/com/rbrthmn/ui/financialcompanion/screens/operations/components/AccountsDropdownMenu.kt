@@ -179,7 +179,7 @@ private fun AddSimpleAccountDialog(
 
 @Preview(showBackground = true)
 @Composable
-fun AccountsDropdownMenuPreview(modifier: Modifier = Modifier) {
+fun AccountsDropdownMenuPreview() {
     AccountsDropdownMenu(
         operationAccountType = OperationAimedAccount,
         onAccountSelected = {},
@@ -190,6 +190,6 @@ fun AccountsDropdownMenuPreview(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun AddSimpleAccountDialogPreview(modifier: Modifier = Modifier) {
+fun AddSimpleAccountDialogPreview() {
     AddSimpleAccountDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
 }

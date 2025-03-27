@@ -66,10 +66,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AddOperationDialog
-import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.model.OperationType
+import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AddOperationDialog
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
@@ -392,12 +392,12 @@ private fun ReserveOperationsList(
 
 @Preview(showBackground = true)
 @Composable
-private fun ReservesScreenPreview(modifier: Modifier = Modifier) {
+private fun ReservesScreenPreview() {
     ReservesScreen()
 }
 
 @Preview
 @Composable
-private fun NewReserveDialogPreview(modifier: Modifier = Modifier) {
+private fun NewReserveDialogPreview() {
     NewReserveDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
 }

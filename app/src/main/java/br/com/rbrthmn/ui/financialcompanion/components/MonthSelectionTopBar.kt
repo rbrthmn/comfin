@@ -224,7 +224,7 @@ private fun getYearsList(): List<Int> {
 
 @Preview
 @Composable
-fun MonthSelectionTopBarPreview(modifier: Modifier = Modifier) {
+fun MonthSelectionTopBarPreview() {
     MonthSelectionTopBar(
         initialDate = LocalDate.now(),
         onDateSelected = {}
@@ -233,7 +233,7 @@ fun MonthSelectionTopBarPreview(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun MonthSelectionDialogPreview(modifier: Modifier = Modifier) {
+fun MonthSelectionDialogPreview() {
     MonthSelectionDialog(onDismissRequest = {},
         initialMonth = Month.JULY,
         initialYear = 2025,

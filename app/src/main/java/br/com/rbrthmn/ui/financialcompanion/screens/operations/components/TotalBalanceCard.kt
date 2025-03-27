@@ -116,7 +116,7 @@ fun TotalBalanceCard(
 
 @Preview
 @Composable
-private fun TotalBalanceCardPreview(modifier: Modifier = Modifier) {
+private fun TotalBalanceCardPreview() {
     TotalBalanceCard(
         uiState = OperationsScreenUiState(
             totalBalance = "100,00",

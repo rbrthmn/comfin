@@ -352,7 +352,7 @@ fun OperationsListCardPreview() {
 
 @Preview
 @Composable
-fun AddOperationDialogPreview(modifier: Modifier = Modifier) {
+fun AddOperationDialogPreview() {
     val context = LocalContext.current
     val stringProvider = ResourceStringProvider(context)
 

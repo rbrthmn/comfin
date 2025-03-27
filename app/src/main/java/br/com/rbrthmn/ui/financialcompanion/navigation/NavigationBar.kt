@@ -97,7 +97,7 @@ private fun ComFinBottomNavigationBar(
 
 @Preview
 @Composable
-fun ComFinNavigationBarPreview(modifier: Modifier = Modifier) {
+fun ComFinNavigationBarPreview() {
     NavigationBar(
         navigationType = ComFinNavigationType.BOTTOM_NAVIGATION,
         navigateToDestination = {})

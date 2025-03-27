@@ -318,12 +318,12 @@ private fun ExpenseBillingDayDropdownMenu() {
 
 @Preview(showBackground = true)
 @Composable
-private fun RecurringExpensesScreenPreview(modifier: Modifier = Modifier) {
+private fun RecurringExpensesScreenPreview() {
     RecurringExpenses()
 }
 
 @Preview
 @Composable
-private fun NewRecurringExpenseDialogPreview(modifier: Modifier = Modifier) {
+private fun NewRecurringExpenseDialogPreview() {
     NewRecurringExpenseDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
 }

@@ -124,6 +124,6 @@ private fun MoreFeaturesCard(onFeatureClick: (String) -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun MoreFeaturesScreenPreview(modifier: Modifier = Modifier) {
+fun MoreFeaturesScreenPreview() {
     MoreFeaturesScreen(onFeatureClick = {})
 }

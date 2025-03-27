@@ -287,17 +287,17 @@ private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isErr
 
 @Preview
 @Composable
-fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
+fun CreditCardsBillCardPreview() {
     CreditCardBillsCard(
         viewModel = CreditCardBillsCardViewModel().doOnInit(),
-        modifier = modifier,
+        modifier = Modifier,
         currentDateFilter = LocalDate.now()
     )
 }
 
 @Preview
 @Composable
-fun AddCardBillDialogPreview(modifier: Modifier = Modifier) {
+fun AddCardBillDialogPreview() {
     AddCreditCardDialog(
         onSaveButtonClick = { },
         onCancelButtonClick = {},
