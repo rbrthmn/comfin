@@ -55,6 +55,12 @@ import br.com.rbrthmn.ui.financialcompanion.components.DecimalInputField
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.AddItemButton
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BanksDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.TotalValueText
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.BalanceCardIntent.CleanNewAccount
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.BalanceCardIntent.OnBankChange
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.BalanceCardIntent.OnDateFilterChange
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.BalanceCardIntent.OnDescriptionChange
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.BalanceCardIntent.OnInitialBalanceChange
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.BalanceCardIntent.OnSaveClick
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
@@ -67,19 +73,19 @@ fun BalanceCard(
     val uiState by viewModel.uiState.collectAsState()
     val showAddAccountDialog = rememberSaveable { mutableStateOf(false) }
     viewModel.onIntent(
-        BalanceCardContract.BalanceCardIntent.OnDateFilterChange(date = currentDateFilter)
+        OnDateFilterChange(date = currentDateFilter)
     )
 
     if (showAddAccountDialog.value)
         AddBankAccountDialog(
             viewModel = viewModel,
             onCancelButtonClick = {
-                viewModel.onIntent(BalanceCardContract.BalanceCardIntent.CleanNewAccount)
+                viewModel.onIntent(CleanNewAccount)
                 showAddAccountDialog.value = false
             },
             onSaveButtonClick = {
                 viewModel.onIntent(
-                    BalanceCardContract.BalanceCardIntent.OnSaveClick(showDialog = showAddAccountDialog)
+                    OnSaveClick(showDialog = showAddAccountDialog)
                 )
             },
         )
@@ -191,7 +197,7 @@ private fun AddBankAccountDialog(
                     value = uiState.newAccountDescription,
                     onValueChange = {
                         viewModel.onIntent(
-                            BalanceCardContract.BalanceCardIntent.OnDescriptionChange(description = it)
+                            OnDescriptionChange(description = it)
                         )
                     },
                     isError = !uiState.isNewAccountDescriptionValid
@@ -199,7 +205,7 @@ private fun AddBankAccountDialog(
                 DecimalInputField(
                     onValueChange = {
                         viewModel.onIntent(
-                            BalanceCardContract.BalanceCardIntent.OnInitialBalanceChange(balance = it)
+                            OnInitialBalanceChange(balance = it)
                         )
                     },
                     value = uiState.newAccountBalance,
@@ -210,7 +216,7 @@ private fun AddBankAccountDialog(
                 BanksDropdownMenu(
                     onBankSelected = { bankId, bankName ->
                         viewModel.onIntent(
-                            BalanceCardContract.BalanceCardIntent.OnBankChange(
+                            OnBankChange(
                                 bankId,
                                 bankName
                             )
