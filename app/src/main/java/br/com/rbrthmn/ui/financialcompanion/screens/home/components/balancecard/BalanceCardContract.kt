@@ -22,14 +22,24 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
 
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 interface BalanceCardContract {
     abstract class BalanceCardViewModel : ViewModel() {
+        protected val actions = MutableSharedFlow<BalanceCardIntent>()
         abstract val uiState: StateFlow<BalanceCardUiState>
+        fun onIntent(intent: BalanceCardIntent) {
+            viewModelScope.launch {
+                actions.emit(intent)
+            }
+        }
+
+        protected abstract fun handleIntent()
         abstract fun doOnInit(): BalanceCardViewModel
-        abstract fun onIntent(intent: BalanceCardIntent)
     }
 
     sealed class BalanceCardIntent {

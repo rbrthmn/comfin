@@ -25,7 +25,6 @@ import androidx.lifecycle.viewModelScope
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import br.com.rbrthmn.ui.financialcompanion.utils.formatString
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -33,7 +32,6 @@ import java.time.LocalDate
 
 class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
     override val uiState = MutableStateFlow(BalanceCardUiState())
-    private val actions = MutableSharedFlow<BalanceCardContract.BalanceCardIntent>()
 
     override fun doOnInit(): BalanceCardViewModel {
         val accounts = listOf(
@@ -52,13 +50,7 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
         return this
     }
 
-    override fun onIntent(intent: BalanceCardContract.BalanceCardIntent) {
-        viewModelScope.launch {
-            actions.emit(intent)
-        }
-    }
-
-    private fun handleIntent() {
+    override fun handleIntent() {
         viewModelScope.launch {
             actions.collect { intent ->
                 when (intent) {
