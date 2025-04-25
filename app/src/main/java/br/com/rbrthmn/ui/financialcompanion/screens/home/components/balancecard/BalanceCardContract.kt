@@ -21,28 +21,20 @@
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
 
 import androidx.compose.runtime.MutableState
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableSharedFlow
+import br.com.rbrthmn.R
+import br.com.rbrthmn.contract.BaseContract
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-interface BalanceCardContract {
-    abstract class BalanceCardViewModel : ViewModel() {
-        protected val actions = MutableSharedFlow<BalanceCardIntent>()
-        abstract val uiState: StateFlow<BalanceCardUiState>
-        fun onIntent(intent: BalanceCardIntent) {
-            viewModelScope.launch {
-                actions.emit(intent)
-            }
-        }
-
-        protected abstract fun handleIntent()
-        abstract fun doOnInit(): BalanceCardViewModel
+interface BalanceCardContract :
+    BaseContract<BalanceCardContract.BalanceCardUiState, BalanceCardContract.BalanceCardIntent> {
+    abstract class BalanceCardViewModel :
+        BaseContract.BaseViewModel<BalanceCardUiState, BalanceCardIntent>() {
+        abstract override val uiState: StateFlow<BalanceCardUiState>
+        abstract override fun doOnInit(): BalanceCardViewModel
     }
 
-    sealed class BalanceCardIntent {
+    sealed class BalanceCardIntent : BaseContract.BaseIntent {
         data class OnInitialBalanceChange(val balance: String) : BalanceCardIntent()
         data class OnDescriptionChange(val description: String) : BalanceCardIntent()
         data class OnBankChange(val bankId: Int, val bankName: String) : BalanceCardIntent()
@@ -50,4 +42,17 @@ interface BalanceCardContract {
         data object CleanNewAccount : BalanceCardIntent()
         data class OnDateFilterChange(val date: LocalDate) : BalanceCardIntent()
     }
+
+    data class BalanceCardUiState(
+        val totalBalance: String = "",
+        val accounts: List<BankAccountBalanceUiState> = listOf(),
+        val newAccountBalance: String = "",
+        val isNewAccountBalanceValid: Boolean = true,
+        val newAccountDescription: String = "",
+        val isNewAccountDescriptionValid: Boolean = true,
+        val newAccountBank: String = "",
+        val isNewAccountBankValid: Boolean = true,
+        val newAccountBankIcon: Int = R.drawable.bank_icon,
+        val currentDateFilter: LocalDate = LocalDate.now()
+    ) : BaseContract.BaseUiState
 }

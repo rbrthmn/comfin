@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
-    override val uiState = MutableStateFlow(BalanceCardUiState())
+    override val uiState = MutableStateFlow(BalanceCardContract.BalanceCardUiState())
 
     override fun doOnInit(): BalanceCardViewModel {
         val accounts = listOf(
@@ -41,7 +41,7 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
                 bankName = BANK_NAME_MOCK,
             )
         )
-        uiState.value = BalanceCardUiState(
+        uiState.value = BalanceCardContract.BalanceCardUiState(
             totalBalance = formatDouble(TOTAL_BALANCE_MOCK),
             accounts = accounts,
         )

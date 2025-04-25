@@ -18,20 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
+package br.com.rbrthmn.contract
 
-import br.com.rbrthmn.R
-import java.time.LocalDate
-
-data class BalanceCardUiState(
-    val totalBalance: String = "",
-    val accounts: List<BankAccountBalanceUiState> = listOf(),
-    val newAccountBalance: String = "",
-    val isNewAccountBalanceValid: Boolean = true,
-    val newAccountDescription: String = "",
-    val isNewAccountDescriptionValid: Boolean = true,
-    val newAccountBank: String = "",
-    val isNewAccountBankValid: Boolean = true,
-    val newAccountBankIcon: Int = R.drawable.bank_icon,
-    val currentDateFilter: LocalDate = LocalDate.now()
-)
+interface BaseIntents {
+}
