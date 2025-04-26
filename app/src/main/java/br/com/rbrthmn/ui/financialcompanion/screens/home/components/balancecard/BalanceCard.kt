@@ -55,19 +55,19 @@ import br.com.rbrthmn.ui.financialcompanion.components.DecimalInputField
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.AddItemButton
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BanksDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.TotalValueText
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.BalanceCardIntent.CleanNewAccount
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.BalanceCardIntent.OnBankChange
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.BalanceCardIntent.OnDateFilterChange
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.BalanceCardIntent.OnDescriptionChange
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.BalanceCardIntent.OnInitialBalanceChange
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.BalanceCardIntent.OnSaveClick
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.CleanNewAccount
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.OnBankChange
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.OnDateFilterChange
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.OnDescriptionChange
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.OnInitialBalanceChange
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.OnSaveClick
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
 @Composable
 fun BalanceCard(
     modifier: Modifier = Modifier,
-    viewModel: BalanceCardContract.BalanceCardViewModel = koinViewModel(),
+    viewModel: BalanceCardContract.ViewModel = koinViewModel(),
     currentDateFilter: LocalDate
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -105,7 +105,7 @@ fun BalanceCard(
 private fun BalanceList(
     modifier: Modifier = Modifier,
     totalBalance: String,
-    bankAccounts: List<BankAccountBalanceUiState>,
+    bankAccounts: List<BalanceCardContract.BankAccountBalanceUiState>,
     onAddItemButtonClick: () -> Unit
 ) {
     Column(
@@ -176,7 +176,7 @@ private fun BankAccountBalanceItem(
 @Composable
 private fun AddBankAccountDialog(
     modifier: Modifier = Modifier,
-    viewModel: BalanceCardContract.BalanceCardViewModel,
+    viewModel: BalanceCardContract.ViewModel,
     onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
 ) {
