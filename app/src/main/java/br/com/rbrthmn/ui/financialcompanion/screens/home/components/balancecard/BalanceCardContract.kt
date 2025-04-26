@@ -22,25 +22,23 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
 
 import androidx.compose.runtime.MutableState
 import br.com.rbrthmn.R
-import br.com.rbrthmn.contract.BaseContract
+import br.com.rbrthmn.ui.financialcompanion.BaseViewModel
 import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
 
-interface BalanceCardContract :
-    BaseContract<BalanceCardContract.BalanceCardUiState, BalanceCardContract.BalanceCardIntent> {
-    abstract class BalanceCardViewModel :
-        BaseContract.BaseViewModel<BalanceCardUiState, BalanceCardIntent>() {
+interface BalanceCardContract {
+    abstract class ViewModel : BaseViewModel<BalanceCardUiState, Intent>() {
         abstract override val uiState: StateFlow<BalanceCardUiState>
-        abstract override fun doOnInit(): BalanceCardViewModel
+        abstract override fun doOnInit(): ViewModel
     }
 
-    sealed class BalanceCardIntent : BaseContract.BaseIntent {
-        data class OnInitialBalanceChange(val balance: String) : BalanceCardIntent()
-        data class OnDescriptionChange(val description: String) : BalanceCardIntent()
-        data class OnBankChange(val bankId: Int, val bankName: String) : BalanceCardIntent()
-        data class OnSaveClick(val showDialog: MutableState<Boolean>) : BalanceCardIntent()
-        data object CleanNewAccount : BalanceCardIntent()
-        data class OnDateFilterChange(val date: LocalDate) : BalanceCardIntent()
+    sealed class Intent {
+        data class OnInitialBalanceChange(val balance: String) : Intent()
+        data class OnDescriptionChange(val description: String) : Intent()
+        data class OnBankChange(val bankId: Int, val bankName: String) : Intent()
+        data class OnSaveClick(val showDialog: MutableState<Boolean>) : Intent()
+        data object CleanNewAccount : Intent()
+        data class OnDateFilterChange(val date: LocalDate) : Intent()
     }
 
     data class BalanceCardUiState(
@@ -54,5 +52,13 @@ interface BalanceCardContract :
         val isNewAccountBankValid: Boolean = true,
         val newAccountBankIcon: Int = R.drawable.bank_icon,
         val currentDateFilter: LocalDate = LocalDate.now()
-    ) : BaseContract.BaseUiState
+    )
+
+    data class BankAccountBalanceUiState(
+        val name: String = "",
+        val value: String = "",
+        val bankName: String = "",
+        val bankIcon: Int = R.drawable.bank_icon,
+        val canValueBeEdited: Boolean = false
+    )
 }

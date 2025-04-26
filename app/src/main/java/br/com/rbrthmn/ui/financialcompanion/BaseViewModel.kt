@@ -18,14 +18,23 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
+package br.com.rbrthmn.ui.financialcompanion
 
-import br.com.rbrthmn.R
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-data class BankAccountBalanceUiState(
-    val name: String = "",
-    val value: String = "",
-    val bankName: String = "",
-    val bankIcon: Int = R.drawable.bank_icon,
-    val canValueBeEdited: Boolean = false
-)
+abstract class BaseViewModel<U, I> : ViewModel() {
+    protected val actions = MutableSharedFlow<I>()
+    abstract val uiState: StateFlow<U>
+    fun onIntent(intent: I) {
+        viewModelScope.launch {
+            actions.emit(intent)
+        }
+    }
+
+    protected abstract fun handleIntent()
+    abstract fun doOnInit(): BaseViewModel<U, I>
+}

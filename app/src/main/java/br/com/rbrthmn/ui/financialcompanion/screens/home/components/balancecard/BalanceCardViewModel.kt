@@ -30,12 +30,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
+class BalanceCardViewModel : BalanceCardContract.ViewModel() {
     override val uiState = MutableStateFlow(BalanceCardContract.BalanceCardUiState())
 
     override fun doOnInit(): BalanceCardViewModel {
         val accounts = listOf(
-            BankAccountBalanceUiState(
+            BalanceCardContract.BankAccountBalanceUiState(
                 name = ACCOUNT_NAME_MOCK,
                 value = formatDouble(ACCOUNT_VALUE_MOCK),
                 bankName = BANK_NAME_MOCK,
@@ -54,25 +54,25 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
         viewModelScope.launch {
             actions.collect { intent ->
                 when (intent) {
-                    BalanceCardContract.BalanceCardIntent.CleanNewAccount -> cleanNewAccount()
-                    is BalanceCardContract.BalanceCardIntent.OnBankChange -> onBankChange(
+                    BalanceCardContract.Intent.CleanNewAccount -> cleanNewAccount()
+                    is BalanceCardContract.Intent.OnBankChange -> onBankChange(
                         intent.bankId,
                         intent.bankName
                     )
 
-                    is BalanceCardContract.BalanceCardIntent.OnDateFilterChange -> setDateFilter(
+                    is BalanceCardContract.Intent.OnDateFilterChange -> setDateFilter(
                         intent.date
                     )
 
-                    is BalanceCardContract.BalanceCardIntent.OnDescriptionChange -> onDescriptionChange(
+                    is BalanceCardContract.Intent.OnDescriptionChange -> onDescriptionChange(
                         intent.description
                     )
 
-                    is BalanceCardContract.BalanceCardIntent.OnInitialBalanceChange -> onInitialBalanceChange(
+                    is BalanceCardContract.Intent.OnInitialBalanceChange -> onInitialBalanceChange(
                         intent.balance
                     )
 
-                    is BalanceCardContract.BalanceCardIntent.OnSaveClick -> onSaveClick(intent.showDialog)
+                    is BalanceCardContract.Intent.OnSaveClick -> onSaveClick(intent.showDialog)
                 }
             }
         }
@@ -119,7 +119,7 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
     private fun onSaveClick(showDialog: MutableState<Boolean>) {
         if (validateInputs()) {
             showDialog.value = false
-            val newAccount = BankAccountBalanceUiState(
+            val newAccount = BalanceCardContract.BankAccountBalanceUiState(
                 name = uiState.value.newAccountDescription,
                 value = formatString(uiState.value.newAccountBalance),
                 bankName = uiState.value.newAccountBank,
