@@ -27,14 +27,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<U, I> : ViewModel() {
-    protected val actions = MutableSharedFlow<I>()
+    protected val intents = MutableSharedFlow<I>()
     abstract val uiState: StateFlow<U>
     fun onIntent(intent: I) {
         viewModelScope.launch {
-            actions.emit(intent)
+            intents.emit(intent)
         }
     }
-
     protected abstract fun handleIntent()
     abstract fun doOnInit(): BaseViewModel<U, I>
 }

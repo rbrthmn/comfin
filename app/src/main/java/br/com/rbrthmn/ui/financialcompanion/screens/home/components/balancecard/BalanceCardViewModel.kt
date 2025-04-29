@@ -52,7 +52,7 @@ class BalanceCardViewModel : BalanceCardContract.ViewModel() {
 
     override fun handleIntent() {
         viewModelScope.launch {
-            actions.collect { intent ->
+            intents.collect { intent ->
                 when (intent) {
                     BalanceCardContract.Intent.CleanNewAccount -> cleanNewAccount()
                     is BalanceCardContract.Intent.OnBankChange -> onBankChange(
