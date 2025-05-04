@@ -21,44 +21,72 @@
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard
 
 import androidx.compose.runtime.MutableState
+import androidx.lifecycle.viewModelScope
 import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract.Intent
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDate
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract as Contract
 
-class CreditCardBillsCardViewModel : CreditCardBillsCardContract.CreditCardsBillCardViewModel() {
-    override val uiState = MutableStateFlow(CreditCardsBillCardUiState())
+class CreditCardBillsCardViewModel : Contract.ViewModel() {
+    override val uiState = MutableStateFlow(Contract.CreditCardsBillCardUiState())
 
     override fun doOnInit(): CreditCardBillsCardViewModel {
         val bills = listOf(
-            CreditCardBillUiState(
+            Contract.CreditCardBillUiState(
                 name = CREDIT_CARD_MOCK,
                 value = formatDouble(BILL_VALUE_MOCK),
                 dueDay = DUE_DAY_MOCK,
                 bankName = BANK_NAME_MOCK,
             ),
         )
-        uiState.value = CreditCardsBillCardUiState(totalBill = formatDouble(TOTAL_BILL_MOCK), bills = bills)
+        uiState.value = Contract.CreditCardsBillCardUiState(
+            totalBill = formatDouble(TOTAL_BILL_MOCK),
+            bills = bills
+        )
+
+        handleIntent()
 
         return this
     }
 
-    override fun onNewCreditCardNameChange(name: String) = uiState.update {
+    override fun handleIntent() {
+        viewModelScope.launch {
+            intents.collect { intent ->
+                when (intent) {
+                    Intent.CleanInputs -> cleanInputs()
+                    is Intent.OnBankChange -> onBankChange(intent.bankIcon, intent.bankName)
+                    is Intent.OnDateFilterChange -> onDateFilterChange(intent.date)
+                    is Intent.OnNewCreditCardBillValueChange -> onNewCreditCardBillChange(intent.bill)
+                    is Intent.OnNewCreditCardBillDueDayChange -> onNewCreditCardBillDueDayChange(
+                        intent.day
+                    )
+
+                    is Intent.OnNewCreditCardNameChange -> onNewCreditCardNameChange(intent.name)
+                    is Intent.OnSaveClick -> onSaveClick(intent.showDialog)
+                }
+            }
+        }
+    }
+
+    private fun onNewCreditCardNameChange(name: String) = uiState.update {
         it.copy(
             newCreditCardName = name,
             isNewCreditCardNameValid = name.isNotBlank()
         )
     }
 
-    override fun onNewCreditCardBillChange(bill: String) = uiState.update {
+    private fun onNewCreditCardBillChange(bill: String) = uiState.update {
         it.copy(
             newCreditCardBill = bill,
             isNewCreditCardBillValid = bill.isNotBlank()
         )
     }
 
-    override fun onBankChange(bankIcon: Int, bankName: String) = uiState.update {
+    private fun onBankChange(bankIcon: Int, bankName: String) = uiState.update {
         it.copy(
             newCreditCardBankIcon = bankIcon,
             newCreditCardBankName = bankName,
@@ -66,17 +94,17 @@ class CreditCardBillsCardViewModel : CreditCardBillsCardContract.CreditCardsBill
         )
     }
 
-    override fun onNewCreditCardBillDueDayChange(day: Int) = uiState.update {
+    private fun onNewCreditCardBillDueDayChange(day: Int) = uiState.update {
         it.copy(
             newCreditCardBillDueDay = day,
             isNewCreditCardBillDueDayValid = day != INVALID_BILL_DATE
         )
     }
 
-    override fun onSaveClick(showDialog: MutableState<Boolean>) {
+    private fun onSaveClick(showDialog: MutableState<Boolean>) {
         if (validateInputs()) {
             showDialog.value = false
-            val newCreditCard = CreditCardBillUiState(
+            val newCreditCard = Contract.CreditCardBillUiState(
                 name = uiState.value.newCreditCardName,
                 value = uiState.value.newCreditCardBill,
                 bankName = uiState.value.newCreditCardBankName,
@@ -102,7 +130,7 @@ class CreditCardBillsCardViewModel : CreditCardBillsCardContract.CreditCardsBill
         }
     }
 
-    override fun cleanInputs() {
+    private fun cleanInputs() {
         uiState.update {
             it.copy(
                 newCreditCardName = "",
@@ -118,7 +146,7 @@ class CreditCardBillsCardViewModel : CreditCardBillsCardContract.CreditCardsBill
         }
     }
 
-    override fun setDateFilter(date: LocalDate) = uiState.update {
+    private fun onDateFilterChange(date: LocalDate) = uiState.update {
         it.copy(currentDateFilter = date)
     }
 

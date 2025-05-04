@@ -61,27 +61,29 @@ import br.com.rbrthmn.ui.financialcompanion.components.DecimalInputField
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.AddItemButton
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BanksDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.TotalValueText
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract.Intent
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract as Contract
 
 @Composable
 fun CreditCardBillsCard(
     modifier: Modifier = Modifier,
-    viewModel: CreditCardBillsCardContract.CreditCardsBillCardViewModel = koinViewModel(),
+    viewModel: Contract.ViewModel = koinViewModel(),
     currentDateFilter: LocalDate
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddCardDialog = rememberSaveable { mutableStateOf(false) }
-    viewModel.setDateFilter(currentDateFilter)
+    viewModel.onIntent(Intent.OnDateFilterChange(currentDateFilter))
 
     if (showAddCardDialog.value)
         AddCreditCardDialog(
             viewModel = viewModel,
             onCancelButtonClick = {
-                viewModel.cleanInputs()
+                viewModel.onIntent(Intent.CleanInputs)
                 showAddCardDialog.value = false
             },
-            onSaveButtonClick = { viewModel.onSaveClick(showAddCardDialog) })
+            onSaveButtonClick = { viewModel.onIntent(Intent.OnSaveClick(showAddCardDialog)) })
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -99,7 +101,7 @@ fun CreditCardBillsCard(
 private fun CreditCardBillsList(
     modifier: Modifier = Modifier,
     totalBill: String,
-    creditCards: List<CreditCardBillUiState>,
+    creditCards: List<Contract.CreditCardBillUiState>,
     onAddItemButtonClick: () -> Unit
 ) {
     Column(
@@ -178,7 +180,7 @@ private fun CreditCardItem(
 @Composable
 private fun AddCreditCardDialog(
     modifier: Modifier = Modifier,
-    viewModel: CreditCardBillsCardContract.CreditCardsBillCardViewModel,
+    viewModel: Contract.ViewModel,
     onCancelButtonClick: () -> Unit,
     onSaveButtonClick: () -> Unit
 ) {
@@ -198,23 +200,27 @@ private fun AddCreditCardDialog(
                     label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
                     maxLines = 100,
                     value = uiState.newCreditCardName,
-                    onValueChange = viewModel::onNewCreditCardNameChange,
+                    onValueChange = {
+                        viewModel.onIntent(Intent.OnNewCreditCardNameChange(name = it))
+                    },
                     isError = !uiState.isNewCreditCardNameValid,
                 )
                 DecimalInputField(
-                    onValueChange = viewModel::onNewCreditCardBillChange,
+                    onValueChange = { viewModel.onIntent(Intent.OnNewCreditCardBillValueChange(bill = it)) },
                     value = uiState.newCreditCardBill,
                     label = stringResource(id = R.string.card_bill_input_hint),
                     prefix = stringResource(id = R.string.brl_currency),
                     isError = !uiState.isNewCreditCardBillValid
                 )
                 BanksDropdownMenu(
-                    onBankSelected = viewModel::onBankChange,
+                    onBankSelected = { icon, name ->
+                        viewModel.onIntent(Intent.OnBankChange(bankIcon = icon, bankName = name))
+                    },
                     isValid = uiState.isNewCreditCardBankNameValid,
                     modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small))
                 )
                 CardBillCloseDayDropdownMenu(
-                    onDayClicked = viewModel::onNewCreditCardBillDueDayChange,
+                    onDayClicked = { viewModel.onIntent(Intent.OnNewCreditCardBillDueDayChange(day = it)) },
                     isError = !uiState.isNewCreditCardBillDueDayValid
                 )
                 Row(
