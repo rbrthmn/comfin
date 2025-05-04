@@ -21,7 +21,6 @@
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard
 
 import br.com.rbrthmn.R
-import br.com.rbrthmn.contract.BaseContract
 import java.time.LocalDate
 
 data class CreditCardsBillCardUiState(
@@ -37,4 +36,4 @@ data class CreditCardsBillCardUiState(
     val isNewCreditCardBankNameValid: Boolean = true,
     val newCreditCardBankIcon: Int = R.drawable.bank_icon,
     var currentDateFilter: LocalDate = LocalDate.now()
-) : BaseContract.BaseUiState
+)
