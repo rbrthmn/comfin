@@ -50,17 +50,18 @@ class CreditCardBillsCardViewModel : Contract.ViewModel() {
     }
 
     override fun onIntent(intent: Intent) {
-                when (intent) {
-                    Intent.CleanInputs -> cleanInputs()
-                    is Intent.OnBankChange -> onBankChange(intent.bankIcon, intent.bankName)
-                    is Intent.OnDateFilterChange -> onDateFilterChange(intent.date)
-                    is Intent.OnNewCreditCardBillValueChange -> onNewCreditCardBillChange(intent.bill)
-                    is Intent.OnNewCreditCardBillDueDayChange -> onNewCreditCardBillDueDayChange(
-                        intent.day
-                    )
-                    is Intent.OnNewCreditCardNameChange -> onNewCreditCardNameChange(intent.name)
-                    is Intent.OnSaveClick -> onSaveClick(intent.showDialog)
-                }
+        when (intent) {
+            Intent.CleanInputs -> cleanInputs()
+            is Intent.OnBankChange -> onBankChange(intent.bankIcon, intent.bankName)
+            is Intent.OnDateFilterChange -> onDateFilterChange(intent.date)
+            is Intent.OnNewCreditCardBillValueChange -> onNewCreditCardBillChange(intent.bill)
+            is Intent.OnNewCreditCardBillDueDayChange -> onNewCreditCardBillDueDayChange(
+                intent.day
+            )
+
+            is Intent.OnNewCreditCardNameChange -> onNewCreditCardNameChange(intent.name)
+            is Intent.OnSaveClick -> onSaveClick(intent.showDialog)
+        }
     }
 
     private fun onNewCreditCardNameChange(name: String) = uiState.update {

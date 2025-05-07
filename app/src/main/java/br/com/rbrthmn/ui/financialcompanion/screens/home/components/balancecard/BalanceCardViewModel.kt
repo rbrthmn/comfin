@@ -48,27 +48,27 @@ class BalanceCardViewModel : BalanceCardContract.ViewModel() {
     }
 
     override fun onIntent(intent: BalanceCardContract.Intent) {
-                when (intent) {
-                    BalanceCardContract.Intent.CleanNewAccount -> cleanNewAccount()
-                    is BalanceCardContract.Intent.OnBankChange -> onBankChange(
-                        intent.bankId,
-                        intent.bankName
-                    )
+        when (intent) {
+            BalanceCardContract.Intent.CleanNewAccount -> cleanNewAccount()
+            is BalanceCardContract.Intent.OnBankChange -> onBankChange(
+                intent.bankId,
+                intent.bankName
+            )
 
-                    is BalanceCardContract.Intent.OnDateFilterChange -> setDateFilter(
-                        intent.date
-                    )
+            is BalanceCardContract.Intent.OnDateFilterChange -> setDateFilter(
+                intent.date
+            )
 
-                    is BalanceCardContract.Intent.OnDescriptionChange -> onDescriptionChange(
-                        intent.description
-                    )
+            is BalanceCardContract.Intent.OnDescriptionChange -> onDescriptionChange(
+                intent.description
+            )
 
-                    is BalanceCardContract.Intent.OnInitialBalanceChange -> onInitialBalanceChange(
-                        intent.balance
-                    )
+            is BalanceCardContract.Intent.OnInitialBalanceChange -> onInitialBalanceChange(
+                intent.balance
+            )
 
-                    is BalanceCardContract.Intent.OnSaveClick -> onSaveClick(intent.showDialog)
-                }
+            is BalanceCardContract.Intent.OnSaveClick -> onSaveClick(intent.showDialog)
+        }
     }
 
     private fun onInitialBalanceChange(balance: String) = uiState.update {
