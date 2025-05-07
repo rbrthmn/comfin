@@ -20,14 +20,18 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard
 
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.StateFlow
+import br.com.rbrthmn.ui.financialcompanion.BaseViewModel
 import java.time.LocalDate
 
 interface LastMonthDifferenceCardContract {
-    abstract class LastMonthDifferenceCardViewModel : ViewModel() {
-        abstract val uiState: StateFlow<LastMonthDifferenceCardUiState>
-        abstract fun setDateFilter(date: LocalDate)
-        abstract fun doOnInit(): br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
+    abstract class ViewModel : BaseViewModel<UiState, Intent>()
+
+    sealed class Intent {
+        data class OnDateFilterChange(val date: LocalDate) : Intent()
     }
+
+    data class UiState(
+        val valueOfLastMonth: String = "",
+        val currentDateFilter: LocalDate = LocalDate.now()
+    )
 }

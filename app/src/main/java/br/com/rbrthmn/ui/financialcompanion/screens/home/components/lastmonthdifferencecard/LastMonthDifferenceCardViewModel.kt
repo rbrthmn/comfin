@@ -25,17 +25,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 
-class LastMonthDifferenceCardViewModel :
-    LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel() {
-    override var uiState = MutableStateFlow(LastMonthDifferenceCardUiState())
+class LastMonthDifferenceCardViewModel : LastMonthDifferenceCardContract.ViewModel() {
+    override var uiState = MutableStateFlow(LastMonthDifferenceCardContract.UiState())
 
     override fun doOnInit(): LastMonthDifferenceCardViewModel {
-        uiState.value = LastMonthDifferenceCardUiState(formatDouble(MOCK))
+        uiState.value = LastMonthDifferenceCardContract.UiState(formatDouble(MOCK))
 
         return this
     }
 
-    override fun setDateFilter(date: LocalDate) = uiState.update {
+    override fun onIntent(intent: LastMonthDifferenceCardContract.Intent) {
+        when (intent) {
+            is LastMonthDifferenceCardContract.Intent.OnDateFilterChange -> setDateFilter(intent.date)
+        }
+    }
+
+    private fun setDateFilter(date: LocalDate) = uiState.update {
         it.copy(currentDateFilter = date)
     }
 

@@ -47,11 +47,11 @@ import java.time.LocalDate
 @Composable
 fun LastMonthDifferenceCard(
     modifier: Modifier = Modifier,
-    viewModel: LastMonthDifferenceCardContract.LastMonthDifferenceCardViewModel = koinViewModel(),
+    viewModel: LastMonthDifferenceCardContract.ViewModel = koinViewModel(),
     currentDateFilter: LocalDate
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    viewModel.setDateFilter(currentDateFilter)
+    viewModel.onIntent(LastMonthDifferenceCardContract.Intent.OnDateFilterChange(currentDateFilter))
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
