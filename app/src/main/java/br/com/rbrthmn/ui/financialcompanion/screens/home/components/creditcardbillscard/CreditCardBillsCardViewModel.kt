@@ -21,13 +21,11 @@
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard
 
 import androidx.compose.runtime.MutableState
-import androidx.lifecycle.viewModelScope
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract.Intent
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract as Contract
 
@@ -48,14 +46,10 @@ class CreditCardBillsCardViewModel : Contract.ViewModel() {
             bills = bills
         )
 
-        handleIntent()
-
         return this
     }
 
-    override fun handleIntent() {
-        viewModelScope.launch {
-            intents.collect { intent ->
+    override fun onIntent(intent: Intent) {
                 when (intent) {
                     Intent.CleanInputs -> cleanInputs()
                     is Intent.OnBankChange -> onBankChange(intent.bankIcon, intent.bankName)
@@ -64,12 +58,9 @@ class CreditCardBillsCardViewModel : Contract.ViewModel() {
                     is Intent.OnNewCreditCardBillDueDayChange -> onNewCreditCardBillDueDayChange(
                         intent.day
                     )
-
                     is Intent.OnNewCreditCardNameChange -> onNewCreditCardNameChange(intent.name)
                     is Intent.OnSaveClick -> onSaveClick(intent.showDialog)
                 }
-            }
-        }
     }
 
     private fun onNewCreditCardNameChange(name: String) = uiState.update {

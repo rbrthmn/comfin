@@ -21,13 +21,11 @@
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
 
 import androidx.compose.runtime.MutableState
-import androidx.lifecycle.viewModelScope
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class BalanceCardViewModel : BalanceCardContract.ViewModel() {
@@ -45,14 +43,11 @@ class BalanceCardViewModel : BalanceCardContract.ViewModel() {
             totalBalance = formatDouble(TOTAL_BALANCE_MOCK),
             accounts = accounts,
         )
-        handleIntent()
 
         return this
     }
 
-    override fun handleIntent() {
-        viewModelScope.launch {
-            intents.collect { intent ->
+    override fun onIntent(intent: BalanceCardContract.Intent) {
                 when (intent) {
                     BalanceCardContract.Intent.CleanNewAccount -> cleanNewAccount()
                     is BalanceCardContract.Intent.OnBankChange -> onBankChange(
@@ -74,8 +69,6 @@ class BalanceCardViewModel : BalanceCardContract.ViewModel() {
 
                     is BalanceCardContract.Intent.OnSaveClick -> onSaveClick(intent.showDialog)
                 }
-            }
-        }
     }
 
     private fun onInitialBalanceChange(balance: String) = uiState.update {

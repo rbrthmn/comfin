@@ -23,14 +23,10 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
 import androidx.compose.runtime.MutableState
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.BaseViewModel
-import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
 
 interface BalanceCardContract {
-    abstract class ViewModel : BaseViewModel<BalanceCardUiState, Intent>() {
-        abstract override val uiState: StateFlow<BalanceCardUiState>
-        abstract override fun doOnInit(): ViewModel
-    }
+    abstract class ViewModel : BaseViewModel<BalanceCardUiState, Intent>()
 
     sealed class Intent {
         data class OnInitialBalanceChange(val balance: String) : Intent()

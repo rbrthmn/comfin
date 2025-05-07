@@ -21,19 +21,10 @@
 package br.com.rbrthmn.ui.financialcompanion
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<U, I> : ViewModel() {
-    protected val intents = MutableSharedFlow<I>()
     abstract val uiState: StateFlow<U>
-    fun onIntent(intent: I) {
-        viewModelScope.launch {
-            intents.emit(intent)
-        }
-    }
-    protected abstract fun handleIntent()
+    abstract fun onIntent(intent: I)
     abstract fun doOnInit(): BaseViewModel<U, I>
 }

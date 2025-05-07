@@ -23,14 +23,10 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardb
 import androidx.compose.runtime.MutableState
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.BaseViewModel
-import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
 
 interface CreditCardBillsCardContract {
-    abstract class ViewModel : BaseViewModel<CreditCardsBillCardUiState, Intent>() {
-        abstract override val uiState: StateFlow<CreditCardsBillCardUiState>
-        abstract override fun doOnInit(): CreditCardBillsCardViewModel
-    }
+    abstract class ViewModel : BaseViewModel<CreditCardsBillCardUiState, Intent>()
 
     sealed class Intent {
         data class OnNewCreditCardNameChange(val name: String) : Intent()
