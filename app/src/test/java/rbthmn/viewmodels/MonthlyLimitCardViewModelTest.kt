@@ -30,7 +30,7 @@ import org.junit.Test
 import java.time.LocalDate
 
 class MonthlyLimitCardViewModelTest {
-    private val viewModel: MonthlyLimitCardContract.MonthlyLimitCardViewModel = MonthlyLimitCardViewModel()
+    private val viewModel: MonthlyLimitCardContract.ViewModel = MonthlyLimitCardViewModel()
 
     @Test
     fun `doOnInit should assign initial values`() {
@@ -43,7 +43,7 @@ class MonthlyLimitCardViewModelTest {
 
     @Test
     fun `setDateFilter should assign value correctly`() {
-        viewModel.setDateFilter(VALID_DATE)
+        viewModel.onIntent(MonthlyLimitCardContract.Intent.OnDateFilterChange(VALID_DATE))
 
         assertEquals(
             VALID_DATE,

@@ -59,7 +59,7 @@ val appModule = module {
     viewModel<LastMonthDifferenceCardContract.ViewModel> {
         LastMonthDifferenceCardViewModel().doOnInit()
     }
-    viewModel<MonthlyLimitCardContract.MonthlyLimitCardViewModel> {
+    viewModel<MonthlyLimitCardContract.ViewModel> {
         MonthlyLimitCardViewModel().doOnInit()
     }
     viewModel<OperationsScreenContract.OperationsScreenViewModel> {

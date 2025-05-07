@@ -20,14 +20,19 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard
 
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.StateFlow
+import br.com.rbrthmn.ui.financialcompanion.BaseViewModel
 import java.time.LocalDate
 
 interface MonthlyLimitCardContract {
-    abstract class MonthlyLimitCardViewModel : ViewModel() {
-        abstract val uiState: StateFlow<MonthlyLimitCardUiState>
-        abstract fun setDateFilter(date: LocalDate)
-        abstract fun doOnInit(): br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel
+    abstract class ViewModel : BaseViewModel<UiState, Intent>()
+
+    sealed class Intent {
+        data class OnDateFilterChange(val date: LocalDate) : Intent()
     }
+
+    data class UiState(
+        val monthLimit: String = "",
+        val monthDifference: String = "",
+        val currentDateFilter: LocalDate = LocalDate.now()
+    )
 }
