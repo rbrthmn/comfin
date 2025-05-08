@@ -40,12 +40,12 @@ import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 
 class OperationsScreenViewModel(val stringProvider: StringProvider) :
-    OperationsScreenContract.OperationsScreenViewModel() {
-    override var uiState = MutableStateFlow(OperationsScreenUiState())
+    OperationsScreenContract.ViewModel() {
+    override var uiState = MutableStateFlow(OperationsScreenContract.UiState())
 
     override fun doOnInit(): OperationsScreenViewModel {
         uiState.value =
-            OperationsScreenUiState(
+            OperationsScreenContract.UiState(
                 operations = getOperationsMock().sortedByDescending { it.date },
                 totalBalance = formatDouble(TOTAL_BALANCE_MOCK),
                 totalIncome = formatDouble(TOTAL_INCOME_MOCK),
@@ -56,21 +56,40 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
         return this
     }
 
-    override fun onDescriptionChange(description: String) = uiState.update {
+    override fun onIntent(intent: OperationsScreenContract.Intent) {
+        when (intent) {
+            is OperationsScreenContract.Intent.OnDescriptionChange -> onDescriptionChange(intent.description)
+            is OperationsScreenContract.Intent.OnValueChange -> onValueChange(intent.value)
+            is OperationsScreenContract.Intent.OnOperationTypeChange -> onOperationTypeChange(intent.operationType)
+            is OperationsScreenContract.Intent.OnOriginAccountChange -> onOriginAccountChange(intent.originAccount)
+            is OperationsScreenContract.Intent.OnDestinationAccountChange -> onDestinationAccountChange(
+                intent.destinationAccount
+            )
+
+            is OperationsScreenContract.Intent.OnOperationDateChange -> onOperationDateChange(intent.operationDate)
+            is OperationsScreenContract.Intent.OnReserveChange -> onReserveChange(intent.reserve)
+            is OperationsScreenContract.Intent.OnSaveButtonClick -> onSaveButtonClick(intent.showDialog)
+            is OperationsScreenContract.Intent.OnResetDialogFields -> updateDialogFields(resetFields = true)
+            is OperationsScreenContract.Intent.OnSearchQueryChange -> onSearchQueryChange(intent.query)
+            is OperationsScreenContract.Intent.OnDateFilterChange -> onDateFilterChange(intent.localDate)
+        }
+    }
+
+    private fun onDescriptionChange(description: String) = uiState.update {
         it.copy(
             newOperationDescription = description,
             isNewOperationDescriptionValid = description.isNotBlank()
         )
     }
 
-    override fun onValueChange(value: String) = uiState.update {
+    private fun onValueChange(value: String) = uiState.update {
         it.copy(
             newOperationValue = value,
             isNewOperationValueValid = canBeFormatted(value)
         )
     }
 
-    override fun onOperationTypeChange(operationType: OperationType) {
+    private fun onOperationTypeChange(operationType: OperationType) {
         uiState.update {
             it.copy(
                 newOperationType = operationType,
@@ -80,7 +99,7 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
         updateDialogFields(resetFields = true)
     }
 
-    override fun onOriginAccountChange(originAccount: String) {
+    private fun onOriginAccountChange(originAccount: String) {
         if (uiState.value.newOperationType?.hasOriginAccount == true) {
             uiState.update {
                 it.copy(
@@ -91,7 +110,7 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
         }
     }
 
-    override fun onDestinationAccountChange(destinationAccount: String) {
+    private fun onDestinationAccountChange(destinationAccount: String) {
         if (uiState.value.newOperationType?.hasDestinationAccount == true) {
             uiState.update {
                 it.copy(
@@ -102,14 +121,14 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
         }
     }
 
-    override fun onOperationDateChange(operationDate: LocalDate) = uiState.update {
+    private fun onOperationDateChange(operationDate: LocalDate) = uiState.update {
         it.copy(
             newOperationDate = operationDate,
             isNewOperationDateValid = true
         )
     }
 
-    override fun onReserveChange(reserve: String) {
+    private fun onReserveChange(reserve: String) {
         if (uiState.value.newOperationType?.hasReserve == true) {
             uiState.update {
                 it.copy(
@@ -120,7 +139,7 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
         }
     }
 
-    override fun onSaveButtonClick(showDialog: MutableState<Boolean>) {
+    private fun onSaveButtonClick(showDialog: MutableState<Boolean>) {
         if (validateFields()) {
             val operations = uiState.value.operations.toMutableList()
             val newOperation: Operation
@@ -179,23 +198,23 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
     private fun updateSpecificFieldsValidity() = uiState.update { currentState ->
         currentState.copy(
             isNewOperationOriginAccountValid =
-            if (currentState.newOperationType?.hasOriginAccount == true) {
-                currentState.newOperationOriginAccount.isNotBlank()
-            } else true,
+                if (currentState.newOperationType?.hasOriginAccount == true) {
+                    currentState.newOperationOriginAccount.isNotBlank()
+                } else true,
             isNewOperationDestinationAccountValid =
-            if (currentState.newOperationType?.hasDestinationAccount == true) {
-                currentState.newOperationDestinationAccount.isNotBlank()
-            } else true,
+                if (currentState.newOperationType?.hasDestinationAccount == true) {
+                    currentState.newOperationDestinationAccount.isNotBlank()
+                } else true,
             isNewOperationReserveValid =
-            if (currentState.newOperationType?.hasReserve == true) {
-                currentState.newOperationReserve.isNotBlank()
-            } else true
+                if (currentState.newOperationType?.hasReserve == true) {
+                    currentState.newOperationReserve.isNotBlank()
+                } else true
         )
     }
 
-    override fun resetDialogFields() {
+    private fun resetDialogFields() {
         uiState.update {
-            OperationsScreenUiState().copy(
+            OperationsScreenContract.UiState().copy(
                 operations = it.operations,
                 currentDateFilter = it.currentDateFilter,
                 searchQuery = it.searchQuery,
@@ -252,7 +271,7 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
         uiState.update { it.copy(dialogFields = newOperationDialogFields) }
     }
 
-    override fun onSearchQueryChange(query: String) {
+    private fun onSearchQueryChange(query: String) {
         uiState.update { currentState ->
             val filteredList = if (query.isBlank()) {
                 uiState.value.operations
@@ -268,7 +287,7 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
         }
     }
 
-    override fun onDateFilterChange(localDate: LocalDate) = uiState.update {
+    private fun onDateFilterChange(localDate: LocalDate) = uiState.update {
         it.copy(currentDateFilter = localDate)
     }
 

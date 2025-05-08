@@ -40,13 +40,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenUiState
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 
 @Composable
 fun TotalBalanceCard(
     modifier: Modifier = Modifier,
-    uiState: OperationsScreenUiState,
+    uiState: OperationsScreenContract.UiState,
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -116,9 +116,9 @@ fun TotalBalanceCard(
 
 @Preview
 @Composable
-private fun TotalBalanceCardPreview(modifier: Modifier = Modifier) {
+private fun TotalBalanceCardPreview() {
     TotalBalanceCard(
-        uiState = OperationsScreenUiState(
+        uiState = OperationsScreenContract.UiState(
             totalBalance = "100,00",
             totalOutcome = "50,00",
             totalIncome = "50,00"

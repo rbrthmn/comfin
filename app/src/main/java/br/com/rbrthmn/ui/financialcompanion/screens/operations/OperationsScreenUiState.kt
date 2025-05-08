@@ -51,11 +51,3 @@ data class OperationsScreenUiState(
         const val DEFAULT_STRING_VALUE = ""
     }
 }
-
-data class Operation(
-    val extras: String? = null,
-    val description: String,
-    val value: String,
-    val date: LocalDate,
-    val type: String
-)

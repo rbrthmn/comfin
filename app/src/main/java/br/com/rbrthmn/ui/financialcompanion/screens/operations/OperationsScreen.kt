@@ -56,7 +56,7 @@ object OperationsDestination : NavigationDestination {
 @Composable
 fun OperationsScreen(
     modifier: Modifier = Modifier,
-    viewModel: OperationsScreenContract.OperationsScreenViewModel = koinViewModel(),
+    viewModel: OperationsScreenContract.ViewModel = koinViewModel(),
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val uiState by viewModel.uiState.collectAsState()
@@ -64,7 +64,11 @@ fun OperationsScreen(
     Scaffold(topBar = {
         MonthSelectionTopBar(
             initialDate = uiState.currentDateFilter,
-            onDateSelected = viewModel::onDateFilterChange,
+            onDateSelected = {
+                viewModel.onIntent(
+                    OperationsScreenContract.Intent.OnDateFilterChange(it)
+                )
+            },
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
     }, modifier = modifier) { innerPadding ->
@@ -77,7 +81,7 @@ fun OperationsScreen(
 private fun OperationsScreenContent(
     innerPaddingValues: PaddingValues,
     modifier: Modifier = Modifier,
-    viewModel: OperationsScreenContract.OperationsScreenViewModel,
+    viewModel: OperationsScreenContract.ViewModel,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -98,7 +102,7 @@ private fun OperationsScreenContent(
 
 @Preview
 @Composable
-private fun OperationsScreenPreview(modifier: Modifier = Modifier) {
+private fun OperationsScreenPreview() {
     val context = LocalContext.current
     val stringProvider = ResourceStringProvider(context)
 
