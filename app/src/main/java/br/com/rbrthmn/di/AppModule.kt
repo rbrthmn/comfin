@@ -49,7 +49,7 @@ val appModule = module {
     singleOf<SnackBarProvider>(::SnackBarProviderImpl)
     single<StringProvider> { ResourceStringProvider(context = androidContext()) }
 
-    viewModelOf<HomeScreenContract.HomeScreenViewModel>(::HomeScreenViewModel)
+    viewModelOf<HomeScreenContract.ViewModel>(::HomeScreenViewModel)
     viewModel<BalanceCardContract.ViewModel> {
         BalanceCardViewModel().doOnInit()
     }
