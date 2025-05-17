@@ -20,13 +20,17 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.home
 
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.StateFlow
+import br.com.rbrthmn.ui.financialcompanion.BaseViewModel
 import java.time.LocalDate
 
 interface HomeScreenContract {
-    abstract class HomeScreenViewModel : ViewModel() {
-        abstract val uiState: StateFlow<HomeScreenUiState>
-        abstract fun onDateFilterChange(date: LocalDate)
+    abstract class ViewModel : BaseViewModel<UiState, Intent>()
+
+    data class UiState(
+        val currentDateFilter: LocalDate = LocalDate.now()
+    )
+
+    sealed class Intent {
+        data class OnDateFilterChange(val date: LocalDate) : Intent()
     }
 }

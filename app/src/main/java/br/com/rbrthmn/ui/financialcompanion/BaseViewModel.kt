@@ -18,20 +18,13 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
+package br.com.rbrthmn.ui.financialcompanion
 
-import br.com.rbrthmn.R
-import java.time.LocalDate
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.StateFlow
 
-data class BalanceCardUiState(
-    val totalBalance: String = "",
-    val accounts: List<BankAccountBalanceUiState> = listOf(),
-    val newAccountBalance: String = "",
-    val isNewAccountBalanceValid: Boolean = true,
-    val newAccountDescription: String = "",
-    val isNewAccountDescriptionValid: Boolean = true,
-    val newAccountBank: String = "",
-    val isNewAccountBankValid: Boolean = true,
-    val newAccountBankIcon: Int = R.drawable.bank_icon,
-    val currentDateFilter: LocalDate = LocalDate.now()
-)
+abstract class BaseViewModel<U, I> : ViewModel() {
+    abstract val uiState: StateFlow<U>
+    abstract fun onIntent(intent: I)
+    abstract fun doOnInit(): BaseViewModel<U, I>
+}

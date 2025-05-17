@@ -20,19 +20,16 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 
-class MonthlyLimitCardViewModel : MonthlyLimitCardContract.MonthlyLimitCardViewModel() {
-    override var uiState: MutableStateFlow<MonthlyLimitCardUiState> = MutableStateFlow(MonthlyLimitCardUiState())
+class MonthlyLimitCardViewModel : MonthlyLimitCardContract.ViewModel() {
+    override var uiState = MutableStateFlow(MonthlyLimitCardContract.UiState())
 
     override fun doOnInit(): MonthlyLimitCardViewModel {
-        uiState.value = MonthlyLimitCardUiState(
+        uiState.value = MonthlyLimitCardContract.UiState(
             monthLimit = formatDouble(MONTH_LIMIT_MOCK),
             monthDifference = formatDouble(MONTH_DIFFERENCE_MOCK)
         )
@@ -40,7 +37,13 @@ class MonthlyLimitCardViewModel : MonthlyLimitCardContract.MonthlyLimitCardViewM
         return this
     }
 
-    override fun setDateFilter(date: LocalDate) = uiState.update {
+    override fun onIntent(intent: MonthlyLimitCardContract.Intent) {
+        when (intent) {
+            is MonthlyLimitCardContract.Intent.OnDateFilterChange -> onDateFilterChange(intent.date)
+        }
+    }
+
+    private fun onDateFilterChange(date: LocalDate) = uiState.update {
         it.copy(currentDateFilter = date)
     }
 

@@ -41,12 +41,12 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
+import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCard
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCard
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCard
-import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCard
-import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -61,7 +61,7 @@ object HomeDestination : NavigationDestination {
 fun HomeScreen(
     modifier: Modifier = Modifier,
     onMonthlyLimitCardClick: () -> Unit,
-    viewModel: HomeScreenContract.HomeScreenViewModel = koinViewModel()
+    viewModel: HomeScreenContract.ViewModel = koinViewModel()
 ) {
     val snackBarProvider: SnackBarProvider = koinInject()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -72,12 +72,21 @@ fun HomeScreen(
         topBar = {
             MonthSelectionTopBar(
                 initialDate = uiState.currentDateFilter,
-                onDateSelected =  viewModel::onDateFilterChange,
+                onDateSelected = {
+                    viewModel.onIntent(
+                        HomeScreenContract.Intent.OnDateFilterChange(it)
+                    )
+                },
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
             )
         }, modifier = modifier
     ) { innerPadding ->
-        HomeScreenContent(modifier, onMonthlyLimitCardClick, innerPadding, currentDate = uiState.currentDateFilter)
+        HomeScreenContent(
+            modifier,
+            onMonthlyLimitCardClick,
+            innerPadding,
+            currentDate = uiState.currentDateFilter
+        )
     }
 }
 
