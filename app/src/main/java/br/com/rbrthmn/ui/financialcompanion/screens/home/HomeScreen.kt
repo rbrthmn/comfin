@@ -63,7 +63,7 @@ const val HOME_SCREEN_CONTENT_TEST_TAG = "home_screen_content"
 fun HomeScreen(
     modifier: Modifier = Modifier,
     onMonthlyLimitCardClick: () -> Unit,
-    viewModel: HomeScreenContract.HomeScreenViewModel = koinViewModel()
+    viewModel: HomeScreenContract.ViewModel = koinViewModel()
 ) {
     val snackBarProvider: SnackBarProvider = koinInject()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -74,12 +74,21 @@ fun HomeScreen(
         topBar = {
             MonthSelectionTopBar(
                 initialDate = uiState.currentDateFilter,
-                onDateSelected =  viewModel::onDateFilterChange,
+                onDateSelected = {
+                    viewModel.onIntent(
+                        HomeScreenContract.Intent.OnDateFilterChange(it)
+                    )
+                },
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
             )
         }, modifier = modifier
     ) { innerPadding ->
-        HomeScreenContent(modifier, onMonthlyLimitCardClick, innerPadding, currentDate = uiState.currentDateFilter)
+        HomeScreenContent(
+            modifier,
+            onMonthlyLimitCardClick,
+            innerPadding,
+            currentDate = uiState.currentDateFilter
+        )
     }
 }
 

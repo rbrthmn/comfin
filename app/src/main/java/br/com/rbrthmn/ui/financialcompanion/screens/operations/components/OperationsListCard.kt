@@ -68,6 +68,7 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.model.OperationType
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.Operation
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract.Intent
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
 import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
@@ -78,23 +79,29 @@ const val NEW_OPERATION_DIALOG_TAG = "new_operation_dialog"
 const val OPERATION_TYPES_DROPDOWN_MENU_TAG = "operation_types_dropdown_menu"
 
 @Composable
-fun OperationsListCard(modifier: Modifier = Modifier, viewModel: OperationsScreenContract.OperationsScreenViewModel) {
+fun OperationsListCard(modifier: Modifier = Modifier, viewModel: OperationsScreenContract.ViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddOperationDialog = rememberSaveable { mutableStateOf(false) }
 
     if (showAddOperationDialog.value)
         AddOperationDialog(
             viewModel = viewModel,
-            onSaveButtonClick = { viewModel.onSaveButtonClick(showAddOperationDialog) },
+            onSaveButtonClick = {
+                viewModel.onIntent(
+                    Intent.OnSaveButtonClick(
+                        showAddOperationDialog
+                    )
+                )
+            },
             onCancelButtonClick = {
-                viewModel.resetDialogFields()
+                viewModel.onIntent(Intent.OnResetDialogFields)
                 showAddOperationDialog.value = false
             }
         )
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier
+        modifier = Modifier
             .padding(bottom = dimensionResource(id = R.dimen.padding_medium))
             .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
     ) {
@@ -107,7 +114,7 @@ fun OperationsListCard(modifier: Modifier = Modifier, viewModel: OperationsScree
         ) {
             TextField(
                 value = uiState.searchQuery,
-                onValueChange = viewModel::onSearchQueryChange,
+                onValueChange = { viewModel.onIntent(Intent.OnSearchQueryChange(it)) },
                 label = { Text(text = stringResource(id = R.string.search_hint)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
@@ -145,7 +152,7 @@ fun OperationsListCard(modifier: Modifier = Modifier, viewModel: OperationsScree
 @Composable
 fun AddOperationDialog(
     modifier: Modifier = Modifier,
-    viewModel: OperationsScreenContract.OperationsScreenViewModel,
+    viewModel: OperationsScreenContract.ViewModel,
     onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
     availableOperationTypes: List<OperationType> = OperationType.entries
@@ -167,7 +174,7 @@ fun AddOperationDialog(
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.operation_description_hint)) },
                     value = uiState.newOperationDescription,
-                    onValueChange = viewModel::onDescriptionChange,
+                    onValueChange = { viewModel.onIntent(Intent.OnDescriptionChange(it)) },
                     isError = !uiState.isNewOperationDescriptionValid,
                     singleLine = true
                 )
@@ -176,12 +183,12 @@ fun AddOperationDialog(
                     label = { Text(text = stringResource(id = R.string.operation_value_hint)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = uiState.newOperationValue,
-                    onValueChange = viewModel::onValueChange,
+                    onValueChange = { viewModel.onIntent(Intent.OnValueChange(it)) },
                     isError = !uiState.isNewOperationValueValid,
                     singleLine = true
                 )
                 OperationTypeDropdownMenu(
-                    onTypeClicked = { viewModel.onOperationTypeChange(it) },
+                    onTypeClicked = { viewModel.onIntent(Intent.OnOperationTypeChange(it)) },
                     operationTypes = availableOperationTypes,
                     isError = !uiState.isNewOperationTypeValid
                 )
@@ -189,7 +196,7 @@ fun AddOperationDialog(
                     composableFunction()
                 }
                 DatePickerField(
-                    onDateSelected = { viewModel.onOperationDateChange(it) },
+                    onDateSelected = { viewModel.onIntent(Intent.OnOperationDateChange(it)) },
                     isError = !uiState.isNewOperationDateValid
                 )
                 Row(

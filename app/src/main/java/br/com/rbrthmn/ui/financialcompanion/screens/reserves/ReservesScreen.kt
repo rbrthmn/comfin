@@ -69,6 +69,8 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.model.OperationType
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract.Intent
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AddOperationDialog
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AddOperationDialog
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
@@ -312,16 +314,22 @@ private fun ReserveOperationsList(
     modifier: Modifier = Modifier
 ) {
     val showDialog = remember { mutableStateOf(false) }
-    val operationsScreenViewModel: OperationsScreenContract.OperationsScreenViewModel =
+    val operationsScreenViewModel: OperationsScreenContract.ViewModel =
         koinViewModel()
 
     if (showDialog.value) {
         AddOperationDialog(
             viewModel = operationsScreenViewModel,
-            onSaveButtonClick = { operationsScreenViewModel.onSaveButtonClick(showDialog) },
+            onSaveButtonClick = {
+                operationsScreenViewModel.onIntent(
+                    Intent.OnSaveButtonClick(
+                        showDialog
+                    )
+                )
+            },
             onCancelButtonClick = {
                 showDialog.value = false
-                operationsScreenViewModel.resetDialogFields()
+                operationsScreenViewModel.onIntent(Intent.OnResetDialogFields)
             },
             availableOperationTypes = listOf(
                 OperationType.RESERVE_ALLOCATION,

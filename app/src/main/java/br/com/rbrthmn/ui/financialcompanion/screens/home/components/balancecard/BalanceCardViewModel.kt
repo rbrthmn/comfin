@@ -28,18 +28,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 
-class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
-    override val uiState = MutableStateFlow(BalanceCardUiState())
+class BalanceCardViewModel : BalanceCardContract.ViewModel() {
+    override val uiState = MutableStateFlow(BalanceCardContract.BalanceCardUiState())
 
     override fun doOnInit(): BalanceCardViewModel {
         val accounts = listOf(
-            BankAccountBalanceUiState(
+            BalanceCardContract.BankAccountBalanceUiState(
                 name = ACCOUNT_NAME_MOCK,
                 value = formatDouble(ACCOUNT_VALUE_MOCK),
                 bankName = BANK_NAME_MOCK,
             )
         )
-        uiState.value = BalanceCardUiState(
+        uiState.value = BalanceCardContract.BalanceCardUiState(
             totalBalance = formatDouble(TOTAL_BALANCE_MOCK),
             accounts = accounts,
         )
@@ -47,14 +47,38 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
         return this
     }
 
-    override fun onInitialBalanceChange(balance: String) = uiState.update {
+    override fun onIntent(intent: BalanceCardContract.Intent) {
+        when (intent) {
+            BalanceCardContract.Intent.CleanNewAccount -> cleanNewAccount()
+            is BalanceCardContract.Intent.OnBankChange -> onBankChange(
+                intent.bankId,
+                intent.bankName
+            )
+
+            is BalanceCardContract.Intent.OnDateFilterChange -> setDateFilter(
+                intent.date
+            )
+
+            is BalanceCardContract.Intent.OnDescriptionChange -> onDescriptionChange(
+                intent.description
+            )
+
+            is BalanceCardContract.Intent.OnInitialBalanceChange -> onInitialBalanceChange(
+                intent.balance
+            )
+
+            is BalanceCardContract.Intent.OnSaveClick -> onSaveClick(intent.showDialog)
+        }
+    }
+
+    private fun onInitialBalanceChange(balance: String) = uiState.update {
         it.copy(
             isNewAccountBalanceValid = balance.isNotBlank(),
             newAccountBalance = balance
         )
     }
 
-    override fun onDescriptionChange(description: String) = uiState.update {
+    private fun onDescriptionChange(description: String) = uiState.update {
         it.copy(
             isNewAccountDescriptionValid = description.isNotBlank(),
             newAccountDescription = description
@@ -62,7 +86,7 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
     }
 
 
-    override fun onBankChange(bankId: Int, bankName: String) = uiState.update {
+    private fun onBankChange(bankId: Int, bankName: String) = uiState.update {
         it.copy(
             isNewAccountBankValid = bankName.isNotBlank(),
             newAccountBank = bankName,
@@ -85,10 +109,10 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
         }
     }
 
-    override fun onSaveClick(showDialog: MutableState<Boolean>) {
+    private fun onSaveClick(showDialog: MutableState<Boolean>) {
         if (validateInputs()) {
             showDialog.value = false
-            val newAccount = BankAccountBalanceUiState(
+            val newAccount = BalanceCardContract.BankAccountBalanceUiState(
                 name = uiState.value.newAccountDescription,
                 value = formatString(uiState.value.newAccountBalance),
                 bankName = uiState.value.newAccountBank,
@@ -98,7 +122,7 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
         }
     }
 
-    override fun cleanNewAccount() =
+    private fun cleanNewAccount() =
         uiState.update {
             it.copy(
                 newAccountBalance = "",
@@ -111,7 +135,7 @@ class BalanceCardViewModel : BalanceCardContract.BalanceCardViewModel() {
             )
         }
 
-    override fun setDateFilter(date: LocalDate) = uiState.update {
+    private fun setDateFilter(date: LocalDate) = uiState.update {
         it.copy(currentDateFilter = date)
     }
 

@@ -20,26 +20,63 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.operations
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.lifecycle.ViewModel
 import br.com.rbrthmn.model.OperationType
-import kotlinx.coroutines.flow.StateFlow
+import br.com.rbrthmn.ui.financialcompanion.BaseViewModel
 import java.time.LocalDate
 
 interface OperationsScreenContract {
-    abstract class OperationsScreenViewModel : ViewModel() {
-        abstract val uiState: StateFlow<OperationsScreenUiState>
-        abstract fun onDescriptionChange(description: String)
-        abstract fun onValueChange(value: String)
-        abstract fun onOperationTypeChange(operationType: OperationType)
-        abstract fun onOriginAccountChange(originAccount: String)
-        abstract fun onDestinationAccountChange(destinationAccount: String)
-        abstract fun onOperationDateChange(operationDate: LocalDate)
-        abstract fun onReserveChange(reserve: String)
-        abstract fun onSaveButtonClick(showDialog: MutableState<Boolean>)
-        abstract fun resetDialogFields()
-        abstract fun onSearchQueryChange(query: String)
-        abstract fun onDateFilterChange(localDate: LocalDate)
-        abstract fun doOnInit(): br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
+    abstract class ViewModel : BaseViewModel<UiState, Intent>()
+
+    data class UiState(
+        val operations: List<Operation> = listOf(),
+        val dialogFields: MutableList<@Composable () -> Unit> = mutableListOf(),
+        val totalBalance: String = DEFAULT_STRING_VALUE,
+        val totalIncome: String = DEFAULT_STRING_VALUE,
+        val totalOutcome: String = DEFAULT_STRING_VALUE,
+        val newOperationDescription: String = DEFAULT_STRING_VALUE,
+        val isNewOperationDescriptionValid: Boolean = true,
+        val newOperationValue: String = DEFAULT_STRING_VALUE,
+        val isNewOperationValueValid: Boolean = true,
+        val newOperationType: OperationType? = null,
+        val isNewOperationTypeValid: Boolean = true,
+        val newOperationOriginAccount: String = DEFAULT_STRING_VALUE,
+        val isNewOperationOriginAccountValid: Boolean = true,
+        val newOperationDestinationAccount: String = DEFAULT_STRING_VALUE,
+        val isNewOperationDestinationAccountValid: Boolean = true,
+        val newOperationDate: LocalDate = LocalDate.now(),
+        var isNewOperationDateValid: Boolean = true,
+        val newOperationReserve: String = DEFAULT_STRING_VALUE,
+        val isNewOperationReserveValid: Boolean = true,
+        val searchQuery: String = DEFAULT_STRING_VALUE,
+        val currentDateFilter: LocalDate = LocalDate.now()
+    ) {
+        companion object {
+            const val DEFAULT_STRING_VALUE = ""
+        }
+
+    }
+
+    sealed class Intent {
+        data class OnDescriptionChange(val description: String) : Intent()
+        data class OnValueChange(val value: String) : Intent()
+        data class OnOperationTypeChange(val operationType: OperationType) : Intent()
+        data class OnOriginAccountChange(val originAccount: String) : Intent()
+        data class OnDestinationAccountChange(val destinationAccount: String) : Intent()
+        data class OnOperationDateChange(val operationDate: LocalDate) : Intent()
+        data class OnReserveChange(val reserve: String) : Intent()
+        data class OnSaveButtonClick(val showDialog: MutableState<Boolean>) : Intent()
+        object OnResetDialogFields : Intent()
+        data class OnSearchQueryChange(val query: String) : Intent()
+        data class OnDateFilterChange(val localDate: LocalDate) : Intent()
     }
 }
+
+data class Operation(
+    val extras: String? = null,
+    val description: String,
+    val value: String,
+    val date: LocalDate,
+    val type: String
+)

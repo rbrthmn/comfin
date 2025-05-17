@@ -27,11 +27,11 @@ import java.time.LocalDate
 import kotlin.test.assertEquals
 
 class HomeScreenViewModelTest {
-    private val viewModel: HomeScreenContract.HomeScreenViewModel = HomeScreenViewModel()
+    private val viewModel: HomeScreenContract.ViewModel = HomeScreenViewModel()
 
     @Test
     fun `onDateFilterChange should assign value correctly`() {
-        viewModel.onDateFilterChange(VALID_DATE)
+        viewModel.onIntent(HomeScreenContract.Intent.OnDateFilterChange(VALID_DATE))
 
         assertEquals(VALID_DATE, viewModel.uiState.value.currentDateFilter)
 

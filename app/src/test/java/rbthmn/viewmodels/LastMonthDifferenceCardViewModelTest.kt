@@ -20,6 +20,7 @@
 
 package rbthmn.viewmodels
 
+import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardContract
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel.Companion.MOCK
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
@@ -40,7 +41,7 @@ class LastMonthDifferenceCardViewModelTest {
 
     @Test
     fun `setDateFilter should assign value correctly`() {
-        viewModel.setDateFilter(VALID_DATE)
+        viewModel.onIntent(LastMonthDifferenceCardContract.Intent.OnDateFilterChange(VALID_DATE))
 
         TestCase.assertEquals(
             VALID_DATE,

@@ -61,7 +61,7 @@ const val TOTAL_BALANCE_CARD_TAG = "total_balance_card"
 @Composable
 fun OperationsScreen(
     modifier: Modifier = Modifier,
-    viewModel: OperationsScreenContract.OperationsScreenViewModel = koinViewModel(),
+    viewModel: OperationsScreenContract.ViewModel = koinViewModel(),
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val uiState by viewModel.uiState.collectAsState()
@@ -69,7 +69,11 @@ fun OperationsScreen(
     Scaffold(topBar = {
         MonthSelectionTopBar(
             initialDate = uiState.currentDateFilter,
-            onDateSelected = viewModel::onDateFilterChange,
+            onDateSelected = {
+                viewModel.onIntent(
+                    OperationsScreenContract.Intent.OnDateFilterChange(it)
+                )
+            },
             modifier = Modifier
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .testTag(DATE_FILTER_TAG)
@@ -84,7 +88,7 @@ fun OperationsScreen(
 private fun OperationsScreenContent(
     innerPaddingValues: PaddingValues,
     modifier: Modifier = Modifier,
-    viewModel: OperationsScreenContract.OperationsScreenViewModel,
+    viewModel: OperationsScreenContract.ViewModel,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -58,14 +58,14 @@ import java.time.LocalDate
 @Composable
 fun MonthlyLimitCard(
     modifier: Modifier = Modifier,
-    viewModel: MonthlyLimitCardContract.MonthlyLimitCardViewModel = koinViewModel(),
+    viewModel: MonthlyLimitCardContract.ViewModel = koinViewModel(),
     onCardClick: () -> Unit,
     currentDateFilter: LocalDate
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val showMonthlyLimitDialog = remember { mutableStateOf(false) }
     val showMonthlyDifferenceDialog = remember { mutableStateOf(false) }
-    viewModel.setDateFilter(currentDateFilter)
+    viewModel.onIntent(MonthlyLimitCardContract.Intent.OnDateFilterChange(currentDateFilter))
 
     if (showMonthlyLimitDialog.value)
         InfoDialog(
