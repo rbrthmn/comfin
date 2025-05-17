@@ -51,6 +51,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -65,6 +66,9 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbi
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract as Contract
+
+const val ADD_CARD_DIALOG_TAG = "add_card_dialog"
+const val BILL_CLOSE_DAY_DROPDOWN_MENU_TAG = "bill_close_day_dropdown_menu"
 
 @Composable
 fun CreditCardBillsCard(
@@ -157,11 +161,13 @@ private fun CreditCardItem(
             Column(verticalArrangement = Arrangement.Center) {
                 Text(
                     text = itemName,
-                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+                    lineHeight = dimensionResource(id = R.dimen.font_size_medium).value.sp
                 )
                 Text(
-                    text = stringResource(id = R.string.credit_card_due_day_label) + dueDay,
-                    fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp
+                    text = stringResource(id = R.string.credit_card_due_day_label) + " " + dueDay,
+                    fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp,
+                    lineHeight = dimensionResource(id = R.dimen.font_size_small).value.sp
                 )
             }
         }
@@ -185,9 +191,12 @@ private fun AddCreditCardDialog(
     onSaveButtonClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
+                .testTag(ADD_CARD_DIALOG_TAG)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -255,7 +264,10 @@ private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isErr
         readOnly = true,
         trailingIcon = {
             IconButton(onClick = { expanded = true }) {
-                Icon(Icons.Filled.ArrowDropDown, "contentDescription")
+                Icon(
+                    Icons.Filled.ArrowDropDown,
+                    "${stringResource(id = R.string.card_bill_close_day_hint)} ${stringResource(R.string.drop_down_arrow_icon_description)}"
+                )
             }
         },
         singleLine = true,
@@ -263,7 +275,8 @@ private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isErr
     )
     DropdownMenu(
         expanded = expanded,
-        onDismissRequest = { expanded = false }
+        onDismissRequest = { expanded = false },
+        modifier = Modifier.testTag(BILL_CLOSE_DAY_DROPDOWN_MENU_TAG)
     ) {
         options.forEach { selectionOption ->
             DropdownMenuItem(
@@ -280,20 +293,20 @@ private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isErr
 
 @Preview
 @Composable
-fun CreditCardsBillCardPreview(modifier: Modifier = Modifier) {
+fun CreditCardsBillCardPreview() {
     CreditCardBillsCard(
-        viewModel = CreditCardBillsCardViewModel(),
-        modifier = modifier,
+        viewModel = CreditCardBillsCardViewModel().doOnInit(),
+        modifier = Modifier,
         currentDateFilter = LocalDate.now()
     )
 }
 
 @Preview
 @Composable
-fun AddCardBillDialogPreview(modifier: Modifier = Modifier) {
+fun AddCardBillDialogPreview() {
     AddCreditCardDialog(
         onSaveButtonClick = { },
         onCancelButtonClick = {},
-        viewModel = CreditCardBillsCardViewModel()
+        viewModel = CreditCardBillsCardViewModel().doOnInit()
     )
 }

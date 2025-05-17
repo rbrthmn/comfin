@@ -184,7 +184,7 @@ private fun InfoDialog(dialogText: String, onCloseButtonClick: () -> Unit) {
 
 @Preview
 @Composable
-fun MonthlyLimitCardPreview(modifier: Modifier = Modifier) {
+fun MonthlyLimitCardPreview() {
     MonthlyLimitCard(
         onCardClick = {},
         viewModel = MonthlyLimitCardViewModel(),

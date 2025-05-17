@@ -56,6 +56,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -74,8 +75,11 @@ import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+const val NEW_OPERATION_DIALOG_TAG = "new_operation_dialog"
+const val OPERATION_TYPES_DROPDOWN_MENU_TAG = "operation_types_dropdown_menu"
+
 @Composable
-fun OperationsListCard(viewModel: OperationsScreenContract.ViewModel) {
+fun OperationsListCard(modifier: Modifier = Modifier, viewModel: OperationsScreenContract.ViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddOperationDialog = rememberSaveable { mutableStateOf(false) }
 
@@ -156,7 +160,9 @@ fun AddOperationDialog(
     val uiState by viewModel.uiState.collectAsState()
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
+                .testTag(NEW_OPERATION_DIALOG_TAG)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -230,13 +236,17 @@ private fun OperationTypeDropdownMenu(
             readOnly = true,
             trailingIcon = {
                 IconButton(onClick = { expanded = true }) {
-                    Icon(Icons.Filled.ArrowDropDown, "contentDescription")
+                    Icon(
+                        Icons.Filled.ArrowDropDown,
+                        stringResource(R.string.drop_down_arrow_icon_description)
+                    )
                 }
             },
             singleLine = true,
             isError = isError
         )
         DropdownMenu(
+            modifier = Modifier.testTag(OPERATION_TYPES_DROPDOWN_MENU_TAG),
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
@@ -344,7 +354,7 @@ fun OperationsListCardPreview() {
     val context = LocalContext.current
     val stringProvider = ResourceStringProvider(context)
 
-    OperationsListCard(viewModel = OperationsScreenViewModel(stringProvider))
+    OperationsListCard(viewModel = OperationsScreenViewModel(stringProvider).doOnInit())
 }
 
 @Preview
@@ -354,7 +364,7 @@ fun AddOperationDialogPreview() {
     val stringProvider = ResourceStringProvider(context)
 
     AddOperationDialog(
-        viewModel = OperationsScreenViewModel(stringProvider),
+        viewModel = OperationsScreenViewModel(stringProvider).doOnInit(),
         onSaveButtonClick = {},
         onCancelButtonClick = {}
     )

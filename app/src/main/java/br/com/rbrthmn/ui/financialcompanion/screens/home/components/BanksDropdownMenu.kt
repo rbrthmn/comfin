@@ -37,9 +37,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import br.com.rbrthmn.R
+
+const val BANKS_DROPDOWN_MENU_TAG = "banks_dropdown_menu"
 
 @Composable
 fun BanksDropdownMenu(
@@ -78,7 +81,10 @@ fun BanksDropdownMenu(
             readOnly = true,
             trailingIcon = {
                 IconButton(onClick = { expanded = true }) {
-                    Icon(Icons.Filled.ArrowDropDown, "contentDescription")
+                    Icon(
+                        Icons.Filled.ArrowDropDown,
+                        "${stringResource(id = R.string.bank_hint)} ${stringResource(R.string.drop_down_arrow_icon_description)}"
+                    )
                 }
             },
             singleLine = true,
@@ -86,7 +92,8 @@ fun BanksDropdownMenu(
         )
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.testTag(BANKS_DROPDOWN_MENU_TAG)
         ) {
             bankList.forEach { selectionOption ->
                 DropdownMenuItem(

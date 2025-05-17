@@ -38,8 +38,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
@@ -55,6 +55,8 @@ import java.time.LocalDate
 object HomeDestination : NavigationDestination {
     override val route = "home"
 }
+
+const val HOME_SCREEN_CONTENT_TEST_TAG = "home_screen_content"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,16 +107,11 @@ private fun HomeScreenContent(
             .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
+            .testTag(HOME_SCREEN_CONTENT_TEST_TAG)
     ) {
         MonthlyLimitCard(onCardClick = onMonthlyLimitCardClick, currentDateFilter = currentDate)
         BalanceCard(currentDateFilter = currentDate)
         CreditCardBillsCard(currentDateFilter = currentDate)
         LastMonthDifferenceCard(currentDateFilter = currentDate)
     }
-}
-
-@Preview
-@Composable
-private fun HomeScreenContentPreview(modifier: Modifier = Modifier) {
-    HomeScreen(onMonthlyLimitCardClick = {}, modifier = modifier)
 }

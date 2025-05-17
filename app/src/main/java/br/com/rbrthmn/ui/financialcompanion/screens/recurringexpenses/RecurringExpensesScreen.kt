@@ -57,6 +57,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -73,6 +74,8 @@ data class RecurringExpense(val description: String, val value: String, val bill
 object RecurringExpensesDestination : NavigationDestination {
     override val route = "recurring_expenses"
 }
+
+const val NEW_RECURRING_EXPENSE_DIALOG_TAG = "new_recurring_expense_dialog"
 
 @Composable
 fun RecurringExpenses(modifier: Modifier = Modifier) {
@@ -239,7 +242,8 @@ private fun NewRecurringExpenseDialog(onSaveButtonClick: () -> Unit, onCancelBut
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(dimensionResource(id = R.dimen.padding_medium)),
+                .padding(dimensionResource(id = R.dimen.padding_medium))
+                .testTag(NEW_RECURRING_EXPENSE_DIALOG_TAG),
             shape = RoundedCornerShape(dimensionResource(id = R.dimen.padding_medium)),
         ) {
             Column(
@@ -314,12 +318,12 @@ private fun ExpenseBillingDayDropdownMenu() {
 
 @Preview(showBackground = true)
 @Composable
-private fun RecurringExpensesScreenPreview(modifier: Modifier = Modifier) {
+private fun RecurringExpensesScreenPreview() {
     RecurringExpenses()
 }
 
 @Preview
 @Composable
-private fun NewRecurringExpenseDialogPreview(modifier: Modifier = Modifier) {
+private fun NewRecurringExpenseDialogPreview() {
     NewRecurringExpenseDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
 }

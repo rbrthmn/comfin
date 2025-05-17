@@ -28,11 +28,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.testTag
 import androidx.navigation.compose.rememberNavController
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationBar
 import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
 import br.com.rbrthmn.ui.financialcompanion.utils.ComFinNavigationType
+
+const val NAV_GRAPH_TAG = "nav_graph"
+const val NAV_BAR_TAG = "nav_bar"
 
 @Composable
 fun ComFinApp(
@@ -51,19 +54,13 @@ fun ComFinApp(
         ) {
             ComFinNavGraph(
                 navController = navController,
-                modifier = Modifier.weight(0.92f)
+                modifier = Modifier.weight(0.92f).testTag(NAV_GRAPH_TAG)
             )
             NavigationBar(
-                modifier = Modifier.weight(0.08f),
+                modifier = Modifier.weight(0.08f).testTag(NAV_BAR_TAG),
                 navigationType = navigationType,
                 navigateToDestination = navController::navigate
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun ComFinAppPreview(modifier: Modifier = Modifier) {
-    ComFinApp(windowSize = WindowWidthSizeClass.Compact)
 }

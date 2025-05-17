@@ -28,8 +28,6 @@ import br.com.rbrthmn.model.OperationType
 import br.com.rbrthmn.ui.financialcompanion.components.ReservesDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AccountsDropdownMenu
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationAimedAccount
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationOriginAccount
 import br.com.rbrthmn.ui.financialcompanion.utils.StringProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.canBeFormatted
 import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
@@ -226,7 +224,24 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
     }
 
     private fun updateDialogFields(resetFields: Boolean) {
+        val accounts = listOf(
+            "Conta A",
+            "Conta B",
+            "Conta C",
+            "Conta D",
+            "Conta E",
+            "Conta F",
+            "Conta G",
+        )
+        val reserves = listOf(
+            "Reserva A",
+            "Reserva B",
+            "Reserva C",
+            "Reserva D",
+            "Reserva E",
+        )
         val newOperationDialogFields = mutableListOf<@Composable () -> Unit>()
+
         if (resetFields) {
             uiState.update {
                 it.copy(
@@ -243,7 +258,8 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
                     AccountsDropdownMenu(
                         operationAccountType = OperationOriginAccount,
                         onAccountSelected = ::onOriginAccountChange,
-                        isError = !isNewOperationOriginAccountValid
+                        isError = !isNewOperationOriginAccountValid,
+                        accounts = accounts
                     )
                 }
             }
@@ -253,7 +269,8 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
                     AccountsDropdownMenu(
                         operationAccountType = OperationAimedAccount,
                         onAccountSelected = ::onDestinationAccountChange,
-                        isError = !isNewOperationDestinationAccountValid
+                        isError = !isNewOperationDestinationAccountValid,
+                        accounts = accounts
                     )
                 }
             }
@@ -262,7 +279,8 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
                 newOperationDialogFields.add {
                     ReservesDropdownMenu(
                         onReserveClicked = ::onReserveChange,
-                        isError = !isNewOperationReserveValid
+                        isError = !isNewOperationReserveValid,
+                        reserves = reserves
                     )
                 }
             }

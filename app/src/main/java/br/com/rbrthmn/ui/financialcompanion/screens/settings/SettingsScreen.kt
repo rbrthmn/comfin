@@ -45,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -58,6 +59,8 @@ import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 object SettingsDestination : NavigationDestination {
     override val route: String = "settings"
 }
+
+const val SETTINGS_LIST_TAG = "settings_list"
 
 @Composable
 fun SettingsScreen(modifier: Modifier = Modifier) {
@@ -86,8 +89,8 @@ private fun SettingsContent(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier.padding(
                 vertical = dimensionResource(id = R.dimen.padding_medium),
-                horizontal = dimensionResource(id = R.dimen.padding_medium)
-            )
+                horizontal = dimensionResource(id = R.dimen.padding_medium),
+            ).testTag(SETTINGS_LIST_TAG)
         ) {
             DarkModeSetting()
         }

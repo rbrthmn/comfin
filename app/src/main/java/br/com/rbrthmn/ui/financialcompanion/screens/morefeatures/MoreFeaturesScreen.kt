@@ -38,21 +38,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpensesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.settings.SettingsDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
 
 data class FeatureLabel(val name: String, val route: String)
 
 object MoreFeaturesDestination : NavigationDestination {
     override val route = "more_features"
 }
+
+const val FEATURES_LIST_TAG = "features_list"
 
 @Composable
 fun MoreFeaturesScreen(onFeatureClick: (String) -> Unit, modifier: Modifier = Modifier) {
@@ -67,13 +70,26 @@ fun MoreFeaturesScreen(onFeatureClick: (String) -> Unit, modifier: Modifier = Mo
         MoreFeaturesCard(onFeatureClick)
     }
 }
+
 @Composable
 private fun MoreFeaturesCard(onFeatureClick: (String) -> Unit) {
     val featuresList = listOf(
-        FeatureLabel(stringResource(id = R.string.feature_label_reserves), ReservesDestination.route),
-        FeatureLabel(stringResource(id = R.string.feature_label_recurring_expenses), RecurringExpensesDestination.route),
-        FeatureLabel(stringResource(id = R.string.feature_label_income_distribution), IncomeDivisionsDestination.route),
-        FeatureLabel(stringResource(id = R.string.feature_label_settings), SettingsDestination.route)
+        FeatureLabel(
+            name = stringResource(id = R.string.feature_label_reserves),
+            route = ReservesDestination.route
+        ),
+        FeatureLabel(
+            name = stringResource(id = R.string.feature_label_recurring_expenses),
+            route = RecurringExpensesDestination.route
+        ),
+        FeatureLabel(
+            name = stringResource(id = R.string.feature_label_income_distribution),
+            route = IncomeDivisionsDestination.route
+        ),
+        FeatureLabel(
+            name = stringResource(id = R.string.feature_label_settings),
+            route = SettingsDestination.route
+        )
     )
 
     Card(
@@ -86,12 +102,15 @@ private fun MoreFeaturesCard(onFeatureClick: (String) -> Unit) {
         Column(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
+            modifier = Modifier
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
+                .testTag(FEATURES_LIST_TAG)
         ) {
             for (index in featuresList.indices) {
                 TextButton(
                     onClick = { onFeatureClick(featuresList[index].route) },
                     contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
+                    modifier = Modifier.testTag(featuresList[index].route)
                 ) {
                     Text(text = featuresList[index].name, modifier = Modifier.fillMaxWidth())
                 }
@@ -105,6 +124,6 @@ private fun MoreFeaturesCard(onFeatureClick: (String) -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun MoreFeaturesScreenPreview(modifier: Modifier = Modifier) {
+fun MoreFeaturesScreenPreview() {
     MoreFeaturesScreen(onFeatureClick = {})
 }
