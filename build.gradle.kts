@@ -17,5 +17,12 @@
  * limitations under the License.
  *
  */
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+    }
+}
 
 // Root build.gradle.kts

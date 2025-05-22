@@ -31,3 +31,4 @@ dependencyResolutionManagement {
 rootProject.name = "ComFin"
 
 include(":app")
+include(":feature:home")
