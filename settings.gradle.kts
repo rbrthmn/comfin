@@ -35,5 +35,4 @@ dependencyResolutionManagement {
 rootProject.name = "ComFin"
 
 include(":app")
-include(":feature:home")
-include(":core:navigation")
+include(":core:test")

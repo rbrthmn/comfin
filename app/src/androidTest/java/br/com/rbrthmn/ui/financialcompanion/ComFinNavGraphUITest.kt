@@ -32,7 +32,7 @@ import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
 import br.com.rbrthmn.ui.financialcompanion.screens.home.HOME_SCREEN_CONTENT_TEST_TAG
 import org.junit.Test
 
-class ComFinNavGraphUITest : BaseUITest() {
+class ComFinNavGraphUITest : br.com.rbrthmn.ui.BaseUITest() {
     override val composeTestRule: ComposeContentTestRule =
         createAndroidComposeRule<ComponentActivity>()
 

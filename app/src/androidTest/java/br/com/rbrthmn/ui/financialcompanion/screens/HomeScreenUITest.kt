@@ -26,12 +26,11 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
-import br.com.rbrthmn.ui.financialcompanion.BaseUITest
 import br.com.rbrthmn.ui.financialcompanion.screens.home.HOME_SCREEN_CONTENT_TEST_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreen
 import org.junit.Test
 
-class HomeScreenUITest : BaseUITest() {
+class HomeScreenUITest : br.com.rbrthmn.ui.BaseUITest() {
     override val composeTestRule: ComposeContentTestRule =
         createAndroidComposeRule<ComponentActivity>()
 

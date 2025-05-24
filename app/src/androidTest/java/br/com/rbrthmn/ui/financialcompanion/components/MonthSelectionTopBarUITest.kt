@@ -27,11 +27,10 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.BaseUITest
 import org.junit.Test
 import java.time.LocalDate
 
-class MonthSelectionTopBarTest : BaseUITest() {
+class MonthSelectionTopBarTest : br.com.rbrthmn.ui.BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private var selectedDate: LocalDate? = null

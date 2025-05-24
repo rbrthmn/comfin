@@ -32,7 +32,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.BaseUITest
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BANKS_DROPDOWN_MENU_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.ADD_BANK_ACCOUNT_DIALOG_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCard
@@ -40,7 +39,7 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.
 import org.junit.Test
 import java.time.LocalDate
 
-class BalanceCardUITest : BaseUITest() {
+class BalanceCardUITest : br.com.rbrthmn.ui.BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     override fun setup() = composeTestRule.setContent {

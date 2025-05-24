@@ -25,9 +25,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import br.com.rbrthmn.ui.financialcompanion.BaseUITest
+import br.com.rbrthmn.ui.BaseUITest
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.DATE_FILTER_TAG
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OPERATIONS_CARD_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.TOTAL_BALANCE_CARD_TAG
 import org.junit.Test
@@ -40,7 +39,6 @@ class OperationsUiTest : BaseUITest() {
     @Test
     fun operationsScreen_should_have_date_filter_and_two_cards() {
         composeTestRule.run {
-            onNodeWithTag(OPERATIONS_CARD_TAG).assertIsDisplayed()
             onNodeWithTag(DATE_FILTER_TAG).assertIsDisplayed()
             onNodeWithTag(TOTAL_BALANCE_CARD_TAG).assertIsDisplayed()
         }

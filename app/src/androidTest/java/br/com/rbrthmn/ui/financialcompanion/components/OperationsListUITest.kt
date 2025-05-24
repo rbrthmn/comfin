@@ -33,8 +33,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.BaseUITest
-import br.com.rbrthmn.ui.financialcompanion.onNodeWithStringId
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.ACCOUNTS_DROPDOWN_ICON_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.ACCOUNTS_DROPDOWN_MENU_TAG
@@ -42,9 +40,10 @@ import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.NEW_OP
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OPERATION_TYPES_DROPDOWN_MENU_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationsListCard
 import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
+import br.com.rbrthmn.ui.onNodeWithStringId
 import org.junit.Test
 
-class OperationsListUITest : BaseUITest() {
+class OperationsListUITest : br.com.rbrthmn.ui.BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     override fun setup() {

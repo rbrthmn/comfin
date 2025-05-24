@@ -18,19 +18,15 @@
  *
  */
 
-package br.com.rbrthmn.home
+package br.com.rbrthmn.ui
 
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import androidx.activity.ComponentActivity
+import androidx.annotation.StringRes
+import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.junit4.AndroidComposeTestRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
-    @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
-    }
-}
+fun <A : ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<A>, A>.onNodeWithStringId(
+    @StringRes id: Int
+): SemanticsNodeInteraction = onNodeWithText(activity.getString(id))

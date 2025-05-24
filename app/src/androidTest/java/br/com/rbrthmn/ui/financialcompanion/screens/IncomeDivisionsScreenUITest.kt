@@ -30,12 +30,11 @@ import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.BaseUITest
 import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
 import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
 import org.junit.Test
 
-class IncomeDivisionsScreenUITest : BaseUITest() {
+class IncomeDivisionsScreenUITest : br.com.rbrthmn.ui.BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private lateinit var navController: TestNavHostController

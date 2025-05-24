@@ -26,12 +26,11 @@ import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
-import br.com.rbrthmn.ui.financialcompanion.BaseUITest
 import br.com.rbrthmn.ui.financialcompanion.screens.settings.SETTINGS_LIST_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.settings.SettingsScreen
 import org.junit.Test
 
-class SettingsUITest : BaseUITest() {
+class SettingsUITest : br.com.rbrthmn.ui.BaseUITest() {
     override val composeTestRule = createComposeRule()
 
     override fun setup() {

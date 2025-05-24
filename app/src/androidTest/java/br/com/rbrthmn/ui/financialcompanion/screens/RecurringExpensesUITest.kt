@@ -27,13 +27,12 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.BaseUITest
-import br.com.rbrthmn.ui.financialcompanion.onNodeWithStringId
 import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.NEW_RECURRING_EXPENSE_DIALOG_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpenses
+import br.com.rbrthmn.ui.onNodeWithStringId
 import org.junit.Test
 
-class RecurringExpensesUITest : BaseUITest() {
+class RecurringExpensesUITest : br.com.rbrthmn.ui.BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     override fun setup() = composeTestRule.setContent { RecurringExpenses() }

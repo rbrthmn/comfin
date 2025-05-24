@@ -32,17 +32,16 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.BaseUITest
-import br.com.rbrthmn.ui.financialcompanion.onNodeWithStringId
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BANKS_DROPDOWN_MENU_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.ADD_CARD_DIALOG_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.BILL_CLOSE_DAY_DROPDOWN_MENU_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCard
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel
+import br.com.rbrthmn.ui.onNodeWithStringId
 import org.junit.Test
 import java.time.LocalDate
 
-class CreditCardBillsCardUITest : BaseUITest() {
+class CreditCardBillsCardUITest : br.com.rbrthmn.ui.BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     override fun setup() {
