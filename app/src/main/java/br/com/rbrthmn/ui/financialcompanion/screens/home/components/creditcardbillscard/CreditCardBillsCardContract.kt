@@ -22,7 +22,7 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardb
 
 import androidx.compose.runtime.MutableState
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.BaseViewModel
+import br.com.rbrthmn.ui.BaseViewModel
 import java.time.LocalDate
 
 interface CreditCardBillsCardContract {

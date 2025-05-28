@@ -25,7 +25,7 @@ plugins {
 
 android {
     namespace = "br.com.rbrthmn.ui"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 26
@@ -50,20 +50,26 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+    }
 }
 
 dependencies {
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
-    androidTestImplementation(composeBom)
+    implementation(libs.androidx.compose.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.test.core)
-    implementation(libs.androidx.compose.ui.test.junit4)
-
-    androidTestImplementation(libs.androidx.test.runner)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.runtime.android)
+    implementation(libs.androidx.material3.android)
+    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

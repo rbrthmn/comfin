@@ -28,7 +28,7 @@ plugins {
 
 android {
     namespace = "br.com.rbrthmn"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "br.com.rbrthmn"
@@ -89,6 +89,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:ui"))
     implementation(project(":core:test"))
 
     val composeBom = platform(libs.androidx.compose.bom)

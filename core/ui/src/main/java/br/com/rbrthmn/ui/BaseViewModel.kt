@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion
+package br.com.rbrthmn.ui
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.StateFlow

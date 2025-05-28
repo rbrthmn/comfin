@@ -20,7 +20,7 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.home
 
-import br.com.rbrthmn.ui.financialcompanion.BaseViewModel
+import br.com.rbrthmn.ui.BaseViewModel
 import java.time.LocalDate
 
 interface HomeScreenContract {

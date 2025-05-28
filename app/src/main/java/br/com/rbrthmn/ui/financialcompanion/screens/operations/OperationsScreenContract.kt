@@ -23,7 +23,7 @@ package br.com.rbrthmn.ui.financialcompanion.screens.operations
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import br.com.rbrthmn.model.OperationType
-import br.com.rbrthmn.ui.financialcompanion.BaseViewModel
+import br.com.rbrthmn.ui.BaseViewModel
 import java.time.LocalDate
 
 interface OperationsScreenContract {
