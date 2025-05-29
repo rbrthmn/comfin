@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.utils
+package br.com.rbrthmn.navigation
 
 enum class ComFinNavigationType {
     BOTTOM_NAVIGATION

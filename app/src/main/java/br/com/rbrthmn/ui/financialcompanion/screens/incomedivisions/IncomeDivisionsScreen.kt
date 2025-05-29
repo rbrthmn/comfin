@@ -63,12 +63,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
-import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import java.time.LocalDate
 
 const val RECURRING_EXPENSES_DIVISION_TAG = "recurring_expenses_division"
 
-object IncomeDivisionsDestination : NavigationDestination {
+object IncomeDivisionsDestination : br.com.rbrthmn.navigation.NavigationDestination {
     override val route = "income_divisions"
 }
 

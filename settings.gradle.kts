@@ -37,3 +37,4 @@ rootProject.name = "ComFin"
 include(":app")
 include(":core:test")
 include(":core:ui")
+include(":core:navigation")

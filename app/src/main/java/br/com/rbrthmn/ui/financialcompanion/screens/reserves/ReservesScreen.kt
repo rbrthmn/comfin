@@ -67,10 +67,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.model.OperationType
-import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract.Intent
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AddOperationDialog
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AddOperationDialog
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
@@ -85,7 +83,7 @@ data class Reserve(
 
 data class ReserveOperation(val date: String, val value: String, val isWithdrawal: Boolean)
 
-object ReservesDestination : NavigationDestination {
+object ReservesDestination : br.com.rbrthmn.navigation.NavigationDestination {
     override val route = "reserves"
 }
 

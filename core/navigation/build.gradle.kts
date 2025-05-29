@@ -24,7 +24,7 @@ plugins {
 }
 
 android {
-    namespace = "br.com.rbrthmn.ui"
+    namespace = "br.com.rbrthmn.navigation"
     compileSdk = 35
 
     defaultConfig {
@@ -44,11 +44,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -59,18 +59,29 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:test"))
+
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     implementation(libs.androidx.compose.compiler)
+    implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.compose.ui.test.junit4)
+    implementation(libs.androidx.navigation.compose)
+
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     testImplementation(libs.junit)
 
+    androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.navigation.testing)
+
+    debugImplementation(libs.androidx.ui.tooling)
 }

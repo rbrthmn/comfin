@@ -18,8 +18,12 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.navigation
+package br.com.rbrthmn.navigation
 
-interface NavigationDestination {
+import androidx.compose.ui.graphics.vector.ImageVector
+
+data class NavigationItemContent(
+    val icon: ImageVector,
+    val text: String,
     val route: String
-}
+)

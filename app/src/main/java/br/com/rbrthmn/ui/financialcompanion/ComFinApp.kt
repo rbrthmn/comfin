@@ -24,15 +24,28 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationBar
+import br.com.rbrthmn.R
+import br.com.rbrthmn.navigation.ComFinNavigationBar
+import br.com.rbrthmn.navigation.ComFinNavigationType
+import br.com.rbrthmn.navigation.NavigationItemContent
 import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
-import br.com.rbrthmn.ui.financialcompanion.utils.ComFinNavigationType
+import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesDestination
+import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsDestination
 
 const val NAV_GRAPH_TAG = "nav_graph"
 const val NAV_BAR_TAG = "nav_bar"
@@ -47,6 +60,24 @@ fun ComFinApp(
         WindowWidthSizeClass.Compact -> ComFinNavigationType.BOTTOM_NAVIGATION
         else -> ComFinNavigationType.BOTTOM_NAVIGATION
     }
+    val currentDestination by navController.currentBackStackEntryAsState()
+    val navItemsList = listOf(
+        NavigationItemContent(
+            icon = Icons.Default.Home,
+            text = stringResource(id = R.string.home),
+            route = HomeDestination.route
+        ),
+        NavigationItemContent(
+            icon = Icons.Outlined.Menu,
+            text = stringResource(id = R.string.operations),
+            route = OperationsDestination.route
+        ),
+        NavigationItemContent(
+            icon = Icons.Filled.MoreVert,
+            text = stringResource(id = R.string.more),
+            route = MoreFeaturesDestination.route
+        )
+    )
 
     Box(modifier = modifier.fillMaxSize()) {
         Column(
@@ -54,12 +85,27 @@ fun ComFinApp(
         ) {
             ComFinNavGraph(
                 navController = navController,
-                modifier = Modifier.weight(0.92f).testTag(NAV_GRAPH_TAG)
+                modifier = Modifier
+                    .weight(0.92f)
+                    .testTag(NAV_GRAPH_TAG)
             )
-            NavigationBar(
-                modifier = Modifier.weight(0.08f).testTag(NAV_BAR_TAG),
+            ComFinNavigationBar(
+                modifier = Modifier
+                    .weight(0.08f)
+                    .testTag(NAV_BAR_TAG),
+                navigationItems = navItemsList,
                 navigationType = navigationType,
-                navigateToDestination = navController::navigate
+                navigateToDestination = { route ->
+                    navController.navigate(route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+
+                currentRoute = currentDestination?.destination?.route ?: HomeDestination.route
             )
         }
     }

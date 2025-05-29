@@ -66,12 +66,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
 
 data class RecurringExpense(val description: String, val value: String, val billingDay: String)
 
-object RecurringExpensesDestination : NavigationDestination {
+object RecurringExpensesDestination : br.com.rbrthmn.navigation.NavigationDestination {
     override val route = "recurring_expenses"
 }
 

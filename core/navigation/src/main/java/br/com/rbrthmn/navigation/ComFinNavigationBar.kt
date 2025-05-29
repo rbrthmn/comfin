@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.navigation
+package br.com.rbrthmn.navigation
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -30,44 +30,23 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsDestination
-import br.com.rbrthmn.ui.financialcompanion.utils.ComFinNavigationType
 
 @Composable
-fun NavigationBar(
+fun ComFinNavigationBar(
     modifier: Modifier = Modifier,
+    navigationItems: List<NavigationItemContent>,
     navigationType: ComFinNavigationType,
-    navigateToDestination: (String) -> Unit
+    navigateToDestination: (String) -> Unit,
+    currentRoute: String
 ) {
-    val navItemsList = listOf(
-        NavigationItemContent(
-            icon = Icons.Default.Home,
-            text = stringResource(id = R.string.home),
-            route = HomeDestination.route
-        ),
-        NavigationItemContent(
-            icon = Icons.Outlined.Menu,
-            text = stringResource(id = R.string.operations),
-            route = OperationsDestination.route
-        ),
-        NavigationItemContent(
-            icon = Icons.Filled.MoreVert,
-            text = stringResource(id = R.string.more),
-            route = MoreFeaturesDestination.route
-        )
-    )
-
     when (navigationType) {
         ComFinNavigationType.BOTTOM_NAVIGATION -> {
             ComFinBottomNavigationBar(
+                modifier = modifier.fillMaxWidth(),
                 onItemPressed = navigateToDestination,
-                navigationItemContentList = navItemsList,
-                modifier = modifier.fillMaxWidth()
+                navigationItemContentList = navigationItems,
+                currentRoute = currentRoute
             )
         }
     }
@@ -75,14 +54,15 @@ fun NavigationBar(
 
 @Composable
 private fun ComFinBottomNavigationBar(
+    modifier: Modifier = Modifier,
     onItemPressed: ((String) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
-    modifier: Modifier = Modifier
+    currentRoute: String
 ) {
     NavigationBar(modifier = modifier) {
         for (navItem in navigationItemContentList) {
             NavigationBarItem(
-                selected = false,
+                selected = navItem.route == currentRoute,
                 onClick = { onItemPressed(navItem.route) },
                 icon = {
                     Icon(
@@ -98,7 +78,28 @@ private fun ComFinBottomNavigationBar(
 @Preview
 @Composable
 fun ComFinNavigationBarPreview() {
-    NavigationBar(
+    val navItemsList = listOf(
+        NavigationItemContent(
+            icon = Icons.Default.Home,
+            text = "home",
+            route = "home"
+        ),
+        NavigationItemContent(
+            icon = Icons.Outlined.Menu,
+            text = "operations",
+            route = "operations"
+        ),
+        NavigationItemContent(
+            icon = Icons.Filled.MoreVert,
+            text = "more",
+            route = "more"
+        )
+    )
+
+    ComFinNavigationBar(
+        navigationItems = navItemsList,
         navigationType = ComFinNavigationType.BOTTOM_NAVIGATION,
-        navigateToDestination = {})
+        navigateToDestination = {},
+        currentRoute = "home"
+    )
 }

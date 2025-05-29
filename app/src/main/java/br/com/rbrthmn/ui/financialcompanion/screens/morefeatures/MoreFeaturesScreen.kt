@@ -43,7 +43,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpensesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesDestination
@@ -51,7 +50,7 @@ import br.com.rbrthmn.ui.financialcompanion.screens.settings.SettingsDestination
 
 data class FeatureLabel(val name: String, val route: String)
 
-object MoreFeaturesDestination : NavigationDestination {
+object MoreFeaturesDestination : br.com.rbrthmn.navigation.NavigationDestination {
     override val route = "more_features"
 }
 

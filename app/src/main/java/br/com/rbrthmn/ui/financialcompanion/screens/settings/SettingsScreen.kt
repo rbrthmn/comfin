@@ -54,9 +54,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.navigation.NavigationDestination
 
-object SettingsDestination : NavigationDestination {
+object SettingsDestination : br.com.rbrthmn.navigation.NavigationDestination {
     override val route: String = "settings"
 }
 
@@ -87,10 +86,12 @@ private fun SettingsContent(modifier: Modifier = Modifier) {
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier.padding(
-                vertical = dimensionResource(id = R.dimen.padding_medium),
-                horizontal = dimensionResource(id = R.dimen.padding_medium),
-            ).testTag(SETTINGS_LIST_TAG)
+            modifier = modifier
+                .padding(
+                    vertical = dimensionResource(id = R.dimen.padding_medium),
+                    horizontal = dimensionResource(id = R.dimen.padding_medium),
+                )
+                .testTag(SETTINGS_LIST_TAG)
         ) {
             DarkModeSetting()
         }
