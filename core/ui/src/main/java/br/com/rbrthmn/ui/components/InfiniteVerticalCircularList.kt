@@ -1,4 +1,4 @@
-/*
+package br.com.rbrthmn.ui.components/*
  *
  * Copyright (C) 2022 The Android Open Source Project
  *
@@ -18,13 +18,12 @@
  *
  */
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,12 +42,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun <T> InfiniteHorizontalCircularList(
+fun <T> InfiniteVerticalCircularList(
     modifier: Modifier = Modifier,
-    height: Dp,
-    itemWidth: Dp,
+    width: Dp,
+    itemHeight: Dp,
     numberOfDisplayedItems: Int = 3,
     items: List<T>,
     initialItem: T,
@@ -58,7 +56,7 @@ fun <T> InfiniteHorizontalCircularList(
     selectedTextColor: Color,
     onItemSelected: (index: Int, item: T) -> Unit = { _, _ -> }
 ) {
-    val itemHalfWidth = LocalDensity.current.run { itemWidth.toPx() / 2f }
+    val itemHalfHeight = LocalDensity.current.run { itemHeight.toPx() / 2f }
     val scrollState = rememberLazyListState(0)
     var lastSelectedIndex by remember { mutableIntStateOf(0) }
     var itemsState by remember { mutableStateOf(items) }
@@ -70,11 +68,10 @@ fun <T> InfiniteHorizontalCircularList(
         lastSelectedIndex = targetIndex
         scrollState.scrollToItem(targetIndex)
     }
-
-    LazyRow(
+    LazyColumn(
         modifier = modifier
-            .height(height)
-            .width(itemWidth * numberOfDisplayedItems),
+            .width(width)
+            .height(itemHeight * numberOfDisplayedItems),
         state = scrollState,
         flingBehavior = rememberSnapFlingBehavior(lazyListState = scrollState)
     ) {
@@ -84,14 +81,14 @@ fun <T> InfiniteHorizontalCircularList(
                 val item = itemsState[i % itemsState.size]
                 Box(
                     modifier = Modifier
-                        .width(itemWidth)
-                        .fillMaxHeight()
+                        .height(itemHeight)
+                        .fillMaxWidth()
                         .onGloballyPositioned { coordinates ->
-                            val x = coordinates.positionInParent().x - itemHalfWidth
-                            val parentHalfWidth =
-                                (coordinates.parentCoordinates?.size?.width ?: 0) / 2f
+                            val y = coordinates.positionInParent().y - itemHalfHeight
+                            val parentHalfHeight =
+                                (coordinates.parentCoordinates?.size?.height ?: 0) / 2f
                             val isSelected =
-                                (x > parentHalfWidth - itemHalfWidth && x < parentHalfWidth + itemHalfWidth)
+                                (y > parentHalfHeight - itemHalfHeight && y < parentHalfHeight + itemHalfHeight)
                             if (isSelected && lastSelectedIndex != i) {
                                 onItemSelected(i % itemsState.size, item)
                                 lastSelectedIndex = i

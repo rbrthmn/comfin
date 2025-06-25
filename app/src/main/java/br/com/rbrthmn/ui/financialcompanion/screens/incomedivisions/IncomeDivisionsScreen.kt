@@ -62,7 +62,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.components.MonthSelectionTopBar
+import br.com.rbrthmn.ui.components.MonthSelectionTopBar
 import java.time.LocalDate
 
 const val RECURRING_EXPENSES_DIVISION_TAG = "recurring_expenses_division"

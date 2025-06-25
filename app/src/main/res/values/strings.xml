@@ -52,9 +52,6 @@
     <string name="november">Novembro</string>
     <string name="december">Dezembro</string>
 
-    <string name="current_month_button">Mês atual</string>
-    <string name="apply_date_button">Aplicar</string>
-
     <string name="monthly_limit_title">Limite do mês</string>
     <string name="drop_down_arrow_icon_description">Ícone de flecha para baixo</string>
     <string name="help_icon_description">Ícone com ponto de interrogação</string>

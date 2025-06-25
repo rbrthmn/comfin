@@ -18,10 +18,8 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.components
+package br.com.rbrthmn.ui.components
 
-import InfiniteHorizontalCircularList
-import InfiniteVerticalCircularList
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -57,7 +55,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.R
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.TextStyle
