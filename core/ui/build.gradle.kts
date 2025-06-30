@@ -59,6 +59,8 @@ android {
 }
 
 dependencies {
+    androidTestImplementation(project(":core:test"))
+
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     implementation(libs.androidx.compose.compiler)
@@ -74,4 +76,5 @@ dependencies {
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 }

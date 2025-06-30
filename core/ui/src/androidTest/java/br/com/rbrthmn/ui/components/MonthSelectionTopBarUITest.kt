@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.components
+package br.com.rbrthmn.ui.components
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
@@ -26,7 +26,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.R
 import org.junit.Test
 import java.time.LocalDate
 
