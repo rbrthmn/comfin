@@ -34,10 +34,10 @@ import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenC
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalFormatter
 import br.com.rbrthmn.ui.financialcompanion.utils.DecimalInputFieldFormatter
-import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProviderImpl
-import br.com.rbrthmn.ui.financialcompanion.utils.StringProvider
+import br.com.rbrthmn.ui.utils.ResourceStringProvider
+import br.com.rbrthmn.ui.utils.StringProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf

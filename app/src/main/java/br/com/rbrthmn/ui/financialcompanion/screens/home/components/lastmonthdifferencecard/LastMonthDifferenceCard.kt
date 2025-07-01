@@ -40,7 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
+import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 

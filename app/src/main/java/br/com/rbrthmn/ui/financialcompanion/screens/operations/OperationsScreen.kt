@@ -45,7 +45,7 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.components.MonthSelectionTopBar
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationsListCard
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.TotalBalanceCard
-import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
+import br.com.rbrthmn.ui.utils.ResourceStringProvider
 import org.koin.androidx.compose.koinViewModel
 
 object OperationsDestination : br.com.rbrthmn.navigation.NavigationDestination {

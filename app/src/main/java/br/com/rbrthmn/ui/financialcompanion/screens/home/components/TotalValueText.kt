@@ -32,7 +32,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
+import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 
 @Composable
 fun TotalValueText(

@@ -70,8 +70,8 @@ import br.com.rbrthmn.ui.financialcompanion.screens.operations.Operation
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract.Intent
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
-import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
-import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
+import br.com.rbrthmn.ui.utils.ResourceStringProvider
+import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

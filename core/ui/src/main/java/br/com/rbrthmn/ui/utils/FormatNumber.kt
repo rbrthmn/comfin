@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.utils
+package br.com.rbrthmn.ui.utils
 
 import java.text.DecimalFormat
 import java.text.NumberFormat

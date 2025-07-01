@@ -29,7 +29,7 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_VALUE_MOCK
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel.Companion.BANK_NAME_MOCK
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel.Companion.TOTAL_BALANCE_MOCK
-import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
+import br.com.rbrthmn.ui.utils.formatDouble
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.time.LocalDate

@@ -18,17 +18,10 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.utils
+package br.com.rbrthmn.ui.utils
 
-import android.content.Context
-import androidx.annotation.StringRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 
-interface StringProvider {
-    fun getString(@StringRes stringId: Int): String
-}
-
-class ResourceStringProvider(private val context: Context) : StringProvider {
-    override fun getString(@StringRes stringId: Int): String {
-        return context.getString(stringId)
-    }
-}
+@Composable
+fun valueWithCurrencyString(currencyStringId: Int, value: String) = "${stringResource(id = currencyStringId)} $value"

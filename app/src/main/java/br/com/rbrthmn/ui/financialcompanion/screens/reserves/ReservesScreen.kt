@@ -70,7 +70,7 @@ import br.com.rbrthmn.model.OperationType
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract.Intent
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AddOperationDialog
-import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
+import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale

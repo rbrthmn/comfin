@@ -29,7 +29,7 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbi
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel.Companion.CREDIT_CARD_MOCK
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel.Companion.DUE_DAY_MOCK
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel.Companion.TOTAL_BILL_MOCK
-import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
+import br.com.rbrthmn.ui.utils.formatDouble
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.time.LocalDate

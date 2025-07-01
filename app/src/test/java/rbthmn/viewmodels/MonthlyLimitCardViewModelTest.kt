@@ -24,7 +24,7 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimit
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel.Companion.MONTH_DIFFERENCE_MOCK
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel.Companion.MONTH_LIMIT_MOCK
-import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
+import br.com.rbrthmn.ui.utils.formatDouble
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.time.LocalDate

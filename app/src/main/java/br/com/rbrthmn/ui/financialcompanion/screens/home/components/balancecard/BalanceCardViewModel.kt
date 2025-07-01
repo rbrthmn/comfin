@@ -22,8 +22,8 @@ package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
 
 import androidx.compose.runtime.MutableState
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
-import br.com.rbrthmn.ui.financialcompanion.utils.formatString
+import br.com.rbrthmn.ui.utils.formatDouble
+import br.com.rbrthmn.ui.utils.formatString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate

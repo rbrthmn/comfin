@@ -39,8 +39,8 @@ import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.ACCOUN
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.NEW_OPERATION_DIALOG_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OPERATION_TYPES_DROPDOWN_MENU_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationsListCard
-import br.com.rbrthmn.ui.financialcompanion.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.onNodeWithStringId
+import br.com.rbrthmn.ui.utils.ResourceStringProvider
 import org.junit.Test
 
 class OperationsListUITest : br.com.rbrthmn.ui.BaseUITest() {

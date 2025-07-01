@@ -20,7 +20,7 @@
 
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard
 
-import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
+import br.com.rbrthmn.ui.utils.formatDouble
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate

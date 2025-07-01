@@ -41,7 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
-import br.com.rbrthmn.ui.financialcompanion.utils.valueWithCurrencyString
+import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 
 @Composable
 fun TotalBalanceCard(

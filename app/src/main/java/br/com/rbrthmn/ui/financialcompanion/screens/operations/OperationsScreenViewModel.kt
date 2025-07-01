@@ -28,11 +28,11 @@ import br.com.rbrthmn.model.OperationType
 import br.com.rbrthmn.ui.financialcompanion.components.ReservesDropdownMenu
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AccountsDropdownMenu
-import br.com.rbrthmn.ui.financialcompanion.utils.StringProvider
-import br.com.rbrthmn.ui.financialcompanion.utils.canBeFormatted
-import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
-import br.com.rbrthmn.ui.financialcompanion.utils.formatString
 import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
+import br.com.rbrthmn.ui.utils.StringProvider
+import br.com.rbrthmn.ui.utils.canBeFormatted
+import br.com.rbrthmn.ui.utils.formatDouble
+import br.com.rbrthmn.ui.utils.formatString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate

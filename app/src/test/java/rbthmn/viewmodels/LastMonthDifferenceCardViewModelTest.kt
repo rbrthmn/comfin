@@ -23,7 +23,7 @@ package rbthmn.viewmodels
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardContract
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel.Companion.MOCK
-import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
+import br.com.rbrthmn.ui.utils.formatDouble
 import junit.framework.TestCase
 import org.junit.Assert.assertEquals
 import org.junit.Test

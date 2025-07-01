@@ -28,8 +28,8 @@ import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenV
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel.Companion.TOTAL_BALANCE_MOCK
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel.Companion.TOTAL_INCOME_MOCK
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel.Companion.TOTAL_OUTCOME_MOCK
-import br.com.rbrthmn.ui.financialcompanion.utils.StringProvider
-import br.com.rbrthmn.ui.financialcompanion.utils.formatDouble
+import br.com.rbrthmn.ui.utils.StringProvider
+import br.com.rbrthmn.ui.utils.formatDouble
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.first
