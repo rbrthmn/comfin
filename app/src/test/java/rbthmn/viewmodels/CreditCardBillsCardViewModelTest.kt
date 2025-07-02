@@ -22,21 +22,22 @@ package rbthmn.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract.Intent
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel.Companion.BANK_NAME_MOCK
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel.Companion.BILL_VALUE_MOCK
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel.Companion.CREDIT_CARD_MOCK
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel.Companion.DUE_DAY_MOCK
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel.Companion.TOTAL_BILL_MOCK
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardContract.Intent
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardViewModel
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardViewModel.Companion.BANK_NAME_MOCK
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardViewModel.Companion.BILL_VALUE_MOCK
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardViewModel.Companion.CREDIT_CARD_MOCK
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardViewModel.Companion.DUE_DAY_MOCK
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardViewModel.Companion.TOTAL_BILL_MOCK
 import br.com.rbrthmn.ui.utils.formatDouble
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.time.LocalDate
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract as Contract
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardContract as Contract
 
 class CreditCardBillsCardViewModelTest {
-    private val viewModel = CreditCardBillsCardViewModel()
+    private val viewModel =
+        br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardViewModel()
 
     @Test
     fun `doOnInit should assign initial values`() {

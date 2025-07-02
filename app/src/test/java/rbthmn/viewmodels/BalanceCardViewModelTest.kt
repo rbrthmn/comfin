@@ -22,26 +22,26 @@ package rbthmn.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_NAME_MOCK
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_VALUE_MOCK
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel.Companion.BANK_NAME_MOCK
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel.Companion.TOTAL_BALANCE_MOCK
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.Intent
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_NAME_MOCK
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_VALUE_MOCK
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.BANK_NAME_MOCK
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.TOTAL_BALANCE_MOCK
 import br.com.rbrthmn.ui.utils.formatDouble
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.time.LocalDate
 
 class BalanceCardViewModelTest {
-    private val viewModel = BalanceCardViewModel()
+    private val viewModel = br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel()
 
     @Test
     fun `doOnInit should assign initial values`() {
         viewModel.doOnInit()
         val expectedList = listOf(
-            BalanceCardContract.BankAccountBalanceUiState(
+            br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.BankAccountBalanceUiState(
                 name = ACCOUNT_NAME_MOCK,
                 value = formatDouble(ACCOUNT_VALUE_MOCK),
                 bankName = BANK_NAME_MOCK,
@@ -128,7 +128,8 @@ class BalanceCardViewModelTest {
     fun `onSaveClick with valid input should add new account`() {
         assignValidInputs()
         val mock = mutableStateOf(true)
-        val newAccount = BalanceCardContract.BankAccountBalanceUiState(
+        val newAccount =
+            br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.BankAccountBalanceUiState(
             name = VALID_STRING,
             value = FORMATTED_BALANCE_STRING,
             bankName = VALID_STRING

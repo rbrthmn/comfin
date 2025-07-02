@@ -21,7 +21,7 @@
 package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard
 
 import androidx.compose.runtime.MutableState
-import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.R
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract.Intent
 import br.com.rbrthmn.ui.utils.formatDouble
 import kotlinx.coroutines.flow.MutableStateFlow

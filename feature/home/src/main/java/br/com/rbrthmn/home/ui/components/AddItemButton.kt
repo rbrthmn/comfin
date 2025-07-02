@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components
+package br.com.rbrthmn.home.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,13 +37,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
-import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.R as uiR
 
 @Composable
 fun AddItemButton(buttonText: String, modifier: Modifier = Modifier, onButtonClick: () -> Unit) {
     TextButton(
         onClick = onButtonClick,
-        contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
+        contentPadding = PaddingValues(dimensionResource(id = uiR.dimen.zero_padding)),
         modifier = modifier.fillMaxWidth()
     ) {
         Row(
@@ -57,13 +57,13 @@ fun AddItemButton(buttonText: String, modifier: Modifier = Modifier, onButtonCli
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(id = R.string.add_icon_description),
+                    contentDescription = stringResource(id = uiR.string.add_icon_description),
                     tint = Color.Gray,
-                    modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+                    modifier = modifier.padding(horizontal = dimensionResource(id = uiR.dimen.padding_extra_small))
                 )
                 Text(
                     text = buttonText,
-                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                    fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp
                 )
             }
         }

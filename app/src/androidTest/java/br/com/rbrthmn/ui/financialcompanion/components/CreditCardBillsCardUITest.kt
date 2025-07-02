@@ -32,7 +32,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BANKS_DROPDOWN_MENU_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.ADD_CARD_DIALOG_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.BILL_CLOSE_DAY_DROPDOWN_MENU_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCard
@@ -90,7 +89,8 @@ class CreditCardBillsCardUITest : br.com.rbrthmn.ui.BaseUITest() {
             onNodeWithContentDescription(
                 "${activity.getString(R.string.bank_hint)} ${activity.getString(R.string.drop_down_arrow_icon_description)}"
             ).performClick()
-            onNodeWithTag(BANKS_DROPDOWN_MENU_TAG).onChildren().onFirst().performClick()
+            onNodeWithTag(br.com.rbrthmn.home.ui.components.BANKS_DROPDOWN_MENU_TAG).onChildren()
+                .onFirst().performClick()
 
             val saveButton = onNodeWithText(activity.getString(R.string.save_button))
             saveButton.performClick()
@@ -114,7 +114,8 @@ class CreditCardBillsCardUITest : br.com.rbrthmn.ui.BaseUITest() {
             onNodeWithContentDescription(
                 "${activity.getString(R.string.bank_hint)} ${activity.getString(R.string.drop_down_arrow_icon_description)}"
             ).performClick()
-            onNodeWithTag(BANKS_DROPDOWN_MENU_TAG).onChildren().onFirst().performClick()
+            onNodeWithTag(br.com.rbrthmn.home.ui.components.BANKS_DROPDOWN_MENU_TAG).onChildren()
+                .onFirst().performClick()
 
             val saveButton = onNodeWithText(activity.getString(R.string.save_button))
             saveButton.performClick()

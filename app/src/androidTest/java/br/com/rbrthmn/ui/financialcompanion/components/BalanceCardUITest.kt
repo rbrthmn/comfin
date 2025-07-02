@@ -32,7 +32,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.BANKS_DROPDOWN_MENU_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.ADD_BANK_ACCOUNT_DIALOG_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCard
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel
@@ -85,7 +84,8 @@ class BalanceCardUITest : br.com.rbrthmn.ui.BaseUITest() {
                     )
                 }"
             ).performClick()
-            onNodeWithTag(BANKS_DROPDOWN_MENU_TAG).onChildren().onFirst().performClick()
+            onNodeWithTag(br.com.rbrthmn.home.ui.components.BANKS_DROPDOWN_MENU_TAG).onChildren()
+                .onFirst().performClick()
             val saveButton = onNodeWithText(activity.getString(R.string.save_button))
             saveButton.performClick()
 
@@ -108,7 +108,8 @@ class BalanceCardUITest : br.com.rbrthmn.ui.BaseUITest() {
                     )
                 }"
             ).performClick()
-            onNodeWithTag(BANKS_DROPDOWN_MENU_TAG).onChildren().onFirst().performClick()
+            onNodeWithTag(br.com.rbrthmn.home.ui.components.BANKS_DROPDOWN_MENU_TAG).onChildren()
+                .onFirst().performClick()
             val saveButton = onNodeWithText(activity.getString(R.string.save_button))
             saveButton.performClick()
 

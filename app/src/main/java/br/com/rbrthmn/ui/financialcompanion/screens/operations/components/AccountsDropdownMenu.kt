@@ -53,6 +53,7 @@ import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationAccountType
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationAimedAccount
+import br.com.rbrthmn.ui.R as uiR
 
 const val ACCOUNTS_DROPDOWN_MENU_TAG = "accounts_dropdown_menu"
 const val ACCOUNTS_DROPDOWN_ICON_TAG = "accounts_dropdown_icon"
@@ -116,7 +117,7 @@ fun AccountsDropdownMenu(
                     text = { Text(text = selectedOption) },
                     leadingIcon = {
                         Icon(
-                            painter = painterResource(id = R.drawable.bank_icon),
+                            painter = painterResource(id = uiR.drawable.bank_icon),
                             contentDescription = stringResource(R.string.operation_account_icon_description)
                         )
                     }

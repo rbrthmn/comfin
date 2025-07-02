@@ -30,7 +30,8 @@ import org.junit.Test
 import java.time.LocalDate
 
 class LastMonthDifferenceCardViewModelTest {
-    private val viewModel = LastMonthDifferenceCardViewModel()
+    private val viewModel: LastMonthDifferenceCardContract.ViewModel =
+        LastMonthDifferenceCardViewModel()
 
     @Test
     fun `doOnInit should assign initial values`() {

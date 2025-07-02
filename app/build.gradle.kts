@@ -92,6 +92,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:test"))
     implementation(project(":core:navigation"))
+    implementation(project(":feature:home"))
 
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
