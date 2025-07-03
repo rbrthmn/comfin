@@ -21,6 +21,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -53,9 +54,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
-    }
 }
 
 dependencies {
@@ -63,7 +61,6 @@ dependencies {
 
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
-    implementation(libs.androidx.compose.compiler)
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
