@@ -12,4 +12,6 @@
 
     <string name="current_month_button">Mês atual</string>
     <string name="apply_date_button">Aplicar</string>
+
+    <string name="reserve_hint">Reserva</string>
 </resources>

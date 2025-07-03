@@ -27,6 +27,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.com.rbrthmn.R
+import br.com.rbrthmn.ui.components.ReservesDropdownMenu
 import org.junit.Test
 
 class ReservesDropdownMenuTest : br.com.rbrthmn.ui.BaseUITest() {

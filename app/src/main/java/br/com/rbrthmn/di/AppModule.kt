@@ -32,10 +32,10 @@ import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimit
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
-import br.com.rbrthmn.ui.financialcompanion.utils.DecimalFormatter
-import br.com.rbrthmn.ui.financialcompanion.utils.DecimalInputFieldFormatter
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProviderImpl
+import br.com.rbrthmn.ui.utils.DecimalFormatter
+import br.com.rbrthmn.ui.utils.DecimalInputFieldFormatter
 import br.com.rbrthmn.ui.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.utils.StringProvider
 import org.koin.android.ext.koin.androidContext

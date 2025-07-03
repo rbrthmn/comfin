@@ -55,7 +55,7 @@ import br.com.rbrthmn.R
 import br.com.rbrthmn.home.ui.components.AddItemButton
 import br.com.rbrthmn.home.ui.components.BanksDropdownMenu
 import br.com.rbrthmn.home.ui.components.TotalValueText
-import br.com.rbrthmn.ui.financialcompanion.components.DecimalInputField
+import br.com.rbrthmn.ui.components.DecimalInputField
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.CleanNewAccount
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.OnBankChange
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.OnDateFilterChange

@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.components
+package br.com.rbrthmn.ui.components
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
@@ -26,8 +26,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import br.com.rbrthmn.ui.financialcompanion.utils.DecimalInputFieldFormatter
-import br.com.rbrthmn.ui.financialcompanion.utils.DecimalInputVisualTransformation
+import br.com.rbrthmn.ui.utils.DecimalInputFieldFormatter
+import br.com.rbrthmn.ui.utils.DecimalInputVisualTransformation
 import org.koin.compose.koinInject
 
 @Composable

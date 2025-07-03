@@ -18,10 +18,9 @@
  *
  */
 
-package rbthmn.utils
+package br.com.rbrthmn.ui.utils
 
-import br.com.rbrthmn.ui.financialcompanion.utils.DecimalFormatter
-import junit.framework.Assert.assertEquals
+import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Test
 import java.text.DecimalFormatSymbols
