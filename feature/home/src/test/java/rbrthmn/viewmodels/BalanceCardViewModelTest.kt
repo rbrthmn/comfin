@@ -18,17 +18,15 @@
  *
  */
 
-package rbthmn.viewmodels
+package rbrthmn.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
-import br.com.rbrthmn.R
-import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.Intent
-import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_NAME_MOCK
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_VALUE_MOCK
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.BANK_NAME_MOCK
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.TOTAL_BALANCE_MOCK
+import br.com.rbrthmn.ui.R
 import br.com.rbrthmn.ui.utils.formatDouble
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
@@ -178,7 +176,7 @@ class BalanceCardViewModelTest {
 
     private companion object {
         const val VALID_BALANCE_STRING = "123"
-        const val FORMATTED_BALANCE_STRING = "123.00"
+        const val FORMATTED_BALANCE_STRING = "123,00"
         const val EMPTY_STRING = ""
         const val VALID_STRING = "test"
         const val VALID_ID_STRING = 1

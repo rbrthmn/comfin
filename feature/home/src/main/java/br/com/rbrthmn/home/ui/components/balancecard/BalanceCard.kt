@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
+package br.com.rbrthmn.home.ui.components.balancecard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -51,19 +51,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import br.com.rbrthmn.R
+import br.com.rbrthmn.home.R
 import br.com.rbrthmn.home.ui.components.AddItemButton
 import br.com.rbrthmn.home.ui.components.BanksDropdownMenu
 import br.com.rbrthmn.home.ui.components.TotalValueText
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.Intent.CleanNewAccount
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.Intent.OnBankChange
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.Intent.OnDateFilterChange
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.Intent.OnDescriptionChange
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.Intent.OnInitialBalanceChange
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.Intent.OnSaveClick
 import br.com.rbrthmn.ui.components.DecimalInputField
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.CleanNewAccount
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.OnBankChange
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.OnDateFilterChange
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.OnDescriptionChange
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.OnInitialBalanceChange
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardContract.Intent.OnSaveClick
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
+import br.com.rbrthmn.ui.R as uiR
 
 const val ADD_BANK_ACCOUNT_DIALOG_TAG = "add_bank_account_dialog"
 
@@ -95,7 +96,7 @@ fun BalanceCard(
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
+        modifier = modifier.shadow(elevation = dimensionResource(id = uiR.dimen.padding_small))
     ) {
         BalanceList(
             totalBalance = uiState.totalBalance,
@@ -113,7 +114,7 @@ private fun BalanceList(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+        modifier = modifier.padding(dimensionResource(id = uiR.dimen.padding_medium))
     ) {
         TotalValueText(
             totalValueTitle = stringResource(id = R.string.total_balance_title),
@@ -122,8 +123,8 @@ private fun BalanceList(
         )
         HorizontalDivider()
         Column(
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
-            modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = uiR.dimen.padding_small)),
+            modifier = modifier.padding(top = dimensionResource(id = uiR.dimen.padding_small))
         ) {
             for (account in bankAccounts) {
                 BankAccountBalanceItem(
@@ -158,11 +159,11 @@ private fun BankAccountBalanceItem(
                 contentDescription = stringResource(id = R.string.bank_icon_description),
                 tint = Color.Gray,
                 modifier = modifier
-                    .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+                    .padding(horizontal = dimensionResource(id = uiR.dimen.padding_extra_small))
             )
             Text(
                 text = itemName,
-                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp
             )
         }
         TextField(
@@ -192,8 +193,8 @@ private fun AddBankAccountDialog(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_large),
-                    vertical = dimensionResource(id = R.dimen.padding_medium)
+                    horizontal = dimensionResource(id = uiR.dimen.padding_large),
+                    vertical = dimensionResource(id = uiR.dimen.padding_medium)
                 )
             ) {
                 OutlinedTextField(
@@ -228,20 +229,20 @@ private fun AddBankAccountDialog(
                         )
                     },
                     isValid = uiState.isNewAccountBankValid,
-                    modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
+                    modifier = modifier.padding(top = dimensionResource(id = uiR.dimen.padding_small))
                 )
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
-                        .padding(top = dimensionResource(id = R.dimen.padding_small)),
+                        .padding(top = dimensionResource(id = uiR.dimen.padding_small)),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceAround,
                 ) {
                     TextButton(onClick = onCancelButtonClick) {
-                        Text(text = stringResource(id = R.string.cancel_button))
+                        Text(text = stringResource(id = uiR.string.cancel_button))
                     }
                     Button(onClick = onSaveButtonClick) {
-                        Text(text = stringResource(id = R.string.save_button))
+                        Text(text = stringResource(id = uiR.string.save_button))
                     }
                 }
             }

@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard
+package br.com.rbrthmn.home.ui.components.balancecard
 
 import androidx.compose.runtime.MutableState
 import br.com.rbrthmn.ui.R
