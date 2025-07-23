@@ -61,6 +61,7 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
+    androidTestImplementation(project(":core:test"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -70,10 +71,18 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.androidx.compose)
+
+    testImplementation(libs.koin.test)
+    // Koin JUnit 4
+    testImplementation(libs.koin.test.junit)
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
+
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)

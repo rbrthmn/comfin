@@ -67,6 +67,8 @@ import java.time.LocalDate
 import br.com.rbrthmn.ui.R as uiR
 
 const val ADD_BANK_ACCOUNT_DIALOG_TAG = "add_bank_account_dialog"
+const val CANCEL_BUTTON_TAG = "cancel_button"
+const val SAVE_BUTTON_TAG = "save_button"
 
 @Composable
 fun BalanceCard(
@@ -238,10 +240,10 @@ private fun AddBankAccountDialog(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceAround,
                 ) {
-                    TextButton(onClick = onCancelButtonClick) {
+                    TextButton(onClick = onCancelButtonClick, Modifier.testTag(CANCEL_BUTTON_TAG)) {
                         Text(text = stringResource(id = uiR.string.cancel_button))
                     }
-                    Button(onClick = onSaveButtonClick) {
+                    Button(onClick = onSaveButtonClick, Modifier.testTag(SAVE_BUTTON_TAG)) {
                         Text(text = stringResource(id = uiR.string.save_button))
                     }
                 }

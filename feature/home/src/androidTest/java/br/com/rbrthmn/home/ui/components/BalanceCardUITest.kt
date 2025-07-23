@@ -1,24 +1,4 @@
-/*
- *
- * Copyright (C) 2022 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Modifications made by Roberto Kenzo Hamano, 2024
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
-
-package br.com.rbrthmn.ui.financialcompanion.components
+package br.com.rbrthmn.home.ui.components
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
@@ -31,18 +11,51 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.ADD_BANK_ACCOUNT_DIALOG_TAG
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCard
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.balancecard.BalanceCardViewModel
+import br.com.rbrthmn.home.R
+import br.com.rbrthmn.home.ui.components.balancecard.ADD_BANK_ACCOUNT_DIALOG_TAG
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCard
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel
+import br.com.rbrthmn.home.ui.components.balancecard.CANCEL_BUTTON_TAG
+import br.com.rbrthmn.home.ui.components.balancecard.SAVE_BUTTON_TAG
+import br.com.rbrthmn.ui.BaseUITest
+import br.com.rbrthmn.ui.utils.DecimalFormatter
+import br.com.rbrthmn.ui.utils.DecimalInputFieldFormatter
+import org.junit.AfterClass
+import org.junit.BeforeClass
 import org.junit.Test
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.GlobalContext.stopKoin
+import org.koin.dsl.module
 import java.time.LocalDate
 
-class BalanceCardUITest : br.com.rbrthmn.ui.BaseUITest() {
+class BalanceCardUITest : BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     override fun setup() = composeTestRule.setContent {
-        BalanceCard(viewModel = BalanceCardViewModel(), currentDateFilter = LocalDate.now())
+        BalanceCard(
+            viewModel = BalanceCardViewModel().doOnInit(),
+            currentDateFilter = LocalDate.now()
+        )
+    }
+
+    private companion object {
+        @JvmStatic
+        @BeforeClass
+        fun setupKoin() {
+            startKoin {
+                modules(
+                    module {
+                        single<DecimalInputFieldFormatter> { DecimalFormatter() }
+                    }
+                )
+            }
+        }
+
+        @JvmStatic
+        @AfterClass
+        fun tearDownKoin() {
+            stopKoin()
+        }
     }
 
     @Test
@@ -62,7 +75,7 @@ class BalanceCardUITest : br.com.rbrthmn.ui.BaseUITest() {
             val addAccountButton = onNodeWithText(activity.getString(R.string.add_account_button))
             addAccountButton.performClick()
 
-            val cancelButton = onNodeWithText(activity.getString(R.string.cancel_button))
+            val cancelButton = onNodeWithTag(CANCEL_BUTTON_TAG)
             cancelButton.performClick()
 
             onNodeWithTag(ADD_BANK_ACCOUNT_DIALOG_TAG).assertIsNotDisplayed()
@@ -84,9 +97,9 @@ class BalanceCardUITest : br.com.rbrthmn.ui.BaseUITest() {
                     )
                 }"
             ).performClick()
-            onNodeWithTag(br.com.rbrthmn.home.ui.components.BANKS_DROPDOWN_MENU_TAG).onChildren()
+            onNodeWithTag(BANKS_DROPDOWN_MENU_TAG).onChildren()
                 .onFirst().performClick()
-            val saveButton = onNodeWithText(activity.getString(R.string.save_button))
+            val saveButton = onNodeWithTag(SAVE_BUTTON_TAG)
             saveButton.performClick()
 
             onNodeWithText("New Account").assertIsDisplayed()
@@ -98,7 +111,6 @@ class BalanceCardUITest : br.com.rbrthmn.ui.BaseUITest() {
         composeTestRule.run {
             val addAccountButton = onNodeWithText(activity.getString(R.string.add_account_button))
             addAccountButton.performClick()
-
             onNodeWithText(activity.getString(R.string.balance_name_input_hint)).performTextInput("New Account")
             onNodeWithText(activity.getString(R.string.balance_input_hint)).performTextInput("100.00")
             onNodeWithContentDescription(
@@ -108,9 +120,12 @@ class BalanceCardUITest : br.com.rbrthmn.ui.BaseUITest() {
                     )
                 }"
             ).performClick()
-            onNodeWithTag(br.com.rbrthmn.home.ui.components.BANKS_DROPDOWN_MENU_TAG).onChildren()
-                .onFirst().performClick()
-            val saveButton = onNodeWithText(activity.getString(R.string.save_button))
+            onNodeWithTag(BANKS_DROPDOWN_MENU_TAG)
+                .onChildren()
+                .onFirst()
+                .performClick()
+            val saveButton = onNodeWithTag(SAVE_BUTTON_TAG)
+
             saveButton.performClick()
 
             onNodeWithTag(ADD_BANK_ACCOUNT_DIALOG_TAG).assertIsNotDisplayed()
@@ -123,7 +138,7 @@ class BalanceCardUITest : br.com.rbrthmn.ui.BaseUITest() {
             val addAccountButton = onNodeWithText(activity.getString(R.string.add_account_button))
             addAccountButton.performClick()
 
-            val saveButton = onNodeWithText(activity.getString(R.string.save_button))
+            val saveButton = onNodeWithTag(SAVE_BUTTON_TAG)
             saveButton.performClick()
 
             onNodeWithText("New Account").assertIsNotDisplayed()
@@ -136,7 +151,7 @@ class BalanceCardUITest : br.com.rbrthmn.ui.BaseUITest() {
             val addAccountButton = onNodeWithText(activity.getString(R.string.add_account_button))
             addAccountButton.performClick()
 
-            val saveButton = onNodeWithText(activity.getString(R.string.save_button))
+            val saveButton = onNodeWithTag(SAVE_BUTTON_TAG)
             saveButton.performClick()
 
             onNodeWithTag(ADD_BANK_ACCOUNT_DIALOG_TAG).assertIsDisplayed()
