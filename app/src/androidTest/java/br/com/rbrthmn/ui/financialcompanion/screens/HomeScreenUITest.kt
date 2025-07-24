@@ -26,8 +26,8 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
-import br.com.rbrthmn.ui.financialcompanion.screens.home.HOME_SCREEN_CONTENT_TEST_TAG
-import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreen
+import br.com.rbrthmn.home.ui.HOME_SCREEN_CONTENT_TEST_TAG
+import br.com.rbrthmn.home.ui.HomeScreen
 import org.junit.Test
 
 class HomeScreenUITest : br.com.rbrthmn.ui.BaseUITest() {

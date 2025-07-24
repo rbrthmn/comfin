@@ -33,8 +33,8 @@ import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import br.com.rbrthmn.R
+import br.com.rbrthmn.home.ui.HomeDestination
 import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
-import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
 import br.com.rbrthmn.ui.onNodeWithStringId
 import org.junit.Assert.assertEquals

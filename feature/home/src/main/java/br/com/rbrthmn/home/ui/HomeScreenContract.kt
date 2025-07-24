@@ -18,27 +18,19 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home
+package br.com.rbrthmn.home.ui
 
 import br.com.rbrthmn.ui.BaseViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 
-class HomeScreenViewModel : HomeScreenContract.ViewModel() {
-    override val uiState = MutableStateFlow(HomeScreenContract.UiState())
+interface HomeScreenContract {
+    abstract class ViewModel : BaseViewModel<UiState, Intent>()
 
-    override fun doOnInit(): BaseViewModel<HomeScreenContract.UiState, HomeScreenContract.Intent> {
-        return HomeScreenViewModel()
-    }
+    data class UiState(
+        val currentDateFilter: LocalDate = LocalDate.now()
+    )
 
-    override fun onIntent(intent: HomeScreenContract.Intent) {
-        when (intent) {
-            is HomeScreenContract.Intent.OnDateFilterChange -> onDateFilterChange(intent.date)
-        }
-    }
-
-    private fun onDateFilterChange(date: LocalDate) = uiState.update {
-        it.copy(currentDateFilter = date)
+    sealed class Intent {
+        data class OnDateFilterChange(val date: LocalDate) : Intent()
     }
 }

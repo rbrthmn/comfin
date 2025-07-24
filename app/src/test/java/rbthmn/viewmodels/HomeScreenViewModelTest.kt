@@ -20,8 +20,8 @@
 
 package rbthmn.viewmodels
 
-import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenContract
-import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenViewModel
+import br.com.rbrthmn.home.ui.HomeScreenContract
+import br.com.rbrthmn.home.ui.HomeScreenViewModel
 import org.junit.Test
 import java.time.LocalDate
 import kotlin.test.assertEquals

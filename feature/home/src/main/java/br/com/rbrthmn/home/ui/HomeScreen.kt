@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home
+package br.com.rbrthmn.home.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -40,7 +40,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
-import br.com.rbrthmn.R
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCard
 import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCard
 import br.com.rbrthmn.home.ui.components.lastmonthdifferencecard.LastMonthDifferenceCard
@@ -51,6 +50,7 @@ import br.com.rbrthmn.ui.utils.SnackBarProvider
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import java.time.LocalDate
+import br.com.rbrthmn.ui.R as commonR
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -101,10 +101,10 @@ private fun HomeScreenContent(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_medium)),
         modifier = modifier
             .padding(innerPaddingValues)
-            .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
+            .padding(horizontal = dimensionResource(id = commonR.dimen.padding_medium))
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .testTag(HOME_SCREEN_CONTENT_TEST_TAG)

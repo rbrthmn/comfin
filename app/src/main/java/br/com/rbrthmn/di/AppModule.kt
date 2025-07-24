@@ -20,6 +20,8 @@
 
 package br.com.rbrthmn.di
 
+import br.com.rbrthmn.home.ui.HomeScreenContract
+import br.com.rbrthmn.home.ui.HomeScreenViewModel
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel
 import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardContract
@@ -28,8 +30,6 @@ import br.com.rbrthmn.home.ui.components.lastmonthdifferencecard.LastMonthDiffer
 import br.com.rbrthmn.home.ui.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
 import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardContract
 import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardViewModel
-import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenContract
-import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
 import br.com.rbrthmn.ui.utils.DecimalFormatter

@@ -61,6 +61,7 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
+    implementation(project(":core:navigation"))
     androidTestImplementation(project(":core:test"))
 
     implementation(libs.androidx.core.ktx)
