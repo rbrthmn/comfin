@@ -1,24 +1,4 @@
-/*
- *
- * Copyright (C) 2022 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Modifications made by Roberto Kenzo Hamano, 2024
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
-
-package br.com.rbrthmn.ui.financialcompanion.components
+package br.com.rbrthmn.home.ui.components
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
@@ -31,16 +11,25 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import br.com.rbrthmn.R
+import br.com.rbrthmn.home.R
 import br.com.rbrthmn.home.ui.components.creditcardbillscard.ADD_CARD_DIALOG_TAG
 import br.com.rbrthmn.home.ui.components.creditcardbillscard.BILL_CLOSE_DAY_DROPDOWN_MENU_TAG
 import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCard
 import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardViewModel
+import br.com.rbrthmn.ui.BaseUITest
 import br.com.rbrthmn.ui.onNodeWithStringId
+import br.com.rbrthmn.ui.utils.DecimalFormatter
+import br.com.rbrthmn.ui.utils.DecimalInputFieldFormatter
+import org.junit.AfterClass
+import org.junit.BeforeClass
 import org.junit.Test
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.GlobalContext.stopKoin
+import org.koin.dsl.module
 import java.time.LocalDate
+import br.com.rbrthmn.ui.R as commonR
 
-class CreditCardBillsCardUITest : br.com.rbrthmn.ui.BaseUITest() {
+class CreditCardBillsCardUITest : BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     override fun setup() {
@@ -49,6 +38,26 @@ class CreditCardBillsCardUITest : br.com.rbrthmn.ui.BaseUITest() {
                 viewModel = CreditCardBillsCardViewModel().doOnInit(),
                 currentDateFilter = LocalDate.now()
             )
+        }
+    }
+
+    private companion object {
+        @JvmStatic
+        @BeforeClass
+        fun setupKoin() {
+            startKoin {
+                modules(
+                    module {
+                        single<DecimalInputFieldFormatter> { DecimalFormatter() }
+                    }
+                )
+            }
+        }
+
+        @JvmStatic
+        @AfterClass
+        fun tearDownKoin() {
+            stopKoin()
         }
     }
 
@@ -68,7 +77,7 @@ class CreditCardBillsCardUITest : br.com.rbrthmn.ui.BaseUITest() {
         addCardButton.performClick()
 
         val cancelButton =
-            composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.cancel_button))
+            composeTestRule.onNodeWithText(composeTestRule.activity.getString(commonR.string.cancel_button))
         cancelButton.performClick()
 
         composeTestRule.onNodeWithTag(ADD_CARD_DIALOG_TAG).assertDoesNotExist()
@@ -89,10 +98,10 @@ class CreditCardBillsCardUITest : br.com.rbrthmn.ui.BaseUITest() {
             onNodeWithContentDescription(
                 "${activity.getString(R.string.bank_hint)} ${activity.getString(R.string.drop_down_arrow_icon_description)}"
             ).performClick()
-            onNodeWithTag(br.com.rbrthmn.home.ui.components.BANKS_DROPDOWN_MENU_TAG).onChildren()
+            onNodeWithTag(BANKS_DROPDOWN_MENU_TAG).onChildren()
                 .onFirst().performClick()
 
-            val saveButton = onNodeWithText(activity.getString(R.string.save_button))
+            val saveButton = onNodeWithText(activity.getString(commonR.string.save_button))
             saveButton.performClick()
 
             onNodeWithText("New Card").assertIsDisplayed()
@@ -114,10 +123,10 @@ class CreditCardBillsCardUITest : br.com.rbrthmn.ui.BaseUITest() {
             onNodeWithContentDescription(
                 "${activity.getString(R.string.bank_hint)} ${activity.getString(R.string.drop_down_arrow_icon_description)}"
             ).performClick()
-            onNodeWithTag(br.com.rbrthmn.home.ui.components.BANKS_DROPDOWN_MENU_TAG).onChildren()
+            onNodeWithTag(BANKS_DROPDOWN_MENU_TAG).onChildren()
                 .onFirst().performClick()
 
-            val saveButton = onNodeWithText(activity.getString(R.string.save_button))
+            val saveButton = onNodeWithText(activity.getString(commonR.string.save_button))
             saveButton.performClick()
 
             onNodeWithTag(ADD_CARD_DIALOG_TAG).assertIsNotDisplayed()
@@ -130,7 +139,7 @@ class CreditCardBillsCardUITest : br.com.rbrthmn.ui.BaseUITest() {
             val addCardButton = onNodeWithText(activity.getString(R.string.add_card_button))
             addCardButton.performClick()
 
-            val saveButton = onNodeWithText(activity.getString(R.string.save_button))
+            val saveButton = onNodeWithText(activity.getString(commonR.string.save_button))
             saveButton.performClick()
 
             onNodeWithTag(ADD_CARD_DIALOG_TAG).assertIsDisplayed()
