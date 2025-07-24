@@ -20,7 +20,6 @@
 
 package br.com.rbrthmn.home.ui
 
-import br.com.rbrthmn.ui.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
@@ -28,8 +27,8 @@ import java.time.LocalDate
 class HomeScreenViewModel : HomeScreenContract.ViewModel() {
     override val uiState = MutableStateFlow(HomeScreenContract.UiState())
 
-    override fun doOnInit(): BaseViewModel<HomeScreenContract.UiState, HomeScreenContract.Intent> {
-        return HomeScreenViewModel()
+    override fun doOnInit(): HomeScreenViewModel {
+        return this
     }
 
     override fun onIntent(intent: HomeScreenContract.Intent) {
