@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard
+package br.com.rbrthmn.home.ui.components.lastmonthdifferencecard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -39,10 +39,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import br.com.rbrthmn.R
+import br.com.rbrthmn.home.R
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
+import br.com.rbrthmn.ui.R as commonR
 
 @Composable
 fun LastMonthDifferenceCard(
@@ -56,21 +57,21 @@ fun LastMonthDifferenceCard(
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
-            .padding(bottom = dimensionResource(id = R.dimen.padding_medium))
-            .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
+            .padding(bottom = dimensionResource(id = commonR.dimen.padding_medium))
+            .shadow(elevation = dimensionResource(id = commonR.dimen.padding_small))
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxWidth()
                 .padding(
-                    vertical = dimensionResource(id = R.dimen.padding_medium),
-                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                    vertical = dimensionResource(id = commonR.dimen.padding_medium),
+                    horizontal = dimensionResource(id = commonR.dimen.padding_medium)
                 )
         ) {
             Text(
                 text = stringResource(id = R.string.difference_from_last_month_title),
-                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+                fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = modifier.weight(0.6f)
             )
@@ -80,7 +81,7 @@ fun LastMonthDifferenceCard(
                         currencyStringId = R.string.brl_currency,
                         value = uiState.valueOfLastMonth
                     ),
-                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
                 )
             }
         }
