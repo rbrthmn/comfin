@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard
+package br.com.rbrthmn.home.ui.components.creditcardbillscard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -57,15 +57,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import br.com.rbrthmn.R
+import br.com.rbrthmn.home.R
 import br.com.rbrthmn.home.ui.components.AddItemButton
 import br.com.rbrthmn.home.ui.components.BanksDropdownMenu
 import br.com.rbrthmn.home.ui.components.TotalValueText
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardContract.Intent
 import br.com.rbrthmn.ui.components.DecimalInputField
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract.Intent
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract as Contract
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardContract as Contract
+import br.com.rbrthmn.ui.R as commonR
 
 const val ADD_CARD_DIALOG_TAG = "add_card_dialog"
 const val BILL_CLOSE_DAY_DROPDOWN_MENU_TAG = "bill_close_day_dropdown_menu"
@@ -91,7 +92,7 @@ fun CreditCardBillsCard(
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
+        modifier = modifier.shadow(elevation = dimensionResource(id = commonR.dimen.padding_small))
     ) {
         CreditCardBillsList(
             totalBill = uiState.totalBill,
@@ -110,7 +111,7 @@ private fun CreditCardBillsList(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+        modifier = modifier.padding(dimensionResource(id = commonR.dimen.padding_medium))
     ) {
         TotalValueText(
             totalValueTitle = stringResource(id = R.string.total_bills_title),
@@ -119,8 +120,8 @@ private fun CreditCardBillsList(
         )
         HorizontalDivider()
         Column(
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
-            modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_small)),
+            modifier = modifier.padding(top = dimensionResource(id = commonR.dimen.padding_small))
         ) {
             for (card in creditCards) {
                 CreditCardItem(
@@ -156,23 +157,23 @@ private fun CreditCardItem(
                 imageVector = Icons.Default.Info,
                 contentDescription = stringResource(id = R.string.bank_icon_description),
                 tint = Color.Gray,
-                modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+                modifier = modifier.padding(horizontal = dimensionResource(id = commonR.dimen.padding_extra_small))
             )
             Column(verticalArrangement = Arrangement.Center) {
                 Text(
                     text = itemName,
-                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
-                    lineHeight = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
+                    lineHeight = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
                 )
                 Text(
                     text = stringResource(id = R.string.credit_card_due_day_label) + " " + dueDay,
-                    fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp,
-                    lineHeight = dimensionResource(id = R.dimen.font_size_small).value.sp
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_small).value.sp,
+                    lineHeight = dimensionResource(id = commonR.dimen.font_size_small).value.sp
                 )
             }
         }
         TextField(
-            prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
+            prefix = { Text(text = stringResource(id = commonR.string.brl_currency)) },
             value = itemValue,
             onValueChange = { },
             readOnly = !canEditValue,
@@ -201,8 +202,8 @@ private fun AddCreditCardDialog(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_large),
-                    vertical = dimensionResource(id = R.dimen.padding_medium)
+                    horizontal = dimensionResource(id = commonR.dimen.padding_large),
+                    vertical = dimensionResource(id = commonR.dimen.padding_medium)
                 )
             ) {
                 OutlinedTextField(
@@ -218,7 +219,7 @@ private fun AddCreditCardDialog(
                     onValueChange = { viewModel.onIntent(Intent.OnNewCreditCardBillValueChange(bill = it)) },
                     value = uiState.newCreditCardBill,
                     label = stringResource(id = R.string.card_bill_input_hint),
-                    prefix = stringResource(id = R.string.brl_currency),
+                    prefix = stringResource(id = commonR.string.brl_currency),
                     isError = !uiState.isNewCreditCardBillValid
                 )
                 BanksDropdownMenu(
@@ -226,7 +227,7 @@ private fun AddCreditCardDialog(
                         viewModel.onIntent(Intent.OnBankChange(bankIcon = icon, bankName = name))
                     },
                     isValid = uiState.isNewCreditCardBankNameValid,
-                    modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small))
+                    modifier = modifier.padding(vertical = dimensionResource(id = commonR.dimen.padding_small))
                 )
                 CardBillCloseDayDropdownMenu(
                     onDayClicked = { viewModel.onIntent(Intent.OnNewCreditCardBillDueDayChange(day = it)) },
@@ -235,15 +236,15 @@ private fun AddCreditCardDialog(
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
-                        .padding(top = dimensionResource(id = R.dimen.padding_small)),
+                        .padding(top = dimensionResource(id = commonR.dimen.padding_small)),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceAround,
                 ) {
                     TextButton(onClick = onCancelButtonClick) {
-                        Text(text = stringResource(id = R.string.cancel_button))
+                        Text(text = stringResource(id = commonR.string.cancel_button))
                     }
                     Button(onClick = onSaveButtonClick) {
-                        Text(text = stringResource(id = R.string.save_button))
+                        Text(text = stringResource(id = commonR.string.save_button))
                     }
                 }
             }
@@ -258,7 +259,7 @@ private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isErr
     val options = List(31) { (it + 1) }
 
     OutlinedTextField(
-        value = selectedOptionText ?: stringResource(id = R.string.blank),
+        value = selectedOptionText ?: stringResource(id = commonR.string.blank),
         label = { Text(text = stringResource(id = R.string.card_bill_close_day_hint)) },
         onValueChange = { selectedOptionText = it },
         readOnly = true,

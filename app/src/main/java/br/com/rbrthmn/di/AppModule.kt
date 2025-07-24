@@ -22,10 +22,10 @@ package br.com.rbrthmn.di
 
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardContract
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenContract
 import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenViewModel
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardContract
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardContract

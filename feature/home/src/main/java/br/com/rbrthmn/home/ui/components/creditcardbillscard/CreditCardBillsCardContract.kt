@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard
+package br.com.rbrthmn.home.ui.components.creditcardbillscard
 
 import androidx.compose.runtime.MutableState
 import br.com.rbrthmn.ui.BaseViewModel

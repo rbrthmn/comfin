@@ -18,16 +18,16 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard
+package br.com.rbrthmn.home.ui.components.creditcardbillscard
 
 import androidx.compose.runtime.MutableState
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardContract.Intent
 import br.com.rbrthmn.ui.R
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract.Intent
 import br.com.rbrthmn.ui.utils.formatDouble
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.creditcardbillscard.CreditCardBillsCardContract as Contract
+import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardContract as Contract
 
 class CreditCardBillsCardViewModel : Contract.ViewModel() {
     override val uiState = MutableStateFlow(Contract.CreditCardsBillCardUiState())
