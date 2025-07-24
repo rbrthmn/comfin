@@ -47,7 +47,7 @@ import br.com.rbrthmn.home.ui.components.lastmonthdifferencecard.LastMonthDiffer
 import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCard
 import br.com.rbrthmn.navigation.NavigationDestination
 import br.com.rbrthmn.ui.components.MonthSelectionTopBar
-import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider
+import br.com.rbrthmn.ui.utils.SnackBarProvider
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import java.time.LocalDate
