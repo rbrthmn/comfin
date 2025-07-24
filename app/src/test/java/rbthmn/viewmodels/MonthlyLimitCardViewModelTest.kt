@@ -20,10 +20,10 @@
 
 package rbthmn.viewmodels
 
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardContract
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel.Companion.MONTH_DIFFERENCE_MOCK
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel.Companion.MONTH_LIMIT_MOCK
+import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardContract
+import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardViewModel
+import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardViewModel.Companion.MONTH_DIFFERENCE_MOCK
+import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardViewModel.Companion.MONTH_LIMIT_MOCK
 import br.com.rbrthmn.ui.utils.formatDouble
 import junit.framework.TestCase.assertEquals
 import org.junit.Test

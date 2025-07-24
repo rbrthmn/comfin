@@ -26,10 +26,10 @@ import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCard
 import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardViewModel
 import br.com.rbrthmn.home.ui.components.lastmonthdifferencecard.LastMonthDifferenceCardContract
 import br.com.rbrthmn.home.ui.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
+import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardContract
+import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenContract
 import br.com.rbrthmn.ui.financialcompanion.screens.home.HomeScreenViewModel
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardContract
-import br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard.MonthlyLimitCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
 import br.com.rbrthmn.ui.financialcompanion.utils.SnackBarProvider

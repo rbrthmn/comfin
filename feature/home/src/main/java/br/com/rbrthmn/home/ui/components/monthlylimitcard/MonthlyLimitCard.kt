@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard
+package br.com.rbrthmn.home.ui.components.monthlylimitcard
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -50,10 +50,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import br.com.rbrthmn.R
+import br.com.rbrthmn.home.R
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
+import br.com.rbrthmn.ui.R as commonR
 
 @Composable
 fun MonthlyLimitCard(
@@ -82,28 +83,28 @@ fun MonthlyLimitCard(
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
-            .padding(top = dimensionResource(id = R.dimen.padding_medium))
-            .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
+            .padding(top = dimensionResource(id = commonR.dimen.padding_medium))
+            .shadow(elevation = dimensionResource(id = commonR.dimen.padding_small))
             .clickable { onCardClick() }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            modifier = modifier.padding(dimensionResource(id = commonR.dimen.padding_medium))
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = stringResource(id = R.string.monthly_limit_title),
-                    fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp,
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Icon(
-                    painter = painterResource(id = R.drawable.help),
+                    painter = painterResource(id = commonR.drawable.help),
                     contentDescription = stringResource(id = R.string.help_icon_description),
                     tint = Color.Gray,
                     modifier = Modifier
-                        .padding(start = dimensionResource(id = R.dimen.padding_extra_small))
+                        .padding(start = dimensionResource(id = commonR.dimen.padding_extra_small))
                         .clickable { showMonthlyLimitDialog.value = true }
                 )
             }
@@ -115,26 +116,26 @@ fun MonthlyLimitCard(
                 fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = modifier.padding(
-                    bottom = dimensionResource(id = R.dimen.padding_medium),
-                    top = dimensionResource(id = R.dimen.padding_extra_small)
+                    bottom = dimensionResource(id = commonR.dimen.padding_medium),
+                    top = dimensionResource(id = commonR.dimen.padding_extra_small)
                 )
             )
             HorizontalDivider()
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_medium))
+                modifier = modifier.padding(top = dimensionResource(id = commonR.dimen.padding_medium))
             ) {
                 Text(
                     text = stringResource(id = R.string.difference_title),
-                    fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp,
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Icon(
-                    painter = painterResource(id = R.drawable.help),
+                    painter = painterResource(id = commonR.drawable.help),
                     contentDescription = stringResource(id = R.string.help_icon_description),
                     tint = Color.Gray,
                     modifier = modifier
-                        .padding(start = dimensionResource(id = R.dimen.padding_extra_small))
+                        .padding(start = dimensionResource(id = commonR.dimen.padding_extra_small))
                         .clickable { showMonthlyDifferenceDialog.value = true }
                 )
             }
@@ -145,7 +146,7 @@ fun MonthlyLimitCard(
                 ),
                 fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(top = dimensionResource(id = R.dimen.padding_extra_small))
+                modifier = modifier.padding(top = dimensionResource(id = commonR.dimen.padding_extra_small))
             )
         }
     }
@@ -157,11 +158,11 @@ private fun InfoDialog(dialogText: String, onCloseButtonClick: () -> Unit) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(dimensionResource(id = R.dimen.padding_medium)),
-            shape = RoundedCornerShape(dimensionResource(id = R.dimen.padding_medium)),
+                .padding(dimensionResource(id = commonR.dimen.padding_medium)),
+            shape = RoundedCornerShape(dimensionResource(id = commonR.dimen.padding_medium)),
         ) {
             Column(
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
+                modifier = Modifier.padding(dimensionResource(id = commonR.dimen.padding_large)),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -174,7 +175,7 @@ private fun InfoDialog(dialogText: String, onCloseButtonClick: () -> Unit) {
                 ) {
                     Spacer(modifier = Modifier.weight(1f))
                     TextButton(onClick = onCloseButtonClick) {
-                        Text(text = stringResource(id = R.string.understood_button))
+                        Text(text = stringResource(id = commonR.string.understood_button))
                     }
                 }
             }

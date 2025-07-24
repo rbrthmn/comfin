@@ -15,5 +15,4 @@
     <dimen name="font_size_small">8sp</dimen>
     <dimen name="font_size_medium">16sp</dimen>
     <dimen name="font_size_large">24sp</dimen>
-    <dimen name="font_size_month_limit_value">25sp</dimen>
 </resources>

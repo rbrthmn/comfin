@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.home.components.monthlylimitcard
+package br.com.rbrthmn.home.ui.components.monthlylimitcard
 
 import br.com.rbrthmn.ui.BaseViewModel
 import java.time.LocalDate

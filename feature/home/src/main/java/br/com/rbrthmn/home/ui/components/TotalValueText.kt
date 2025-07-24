@@ -31,8 +31,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import br.com.rbrthmn.ui.R
+import br.com.rbrthmn.home.R
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
+import br.com.rbrthmn.ui.R as commonR
 
 @Composable
 fun TotalValueText(
@@ -45,16 +46,16 @@ fun TotalValueText(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = dimensionResource(id = R.dimen.padding_small))
+            .padding(bottom = dimensionResource(id = commonR.dimen.padding_small))
     ) {
         Text(
             text = totalValueTitle,
-            fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp,
+            fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp,
             fontWeight = FontWeight.ExtraBold
         )
         Text(
             text = valueWithCurrencyString(
-                currencyStringId = R.string.brl_currency,
+                currencyStringId = commonR.string.brl_currency,
                 value = totalValue
             ),
             fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
