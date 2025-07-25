@@ -74,17 +74,19 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.androidx.compose)
+    implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.koin.test)
-    // Koin JUnit 4
     testImplementation(libs.koin.test.junit)
     testImplementation(libs.junit)
 
+    androidTestImplementation(libs.mockkAndroidInstrumented)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.navigation.testing)
+
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

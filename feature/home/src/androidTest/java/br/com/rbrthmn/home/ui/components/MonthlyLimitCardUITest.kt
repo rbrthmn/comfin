@@ -1,27 +1,6 @@
-/*
- *
- * Copyright (C) 2022 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Modifications made by Roberto Kenzo Hamano, 2024
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
-
-package br.com.rbrthmn.ui.financialcompanion.components
+package br.com.rbrthmn.home.ui.components
 
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -30,28 +9,40 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.navigation.compose.ComposeNavigator
-import androidx.navigation.testing.TestNavHostController
-import br.com.rbrthmn.R
-import br.com.rbrthmn.home.ui.HomeDestination
-import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
-import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
+import br.com.rbrthmn.home.R
+import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCard
+import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardContract
+import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardViewModel
+import br.com.rbrthmn.ui.BaseUITest
 import br.com.rbrthmn.ui.onNodeWithStringId
-import org.junit.Assert.assertEquals
+import br.com.rbrthmn.ui.theme.ComFinTheme
+import br.com.rbrthmn.ui.utils.DecimalFormatter
+import br.com.rbrthmn.ui.utils.DecimalInputFieldFormatter
+import io.mockk.mockk
+import io.mockk.verify
+import org.junit.AfterClass
+import org.junit.BeforeClass
 import org.junit.Test
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.GlobalContext.stopKoin
+import org.koin.dsl.module
+import java.time.LocalDate
+import br.com.rbrthmn.ui.R as commonR
 
-class MonthlyLimitCardUITest : br.com.rbrthmn.ui.BaseUITest() {
+class MonthlyLimitCardUITest : BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-    private lateinit var navController: TestNavHostController
+
+    private val mockOnCardClick = mockk<() -> Unit>(relaxed = true)
 
     override fun setup() = composeTestRule.setContent {
-        navController = TestNavHostController(LocalContext.current)
-        navController.navigatorProvider.addNavigator(ComposeNavigator())
-
-        ComFinNavGraph(navController = navController)
-        navController.navigate(HomeDestination.route)
+        ComFinTheme {
+            MonthlyLimitCard(
+                onCardClick = mockOnCardClick,
+                currentDateFilter = LocalDate.now()
+            )
+        }
     }
-
 
     @Test
     fun monthlyLimitCard_displaysCorrectTitles() {
@@ -62,15 +53,12 @@ class MonthlyLimitCardUITest : br.com.rbrthmn.ui.BaseUITest() {
     }
 
     @Test
-    fun monthlyLimitCard_clickOnCard_shouldGoToIncomeDivisions() {
+    fun monthlyLimitCard_clickOnCard_shouldExecuteOnCardClickLambda() {
         val monthlyLimitTitle = composeTestRule.onNodeWithStringId(R.string.monthly_limit_title)
 
         monthlyLimitTitle.performClick()
 
-        assertEquals(
-            IncomeDivisionsDestination.route,
-            navController.currentBackStackEntry?.destination?.route
-        )
+        verify { mockOnCardClick() }
     }
 
     @Test
@@ -104,10 +92,33 @@ class MonthlyLimitCardUITest : br.com.rbrthmn.ui.BaseUITest() {
         monthlyLimitHelpIcon.performClick()
 
         val understoodButton =
-            composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.understood_button))
+            composeTestRule.onNodeWithText(composeTestRule.activity.getString(commonR.string.understood_button))
         understoodButton.performClick()
 
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.monthly_limit_dialog_text))
             .assertIsNotDisplayed()
+    }
+
+    private companion object {
+        @JvmStatic
+        @BeforeClass
+        fun setupKoin() {
+            startKoin {
+                modules(
+                    module {
+                        single<DecimalInputFieldFormatter> { DecimalFormatter() }
+                        viewModel<MonthlyLimitCardContract.ViewModel> {
+                            MonthlyLimitCardViewModel().doOnInit()
+                        }
+                    }
+                )
+            }
+        }
+
+        @JvmStatic
+        @AfterClass
+        fun tearDownKoin() {
+            stopKoin()
+        }
     }
 }
