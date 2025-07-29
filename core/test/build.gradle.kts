@@ -24,7 +24,7 @@ plugins {
 }
 
 android {
-    namespace = "br.com.rbrthmn.ui"
+    namespace = "br.com.rbrthmn.test"
     compileSdk = 35
 
     defaultConfig {
@@ -66,21 +66,23 @@ android {
 
 dependencies {
     api(libs.junit)
+    api(libs.kotlin.test)
+    api(libs.kotlinx.coroutines.test)
     api(libs.mockk)
+    api(libs.mockkAndroidInstrumented)
+
+    api(libs.androidx.test.ext.junit)
+    api(libs.androidx.test.core)
+    api(libs.androidx.test.runner)
+    api(libs.androidx.espresso.core)
+
     api(platform(libs.koin.bom))
     api(libs.koin.test)
     api(libs.koin.test.junit)
-    api(libs.kotlin.test)
-    api(libs.kotlinx.coroutines.test)
-
-    api(libs.androidx.test.ext.junit)
-    api(libs.androidx.espresso.core)
-    api(libs.androidx.compose.ui.test.junit4)
-    api(libs.androidx.navigation.testing)
-    api(libs.mockkAndroidInstrumented)
 
     api(platform(libs.androidx.compose.bom))
-
-    api(libs.androidx.compose.ui.tooling)
+    api(libs.androidx.compose.ui.test.junit4)
     api(libs.androidx.compose.ui.test.manifest)
+
+    api(libs.androidx.navigation.testing)
 }

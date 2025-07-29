@@ -57,15 +57,38 @@ android {
 }
 
 dependencies {
-    val composeBom = platform(libs.androidx.compose.bom)
-    implementation(composeBom)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.runtime.android)
-    implementation(libs.androidx.material3.android)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.koin.androidx.compose)
-    implementation(platform(libs.koin.bom))
+    // Compose BOM - exposer para todos os módulos dependentes
+    api(platform(libs.androidx.compose.bom))
+
+    // Core Compose dependencies - expostas para módulos que dependem de UI
+    api(libs.androidx.compose.ui)
+    api(libs.androidx.ui.graphics)
+    api(libs.androidx.compose.ui.tooling.preview)
+    api(libs.androidx.compose.material3)
+    api(libs.androidx.runtime.android)
+
+    // Core Android - expostas para acesso aos componentes
+    api(libs.androidx.core.ktx)
+    api(libs.androidx.appcompat)
+    api(libs.material)
+
+    // Koin - expostar para DI em outros módulos
+    api(platform(libs.koin.bom))
+    api(libs.koin.androidx.compose)
+    api(libs.koin.core)
+    api(libs.koin.android)
+
+    // Lifecycle para ViewModels
+    api(libs.androidx.lifecycle.runtime.ktx)
+    api(libs.androidx.lifecycle.viewmodel.compose)
+    api(libs.androidx.lifecycle.runtime.compose)
+
+    // Activity Compose
+    api(libs.androidx.activity.compose)
+
+    // Material 3 Window Size
+    api(libs.androidx.compose.material3.window.size)
+
+    // Debug tools
+    debugImplementation(libs.androidx.compose.ui.tooling)
 }

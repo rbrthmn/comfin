@@ -85,66 +85,31 @@ android {
 }
 
 dependencies {
+    // Core modules - trazem todas as dependências necessárias transitivamente
     implementation(project(":core:ui"))
-    implementation(project(":core:test"))
     implementation(project(":core:navigation"))
+
+    // Features
     implementation(project(":feature:home"))
 
-    val composeBom = platform(libs.androidx.compose.bom)
-    implementation(composeBom)
-    androidTestImplementation(composeBom)
+    // Dependências específicas da aplicação principal
 
-    // Core Android dependencies
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-
-    // Koin Dependency Injection
-    implementation(platform(libs.koin.bom))
-    implementation(libs.koin.core)
-    implementation(libs.koin.android)
-    // Koin Test features
-    testImplementation(libs.koin.test)
-    // Koin JUnit 4
-    testImplementation(libs.koin.test.junit)
-    // Koin Jetpack WorkManager
+    // Koin específico para WorkManager e Navigation (não disponível no core:ui)
     implementation(libs.koin.androidx.workmanager)
-    // Koin  Navigation Graph
     implementation(libs.koin.androidx.navigation)
-    // Koin  Compose
-    implementation(libs.koin.androidx.compose)
 
-    // Arch Components
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.navigation.compose)
+    // Hilt Navigation Compose (se usado)
     implementation(libs.androidx.hilt.navigation.compose)
+
+    // Room - específico para a app principal
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    // Compose
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material3.window.size)
-
-    // Tooling
-    debugImplementation(libs.androidx.compose.ui.tooling)
-    // Instrumented tests
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-    androidTestImplementation(libs.mockkAndroidInstrumented)
-
-    // Local tests: jUnit, coroutines, Android runner
-    testImplementation(libs.junit)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockk)
+    // JUnit KTX - específico da app
     implementation(libs.androidx.junit.ktx)
 
-    // Instrumented tests: jUnit rules and runners
-    androidTestImplementation(libs.androidx.test.core)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.androidx.navigation.testing)
+    // Testes
+    testImplementation(project(":core:test"))
+    androidTestImplementation(project(":core:test"))
 }

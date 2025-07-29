@@ -18,6 +18,7 @@ package br.com.rbrthmn.ui.components/*
  *
  */
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,6 +43,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun <T> InfiniteVerticalCircularList(
     modifier: Modifier = Modifier,
