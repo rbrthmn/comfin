@@ -15,7 +15,6 @@ import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardContra
 import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardViewModel
 import br.com.rbrthmn.ui.BaseUITest
 import br.com.rbrthmn.ui.onNodeWithStringId
-import br.com.rbrthmn.ui.theme.ComFinTheme
 import br.com.rbrthmn.ui.utils.DecimalFormatter
 import br.com.rbrthmn.ui.utils.DecimalInputFieldFormatter
 import io.mockk.mockk
@@ -36,12 +35,10 @@ class MonthlyLimitCardUITest : BaseUITest() {
     private val mockOnCardClick = mockk<() -> Unit>(relaxed = true)
 
     override fun setup() = composeTestRule.setContent {
-        ComFinTheme {
-            MonthlyLimitCard(
-                onCardClick = mockOnCardClick,
-                currentDateFilter = LocalDate.now()
-            )
-        }
+        MonthlyLimitCard(
+            onCardClick = mockOnCardClick,
+            currentDateFilter = LocalDate.now()
+        )
     }
 
     @Test

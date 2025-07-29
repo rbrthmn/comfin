@@ -21,7 +21,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -44,28 +43,44 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = "17"
+    }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/LICENSE*"
+            excludes += "META-INF/NOTICE*"
+            excludes += "META-INF/junit-platform.properties"
+            excludes += "META-INF/junit-jupiter-*.properties"
+        }
     }
 }
 
 dependencies {
-    val composeBom = platform(libs.androidx.compose.bom)
-    implementation(composeBom)
-    implementation(composeBom)
+    api(libs.junit)
+    api(libs.mockk)
+    api(platform(libs.koin.bom))
+    api(libs.koin.test)
+    api(libs.koin.test.junit)
+    api(libs.kotlin.test)
+    api(libs.kotlinx.coroutines.test)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.test.core)
-    implementation(libs.androidx.compose.ui.test.junit4)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    api(libs.androidx.test.ext.junit)
+    api(libs.androidx.espresso.core)
+    api(libs.androidx.compose.ui.test.junit4)
+    api(libs.androidx.navigation.testing)
+    api(libs.mockkAndroidInstrumented)
 
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    api(platform(libs.androidx.compose.bom))
+
+    api(libs.androidx.compose.ui.tooling)
+    api(libs.androidx.compose.ui.test.manifest)
 }
