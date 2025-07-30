@@ -12,20 +12,18 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import br.com.rbrthmn.home.R
+import br.com.rbrthmn.home.di.homeModule
 import br.com.rbrthmn.home.ui.components.balancecard.ADD_BANK_ACCOUNT_DIALOG_TAG
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCard
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel
 import br.com.rbrthmn.home.ui.components.balancecard.CANCEL_BUTTON_TAG
 import br.com.rbrthmn.home.ui.components.balancecard.SAVE_BUTTON_TAG
 import br.com.rbrthmn.ui.BaseUITest
-import br.com.rbrthmn.ui.utils.DecimalFormatter
-import br.com.rbrthmn.ui.utils.DecimalInputFieldFormatter
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.context.GlobalContext.stopKoin
-import org.koin.dsl.module
 import java.time.LocalDate
 
 class BalanceCardUITest : BaseUITest() {
@@ -43,11 +41,7 @@ class BalanceCardUITest : BaseUITest() {
         @BeforeClass
         fun setupKoin() {
             startKoin {
-                modules(
-                    module {
-                        single<DecimalInputFieldFormatter> { DecimalFormatter() }
-                    }
-                )
+                modules(homeModule)
             }
         }
 

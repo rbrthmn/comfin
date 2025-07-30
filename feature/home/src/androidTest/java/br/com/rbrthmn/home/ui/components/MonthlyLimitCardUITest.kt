@@ -10,22 +10,17 @@ import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.com.rbrthmn.home.R
+import br.com.rbrthmn.home.di.homeModule
 import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCard
-import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardContract
-import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardViewModel
 import br.com.rbrthmn.ui.BaseUITest
 import br.com.rbrthmn.ui.onNodeWithStringId
-import br.com.rbrthmn.ui.utils.DecimalFormatter
-import br.com.rbrthmn.ui.utils.DecimalInputFieldFormatter
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.context.GlobalContext.stopKoin
-import org.koin.dsl.module
 import java.time.LocalDate
 import br.com.rbrthmn.ui.R as commonR
 
@@ -101,14 +96,7 @@ class MonthlyLimitCardUITest : BaseUITest() {
         @BeforeClass
         fun setupKoin() {
             startKoin {
-                modules(
-                    module {
-                        single<DecimalInputFieldFormatter> { DecimalFormatter() }
-                        viewModel<MonthlyLimitCardContract.ViewModel> {
-                            MonthlyLimitCardViewModel().doOnInit()
-                        }
-                    }
-                )
+                modules(homeModule)
             }
         }
 

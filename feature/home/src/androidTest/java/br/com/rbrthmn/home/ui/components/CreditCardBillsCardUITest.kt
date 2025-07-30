@@ -12,20 +12,18 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import br.com.rbrthmn.home.R
+import br.com.rbrthmn.home.di.homeModule
 import br.com.rbrthmn.home.ui.components.creditcardbillscard.ADD_CARD_DIALOG_TAG
 import br.com.rbrthmn.home.ui.components.creditcardbillscard.BILL_CLOSE_DAY_DROPDOWN_MENU_TAG
 import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCard
 import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardViewModel
 import br.com.rbrthmn.ui.BaseUITest
 import br.com.rbrthmn.ui.onNodeWithStringId
-import br.com.rbrthmn.ui.utils.DecimalFormatter
-import br.com.rbrthmn.ui.utils.DecimalInputFieldFormatter
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.context.GlobalContext.stopKoin
-import org.koin.dsl.module
 import java.time.LocalDate
 import br.com.rbrthmn.ui.R as commonR
 
@@ -46,11 +44,7 @@ class CreditCardBillsCardUITest : BaseUITest() {
         @BeforeClass
         fun setupKoin() {
             startKoin {
-                modules(
-                    module {
-                        single<DecimalInputFieldFormatter> { DecimalFormatter() }
-                    }
-                )
+                modules(homeModule)
             }
         }
 
