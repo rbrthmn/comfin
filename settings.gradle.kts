@@ -25,20 +25,6 @@ pluginManagement {
         mavenCentral()
     }
     plugins {
-        // Exemplo para o plugin Kotlin Android (o que você provavelmente precisa)
-//        id("org.jetbrains.kotlin.android") version "2.2.0" // Substitua pela versão desejada do Kotlin
-
-        // Exemplo para o plugin KSP
-//        id("com.google.devtools.ksp") version "1.9.24-1.0.20" // Substitua pela versão desejada
-
-        // Exemplo para o plugin Compose Compiler (se você não o gerencia via composeOptions)
-        // Embora, para o Compose Compiler, a versão seja geralmente gerenciada por
-        // `composeOptions.kotlinCompilerExtensionVersion` nos arquivos build.gradle dos módulos,
-        // ou mais recentemente, pelo próprio plugin Kotlin.
-
-        // Adicione outros plugins que você quer gerenciar centralmente aqui...
-        // id("com.android.library") version "8.2.0"
-        // id("org.jetbrains.kotlin.kapt") version "1.9.22"
     }
 }
 dependencyResolutionManagement {

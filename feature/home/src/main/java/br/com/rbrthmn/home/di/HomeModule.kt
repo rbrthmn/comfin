@@ -10,17 +10,10 @@ import br.com.rbrthmn.home.ui.components.lastmonthdifferencecard.LastMonthDiffer
 import br.com.rbrthmn.home.ui.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
 import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardContract
 import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardViewModel
-import br.com.rbrthmn.ui.utils.DecimalFormatter
-import br.com.rbrthmn.ui.utils.DecimalInputFieldFormatter
-import br.com.rbrthmn.ui.utils.SnackBarProvider
-import br.com.rbrthmn.ui.utils.SnackBarProviderImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val homeModule = module {
-    single<DecimalInputFieldFormatter> { DecimalFormatter() }
-    singleOf<SnackBarProvider>(::SnackBarProviderImpl)
     viewModel<HomeScreenContract.ViewModel> {
         HomeScreenViewModel().doOnInit()
     }

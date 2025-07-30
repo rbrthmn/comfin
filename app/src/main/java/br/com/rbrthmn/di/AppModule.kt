@@ -32,23 +32,11 @@ import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardContra
 import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
-import br.com.rbrthmn.ui.utils.DecimalFormatter
-import br.com.rbrthmn.ui.utils.DecimalInputFieldFormatter
-import br.com.rbrthmn.ui.utils.ResourceStringProvider
-import br.com.rbrthmn.ui.utils.SnackBarProvider
-import br.com.rbrthmn.ui.utils.SnackBarProviderImpl
-import br.com.rbrthmn.ui.utils.StringProvider
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
-import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val appModule = module {
-    singleOf<SnackBarProvider>(::SnackBarProviderImpl)
-    single<StringProvider> { ResourceStringProvider(context = androidContext()) }
-
     viewModelOf<HomeScreenContract.ViewModel>(::HomeScreenViewModel)
     viewModel<BalanceCardContract.ViewModel> {
         BalanceCardViewModel().doOnInit()
@@ -65,6 +53,4 @@ val appModule = module {
     viewModel<OperationsScreenContract.ViewModel> {
         OperationsScreenViewModel(stringProvider = get()).doOnInit()
     }
-
-    factoryOf<DecimalInputFieldFormatter>(::DecimalFormatter)
 }

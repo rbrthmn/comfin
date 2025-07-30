@@ -70,11 +70,8 @@ android {
 }
 
 dependencies {
-    // Core dependencies - trazem todas as dependências do Compose, Koin, etc.
     implementation(project(":core:ui"))
     implementation(project(":core:navigation"))
 
-    // Testes
     testImplementation(project(":core:test"))
-    androidTestImplementation(project(":core:test"))
 }
