@@ -85,28 +85,23 @@ android {
 }
 
 dependencies {
-    // Core modules - trazem todas as dependências necessárias transitivamente
+    // Core modules
     implementation(project(":core:ui"))
     implementation(project(":core:navigation"))
 
     // Features
     implementation(project(":feature:home"))
 
-    // Dependências específicas da aplicação principal
-
-    // Koin específico para WorkManager e Navigation (não disponível no core:ui)
+    // Koin
     implementation(libs.koin.androidx.workmanager)
     implementation(libs.koin.androidx.navigation)
 
-    // Hilt Navigation Compose (se usado)
-    implementation(libs.androidx.hilt.navigation.compose)
-
-    // Room - específico para a app principal
+    // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    // JUnit KTX - específico da app
+    // JUnit KTX
     implementation(libs.androidx.junit.ktx)
 
     // Testes

@@ -31,11 +31,9 @@ import androidx.compose.ui.Modifier
 import br.com.rbrthmn.ui.financialcompanion.ComFinApp
 import br.com.rbrthmn.ui.theme.ComFinTheme
 import br.com.rbrthmn.ui.theme.LocalTheme
-import dagger.hilt.android.AndroidEntryPoint
 import org.koin.androidx.compose.KoinAndroidContext
 import org.koin.core.annotation.KoinExperimentalAPI
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @OptIn(KoinExperimentalAPI::class)
