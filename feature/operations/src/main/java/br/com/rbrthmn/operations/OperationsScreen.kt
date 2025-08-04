@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.operations
+package br.com.rbrthmn.operations
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,14 +41,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.rbrthmn.R
+import br.com.rbrthmn.navigation.NavigationDestination
+import br.com.rbrthmn.operations.components.OperationsListCard
+import br.com.rbrthmn.operations.components.TotalBalanceCard
+import br.com.rbrthmn.ui.R
 import br.com.rbrthmn.ui.components.MonthSelectionTopBar
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.OperationsListCard
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.TotalBalanceCard
 import br.com.rbrthmn.ui.utils.ResourceStringProvider
 import org.koin.androidx.compose.koinViewModel
 
-object OperationsDestination : br.com.rbrthmn.navigation.NavigationDestination {
+object OperationsDestination : NavigationDestination {
     override val route = "operations"
 }
 

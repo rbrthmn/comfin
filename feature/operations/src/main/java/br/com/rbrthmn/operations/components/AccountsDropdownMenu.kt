@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.operations.components
+package br.com.rbrthmn.operations.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -50,9 +50,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
-import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationAccountType
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationAimedAccount
+import br.com.rbrthmn.operations.R
 import br.com.rbrthmn.ui.R as uiR
 
 const val ACCOUNTS_DROPDOWN_MENU_TAG = "accounts_dropdown_menu"
@@ -81,18 +79,18 @@ fun AccountsDropdownMenu(
 
     Column(modifier = modifier) {
         OutlinedTextField(
-            value = selectedOptionText ?: stringResource(id = R.string.blank),
+            value = selectedOptionText ?: stringResource(id = uiR.string.blank),
             label = { Text(text = stringResource(id = operationAccountType.stringId)) },
-            onValueChange = { selectedOptionText = it },
+            onValueChange = { },
             readOnly = true,
             trailingIcon = {
                 IconButton(
                     onClick = { expanded = true },
-                    modifier.testTag(ACCOUNTS_DROPDOWN_ICON_TAG)
+                    modifier = modifier.testTag(ACCOUNTS_DROPDOWN_ICON_TAG) // ✅ Corrigido: adicionado '= modifier'
                 ) {
                     Icon(
                         Icons.Filled.ArrowDropDown,
-                        stringResource(R.string.drop_down_arrow_icon_description),
+                        contentDescription = stringResource(uiR.string.drop_down_arrow_icon_description),
                     )
                 }
             },
@@ -144,8 +142,8 @@ private fun AddSimpleAccountDialog(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_large),
-                    vertical = dimensionResource(id = R.dimen.padding_medium)
+                    horizontal = dimensionResource(id = uiR.dimen.padding_large),
+                    vertical = dimensionResource(id = uiR.dimen.padding_medium)
                 )
             ) {
                 OutlinedTextField(
@@ -156,20 +154,20 @@ private fun AddSimpleAccountDialog(
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
-                        .padding(top = dimensionResource(id = R.dimen.padding_small)),
+                        .padding(top = dimensionResource(id = uiR.dimen.padding_small)),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceAround,
                 ) {
                     Button(onClick = onCancelButtonClick) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(id = R.string.close_icon_description)
+                            contentDescription = stringResource(id = uiR.string.close_icon_description)
                         )
                     }
                     Button(onClick = onSaveButtonClick) {
                         Icon(
                             imageVector = Icons.Default.Check,
-                            contentDescription = stringResource(id = R.string.check_icon_description)
+                            contentDescription = stringResource(id = uiR.string.check_icon_description)
                         )
                     }
                 }

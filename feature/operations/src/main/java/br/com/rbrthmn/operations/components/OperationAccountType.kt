@@ -18,9 +18,9 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.operations.components
+package br.com.rbrthmn.operations.components
 
-import br.com.rbrthmn.R
+import br.com.rbrthmn.operations.R
 
 sealed class OperationAccountType(val stringId: Int)
 data object OperationAimedAccount : OperationAccountType(R.string.aimed_account_hint)

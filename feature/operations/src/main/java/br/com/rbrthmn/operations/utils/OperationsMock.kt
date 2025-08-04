@@ -18,14 +18,13 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.utils
+package br.com.rbrthmn.operations.utils
 
-import br.com.rbrthmn.model.OperationType
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.Operation
+import br.com.rbrthmn.operations.Operation
+import br.com.rbrthmn.operations.OperationType
 import java.time.ZoneId
 import java.util.Calendar
 import java.util.Locale
-import java.util.TimeZone
 import kotlin.random.Random
 
 fun getOperationsMock(): List<Operation> {

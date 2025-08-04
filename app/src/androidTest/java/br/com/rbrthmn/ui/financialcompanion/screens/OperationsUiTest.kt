@@ -25,10 +25,10 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import br.com.rbrthmn.operations.DATE_FILTER_TAG
+import br.com.rbrthmn.operations.OperationsScreen
+import br.com.rbrthmn.operations.TOTAL_BALANCE_CARD_TAG
 import br.com.rbrthmn.ui.BaseUITest
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.DATE_FILTER_TAG
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreen
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.TOTAL_BALANCE_CARD_TAG
 import org.junit.Test
 
 class OperationsUiTest : BaseUITest() {

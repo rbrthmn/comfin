@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="date_picker_field_height">64dp</dimen>
+    <dimen name="date_picker_popup_offset">64dp</dimen>
+    <dimen name="date_picker_popup_elevation">4dp</dimen>
+</resources>

@@ -18,17 +18,17 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.operations
+package br.com.rbrthmn.operations
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import br.com.rbrthmn.R
-import br.com.rbrthmn.model.OperationType
+import br.com.rbrthmn.operations.OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE
+import br.com.rbrthmn.operations.components.AccountsDropdownMenu
+import br.com.rbrthmn.operations.components.OperationAimedAccount
+import br.com.rbrthmn.operations.components.OperationOriginAccount
+import br.com.rbrthmn.operations.utils.getOperationsMock
 import br.com.rbrthmn.ui.components.ReservesDropdownMenu
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AccountsDropdownMenu
-import br.com.rbrthmn.ui.financialcompanion.utils.getOperationsMock
 import br.com.rbrthmn.ui.utils.StringProvider
 import br.com.rbrthmn.ui.utils.canBeFormatted
 import br.com.rbrthmn.ui.utils.formatDouble

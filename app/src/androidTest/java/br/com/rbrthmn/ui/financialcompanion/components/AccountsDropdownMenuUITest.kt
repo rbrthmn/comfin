@@ -32,10 +32,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationOriginAccount
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.ACCOUNTS_DROPDOWN_MENU_ITEM_TAG
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.ADD_SIMPLE_ACCOUNT_DIALOG_TAG
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.AccountsDropdownMenu
+import br.com.rbrthmn.operations.OperationOriginAccount
 import org.junit.Test
 
 class AccountsDropdownMenuUITest : br.com.rbrthmn.ui.BaseUITest() {

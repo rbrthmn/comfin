@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.operations.components
+package br.com.rbrthmn.operations.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -64,16 +64,16 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import br.com.rbrthmn.R
-import br.com.rbrthmn.model.OperationType
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.Operation
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract.Intent
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
+import br.com.rbrthmn.operations.Operation
+import br.com.rbrthmn.operations.OperationType
+import br.com.rbrthmn.operations.OperationsScreenContract
+import br.com.rbrthmn.operations.OperationsScreenViewModel
+import br.com.rbrthmn.operations.R
 import br.com.rbrthmn.ui.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import br.com.rbrthmn.ui.R as uiR
 
 const val NEW_OPERATION_DIALOG_TAG = "new_operation_dialog"
 const val OPERATION_TYPES_DROPDOWN_MENU_TAG = "operation_types_dropdown_menu"
@@ -88,13 +88,13 @@ fun OperationsListCard(modifier: Modifier = Modifier, viewModel: OperationsScree
             viewModel = viewModel,
             onSaveButtonClick = {
                 viewModel.onIntent(
-                    Intent.OnSaveButtonClick(
+                    OperationsScreenContract.Intent.OnSaveButtonClick(
                         showAddOperationDialog
                     )
                 )
             },
             onCancelButtonClick = {
-                viewModel.onIntent(Intent.OnResetDialogFields)
+                viewModel.onIntent(OperationsScreenContract.Intent.OnResetDialogFields)
                 showAddOperationDialog.value = false
             }
         )
@@ -102,19 +102,25 @@ fun OperationsListCard(modifier: Modifier = Modifier, viewModel: OperationsScree
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
-            .padding(bottom = dimensionResource(id = R.dimen.padding_medium))
-            .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
+            .padding(bottom = dimensionResource(id = uiR.dimen.padding_medium))
+            .shadow(elevation = dimensionResource(id = uiR.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(
-                vertical = dimensionResource(id = R.dimen.padding_medium),
-                horizontal = dimensionResource(id = R.dimen.padding_medium)
+                vertical = dimensionResource(id = uiR.dimen.padding_medium),
+                horizontal = dimensionResource(id = uiR.dimen.padding_medium)
             )
         ) {
             TextField(
                 value = uiState.searchQuery,
-                onValueChange = { viewModel.onIntent(Intent.OnSearchQueryChange(it)) },
+                onValueChange = {
+                    viewModel.onIntent(
+                        OperationsScreenContract.Intent.OnSearchQueryChange(
+                            it
+                        )
+                    )
+                },
                 label = { Text(text = stringResource(id = R.string.search_hint)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
@@ -122,7 +128,7 @@ fun OperationsListCard(modifier: Modifier = Modifier, viewModel: OperationsScree
             HorizontalDivider()
             TextButton(
                 onClick = { showAddOperationDialog.value = true },
-                contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding))
+                contentPadding = PaddingValues(dimensionResource(id = uiR.dimen.zero_padding))
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -131,13 +137,13 @@ fun OperationsListCard(modifier: Modifier = Modifier, viewModel: OperationsScree
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(id = R.string.add_icon_description),
+                        contentDescription = stringResource(id = uiR.string.add_icon_description),
                         tint = Color.Gray,
-                        modifier = Modifier.padding(end = dimensionResource(id = R.dimen.padding_extra_small))
+                        modifier = Modifier.padding(end = dimensionResource(id = uiR.dimen.padding_extra_small))
                     )
                     Text(
                         text = stringResource(id = R.string.add_operation_button),
-                        fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                        fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp
                     )
                 }
             }
@@ -167,28 +173,46 @@ fun AddOperationDialog(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_large),
-                    vertical = dimensionResource(id = R.dimen.padding_medium)
+                    horizontal = dimensionResource(id = uiR.dimen.padding_large),
+                    vertical = dimensionResource(id = uiR.dimen.padding_medium)
                 )
             ) {
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.operation_description_hint)) },
                     value = uiState.newOperationDescription,
-                    onValueChange = { viewModel.onIntent(Intent.OnDescriptionChange(it)) },
+                    onValueChange = {
+                        viewModel.onIntent(
+                            OperationsScreenContract.Intent.OnDescriptionChange(
+                                it
+                            )
+                        )
+                    },
                     isError = !uiState.isNewOperationDescriptionValid,
                     singleLine = true
                 )
                 OutlinedTextField(
-                    prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
+                    prefix = { Text(text = stringResource(id = uiR.string.brl_currency)) },
                     label = { Text(text = stringResource(id = R.string.operation_value_hint)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = uiState.newOperationValue,
-                    onValueChange = { viewModel.onIntent(Intent.OnValueChange(it)) },
+                    onValueChange = {
+                        viewModel.onIntent(
+                            OperationsScreenContract.Intent.OnValueChange(
+                                it
+                            )
+                        )
+                    },
                     isError = !uiState.isNewOperationValueValid,
                     singleLine = true
                 )
                 OperationTypeDropdownMenu(
-                    onTypeClicked = { viewModel.onIntent(Intent.OnOperationTypeChange(it)) },
+                    onTypeClicked = {
+                        viewModel.onIntent(
+                            OperationsScreenContract.Intent.OnOperationTypeChange(
+                                it
+                            )
+                        )
+                    },
                     operationTypes = availableOperationTypes,
                     isError = !uiState.isNewOperationTypeValid
                 )
@@ -196,21 +220,27 @@ fun AddOperationDialog(
                     composableFunction()
                 }
                 DatePickerField(
-                    onDateSelected = { viewModel.onIntent(Intent.OnOperationDateChange(it)) },
+                    onDateSelected = {
+                        viewModel.onIntent(
+                            OperationsScreenContract.Intent.OnOperationDateChange(
+                                it
+                            )
+                        )
+                    },
                     isError = !uiState.isNewOperationDateValid
                 )
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
-                        .padding(top = dimensionResource(id = R.dimen.padding_small)),
+                        .padding(top = dimensionResource(id = uiR.dimen.padding_small)),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceAround,
                 ) {
                     TextButton(onClick = onCancelButtonClick) {
-                        Text(text = stringResource(id = R.string.cancel_button))
+                        Text(text = stringResource(id = uiR.string.cancel_button))
                     }
                     Button(onClick = onSaveButtonClick) {
-                        Text(text = stringResource(id = R.string.save_button))
+                        Text(text = stringResource(id = uiR.string.save_button))
                     }
                 }
             }
@@ -230,7 +260,7 @@ private fun OperationTypeDropdownMenu(
 
     Column(modifier = modifier) {
         OutlinedTextField(
-            value = selectedOptionText ?: stringResource(id = R.string.blank),
+            value = selectedOptionText ?: stringResource(id = uiR.string.blank),
             label = { Text(text = stringResource(id = R.string.operation_type_hint)) },
             onValueChange = { selectedOptionText = it },
             readOnly = true,
@@ -238,7 +268,7 @@ private fun OperationTypeDropdownMenu(
                 IconButton(onClick = { expanded = true }) {
                     Icon(
                         Icons.Filled.ArrowDropDown,
-                        stringResource(R.string.drop_down_arrow_icon_description)
+                        stringResource(uiR.string.drop_down_arrow_icon_description)
                     )
                 }
             },
@@ -271,8 +301,8 @@ private fun OperationsList(operations: List<Operation>) {
     val groupedOperations = operations.groupBy { it.date }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
-        modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = uiR.dimen.padding_small)),
+        modifier = Modifier.padding(top = dimensionResource(id = uiR.dimen.padding_small))
     ) {
         groupedOperations.forEach { (_, operationsForDate) ->
             DayOfWeekAndMonthText(date = operationsForDate[0].date)
@@ -293,7 +323,8 @@ private fun OperationsList(operations: List<Operation>) {
 private fun DayOfWeekAndMonthText(date: LocalDate) {
     val formattedDate = date.format(DateTimeFormatter.ofPattern("EEEE, dd"))
     Text(
-        text = formattedDate, fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+        text = formattedDate,
+        fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
         fontWeight = FontWeight.ExtraBold
     )
 }
@@ -310,40 +341,43 @@ private fun OperationItem(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = dimensionResource(id = R.dimen.padding_small))
+            .padding(start = dimensionResource(id = uiR.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
                 text = description,
-                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
-                lineHeight = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+                fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
+                lineHeight = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = type,
-                    fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp,
-                    lineHeight = dimensionResource(id = R.dimen.font_size_small).value.sp,
+                    fontSize = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
+                    lineHeight = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
                 )
                 extras?.let {
                     VerticalDivider(
                         modifier = Modifier
-                            .height(dimensionResource(id = R.dimen.padding_small))
-                            .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+                            .height(dimensionResource(id = uiR.dimen.padding_small))
+                            .padding(horizontal = dimensionResource(id = uiR.dimen.padding_extra_small))
                     )
                     Text(
                         text = it,
-                        fontSize = dimensionResource(id = R.dimen.font_size_small).value.sp,
-                        lineHeight = dimensionResource(id = R.dimen.font_size_small).value.sp,
+                        fontSize = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
+                        lineHeight = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
                     )
                 }
             }
         }
         Text(
-            text = valueWithCurrencyString(currencyStringId = R.string.brl_currency, value = value),
-            fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
-            lineHeight = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+            text = valueWithCurrencyString(
+                currencyStringId = uiR.string.brl_currency,
+                value = value
+            ),
+            fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
+            lineHeight = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
         )
     }
 }

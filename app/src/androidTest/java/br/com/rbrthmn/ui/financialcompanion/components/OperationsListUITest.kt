@@ -33,7 +33,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
+import br.com.rbrthmn.operations.OperationsScreenViewModel
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.ACCOUNTS_DROPDOWN_ICON_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.ACCOUNTS_DROPDOWN_MENU_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.NEW_OPERATION_DIALOG_TAG

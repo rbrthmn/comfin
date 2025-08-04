@@ -30,8 +30,8 @@ import br.com.rbrthmn.home.ui.components.lastmonthdifferencecard.LastMonthDiffer
 import br.com.rbrthmn.home.ui.components.lastmonthdifferencecard.LastMonthDifferenceCardViewModel
 import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardContract
 import br.com.rbrthmn.home.ui.components.monthlylimitcard.MonthlyLimitCardViewModel
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenViewModel
+import br.com.rbrthmn.operations.OperationsScreenContract
+import br.com.rbrthmn.operations.OperationsScreenViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module

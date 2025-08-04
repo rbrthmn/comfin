@@ -18,10 +18,9 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.operations
+package br.com.rbrthmn.operations
 
 import androidx.compose.runtime.Composable
-import br.com.rbrthmn.model.OperationType
 import java.time.LocalDate
 
 data class OperationsScreenUiState(

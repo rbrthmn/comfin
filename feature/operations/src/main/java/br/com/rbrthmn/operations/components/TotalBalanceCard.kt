@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.operations.components
+package br.com.rbrthmn.operations.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,9 +39,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.OperationsScreenContract
+import br.com.rbrthmn.operations.OperationsScreenContract
+import br.com.rbrthmn.operations.R
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
+import br.com.rbrthmn.ui.R as uiR
 
 @Composable
 fun TotalBalanceCard(
@@ -50,26 +51,26 @@ fun TotalBalanceCard(
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = modifier.shadow(elevation = dimensionResource(id = R.dimen.padding_small))
+        modifier = modifier.shadow(elevation = dimensionResource(id = uiR.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            modifier = Modifier.padding(dimensionResource(id = uiR.dimen.padding_medium))
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_small))
+                modifier = Modifier.padding(bottom = dimensionResource(id = uiR.dimen.padding_small))
             ) {
                 Text(
                     text = valueWithCurrencyString(
-                        currencyStringId = R.string.brl_currency,
+                        currencyStringId = uiR.string.brl_currency,
                         value = uiState.totalBalance
                     ),
-                    fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp,
+                    fontSize = dimensionResource(id = uiR.dimen.font_size_large).value.sp,
                 )
                 Text(
                     text = stringResource(id = R.string.balance_title),
-                    fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp,
+                    fontSize = dimensionResource(id = uiR.dimen.font_size_large).value.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
             }
@@ -79,33 +80,33 @@ fun TotalBalanceCard(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = dimensionResource(id = R.dimen.padding_small))
+                    .padding(top = dimensionResource(id = uiR.dimen.padding_small))
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = valueWithCurrencyString(
-                            currencyStringId = R.string.brl_currency,
+                            currencyStringId = uiR.string.brl_currency,
                             value = uiState.totalIncome
                         ),
-                        fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                        fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp
                     )
                     Text(
                         text = stringResource(id = R.string.incomes_title),
-                        fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+                        fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = valueWithCurrencyString(
-                            currencyStringId = R.string.brl_currency,
+                            currencyStringId = uiR.string.brl_currency,
                             value = uiState.totalOutcome
                         ),
-                        fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                        fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp
                     )
                     Text(
                         text = stringResource(id = R.string.outflow_title),
-                        fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+                        fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
                 }
