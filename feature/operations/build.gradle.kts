@@ -37,6 +37,16 @@ android {
     buildFeatures {
         compose = true
     }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/LICENSE*"
+            excludes += "META-INF/NOTICE*"
+            excludes += "META-INF/junit-platform.properties"
+            excludes += "META-INF/junit-jupiter-*.properties"
+        }
+    }
 }
 
 dependencies {
@@ -44,4 +54,5 @@ dependencies {
     implementation(project(":core:navigation"))
 
     testImplementation(project(":core:test"))
+    androidTestImplementation(project(":core:test"))
 }

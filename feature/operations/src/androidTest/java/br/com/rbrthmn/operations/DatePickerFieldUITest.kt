@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.components
+package br.com.rbrthmn.operations
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
@@ -27,13 +27,13 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.CALENDAR_TEST_TAG
-import br.com.rbrthmn.ui.financialcompanion.screens.operations.components.DatePickerField
+import br.com.rbrthmn.operations.components.CALENDAR_TEST_TAG
+import br.com.rbrthmn.operations.components.DatePickerField
+import br.com.rbrthmn.ui.BaseUITest
 import br.com.rbrthmn.ui.onNodeWithStringId
 import org.junit.Test
 
-class DatePickerFieldUITest : br.com.rbrthmn.ui.BaseUITest() {
+class DatePickerFieldUITest : BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     override fun setup() =
