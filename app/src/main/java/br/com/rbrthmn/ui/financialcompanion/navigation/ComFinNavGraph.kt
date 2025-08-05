@@ -27,8 +27,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import br.com.rbrthmn.home.ui.HomeDestination
 import br.com.rbrthmn.home.ui.HomeScreen
-import br.com.rbrthmn.operations.OperationsDestination
-import br.com.rbrthmn.operations.OperationsScreen
+import br.com.rbrthmn.operations.ui.OperationsDestination
+import br.com.rbrthmn.operations.ui.OperationsScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesDestination

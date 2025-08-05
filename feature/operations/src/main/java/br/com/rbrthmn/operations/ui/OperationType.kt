@@ -1,6 +1,7 @@
-package br.com.rbrthmn.operations
+package br.com.rbrthmn.operations.ui
 
 import androidx.annotation.StringRes
+import br.com.rbrthmn.operations.R
 
 enum class OperationType(
     @StringRes val stringId: Int,

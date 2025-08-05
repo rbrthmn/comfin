@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.operations
+package br.com.rbrthmn.operations.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,8 +42,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.navigation.NavigationDestination
-import br.com.rbrthmn.operations.components.OperationsListCard
-import br.com.rbrthmn.operations.components.TotalBalanceCard
+import br.com.rbrthmn.operations.ui.components.OperationsListCard
+import br.com.rbrthmn.operations.ui.components.TotalBalanceCard
 import br.com.rbrthmn.ui.R
 import br.com.rbrthmn.ui.components.MonthSelectionTopBar
 import br.com.rbrthmn.ui.utils.ResourceStringProvider

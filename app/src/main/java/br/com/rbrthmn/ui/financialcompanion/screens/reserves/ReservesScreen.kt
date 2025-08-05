@@ -66,10 +66,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.R
-import br.com.rbrthmn.operations.OperationType
-import br.com.rbrthmn.operations.OperationsScreenContract
-import br.com.rbrthmn.operations.OperationsScreenContract.Intent
-import br.com.rbrthmn.operations.components.AddOperationDialog
+import br.com.rbrthmn.operations.ui.OperationType
+import br.com.rbrthmn.operations.ui.OperationsScreenContract
+import br.com.rbrthmn.operations.ui.OperationsScreenContract.Intent
+import br.com.rbrthmn.operations.ui.components.AddOperationDialog
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat

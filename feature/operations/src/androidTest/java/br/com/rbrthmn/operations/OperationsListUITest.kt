@@ -12,11 +12,12 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import br.com.rbrthmn.operations.components.ACCOUNTS_DROPDOWN_ICON_TAG
-import br.com.rbrthmn.operations.components.ACCOUNTS_DROPDOWN_MENU_TAG
-import br.com.rbrthmn.operations.components.NEW_OPERATION_DIALOG_TAG
-import br.com.rbrthmn.operations.components.OPERATION_TYPES_DROPDOWN_MENU_TAG
-import br.com.rbrthmn.operations.components.OperationsListCard
+import br.com.rbrthmn.operations.ui.OperationsScreenViewModel
+import br.com.rbrthmn.operations.ui.components.ACCOUNTS_DROPDOWN_ICON_TAG
+import br.com.rbrthmn.operations.ui.components.ACCOUNTS_DROPDOWN_MENU_TAG
+import br.com.rbrthmn.operations.ui.components.NEW_OPERATION_DIALOG_TAG
+import br.com.rbrthmn.operations.ui.components.OPERATION_TYPES_DROPDOWN_MENU_TAG
+import br.com.rbrthmn.operations.ui.components.OperationsListCard
 import br.com.rbrthmn.ui.onNodeWithStringId
 import br.com.rbrthmn.ui.utils.ResourceStringProvider
 import org.junit.Test

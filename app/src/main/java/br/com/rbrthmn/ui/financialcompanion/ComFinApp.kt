@@ -43,7 +43,7 @@ import br.com.rbrthmn.home.ui.HomeDestination
 import br.com.rbrthmn.navigation.ComFinNavigationBar
 import br.com.rbrthmn.navigation.ComFinNavigationType
 import br.com.rbrthmn.navigation.NavigationItemContent
-import br.com.rbrthmn.operations.OperationsDestination
+import br.com.rbrthmn.operations.ui.OperationsDestination
 import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
 import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesDestination
 

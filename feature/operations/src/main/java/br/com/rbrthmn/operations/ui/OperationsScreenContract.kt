@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.operations
+package br.com.rbrthmn.operations.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState

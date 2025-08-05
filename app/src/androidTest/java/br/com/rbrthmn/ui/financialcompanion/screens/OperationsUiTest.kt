@@ -25,9 +25,9 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import br.com.rbrthmn.operations.DATE_FILTER_TAG
-import br.com.rbrthmn.operations.OperationsScreen
-import br.com.rbrthmn.operations.TOTAL_BALANCE_CARD_TAG
+import br.com.rbrthmn.operations.ui.DATE_FILTER_TAG
+import br.com.rbrthmn.operations.ui.OperationsScreen
+import br.com.rbrthmn.operations.ui.TOTAL_BALANCE_CARD_TAG
 import br.com.rbrthmn.ui.BaseUITest
 import org.junit.Test
 

@@ -18,10 +18,10 @@
  *
  */
 
-package br.com.rbrthmn.operations.utils
+package br.com.rbrthmn.operations.ui.components.utils
 
-import br.com.rbrthmn.operations.Operation
-import br.com.rbrthmn.operations.OperationType
+import br.com.rbrthmn.operations.ui.Operation
+import br.com.rbrthmn.operations.ui.OperationType
 import java.time.ZoneId
 import java.util.Calendar
 import java.util.Locale

@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.operations.components
+package br.com.rbrthmn.operations.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,7 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import br.com.rbrthmn.operations.OperationsScreenContract
+import br.com.rbrthmn.operations.ui.OperationsScreenContract
 import br.com.rbrthmn.operations.R
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import br.com.rbrthmn.ui.R as uiR

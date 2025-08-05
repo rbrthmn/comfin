@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.operations.components
+package br.com.rbrthmn.operations.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

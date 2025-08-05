@@ -22,10 +22,12 @@ package br.com.rbrthmn.operations
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import br.com.rbrthmn.operations.OperationsScreenContract.Intent
-import br.com.rbrthmn.operations.OperationsScreenViewModel.Companion.TOTAL_BALANCE_MOCK
-import br.com.rbrthmn.operations.OperationsScreenViewModel.Companion.TOTAL_INCOME_MOCK
-import br.com.rbrthmn.operations.OperationsScreenViewModel.Companion.TOTAL_OUTCOME_MOCK
+import br.com.rbrthmn.operations.ui.OperationType
+import br.com.rbrthmn.operations.ui.OperationsScreenContract.Intent
+import br.com.rbrthmn.operations.ui.OperationsScreenViewModel
+import br.com.rbrthmn.operations.ui.OperationsScreenViewModel.Companion.TOTAL_BALANCE_MOCK
+import br.com.rbrthmn.operations.ui.OperationsScreenViewModel.Companion.TOTAL_INCOME_MOCK
+import br.com.rbrthmn.operations.ui.OperationsScreenViewModel.Companion.TOTAL_OUTCOME_MOCK
 import br.com.rbrthmn.ui.utils.StringProvider
 import br.com.rbrthmn.ui.utils.formatDouble
 import io.mockk.mockk

@@ -31,10 +31,10 @@ import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import br.com.rbrthmn.operations.components.ACCOUNTS_DROPDOWN_MENU_ITEM_TAG
-import br.com.rbrthmn.operations.components.ADD_SIMPLE_ACCOUNT_DIALOG_TAG
-import br.com.rbrthmn.operations.components.AccountsDropdownMenu
-import br.com.rbrthmn.operations.components.OperationOriginAccount
+import br.com.rbrthmn.operations.ui.components.ACCOUNTS_DROPDOWN_MENU_ITEM_TAG
+import br.com.rbrthmn.operations.ui.components.ADD_SIMPLE_ACCOUNT_DIALOG_TAG
+import br.com.rbrthmn.operations.ui.components.AccountsDropdownMenu
+import br.com.rbrthmn.operations.ui.components.OperationOriginAccount
 import br.com.rbrthmn.ui.BaseUITest
 import br.com.rbrthmn.ui.R
 import org.junit.Test

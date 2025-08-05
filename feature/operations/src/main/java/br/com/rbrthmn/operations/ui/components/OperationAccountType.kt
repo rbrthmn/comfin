@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.operations.components
+package br.com.rbrthmn.operations.ui.components
 
 import br.com.rbrthmn.operations.R
 

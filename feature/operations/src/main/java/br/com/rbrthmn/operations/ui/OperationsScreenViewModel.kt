@@ -18,16 +18,16 @@
  *
  */
 
-package br.com.rbrthmn.operations
+package br.com.rbrthmn.operations.ui
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import br.com.rbrthmn.operations.OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE
-import br.com.rbrthmn.operations.components.AccountsDropdownMenu
-import br.com.rbrthmn.operations.components.OperationAimedAccount
-import br.com.rbrthmn.operations.components.OperationOriginAccount
-import br.com.rbrthmn.operations.utils.getOperationsMock
+import br.com.rbrthmn.operations.R
+import br.com.rbrthmn.operations.ui.components.AccountsDropdownMenu
+import br.com.rbrthmn.operations.ui.components.OperationAimedAccount
+import br.com.rbrthmn.operations.ui.components.OperationOriginAccount
+import br.com.rbrthmn.operations.ui.components.utils.getOperationsMock
 import br.com.rbrthmn.ui.components.ReservesDropdownMenu
 import br.com.rbrthmn.ui.utils.StringProvider
 import br.com.rbrthmn.ui.utils.canBeFormatted
@@ -245,9 +245,9 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
         if (resetFields) {
             uiState.update {
                 it.copy(
-                    newOperationOriginAccount = DEFAULT_STRING_VALUE,
-                    newOperationDestinationAccount = DEFAULT_STRING_VALUE,
-                    newOperationReserve = DEFAULT_STRING_VALUE
+                    newOperationOriginAccount = OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE,
+                    newOperationDestinationAccount = OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE,
+                    newOperationReserve = OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE
                 )
             }
         }
