@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -45,8 +46,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:ui"))
+    api(project(":core:ui"))
     implementation(project(":core:navigation"))
 
     testImplementation(project(":core:test"))
+    androidTestImplementation(project(":core:test"))
 }

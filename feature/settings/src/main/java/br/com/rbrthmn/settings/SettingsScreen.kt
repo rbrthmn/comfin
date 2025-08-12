@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.settings
+package br.com.rbrthmn.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -53,9 +53,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import br.com.rbrthmn.R
+import br.com.rbrthmn.navigation.NavigationDestination
+import br.com.rbrthmn.ui.R as commonR
 
-object SettingsDestination : br.com.rbrthmn.navigation.NavigationDestination {
+object SettingsDestination : NavigationDestination {
     override val route: String = "settings"
 }
 
@@ -65,9 +66,9 @@ const val SETTINGS_LIST_TAG = "settings_list"
 fun SettingsScreen(modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_medium)),
         modifier = modifier
-            .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
+            .padding(horizontal = dimensionResource(id = commonR.dimen.padding_medium))
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
@@ -81,15 +82,15 @@ private fun SettingsContent(modifier: Modifier = Modifier) {
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = dimensionResource(id = R.dimen.padding_medium))
-            .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
+            .padding(vertical = dimensionResource(id = commonR.dimen.padding_medium))
+            .shadow(elevation = dimensionResource(id = commonR.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
                 .padding(
-                    vertical = dimensionResource(id = R.dimen.padding_medium),
-                    horizontal = dimensionResource(id = R.dimen.padding_medium),
+                    vertical = dimensionResource(id = commonR.dimen.padding_medium),
+                    horizontal = dimensionResource(id = commonR.dimen.padding_medium),
                 )
                 .testTag(SETTINGS_LIST_TAG)
         ) {
@@ -107,11 +108,11 @@ private fun DarkModeSetting(modifier: Modifier = Modifier) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(dimensionResource(id = R.dimen.padding_medium)),
-                shape = RoundedCornerShape(dimensionResource(id = R.dimen.padding_medium)),
+                    .padding(dimensionResource(id = commonR.dimen.padding_medium)),
+                shape = RoundedCornerShape(dimensionResource(id = commonR.dimen.padding_medium)),
             ) {
                 Column(
-                    modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+                    modifier = Modifier.padding(dimensionResource(id = commonR.dimen.padding_medium)),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
@@ -130,11 +131,11 @@ private fun DarkModeSetting(modifier: Modifier = Modifier) {
     ) {
         Text(
             text = stringResource(id = R.string.settings_dark_mode),
-            fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp
+            fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp
         )
         Text(
             text = "Desativado",
-            fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+            fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
         )
     }
 }

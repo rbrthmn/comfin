@@ -29,6 +29,8 @@ import br.com.rbrthmn.home.ui.HomeDestination
 import br.com.rbrthmn.home.ui.HomeScreen
 import br.com.rbrthmn.operations.ui.OperationsDestination
 import br.com.rbrthmn.operations.ui.OperationsScreen
+import br.com.rbrthmn.settings.SettingsDestination
+import br.com.rbrthmn.settings.SettingsScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsScreen
 import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesDestination
@@ -37,8 +39,6 @@ import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringE
 import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpensesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesScreen
-import br.com.rbrthmn.ui.financialcompanion.screens.settings.SettingsDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.settings.SettingsScreen
 
 @Composable
 fun ComFinNavGraph(

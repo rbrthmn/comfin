@@ -31,13 +31,13 @@ import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import br.com.rbrthmn.R
+import br.com.rbrthmn.settings.SettingsDestination
 import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
 import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.FEATURES_LIST_TAG
 import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpensesDestination
 import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.settings.SettingsDestination
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
