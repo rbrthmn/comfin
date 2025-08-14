@@ -57,6 +57,9 @@ android {
 }
 
 dependencies {
+    testImplementation(project(":core:test"))
+    androidTestImplementation(project(":core:test"))
+
     // Compose BOM - exposer para todos os módulos dependentes
     api(platform(libs.androidx.compose.bom))
 
