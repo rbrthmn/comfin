@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions
+package br.com.rbrthmn.misc.incomedivisions
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -61,13 +61,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import br.com.rbrthmn.R
+import br.com.rbrthmn.misc.R
+import br.com.rbrthmn.navigation.NavigationDestination
 import br.com.rbrthmn.ui.components.MonthSelectionTopBar
 import java.time.LocalDate
+import br.com.rbrthmn.ui.R as commonR
 
 const val RECURRING_EXPENSES_DIVISION_TAG = "recurring_expenses_division"
 
-object IncomeDivisionsDestination : br.com.rbrthmn.navigation.NavigationDestination {
+object IncomeDivisionsDestination : NavigationDestination {
     override val route = "income_divisions"
 }
 
@@ -126,31 +128,31 @@ private fun IncomeDivisionsScreenContent(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_medium)),
         modifier = modifier
             .padding(innerPaddingValues)
-            .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
+            .padding(horizontal = dimensionResource(id = commonR.dimen.padding_medium))
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         Card(
             colors = CardDefaults.cardColors(containerColor = Color.White),
             modifier = modifier
-                .padding(vertical = dimensionResource(id = R.dimen.padding_medium))
-                .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
+                .padding(vertical = dimensionResource(id = commonR.dimen.padding_medium))
+                .shadow(elevation = dimensionResource(id = commonR.dimen.padding_small))
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+                modifier = modifier.padding(dimensionResource(id = commonR.dimen.padding_medium))
             ) {
                 incomeDivisions.forEachIndexed { index, division ->
                     IncomeDivision(data = division)
                     if (index == incomeDivisions.lastIndex - 1) {
-                        HorizontalDivider(modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small)))
+                        HorizontalDivider(modifier.padding(vertical = dimensionResource(id = commonR.dimen.padding_small)))
                         AddDivisionButton(modifier = modifier)
                     }
                     if (index != incomeDivisions.lastIndex) {
-                        HorizontalDivider(modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small)))
+                        HorizontalDivider(modifier.padding(vertical = dimensionResource(id = commonR.dimen.padding_small)))
                     }
                 }
             }
@@ -177,8 +179,8 @@ private fun IncomeDivision(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = data.name.plus(stringResource(id = R.string.colon)),
-            fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+            text = data.name.plus(stringResource(id = commonR.string.colon)),
+            fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
             modifier = modifier.weight(0.4F)
         )
         Row(
@@ -219,7 +221,7 @@ private fun AddDivisionButton(modifier: Modifier = Modifier) {
 
     TextButton(
         onClick = { showDialog.value = true },
-        contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
+        contentPadding = PaddingValues(dimensionResource(id = commonR.dimen.zero_padding)),
         modifier = modifier.fillMaxWidth()
     ) {
         Row(
@@ -233,13 +235,13 @@ private fun AddDivisionButton(modifier: Modifier = Modifier) {
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(id = R.string.add_icon_description),
+                    contentDescription = stringResource(id = commonR.string.add_icon_description),
                     tint = Color.Gray,
-                    modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+                    modifier = modifier.padding(horizontal = dimensionResource(id = commonR.dimen.padding_extra_small))
                 )
                 Text(
                     text = stringResource(id = R.string.add_division),
-                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
                 )
             }
         }
@@ -252,11 +254,11 @@ private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(dimensionResource(id = R.dimen.padding_medium)),
-            shape = RoundedCornerShape(dimensionResource(id = R.dimen.padding_medium)),
+                .padding(dimensionResource(id = commonR.dimen.padding_medium)),
+            shape = RoundedCornerShape(dimensionResource(id = commonR.dimen.padding_medium)),
         ) {
             Column(
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+                modifier = Modifier.padding(dimensionResource(id = commonR.dimen.padding_medium)),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -266,7 +268,7 @@ private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick
                     onValueChange = { }
                 )
                 OutlinedTextField(
-                    prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
+                    prefix = { Text(text = stringResource(id = commonR.string.brl_currency)) },
                     label = { Text(text = stringResource(id = R.string.division_value_hint)) },
                     value = "",
                     onValueChange = { },
@@ -281,15 +283,15 @@ private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = dimensionResource(id = R.dimen.padding_small)),
+                        .padding(top = dimensionResource(id = commonR.dimen.padding_small)),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     TextButton(onClick = onCancelButtonClick) {
-                        Text(text = stringResource(id = R.string.cancel_button))
+                        Text(text = stringResource(id = commonR.string.cancel_button))
                     }
                     Button(onClick = onSaveButtonClick) {
-                        Text(text = stringResource(id = R.string.save_button))
+                        Text(text = stringResource(id = commonR.string.save_button))
                     }
                 }
             }

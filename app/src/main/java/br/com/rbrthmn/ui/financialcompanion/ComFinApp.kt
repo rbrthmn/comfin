@@ -40,12 +40,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import br.com.rbrthmn.R
 import br.com.rbrthmn.home.ui.HomeDestination
+import br.com.rbrthmn.misc.morefeatures.MoreFeaturesDestination
 import br.com.rbrthmn.navigation.ComFinNavigationBar
 import br.com.rbrthmn.navigation.ComFinNavigationType
 import br.com.rbrthmn.navigation.NavigationItemContent
 import br.com.rbrthmn.operations.ui.OperationsDestination
 import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
-import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesDestination
 
 const val NAV_GRAPH_TAG = "nav_graph"
 const val NAV_BAR_TAG = "nav_bar"

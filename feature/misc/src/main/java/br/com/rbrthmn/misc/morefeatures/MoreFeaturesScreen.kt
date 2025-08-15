@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.morefeatures
+package br.com.rbrthmn.misc.morefeatures
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,15 +42,17 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.rbrthmn.R
+import br.com.rbrthmn.misc.R
+import br.com.rbrthmn.misc.incomedivisions.IncomeDivisionsDestination
+import br.com.rbrthmn.misc.recurringexpenses.RecurringExpensesDestination
+import br.com.rbrthmn.misc.reserves.ReservesDestination
+import br.com.rbrthmn.navigation.NavigationDestination
 import br.com.rbrthmn.settings.SettingsDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpensesDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesDestination
+import br.com.rbrthmn.ui.R as commonR
 
 data class FeatureLabel(val name: String, val route: String)
 
-object MoreFeaturesDestination : br.com.rbrthmn.navigation.NavigationDestination {
+object MoreFeaturesDestination : NavigationDestination {
     override val route = "more_features"
 }
 
@@ -60,9 +62,9 @@ const val FEATURES_LIST_TAG = "features_list"
 fun MoreFeaturesScreen(onFeatureClick: (String) -> Unit, modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_medium)),
         modifier = modifier
-            .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
+            .padding(horizontal = dimensionResource(id = commonR.dimen.padding_medium))
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
@@ -95,20 +97,20 @@ private fun MoreFeaturesCard(onFeatureClick: (String) -> Unit) {
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = dimensionResource(id = R.dimen.padding_medium))
-            .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
+            .padding(top = dimensionResource(id = commonR.dimen.padding_medium))
+            .shadow(elevation = dimensionResource(id = commonR.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
+                .padding(horizontal = dimensionResource(id = commonR.dimen.padding_medium))
                 .testTag(FEATURES_LIST_TAG)
         ) {
             for (index in featuresList.indices) {
                 TextButton(
                     onClick = { onFeatureClick(featuresList[index].route) },
-                    contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
+                    contentPadding = PaddingValues(dimensionResource(id = commonR.dimen.zero_padding)),
                     modifier = Modifier.testTag(featuresList[index].route)
                 ) {
                     Text(text = featuresList[index].name, modifier = Modifier.fillMaxWidth())

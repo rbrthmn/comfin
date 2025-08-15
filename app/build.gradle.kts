@@ -93,6 +93,7 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:operations"))
     implementation(project(":feature:settings"))
+    implementation(project(":feature:misc"))
 
     // Koin
     implementation(libs.koin.androidx.workmanager)

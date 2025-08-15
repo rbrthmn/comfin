@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions
+package br.com.rbrthmn.misc.incomedivisions
 
 class IncomeDivision(
     val name: String,

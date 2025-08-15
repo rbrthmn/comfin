@@ -11,6 +11,8 @@
     <dimen name="dates_circular_list_width">140dp</dimen>
     <dimen name="dates_circular_list_item_height">40dp</dimen>
 
+    <dimen name="corner_shape_round">8dp</dimen>
+
     <!-- font sizes values -->
     <dimen name="font_size_small">8sp</dimen>
     <dimen name="font_size_medium">16sp</dimen>

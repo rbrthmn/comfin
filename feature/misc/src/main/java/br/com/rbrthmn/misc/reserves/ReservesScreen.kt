@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens.reserves
+package br.com.rbrthmn.misc.reserves
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -65,15 +65,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import br.com.rbrthmn.R
+import br.com.rbrthmn.misc.R
+import br.com.rbrthmn.navigation.NavigationDestination
 import br.com.rbrthmn.operations.ui.OperationType
 import br.com.rbrthmn.operations.ui.OperationsScreenContract
-import br.com.rbrthmn.operations.ui.OperationsScreenContract.Intent
 import br.com.rbrthmn.operations.ui.components.AddOperationDialog
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
+import br.com.rbrthmn.operations.R as operationR
+import br.com.rbrthmn.ui.R as commonR
 
 data class Reserve(
     val name: String,
@@ -83,7 +85,7 @@ data class Reserve(
 
 data class ReserveOperation(val date: String, val value: String, val isWithdrawal: Boolean)
 
-object ReservesDestination : br.com.rbrthmn.navigation.NavigationDestination {
+object ReservesDestination : NavigationDestination {
     override val route = "reserves"
 }
 
@@ -110,9 +112,9 @@ fun ReservesScreen(modifier: Modifier = Modifier) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_medium)),
         modifier = modifier
-            .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
+            .padding(horizontal = dimensionResource(id = commonR.dimen.padding_medium))
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
@@ -130,14 +132,14 @@ private fun ReservesCard(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = dimensionResource(id = R.dimen.padding_medium))
-            .shadow(elevation = dimensionResource(id = R.dimen.padding_small))
+            .padding(vertical = dimensionResource(id = commonR.dimen.padding_medium))
+            .shadow(elevation = dimensionResource(id = commonR.dimen.padding_small))
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier.padding(
-                vertical = dimensionResource(id = R.dimen.padding_medium),
-                horizontal = dimensionResource(id = R.dimen.padding_medium)
+                vertical = dimensionResource(id = commonR.dimen.padding_medium),
+                horizontal = dimensionResource(id = commonR.dimen.padding_medium)
             )
         ) {
             Row(
@@ -147,17 +149,17 @@ private fun ReservesCard(
                 Text(
                     text = stringResource(id = R.string.reserve_total_title),
                     fontWeight = FontWeight.Bold,
-                    fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp
                 )
                 Text(
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     text = valueWithCurrencyString(
-                        currencyStringId = R.string.brl_currency,
+                        currencyStringId = commonR.string.brl_currency,
                         value = reservesTotalValue
                     ),
-                    fontSize = dimensionResource(id = R.dimen.font_size_large).value.sp
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp
                 )
             }
             Column(
@@ -190,7 +192,7 @@ private fun AddReserveButton(modifier: Modifier = Modifier) {
 
     Button(
         onClick = { showDialog = true },
-        contentPadding = PaddingValues(dimensionResource(id = R.dimen.zero_padding)),
+        contentPadding = PaddingValues(dimensionResource(id = commonR.dimen.zero_padding)),
         modifier = modifier.fillMaxWidth()
     ) {
         Row(
@@ -200,13 +202,13 @@ private fun AddReserveButton(modifier: Modifier = Modifier) {
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = stringResource(id = R.string.add_icon_description),
+                contentDescription = stringResource(id = commonR.string.add_icon_description),
                 tint = Color.Gray,
-                modifier = modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+                modifier = modifier.padding(horizontal = dimensionResource(id = commonR.dimen.padding_extra_small))
             )
             Text(
                 text = stringResource(id = R.string.add_reserve_button),
-                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
             )
         }
     }
@@ -218,12 +220,12 @@ private fun NewReserveDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick:
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(dimensionResource(id = R.dimen.padding_medium))
+                .padding(dimensionResource(id = commonR.dimen.padding_medium))
                 .testTag(NEW_RESERVE_DIALOG_TAG),
-            shape = RoundedCornerShape(dimensionResource(id = R.dimen.padding_medium)),
+            shape = RoundedCornerShape(dimensionResource(id = commonR.dimen.padding_medium)),
         ) {
             Column(
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+                modifier = Modifier.padding(dimensionResource(id = commonR.dimen.padding_medium)),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -233,7 +235,7 @@ private fun NewReserveDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick:
                     onValueChange = { }
                 )
                 OutlinedTextField(
-                    prefix = { Text(text = stringResource(id = R.string.brl_currency)) },
+                    prefix = { Text(text = stringResource(id = commonR.string.brl_currency)) },
                     label = { Text(text = stringResource(id = R.string.new_reserve_value_hint)) },
                     value = "",
                     onValueChange = { },
@@ -242,15 +244,15 @@ private fun NewReserveDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick:
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = dimensionResource(id = R.dimen.padding_small)),
+                        .padding(top = dimensionResource(id = commonR.dimen.padding_small)),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     TextButton(onClick = onCancelButtonClick) {
-                        Text(text = stringResource(id = R.string.cancel_button))
+                        Text(text = stringResource(id = commonR.string.cancel_button))
                     }
                     Button(onClick = onSaveButtonClick) {
-                        Text(text = stringResource(id = R.string.save_button))
+                        Text(text = stringResource(id = commonR.string.save_button))
                     }
                 }
             }
@@ -268,24 +270,24 @@ private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(dimensionResource(id = R.dimen.corner_shape_round)))
+            .clip(RoundedCornerShape(dimensionResource(id = commonR.dimen.corner_shape_round)))
             .clickable { isExpanded = !isExpanded }
-            .padding(end = dimensionResource(id = R.dimen.padding_extra_small)),
+            .padding(end = dimensionResource(id = commonR.dimen.padding_extra_small)),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier.weight(1f)) {
             Icon(
                 imageVector = Icons.Default.ArrowDropDown,
-                contentDescription = stringResource(id = R.string.drop_down_arrow_icon_description),
+                contentDescription = stringResource(id = commonR.string.drop_down_arrow_icon_description),
                 modifier = modifier
                     .alpha(0.2f)
                     .rotate(rotationState)
-                    .padding(dimensionResource(id = R.dimen.padding_extra_small)),
+                    .padding(dimensionResource(id = commonR.dimen.padding_extra_small)),
             )
             Text(
                 text = reserve.name,
-                fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+                fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -293,10 +295,10 @@ private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
         }
         Text(
             text = valueWithCurrencyString(
-                currencyStringId = R.string.brl_currency, value = reserve.value
+                currencyStringId = commonR.string.brl_currency, value = reserve.value
             ),
             maxLines = 1,
-            fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
+            fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
             fontWeight = FontWeight.Bold,
         )
     }
@@ -320,14 +322,14 @@ private fun ReserveOperationsList(
             viewModel = operationsScreenViewModel,
             onSaveButtonClick = {
                 operationsScreenViewModel.onIntent(
-                    Intent.OnSaveButtonClick(
+                    OperationsScreenContract.Intent.OnSaveButtonClick(
                         showDialog
                     )
                 )
             },
             onCancelButtonClick = {
                 showDialog.value = false
-                operationsScreenViewModel.onIntent(Intent.OnResetDialogFields)
+                operationsScreenViewModel.onIntent(OperationsScreenContract.Intent.OnResetDialogFields)
             },
             availableOperationTypes = listOf(
                 OperationType.RESERVE_ALLOCATION,
@@ -338,7 +340,7 @@ private fun ReserveOperationsList(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_extra_small))
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_extra_small))
     ) {
         for (operation in reserve.operations) {
             val operationValueColor = if (operation.isWithdrawal) Color.Red else Color.Green
@@ -347,8 +349,8 @@ private fun ReserveOperationsList(
             Row(
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
-                    .padding(vertical = dimensionResource(id = R.dimen.padding_extra_small)),
+                    .padding(horizontal = dimensionResource(id = commonR.dimen.padding_medium))
+                    .padding(vertical = dimensionResource(id = commonR.dimen.padding_extra_small)),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -359,15 +361,15 @@ private fun ReserveOperationsList(
                             Locale.getDefault()
                         ).parse(operation.date)!!
                     ),
-                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
                 )
                 Text(
                     text = operationValueSymbol + valueWithCurrencyString(
-                        currencyStringId = R.string.brl_currency,
+                        currencyStringId = commonR.string.brl_currency,
                         value = operation.value
                     ),
                     color = operationValueColor,
-                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
                 )
             }
         }
@@ -375,7 +377,7 @@ private fun ReserveOperationsList(
             onClick = { showDialog.value = true },
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = dimensionResource(id = R.dimen.padding_extra_small))
+                .padding(horizontal = dimensionResource(id = commonR.dimen.padding_extra_small))
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -384,12 +386,12 @@ private fun ReserveOperationsList(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(id = R.string.add_icon_description),
+                    contentDescription = stringResource(id = commonR.string.add_icon_description),
                     tint = Color.Gray,
                 )
                 Text(
-                    text = stringResource(id = R.string.add_operation_button),
-                    fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp
+                    text = stringResource(id = operationR.string.add_operation_button),
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
                 )
             }
         }

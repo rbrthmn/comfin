@@ -48,6 +48,8 @@ android {
 dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:navigation"))
+    implementation(project(":feature:settings"))
+    implementation(project(":feature:operations"))
 
     testImplementation(project(":core:test"))
 }
