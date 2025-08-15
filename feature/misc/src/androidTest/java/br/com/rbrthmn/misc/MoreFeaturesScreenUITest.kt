@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens
+package br.com.rbrthmn.misc
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
@@ -30,14 +30,12 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import br.com.rbrthmn.R
+import br.com.rbrthmn.misc.incomedivisions.IncomeDivisionsDestination
+import br.com.rbrthmn.misc.morefeatures.FEATURES_LIST_TAG
+import br.com.rbrthmn.misc.morefeatures.MoreFeaturesDestination
+import br.com.rbrthmn.misc.recurringexpenses.RecurringExpensesDestination
+import br.com.rbrthmn.misc.reserves.ReservesDestination
 import br.com.rbrthmn.settings.SettingsDestination
-import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
-import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.FEATURES_LIST_TAG
-import br.com.rbrthmn.ui.financialcompanion.screens.morefeatures.MoreFeaturesDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpensesDestination
-import br.com.rbrthmn.ui.financialcompanion.screens.reserves.ReservesDestination
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -50,7 +48,6 @@ class MoreFeaturesScreenUITest : br.com.rbrthmn.ui.BaseUITest() {
         navController = TestNavHostController(LocalContext.current)
         navController.navigatorProvider.addNavigator(ComposeNavigator())
 
-        ComFinNavGraph(navController = navController)
         navController.navigate(MoreFeaturesDestination.route)
     }
 

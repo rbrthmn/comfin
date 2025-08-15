@@ -74,4 +74,5 @@ dependencies {
     implementation(project(":core:navigation"))
 
     testImplementation(project(":core:test"))
+    androidTestImplementation(project(":core:test"))
 }

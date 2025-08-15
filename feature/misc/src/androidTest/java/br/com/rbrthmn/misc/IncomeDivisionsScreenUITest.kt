@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens
+package br.com.rbrthmn.misc
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
@@ -29,10 +29,9 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
-import br.com.rbrthmn.ui.financialcompanion.screens.incomedivisions.IncomeDivisionsDestination
+import br.com.rbrthmn.misc.incomedivisions.IncomeDivisionsDestination
 import org.junit.Test
+import br.com.rbrthmn.ui.R as commonR
 
 class IncomeDivisionsScreenUITest : br.com.rbrthmn.ui.BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -43,7 +42,6 @@ class IncomeDivisionsScreenUITest : br.com.rbrthmn.ui.BaseUITest() {
         composeTestRule.setContent {
             navController = TestNavHostController(LocalContext.current)
             navController.navigatorProvider.addNavigator(ComposeNavigator())
-            ComFinNavGraph(navController = navController)
 
             navController.navigate(IncomeDivisionsDestination.route)
         }
@@ -70,7 +68,7 @@ class IncomeDivisionsScreenUITest : br.com.rbrthmn.ui.BaseUITest() {
         addDivisionButton.performClick()
 
         val cancelButton =
-            composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.cancel_button))
+            composeTestRule.onNodeWithText(composeTestRule.activity.getString(commonR.string.cancel_button))
         cancelButton.performClick()
 
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.division_name_hint))
@@ -88,7 +86,7 @@ class IncomeDivisionsScreenUITest : br.com.rbrthmn.ui.BaseUITest() {
         addDivisionButton.performClick()
 
         val saveButton =
-            composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.save_button))
+            composeTestRule.onNodeWithText(composeTestRule.activity.getString(commonR.string.save_button))
         saveButton.performClick()
 
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.division_name_hint))

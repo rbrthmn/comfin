@@ -1,5 +1,6 @@
 package br.com.rbrthmn.home.ui.components
 
+import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
@@ -30,6 +31,7 @@ import br.com.rbrthmn.ui.R as commonR
 class CreditCardBillsCardUITest : BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
+    @SuppressLint("ViewModelConstructorInComposable")
     override fun setup() {
         composeTestRule.setContent {
             CreditCardBillsCard(

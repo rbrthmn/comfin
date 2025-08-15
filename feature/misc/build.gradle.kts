@@ -52,4 +52,5 @@ dependencies {
     implementation(project(":feature:operations"))
 
     testImplementation(project(":core:test"))
+    androidTestImplementation(project(":core:test"))
 }

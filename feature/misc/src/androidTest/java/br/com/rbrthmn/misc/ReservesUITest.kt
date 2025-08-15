@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.ui.financialcompanion.screens
+package br.com.rbrthmn.misc
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
@@ -26,45 +26,45 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import br.com.rbrthmn.R
-import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.NEW_RECURRING_EXPENSE_DIALOG_TAG
-import br.com.rbrthmn.ui.financialcompanion.screens.recurringexpenses.RecurringExpenses
+import br.com.rbrthmn.misc.reserves.NEW_RESERVE_DIALOG_TAG
+import br.com.rbrthmn.misc.reserves.ReservesScreen
 import br.com.rbrthmn.ui.onNodeWithStringId
 import org.junit.Test
+import br.com.rbrthmn.ui.R as commonR
 
-class RecurringExpensesUITest : br.com.rbrthmn.ui.BaseUITest() {
+class ReservesUITest : br.com.rbrthmn.ui.BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    override fun setup() = composeTestRule.setContent { RecurringExpenses() }
+    override fun setup() = composeTestRule.setContent { ReservesScreen() }
 
     @Test
     fun add_new_button_should_show_dialog() {
-        val button = composeTestRule.onNodeWithStringId(R.string.recurring_expense_add_button)
+        val button = composeTestRule.onNodeWithStringId(R.string.add_reserve_button)
         button.performClick()
 
-        val dialog = composeTestRule.onNodeWithTag(NEW_RECURRING_EXPENSE_DIALOG_TAG)
+        val dialog = composeTestRule.onNodeWithTag(NEW_RESERVE_DIALOG_TAG)
         dialog.assertIsDisplayed()
     }
 
     @Test
     fun cancel_button_should_dismiss_dialog() {
-        composeTestRule.onNodeWithStringId(R.string.recurring_expense_add_button).performClick()
+        composeTestRule.onNodeWithStringId(R.string.add_reserve_button).performClick()
 
-        val button = composeTestRule.onNodeWithStringId(R.string.cancel_button)
+        val button = composeTestRule.onNodeWithStringId(commonR.string.cancel_button)
         button.performClick()
 
-        val dialog = composeTestRule.onNodeWithTag(NEW_RECURRING_EXPENSE_DIALOG_TAG)
+        val dialog = composeTestRule.onNodeWithTag(NEW_RESERVE_DIALOG_TAG)
         dialog.assertIsNotDisplayed()
     }
 
     @Test
     fun save_button_should_dismiss_dialog() {
-        composeTestRule.onNodeWithStringId(R.string.recurring_expense_add_button).performClick()
+        composeTestRule.onNodeWithStringId(R.string.add_reserve_button).performClick()
 
-        val button = composeTestRule.onNodeWithStringId(R.string.save_button)
+        val button = composeTestRule.onNodeWithStringId(commonR.string.save_button)
         button.performClick()
 
-        val dialog = composeTestRule.onNodeWithTag(NEW_RECURRING_EXPENSE_DIALOG_TAG)
+        val dialog = composeTestRule.onNodeWithTag(NEW_RESERVE_DIALOG_TAG)
         dialog.assertIsNotDisplayed()
     }
 }
