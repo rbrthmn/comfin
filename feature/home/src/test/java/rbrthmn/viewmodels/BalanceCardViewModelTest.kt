@@ -1,22 +1,3 @@
-/*
- *
- * Copyright (C) 2022 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Modifications made by Roberto Kenzo Hamano, 2024
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
 
 package rbrthmn.viewmodels
 
@@ -30,12 +11,35 @@ import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Compan
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.TOTAL_BALANCE_MOCK
 import br.com.rbrthmn.ui.R
 import br.com.rbrthmn.ui.utils.formatDouble
+import br.com.rbrthmn.ui.utils.formatString
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.time.LocalDate
+import java.util.Locale
 
 class BalanceCardViewModelTest {
     private val viewModel = BalanceCardViewModel()
+
+    @Test
+    fun `onSaveClick with valid input should add new account`() {
+        Locale.setDefault(Locale("pt", "BR"))
+
+        assignValidInputs()
+        val mock = mutableStateOf(true)
+
+        val expectedFormattedValue = formatString(VALID_BALANCE_STRING)
+
+        val newAccount = BalanceCardContract.BankAccountBalanceUiState(
+            name = VALID_STRING,
+            value = expectedFormattedValue,
+            bankName = VALID_STRING
+        )
+        val newAccountList = viewModel.uiState.value.accounts + newAccount
+
+        viewModel.onIntent(Intent.OnSaveClick(mock))
+
+        assertEquals(newAccountList, viewModel.uiState.value.accounts)
+    }
 
     @Test
     fun `doOnInit should assign initial values`() {
@@ -125,23 +129,6 @@ class BalanceCardViewModelTest {
     }
 
     @Test
-    fun `onSaveClick with valid input should add new account`() {
-        assignValidInputs()
-        val mock = mutableStateOf(true)
-        val newAccount =
-            BalanceCardContract.BankAccountBalanceUiState(
-                name = VALID_STRING,
-                value = FORMATTED_BALANCE_STRING,
-                bankName = VALID_STRING
-            )
-        val newAccountList = viewModel.uiState.value.accounts + newAccount
-
-        viewModel.onIntent(Intent.OnSaveClick(mock))
-
-        assertEquals(newAccountList, viewModel.uiState.value.accounts)
-    }
-
-    @Test
     fun `onSaveClick with valid input should clean inputs`() {
         assignValidInputs()
         val mock = mutableStateOf(true)
@@ -178,11 +165,9 @@ class BalanceCardViewModelTest {
 
     private companion object {
         const val VALID_BALANCE_STRING = "123"
-        const val FORMATTED_BALANCE_STRING = "123,00"
         const val EMPTY_STRING = ""
         const val VALID_STRING = "test"
         const val VALID_ID_STRING = 1
         val VALID_DATE: LocalDate = LocalDate.of(1998, 10, 20)
     }
 }
-
