@@ -1,5 +1,6 @@
 package br.com.rbrthmn.home.ui.components
 
+import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
@@ -29,6 +30,7 @@ import java.time.LocalDate
 class BalanceCardUITest : BaseUITest() {
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
+    @SuppressLint("ViewModelConstructorInComposable")
     override fun setup() = composeTestRule.setContent {
         BalanceCard(
             viewModel = BalanceCardViewModel().doOnInit(),

@@ -20,6 +20,7 @@
 
 package br.com.rbrthmn.home.ui.components.balancecard
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -252,6 +253,7 @@ private fun AddBankAccountDialog(
     }
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
 fun BalanceCardPreview(modifier: Modifier = Modifier) {
@@ -262,6 +264,7 @@ fun BalanceCardPreview(modifier: Modifier = Modifier) {
     )
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
 fun AddBankAccountDialogPreview(modifier: Modifier = Modifier) {

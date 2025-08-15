@@ -20,6 +20,7 @@
 
 package br.com.rbrthmn.operations.ui.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -64,11 +65,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import br.com.rbrthmn.operations.R
 import br.com.rbrthmn.operations.ui.Operation
 import br.com.rbrthmn.operations.ui.OperationType
 import br.com.rbrthmn.operations.ui.OperationsScreenContract
 import br.com.rbrthmn.operations.ui.OperationsScreenViewModel
-import br.com.rbrthmn.operations.R
 import br.com.rbrthmn.ui.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import java.time.LocalDate
@@ -382,6 +383,7 @@ private fun OperationItem(
     }
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
 fun OperationsListCardPreview() {
@@ -391,6 +393,7 @@ fun OperationsListCardPreview() {
     OperationsListCard(viewModel = OperationsScreenViewModel(stringProvider).doOnInit())
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
 fun AddOperationDialogPreview() {

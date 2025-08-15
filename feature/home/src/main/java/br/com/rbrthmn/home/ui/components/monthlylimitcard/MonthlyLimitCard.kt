@@ -20,6 +20,7 @@
 
 package br.com.rbrthmn.home.ui.components.monthlylimitcard
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -183,12 +184,13 @@ private fun InfoDialog(dialogText: String, onCloseButtonClick: () -> Unit) {
     }
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
 fun MonthlyLimitCardPreview() {
     MonthlyLimitCard(
         onCardClick = {},
-        viewModel = MonthlyLimitCardViewModel(),
+        viewModel = MonthlyLimitCardViewModel().doOnInit(),
         currentDateFilter = LocalDate.now()
     )
 }

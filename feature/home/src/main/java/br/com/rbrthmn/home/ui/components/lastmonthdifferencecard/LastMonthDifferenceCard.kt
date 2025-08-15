@@ -20,6 +20,7 @@
 
 package br.com.rbrthmn.home.ui.components.lastmonthdifferencecard
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -88,6 +89,7 @@ fun LastMonthDifferenceCard(
     }
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
 fun LastMonthDifferenceCardPreview(modifier: Modifier = Modifier) {

@@ -20,6 +20,7 @@
 
 package br.com.rbrthmn.operations.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -112,11 +113,12 @@ private fun OperationsScreenContent(
     }
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
 private fun OperationsScreenPreview() {
     val context = LocalContext.current
     val stringProvider = ResourceStringProvider(context)
 
-    OperationsScreen(viewModel = OperationsScreenViewModel(stringProvider))
+    OperationsScreen(viewModel = OperationsScreenViewModel(stringProvider).doOnInit())
 }

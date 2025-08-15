@@ -20,6 +20,7 @@
 
 package br.com.rbrthmn.home.ui.components.creditcardbillscard
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -292,6 +293,7 @@ private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isErr
     }
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
 fun CreditCardsBillCardPreview() {
@@ -302,6 +304,7 @@ fun CreditCardsBillCardPreview() {
     )
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
 fun AddCardBillDialogPreview() {
