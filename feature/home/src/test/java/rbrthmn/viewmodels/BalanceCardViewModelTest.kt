@@ -21,6 +21,7 @@
 package rbrthmn.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.Intent
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_NAME_MOCK
@@ -128,11 +129,11 @@ class BalanceCardViewModelTest {
         assignValidInputs()
         val mock = mutableStateOf(true)
         val newAccount =
-            br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.BankAccountBalanceUiState(
-            name = VALID_STRING,
-            value = FORMATTED_BALANCE_STRING,
-            bankName = VALID_STRING
-        )
+            BalanceCardContract.BankAccountBalanceUiState(
+                name = VALID_STRING,
+                value = FORMATTED_BALANCE_STRING,
+                bankName = VALID_STRING
+            )
         val newAccountList = viewModel.uiState.value.accounts + newAccount
 
         viewModel.onIntent(Intent.OnSaveClick(mock))
