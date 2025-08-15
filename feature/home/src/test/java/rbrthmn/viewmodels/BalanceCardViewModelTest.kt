@@ -22,6 +22,7 @@ package rbrthmn.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.Intent
+import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_NAME_MOCK
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_VALUE_MOCK
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.BANK_NAME_MOCK
@@ -33,7 +34,7 @@ import org.junit.Test
 import java.time.LocalDate
 
 class BalanceCardViewModelTest {
-    private val viewModel = br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel()
+    private val viewModel = BalanceCardViewModel()
 
     @Test
     fun `doOnInit should assign initial values`() {
