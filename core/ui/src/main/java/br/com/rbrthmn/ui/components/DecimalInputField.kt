@@ -26,14 +26,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import br.com.rbrthmn.ui.utils.DecimalFormatter
 import br.com.rbrthmn.ui.utils.DecimalInputFieldFormatter
 import br.com.rbrthmn.ui.utils.DecimalInputVisualTransformation
-import org.koin.compose.koinInject
 
 @Composable
 fun DecimalInputField(
     modifier: Modifier = Modifier,
-    decimalFormatter: DecimalInputFieldFormatter = koinInject(),
+    decimalFormatter: DecimalInputFieldFormatter = DecimalFormatter(),
     onValueChange: (String) -> Unit,
     value: String,
     prefix: String = "",

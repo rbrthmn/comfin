@@ -20,7 +20,6 @@
 
 package br.com.rbrthmn.home.ui.components.balancecard
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -84,18 +83,33 @@ fun BalanceCard(
     )
 
     if (showAddAccountDialog.value)
-        AddBankAccountDialog(
-            viewModel = viewModel,
-            onCancelButtonClick = {
-                viewModel.onIntent(CleanNewAccount)
-                showAddAccountDialog.value = false
-            },
-            onSaveButtonClick = {
-                viewModel.onIntent(
-                    OnSaveClick(showDialog = showAddAccountDialog)
-                )
-            },
-        )
+
+        Dialog(onDismissRequest = {
+            viewModel.onIntent(CleanNewAccount)
+            showAddAccountDialog.value = false
+        }) {
+            AddBankAccountDialog(
+                onCancelButtonClick = {
+                    viewModel.onIntent(CleanNewAccount)
+                    showAddAccountDialog.value = false
+                },
+                onSaveButtonClick = {
+                    viewModel.onIntent(
+                        OnSaveClick(showDialog = showAddAccountDialog)
+                    )
+                },
+                uiState = uiState,
+                onDescriptionChange = {
+                    viewModel.onIntent(OnDescriptionChange(it))
+                },
+                onInitialBalanceChange = {
+                    viewModel.onIntent(OnInitialBalanceChange(it))
+                },
+                onBankChange = { bankId, bankName ->
+                    viewModel.onIntent(OnBankChange(bankId, bankName))
+                }
+            )
+        }
 
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -183,95 +197,99 @@ private fun BankAccountBalanceItem(
 @Composable
 private fun AddBankAccountDialog(
     modifier: Modifier = Modifier,
-    viewModel: BalanceCardContract.ViewModel,
     onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
+    uiState: BalanceCardContract.BalanceCardUiState,
+    onDescriptionChange: (String) -> Unit = {},
+    onInitialBalanceChange: (String) -> Unit = {},
+    onBankChange: (Int, String) -> Unit = { _, _ -> }
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-
-    Dialog(onDismissRequest = onCancelButtonClick) {
-        Card(modifier = modifier
+    Card(
+        modifier = modifier
             .fillMaxWidth()
-            .testTag(ADD_BANK_ACCOUNT_DIALOG_TAG)) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier.padding(
-                    horizontal = dimensionResource(id = uiR.dimen.padding_large),
-                    vertical = dimensionResource(id = uiR.dimen.padding_medium)
-                )
+            .testTag(ADD_BANK_ACCOUNT_DIALOG_TAG)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier.padding(
+                horizontal = dimensionResource(id = uiR.dimen.padding_large),
+                vertical = dimensionResource(id = uiR.dimen.padding_medium)
+            )
+        ) {
+            OutlinedTextField(
+                label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
+                maxLines = 100,
+                value = uiState.newAccountDescription,
+                onValueChange = { onDescriptionChange(it) },
+                isError = !uiState.isNewAccountDescriptionValid
+            )
+            DecimalInputField(
+                onValueChange = { onInitialBalanceChange(it) },
+                value = uiState.newAccountBalance,
+                label = stringResource(id = R.string.balance_input_hint),
+                prefix = stringResource(id = R.string.brl_currency),
+                isError = !uiState.isNewAccountBalanceValid
+            )
+            BanksDropdownMenu(
+                onBankSelected = { bankId, bankName ->
+                    onBankChange(bankId, bankName)
+                },
+                isValid = uiState.isNewAccountBankValid,
+                modifier = modifier.padding(top = dimensionResource(id = uiR.dimen.padding_small))
+            )
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(top = dimensionResource(id = uiR.dimen.padding_small)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround,
             ) {
-                OutlinedTextField(
-                    label = { Text(text = stringResource(id = R.string.balance_name_input_hint)) },
-                    maxLines = 100,
-                    value = uiState.newAccountDescription,
-                    onValueChange = {
-                        viewModel.onIntent(
-                            OnDescriptionChange(description = it)
-                        )
-                    },
-                    isError = !uiState.isNewAccountDescriptionValid
-                )
-                DecimalInputField(
-                    onValueChange = {
-                        viewModel.onIntent(
-                            OnInitialBalanceChange(balance = it)
-                        )
-                    },
-                    value = uiState.newAccountBalance,
-                    label = stringResource(id = R.string.balance_input_hint),
-                    prefix = stringResource(id = R.string.brl_currency),
-                    isError = !uiState.isNewAccountBalanceValid
-                )
-                BanksDropdownMenu(
-                    onBankSelected = { bankId, bankName ->
-                        viewModel.onIntent(
-                            OnBankChange(
-                                bankId,
-                                bankName
-                            )
-                        )
-                    },
-                    isValid = uiState.isNewAccountBankValid,
-                    modifier = modifier.padding(top = dimensionResource(id = uiR.dimen.padding_small))
-                )
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(top = dimensionResource(id = uiR.dimen.padding_small)),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceAround,
-                ) {
-                    TextButton(onClick = onCancelButtonClick, Modifier.testTag(CANCEL_BUTTON_TAG)) {
-                        Text(text = stringResource(id = uiR.string.cancel_button))
-                    }
-                    Button(onClick = onSaveButtonClick, Modifier.testTag(SAVE_BUTTON_TAG)) {
-                        Text(text = stringResource(id = uiR.string.save_button))
-                    }
+                TextButton(onClick = onCancelButtonClick, Modifier.testTag(CANCEL_BUTTON_TAG)) {
+                    Text(text = stringResource(id = uiR.string.cancel_button))
+                }
+                Button(onClick = onSaveButtonClick, Modifier.testTag(SAVE_BUTTON_TAG)) {
+                    Text(text = stringResource(id = uiR.string.save_button))
                 }
             }
         }
     }
 }
 
-@SuppressLint("ViewModelConstructorInComposable")
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun BalanceCardPreview(modifier: Modifier = Modifier) {
-    BalanceCard(
-        viewModel = BalanceCardViewModel().doOnInit(),
+    val bankAccounts = listOf(
+        BalanceCardContract.BankAccountBalanceUiState(
+            name = "Banco do Brasil",
+            value = "100.00",
+            bankName = "Banco do Brasil",
+            bankIcon = uiR.drawable.bank_icon,
+            canValueBeEdited = true
+        ),
+        BalanceCardContract.BankAccountBalanceUiState(
+            name = "Banco do Brasil",
+            value = "100.00",
+            bankName = "Banco do Brasil",
+            bankIcon = uiR.drawable.bank_icon,
+            canValueBeEdited = true
+        )
+    )
+
+    BalanceList(
         modifier = modifier,
-        currentDateFilter = LocalDate.now()
+        totalBalance = "200.00",
+        bankAccounts = bankAccounts,
+        onAddItemButtonClick = { }
     )
 }
 
-@SuppressLint("ViewModelConstructorInComposable")
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun AddBankAccountDialogPreview(modifier: Modifier = Modifier) {
     AddBankAccountDialog(
-        viewModel = BalanceCardViewModel().doOnInit(),
         onSaveButtonClick = { },
         onCancelButtonClick = { },
+        uiState = BalanceCardContract.BalanceCardUiState(),
         modifier = modifier
     )
 }
