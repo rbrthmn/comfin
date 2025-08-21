@@ -19,11 +19,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          # 'cache: gradle' é bom, mas vamos adicionar um cache mais explícito abaixo
-          # para maior controle e cobertura. Você pode manter ou remover este 'cache: gradle'
-          # e testar qual configuração funciona melhor para você.
-          # Se mantiver, o cache do actions/cache abaixo pode ser mais focado.
-      #          cache: gradle
 
       - name: Cache Gradle packages and wrapper
         uses: actions/cache@v3
@@ -48,18 +43,16 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build and Test
-        run: ./gradlew assembleDebug testDebugUnitTest --stacktrace --scan
-#          # Para Pull Requests (incluindo para develop), construa e teste apenas debug
-#          if [[ "${{ github.event_name }}" == "pull_request" || "${{ github.ref_name }}" == "develop" ]]; then
-#          echo "Running debug build and tests for PR or develop branch..."
-#          ./gradlew assembleDebug testDebugUnitTest --stacktrace --scan
-#          # Para pushes diretos na main, considere construir release (e talvez rodar mais testes)
-#          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "main" ]]; then
-#          echo "Running release build for main branch..."
-#          # Você pode querer adicionar :app:lintRelease ou outros testes aqui também
-#          ./gradlew assembleRelease --stacktrace --scan
-#          else
-#          # Fallback ou para outros cenários não cobertos acima
-#          echo "Running default build (all variants)..."
-#          ./gradlew build --stacktrace --scan
-#          fi
+        run: |
+          #       a etapa "Build and Test" ainda existiria, mas não faria nada.
+          #       A job "build" ainda seria encontrada e executaria as etapas anteriores.
+          if [[ "${{ github.event_name }}" == "pull_request" || "${{ github.ref_name }}" == "develop" ]]; then
+          echo "Running debug build and tests for PR or develop branch..."
+          ./gradlew assembleDebug testDebugUnitTest --stacktrace --scan
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "main" ]]; then
+          echo "Running release build for main branch..."
+          ./gradlew assembleRelease --stacktrace --scan
+          else
+          echo "Running default (debug) build and tests as fallback..."
+          ./gradlew assembleDebug testDebugUnitTest --stacktrace --scan
+          fi
