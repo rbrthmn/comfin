@@ -48,18 +48,18 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build and Test
-        run:
-          # Para Pull Requests (incluindo para develop), construa e teste apenas debug
-          if [[ "${{ github.event_name }}" == "pull_request" || "${{ github.ref_name }}" == "develop" ]]; then
-          echo "Running debug build and tests for PR or develop branch..."
-          ./gradlew assembleDebug testDebugUnitTest --stacktrace --scan
-          # Para pushes diretos na main, considere construir release (e talvez rodar mais testes)
-          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "main" ]]; then
-          echo "Running release build for main branch..."
-          # Você pode querer adicionar :app:lintRelease ou outros testes aqui também
-          ./gradlew assembleRelease --stacktrace --scan
-          else
-          # Fallback ou para outros cenários não cobertos acima
-          echo "Running default build (all variants)..."
-          ./gradlew build --stacktrace --scan
-          fi
+        run: ./gradlew assembleDebug testDebugUnitTest --stacktrace --scan
+#          # Para Pull Requests (incluindo para develop), construa e teste apenas debug
+#          if [[ "${{ github.event_name }}" == "pull_request" || "${{ github.ref_name }}" == "develop" ]]; then
+#          echo "Running debug build and tests for PR or develop branch..."
+#          ./gradlew assembleDebug testDebugUnitTest --stacktrace --scan
+#          # Para pushes diretos na main, considere construir release (e talvez rodar mais testes)
+#          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "main" ]]; then
+#          echo "Running release build for main branch..."
+#          # Você pode querer adicionar :app:lintRelease ou outros testes aqui também
+#          ./gradlew assembleRelease --stacktrace --scan
+#          else
+#          # Fallback ou para outros cenários não cobertos acima
+#          echo "Running default build (all variants)..."
+#          ./gradlew build --stacktrace --scan
+#          fi
