@@ -8,7 +8,7 @@
 - Modern and intuitive UI using Jetpack Compose
 
 ## 🛠️ Technologies and Architecture
-This project follows the **MVVM** (Model-View-ViewModel) architecture and utilizes the following libraries:
+This project follows the **MVVM** (Model-View-ViewModel) + **MVI** (Model-View-Intent) architecture across multiple modules and utilizes the following libraries:
 
 - **Jetpack Compose**: For building the user interface
 - **Koin**: For dependency injection
