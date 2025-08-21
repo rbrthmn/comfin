@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_extra_small">4dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
+    <dimen name="zero_padding">0dp</dimen>
+
+    <dimen name="month_top_bar_corner_shape_round">25dp</dimen>
+    <dimen name="month_top_bar_elevation">10dp</dimen>
+    <dimen name="dates_circular_list_width">140dp</dimen>
+    <dimen name="dates_circular_list_item_height">40dp</dimen>
+
+    <dimen name="corner_shape_round">8dp</dimen>
+
+    <!-- font sizes values -->
+    <dimen name="font_size_small">8sp</dimen>
+    <dimen name="font_size_medium">16sp</dimen>
+    <dimen name="font_size_large">24sp</dimen>
+</resources>

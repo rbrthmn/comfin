@@ -20,10 +20,17 @@
 
 package br.com.rbrthmn.ui.financialcompanion
 
+import androidx.activity.ComponentActivity
+import androidx.annotation.StringRes
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import br.com.rbrthmn.ui.BaseUITest
 import org.junit.Test
 
 class ComFinAppUITest : BaseUITest() {
@@ -44,3 +51,7 @@ class ComFinAppUITest : BaseUITest() {
         navBAR.assertExists()
     }
 }
+
+fun <A : ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<A>, A>.onNodeWithStringId(
+    @StringRes id: Int
+): SemanticsNodeInteraction = onNodeWithText(activity.getString(id))

@@ -25,4 +25,4 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: Unit Test
-      run: ./gradlew testDebugUnitTest
+      run: ./gradlew testDebugUnitTest --scan

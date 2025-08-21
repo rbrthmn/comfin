@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="operations_route">operations</string>
+    <string name="balance_title">Balanço</string>
+    <string name="incomes_title">Entradas</string>
+    <string name="outflow_title">Saídas</string>
+    <string name="search_hint">Pesquisar</string>
+    <string name="add_operation_button">Adicionar operação</string>
+    <string name="operation_value_hint">Valor</string>
+    <string name="operation_type_hint">Tipo de operação</string>
+    <string name="aimed_account_hint">Conta destino</string>
+    <string name="origin_account_hint">Conta origem</string>
+    <string name="operation_type_transfer">Transferência</string>
+    <string name="operation_type_debit_purchase">Compra no débito</string>
+    <string name="operation_type_bill_payment">Pagamento de boleto</string>
+    <string name="operation_type_withdrawal">Saque</string>
+    <string name="operation_type_deposit">Depósito</string>
+    <string name="operation_type_reserve_allocation">Aplicação em reserva</string>
+    <string name="operation_type_reserve_withdrawal">Resgate de reserva</string>
+    <string name="operation_type_income">Rendimentos</string>
+    <string name="operation_type_other">Outros</string>
+    <string name="account_holder_hint">Titular</string>
+    <string name="add_account_option">Adicionar outra conta</string>
+    <string name="operation_description_hint">Descrição</string>
+    <string name="operation_account_icon_description">Ícone de banco</string>
+
+    <string name="date_picker_title">Selecione uma data</string>
+    <string name="date_picker_label">Data da operação</string>
+    <string name="date_picker_cancel">Cancelar</string>
+    <string name="date_picker_ok">OK</string>
+</resources>

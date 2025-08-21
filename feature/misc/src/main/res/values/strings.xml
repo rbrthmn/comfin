@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_label_reserves">Reservas</string>
+    <string name="feature_label_recurring_expenses">Gastos Recorrentes</string>
+    <string name="feature_label_income_distribution">Rendas e Distribuições</string>
+    <string name="feature_label_settings">Configurações</string>
+
+    <string name="total_income">Renda Total</string>
+    <string name="recurring_expenses">Gastos Recorrentes</string>
+    <string name="remaining_month">Restante do mês</string>
+    <string name="add_division">Adicionar divisão</string>
+    <string name="division_name_hint">Nome da divisão</string>
+    <string name="division_value_hint">Valor</string>
+    <string name="division_percentage">%</string>
+    <string name="division_percentage_hint">Porcentagem</string>
+    <string name="cancel_button">Cancelar</string>
+    <string name="save_button">Salvar</string>
+    <string name="colon" translatable="false">:</string>
+
+    <string name="recurring_expense_add_button">Adicionar gasto recorrente</string>
+    <string name="recurring_expense_description_hint">Descrição</string>
+    <string name="recurring_expense_value_hint">Valor</string>
+    <string name="recurring_expense_billing_day_hint">Dia de cobrança</string>
+    <string name="recurring_expense_billing_day">Dia</string>
+    <string name="recurring_total_title">Total:</string>
+
+    <string name="reserve_hint">Reserva</string>
+    <string name="add_reserve_button">Adicionar reserva</string>
+    <string name="new_reserve_name_hint">Nome da reserva</string>
+    <string name="new_reserve_value_hint">Valor inicial</string>
+    <string name="reserve_total_title">Total:</string>
+
+    <string name="card_bill_close_day_hint">Dia de fechamento</string>
+</resources>

@@ -1,0 +1,43 @@
+<!--
+  ~
+  ~ Copyright (C) 2022 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Modifications made by Roberto Kenzo Hamano, 2024
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<resources>
+    <string name="app_name">Home</string>
+    <string name="monthly_limit_title">Limite do mês</string>
+    <string name="drop_down_arrow_icon_description">Ícone de flecha para baixo</string>
+    <string name="help_icon_description">Ícone com ponto de interrogação</string>
+    <string name="difference_title">Diferença</string>
+    <string name="total_balance_title">Saldo:</string>
+    <string name="add_account_button">Adicionar conta</string>
+    <string name="bank_icon_description">Ícone do banco</string>
+    <string name="add_icon_description">Ícone de mais</string>
+    <string name="add_card_button">Adicionar cartão</string>
+    <string name="total_bills_title">Faturas:</string>
+    <string name="credit_card_due_day_label">Fecha dia</string>
+    <string name="difference_from_last_month_title">Diferença do mês passado</string>
+    <string name="brl_currency">R$</string>
+    <string name="monthly_limit_dialog_text">O limite do mês é o limite total de todas as faturas, subtraido do valor do restante do mês os gastos recorrentes ainda não pagos, transações do mês e diferença do mês passado.\nEm resumo, é o valor do saldo disponível para uso.</string>
+    <string name="monthly_difference_dialog_text">A diferença é o valor do limite do mês subtraído do valor total das faturas</string>
+    <string name="balance_input_hint">Saldo inicial</string>
+    <string name="balance_name_input_hint">Descrição</string>
+    <string name="card_bill_input_hint">Fatura</string>
+    <string name="card_bill_close_day_hint">Dia de fechamento</string>
+    <string name="bank_hint">Banco</string>
+</resources>
