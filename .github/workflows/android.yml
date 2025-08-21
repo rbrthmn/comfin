@@ -44,8 +44,6 @@ jobs:
 
       - name: Build and Test
         run: |
-          #       a etapa "Build and Test" ainda existiria, mas não faria nada.
-          #       A job "build" ainda seria encontrada e executaria as etapas anteriores.
           if [[ "${{ github.event_name }}" == "pull_request" || "${{ github.ref_name }}" == "develop" ]]; then
           echo "Running debug build and tests for PR or develop branch..."
           ./gradlew assembleDebug testDebugUnitTest --stacktrace --scan
