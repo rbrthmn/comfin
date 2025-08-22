@@ -1,5 +1,4 @@
 /*
- *
  * Copyright (C) 2022 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package br.com.rbrthmn.operations.ui.components
@@ -39,8 +37,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import br.com.rbrthmn.operations.ui.OperationsScreenContract
 import br.com.rbrthmn.operations.R
+import br.com.rbrthmn.operations.ui.OperationsScreenContract
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import br.com.rbrthmn.ui.R as uiR
 
