@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.home.ui.components.balancecard
 
 import androidx.compose.foundation.layout.Arrangement

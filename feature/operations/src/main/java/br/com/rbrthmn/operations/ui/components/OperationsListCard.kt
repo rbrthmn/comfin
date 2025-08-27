@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.operations.ui.components
 
 import android.annotation.SuppressLint

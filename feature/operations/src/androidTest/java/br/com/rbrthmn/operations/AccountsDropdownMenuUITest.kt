@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.operations
 
 import androidx.activity.ComponentActivity

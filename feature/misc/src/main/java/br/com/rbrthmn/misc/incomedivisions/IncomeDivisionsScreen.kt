@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.misc.incomedivisions
 
 import androidx.compose.foundation.clickable

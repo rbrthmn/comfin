@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.operations.ui.components
 
 import androidx.compose.foundation.layout.Box

@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.navigation
 
 import androidx.compose.foundation.layout.fillMaxWidth

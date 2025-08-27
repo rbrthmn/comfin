@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.settings
 
 import androidx.compose.foundation.clickable

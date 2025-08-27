@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.ui.utils
 
 import junit.framework.TestCase.assertEquals

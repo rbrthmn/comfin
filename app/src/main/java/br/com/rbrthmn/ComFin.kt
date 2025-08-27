@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn
 
 import android.app.Application

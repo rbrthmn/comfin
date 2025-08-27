@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.ui.components
 
 import androidx.activity.ComponentActivity

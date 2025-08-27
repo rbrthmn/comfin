@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.misc.recurringexpenses
 
 import androidx.compose.animation.animateContentSize

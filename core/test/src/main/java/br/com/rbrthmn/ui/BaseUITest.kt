@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.ui
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule

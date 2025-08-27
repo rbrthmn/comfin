@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.operations.ui
 
 import androidx.compose.runtime.Composable

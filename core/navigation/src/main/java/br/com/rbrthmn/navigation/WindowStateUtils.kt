@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.navigation
 
 enum class ComFinNavigationType {

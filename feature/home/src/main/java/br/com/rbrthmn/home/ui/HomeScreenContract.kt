@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.home.ui
 
 import br.com.rbrthmn.ui.BaseViewModel

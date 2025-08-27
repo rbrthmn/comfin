@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.operations.ui.components.utils
 
 import br.com.rbrthmn.operations.ui.Operation

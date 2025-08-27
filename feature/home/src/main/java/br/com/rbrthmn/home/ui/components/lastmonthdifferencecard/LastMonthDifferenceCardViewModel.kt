@@ -1,4 +1,3 @@
-
 package br.com.rbrthmn.home.ui.components.lastmonthdifferencecard
 
 import br.com.rbrthmn.ui.utils.formatDouble
