@@ -1,23 +1,3 @@
-/*
- *
- * Copyright (C) 2022 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Modifications made by Roberto Kenzo Hamano, 2024
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
-
 package br.com.rbrthmn.misc.reserves
 
 import androidx.compose.animation.animateContentSize
@@ -46,10 +26,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -77,14 +57,6 @@ import java.util.Locale
 import br.com.rbrthmn.operations.R as operationR
 import br.com.rbrthmn.ui.R as commonR
 
-data class Reserve(
-    val name: String,
-    val value: String,
-    val operations: List<ReserveOperation> = listOf()
-)
-
-data class ReserveOperation(val date: String, val value: String, val isWithdrawal: Boolean)
-
 object ReservesDestination : NavigationDestination {
     override val route = "reserves"
 }
@@ -92,23 +64,12 @@ object ReservesDestination : NavigationDestination {
 const val NEW_RESERVE_DIALOG_TAG = "new_reserve_dialog"
 
 @Composable
-fun ReservesScreen(modifier: Modifier = Modifier) {
-    val reserveA = Reserve(
-        name = "Emergency Fund",
-        value = "1000.00",
-        operations = listOf(
-            ReserveOperation(date = "2023-11-15", value = "200.00", isWithdrawal = false),
-            ReserveOperation(date = "2023-11-22", value = "100.00", isWithdrawal = true),
-            ReserveOperation(date = "2023-12-01", value = "300.00", isWithdrawal = false)
-        )
-    )
-    val reserveB = Reserve(
-        name = "Birthday money",
-        value = "100.00",
-        operations = listOf()
-    )
-    val reserves = listOf(reserveA, reserveB)
-    val totalReservesValue = reserves.sumOf { it.value.toDouble() }.toString()
+fun ReservesScreen(
+    modifier: Modifier = Modifier,
+    viewModel: ReservesContract.ViewModel = koinViewModel<ReservesContract.ViewModel>()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    val totalReservesValue = uiState.reserves.sumOf { it.value.toDouble() }.toString()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -118,7 +79,36 @@ fun ReservesScreen(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        ReservesCard(reservesTotalValue = totalReservesValue, reserves = reserves)
+        ReservesCard(
+            reservesTotalValue = totalReservesValue,
+            reserves = uiState.reserves,
+            expandedReserveId = uiState.expandedReserveId,
+            onReserveItemClick = { reserveId ->
+                viewModel.onIntent(ReservesContract.Intent.OnReserveItemClick(reserveId))
+            },
+            onAddReserveClick = {
+                viewModel.onIntent(ReservesContract.Intent.OnAddReserveButtonClick)
+            }
+        )
+    }
+
+    if (uiState.showNewReserveDialog) {
+        NewReserveDialog(
+            reserveName = uiState.newReserveName,
+            reserveValue = uiState.newReserveValue,
+            onReserveNameChange = { name ->
+                viewModel.onIntent(ReservesContract.Intent.OnNewReserveNameChange(name))
+            },
+            onReserveValueChange = { value ->
+                viewModel.onIntent(ReservesContract.Intent.OnNewReserveValueChange(value))
+            },
+            onSaveButtonClick = {
+                viewModel.onIntent(ReservesContract.Intent.OnSaveNewReserve)
+            },
+            onCancelButtonClick = {
+                viewModel.onIntent(ReservesContract.Intent.OnCancelNewReserve)
+            }
+        )
     }
 }
 
@@ -126,7 +116,10 @@ fun ReservesScreen(modifier: Modifier = Modifier) {
 private fun ReservesCard(
     modifier: Modifier = Modifier,
     reservesTotalValue: String,
-    reserves: List<Reserve>
+    reserves: List<Reserve>,
+    expandedReserveId: String?,
+    onReserveItemClick: (String) -> Unit,
+    onAddReserveClick: () -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -173,25 +166,25 @@ private fun ReservesCard(
                     ),
             ) {
                 for (reserve in reserves) {
-                    ReserveItem(reserve = reserve)
+                    ReserveItem(
+                        reserve = reserve,
+                        isExpanded = expandedReserveId == reserve.name,
+                        onClick = { onReserveItemClick(reserve.name) }
+                    )
                 }
             }
-            AddReserveButton()
+            AddReserveButton(onAddReserveClick)
         }
     }
 }
 
 @Composable
-private fun AddReserveButton(modifier: Modifier = Modifier) {
-    var showDialog by remember { mutableStateOf(false) }
-
-    if (showDialog)
-        NewReserveDialog(
-            onSaveButtonClick = { showDialog = false },
-            onCancelButtonClick = { showDialog = false })
-
+private fun AddReserveButton(
+    onAddReserveClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Button(
-        onClick = { showDialog = true },
+        onClick = onAddReserveClick,
         contentPadding = PaddingValues(dimensionResource(id = commonR.dimen.zero_padding)),
         modifier = modifier.fillMaxWidth()
     ) {
@@ -215,7 +208,14 @@ private fun AddReserveButton(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun NewReserveDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick: () -> Unit) {
+private fun NewReserveDialog(
+    reserveName: String,
+    reserveValue: String,
+    onReserveNameChange: (String) -> Unit,
+    onReserveValueChange: (String) -> Unit,
+    onSaveButtonClick: () -> Unit,
+    onCancelButtonClick: () -> Unit
+) {
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
             modifier = Modifier
@@ -231,14 +231,14 @@ private fun NewReserveDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick:
             ) {
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.new_reserve_name_hint)) },
-                    value = "",
-                    onValueChange = { }
+                    value = reserveName,
+                    onValueChange = onReserveNameChange
                 )
                 OutlinedTextField(
                     prefix = { Text(text = stringResource(id = commonR.string.brl_currency)) },
                     label = { Text(text = stringResource(id = R.string.new_reserve_value_hint)) },
-                    value = "",
-                    onValueChange = { },
+                    value = reserveValue,
+                    onValueChange = onReserveValueChange,
                     singleLine = true
                 )
                 Row(
@@ -261,8 +261,12 @@ private fun NewReserveDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick:
 }
 
 @Composable
-private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
-    var isExpanded by remember { mutableStateOf(false) }
+private fun ReserveItem(
+    modifier: Modifier = Modifier,
+    reserve: Reserve,
+    isExpanded: Boolean,
+    onClick: () -> Unit
+) {
     val rotationState by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f, label = ""
     )
@@ -271,7 +275,7 @@ private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(dimensionResource(id = commonR.dimen.corner_shape_round)))
-            .clickable { isExpanded = !isExpanded }
+            .clickable { onClick() }
             .padding(end = dimensionResource(id = commonR.dimen.padding_extra_small)),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -407,5 +411,12 @@ private fun ReservesScreenPreview() {
 @Preview
 @Composable
 private fun NewReserveDialogPreview() {
-    NewReserveDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
+    NewReserveDialog(
+        reserveName = "",
+        reserveValue = "",
+        onReserveNameChange = {},
+        onReserveValueChange = {},
+        onSaveButtonClick = {},
+        onCancelButtonClick = {}
+    )
 }
