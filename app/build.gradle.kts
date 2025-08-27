@@ -22,6 +22,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
+    id("com.google.android.gms.oss-licenses-plugin") version "0.10.7"
 }
 
 android {
