@@ -10,7 +10,9 @@ interface ReservesContract {
         val showNewReserveDialog: Boolean = false,
         val newReserveName: String = "",
         val newReserveValue: String = "",
-        val expandedReserveId: String? = null
+        val expandedReserveId: String? = null,
+        val isNewReserveNameValid: Boolean = true,
+        val isNewReserveValueValid: Boolean = true
     )
 
     sealed class Intent {

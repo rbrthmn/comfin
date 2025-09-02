@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -41,6 +42,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
@@ -96,6 +98,8 @@ fun ReservesScreen(
         NewReserveDialog(
             reserveName = uiState.newReserveName,
             reserveValue = uiState.newReserveValue,
+            isReserveNameValid = uiState.isNewReserveNameValid,
+            isReserveValueValid = uiState.isNewReserveValueValid,
             onReserveNameChange = { name ->
                 viewModel.onIntent(ReservesContract.Intent.OnNewReserveNameChange(name))
             },
@@ -211,6 +215,8 @@ private fun AddReserveButton(
 private fun NewReserveDialog(
     reserveName: String,
     reserveValue: String,
+    isReserveNameValid: Boolean,
+    isReserveValueValid: Boolean,
     onReserveNameChange: (String) -> Unit,
     onReserveValueChange: (String) -> Unit,
     onSaveButtonClick: () -> Unit,
@@ -232,14 +238,18 @@ private fun NewReserveDialog(
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.new_reserve_name_hint)) },
                     value = reserveName,
-                    onValueChange = onReserveNameChange
+                    onValueChange = onReserveNameChange,
+                    isError = !isReserveNameValid,
+                    singleLine = true
                 )
                 OutlinedTextField(
                     prefix = { Text(text = stringResource(id = commonR.string.brl_currency)) },
                     label = { Text(text = stringResource(id = R.string.new_reserve_value_hint)) },
                     value = reserveValue,
                     onValueChange = onReserveValueChange,
-                    singleLine = true
+                    isError = !isReserveValueValid,
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
                 Row(
                     modifier = Modifier
@@ -417,6 +427,8 @@ private fun NewReserveDialogPreview() {
         onReserveNameChange = {},
         onReserveValueChange = {},
         onSaveButtonClick = {},
-        onCancelButtonClick = {}
+        onCancelButtonClick = {},
+        isReserveNameValid = true,
+        isReserveValueValid = true
     )
 }

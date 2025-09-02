@@ -1,5 +1,7 @@
 package br.com.rbrthmn.misc.reserves
 
+import android.util.Log
+import br.com.rbrthmn.ui.utils.canBeFormatted
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
@@ -55,7 +57,7 @@ class ReservesViewModel() : ReservesContract.ViewModel() {
     }
 
     private fun onReserveClicked(reserve: Reserve) {
-        // Handle reserve click if needed
+        Log.d("ReserveClicked", "Reserve clicked: $reserve")
     }
 
     private fun onAddReserveButtonClick() {
@@ -67,14 +69,28 @@ class ReservesViewModel() : ReservesContract.ViewModel() {
             it.copy(
                 showNewReserveDialog = false,
                 newReserveName = "",
-                newReserveValue = ""
+                newReserveValue = "",
+                isNewReserveNameValid = true,
+                isNewReserveValueValid = true
             )
         }
     }
 
     private fun onSaveNewReserve() {
         val currentState = uiState.value
-        if (currentState.newReserveName.isNotBlank() && currentState.newReserveValue.isNotBlank()) {
+
+        val isNameValid = currentState.newReserveName.isNotBlank()
+        val isValueValid =
+            currentState.newReserveValue.isNotBlank() && canBeFormatted(currentState.newReserveValue)
+
+        uiState.update {
+            it.copy(
+                isNewReserveNameValid = isNameValid,
+                isNewReserveValueValid = isValueValid
+            )
+        }
+
+        if (isNameValid && isValueValid) {
             val newReserve = Reserve(
                 name = currentState.newReserveName,
                 value = currentState.newReserveValue,
@@ -85,18 +101,25 @@ class ReservesViewModel() : ReservesContract.ViewModel() {
                     reserves = it.reserves + newReserve,
                     showNewReserveDialog = false,
                     newReserveName = "",
-                    newReserveValue = ""
+                    newReserveValue = "",
+                    isNewReserveNameValid = true,
+                    isNewReserveValueValid = true
                 )
             }
         }
     }
 
     private fun onNewReserveNameChange(name: String) {
-        uiState.update { it.copy(newReserveName = name) }
+        uiState.update { it.copy(newReserveName = name, isNewReserveNameValid = name.isNotBlank()) }
     }
 
     private fun onNewReserveValueChange(value: String) {
-        uiState.update { it.copy(newReserveValue = value) }
+        uiState.update {
+            it.copy(
+                newReserveValue = value,
+                isNewReserveValueValid = value.isNotBlank() && canBeFormatted(value)
+            )
+        }
     }
 
     private fun onReserveItemClick(reserveId: String) {
