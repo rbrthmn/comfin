@@ -71,6 +71,20 @@ fun ReservesScreen(
     viewModel: ReservesContract.ViewModel = koinViewModel<ReservesContract.ViewModel>()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    ReservesScreen(
+        modifier = modifier,
+        uiState = uiState,
+        onIntent = viewModel::onIntent
+    )
+}
+
+@Composable
+private fun ReservesScreen(
+    modifier: Modifier = Modifier,
+    uiState: ReservesContract.UIState,
+    onIntent: (ReservesContract.Intent) -> Unit
+) {
     val totalReservesValue = uiState.reserves.sumOf { it.value.toDouble() }.toString()
 
     Column(
@@ -86,10 +100,10 @@ fun ReservesScreen(
             reserves = uiState.reserves,
             expandedReserveId = uiState.expandedReserveId,
             onReserveItemClick = { reserveId ->
-                viewModel.onIntent(ReservesContract.Intent.OnReserveItemClick(reserveId))
+                onIntent(ReservesContract.Intent.OnReserveItemClick(reserveId))
             },
             onAddReserveClick = {
-                viewModel.onIntent(ReservesContract.Intent.OnAddReserveButtonClick)
+                onIntent(ReservesContract.Intent.OnAddReserveButtonClick)
             }
         )
     }
@@ -101,16 +115,16 @@ fun ReservesScreen(
             isReserveNameValid = uiState.isNewReserveNameValid,
             isReserveValueValid = uiState.isNewReserveValueValid,
             onReserveNameChange = { name ->
-                viewModel.onIntent(ReservesContract.Intent.OnNewReserveNameChange(name))
+                onIntent(ReservesContract.Intent.OnNewReserveNameChange(name))
             },
             onReserveValueChange = { value ->
-                viewModel.onIntent(ReservesContract.Intent.OnNewReserveValueChange(value))
+                onIntent(ReservesContract.Intent.OnNewReserveValueChange(value))
             },
             onSaveButtonClick = {
-                viewModel.onIntent(ReservesContract.Intent.OnSaveNewReserve)
+                onIntent(ReservesContract.Intent.OnSaveNewReserve)
             },
             onCancelButtonClick = {
-                viewModel.onIntent(ReservesContract.Intent.OnCancelNewReserve)
+                onIntent(ReservesContract.Intent.OnCancelNewReserve)
             }
         )
     }
@@ -415,7 +429,10 @@ private fun ReserveOperationsList(
 @Preview(showBackground = true)
 @Composable
 private fun ReservesScreenPreview() {
-    ReservesScreen()
+    ReservesScreen(
+        uiState = ReservesContract.UIState(),
+        onIntent = {}
+    )
 }
 
 @Preview
