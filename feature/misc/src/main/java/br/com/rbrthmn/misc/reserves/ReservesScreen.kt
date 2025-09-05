@@ -347,7 +347,7 @@ private fun ReserveOperationsList(
 
     if (showDialog.value) {
         AddOperationDialog(
-            viewModel = operationsScreenViewModel,
+            uiState = operationsScreenViewModel.uiState.collectAsState().value,
             onSaveButtonClick = {
                 operationsScreenViewModel.onIntent(
                     OperationsScreenContract.Intent.OnSaveButtonClick(
@@ -358,6 +358,30 @@ private fun ReserveOperationsList(
             onCancelButtonClick = {
                 showDialog.value = false
                 operationsScreenViewModel.onIntent(OperationsScreenContract.Intent.OnResetDialogFields)
+            },
+            onDescriptionChange = {
+                operationsScreenViewModel.onIntent(
+                    OperationsScreenContract.Intent.OnDescriptionChange(
+                        it
+                    )
+                )
+            },
+            onTypeChange = {
+                operationsScreenViewModel.onIntent(
+                    OperationsScreenContract.Intent.OnOperationTypeChange(
+                        it
+                    )
+                )
+            },
+            onValueChange = {
+                operationsScreenViewModel.onIntent(OperationsScreenContract.Intent.OnValueChange(it))
+            },
+            onDateChange = {
+                operationsScreenViewModel.onIntent(
+                    OperationsScreenContract.Intent.OnOperationDateChange(
+                        it
+                    )
+                )
             },
             availableOperationTypes = listOf(
                 OperationType.RESERVE_ALLOCATION,
@@ -430,7 +454,36 @@ private fun ReserveOperationsList(
 @Composable
 private fun ReservesScreenPreview() {
     ReservesScreen(
-        uiState = ReservesContract.UIState(),
+        uiState = ReservesContract.UIState(
+            reserves = listOf(
+                Reserve(
+                    name = "Emergency Fund",
+                    value = "1000.00",
+                    operations = listOf(
+                        ReserveOperation(
+                            date = "2023-11-15",
+                            value = "200.00",
+                            isWithdrawal = false
+                        ),
+                        ReserveOperation(
+                            date = "2023-11-22",
+                            value = "100.00",
+                            isWithdrawal = true
+                        ),
+                        ReserveOperation(
+                            date = "2023-12-01",
+                            value = "300.00",
+                            isWithdrawal = false
+                        )
+                    )
+                ),
+                Reserve(
+                    name = "Birthday money",
+                    value = "100.00",
+                    operations = listOf()
+                )
+            )
+        ),
         onIntent = {}
     )
 }
@@ -439,7 +492,7 @@ private fun ReservesScreenPreview() {
 @Composable
 private fun NewReserveDialogPreview() {
     NewReserveDialog(
-        reserveName = "",
+        reserveName = "Reserva",
         reserveValue = "",
         onReserveNameChange = {},
         onReserveValueChange = {},
