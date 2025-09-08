@@ -78,7 +78,6 @@ class ReservesViewModel() : ReservesContract.ViewModel() {
 
     private fun onSaveNewReserve() {
         val currentState = uiState.value
-
         val isNameValid = currentState.newReserveName.isNotBlank()
         val isValueValid =
             currentState.newReserveValue.isNotBlank() && canBeFormatted(currentState.newReserveValue)
