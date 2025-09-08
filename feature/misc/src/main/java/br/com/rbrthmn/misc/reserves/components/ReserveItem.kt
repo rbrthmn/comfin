@@ -1,5 +1,6 @@
 package br.com.rbrthmn.misc.reserves.components
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -213,7 +214,8 @@ private fun ReserveOperationsList(
     }
 }
 
-@Preview
+@SuppressLint("ViewModelConstructorInComposable")
+@Preview(showBackground = true)
 @Composable
 private fun ReserveOperationsListPreview() {
     val context = LocalContext.current
@@ -234,7 +236,7 @@ private fun ReserveOperationsListPreview() {
                     isWithdrawal = true
                 ),
                 ReserveOperation(
-                    date = "2023-1",
+                    date = "2023-12-01",
                     value = "300.00",
                     isWithdrawal = false
                 )
