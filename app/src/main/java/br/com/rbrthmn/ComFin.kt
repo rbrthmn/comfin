@@ -25,6 +25,7 @@ import br.com.rbrthmn.di.uiModule
 import br.com.rbrthmn.home.di.homeModule
 import br.com.rbrthmn.misc.di.miscModule
 import br.com.rbrthmn.operations.di.operationsModule
+import br.com.rbrthmn.settings.di.settingsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -36,7 +37,7 @@ class ComFin : Application() {
         startKoin {
             androidLogger()
             androidContext(this@ComFin)
-            modules(uiModule, homeModule, operationsModule, miscModule)
+            modules(uiModule, homeModule, operationsModule, miscModule, settingsModule)
         }
     }
 }

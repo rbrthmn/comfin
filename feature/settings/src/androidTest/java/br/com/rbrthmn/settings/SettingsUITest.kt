@@ -6,6 +6,8 @@ import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
+import br.com.rbrthmn.settings.ui.SETTINGS_LIST_TAG
+import br.com.rbrthmn.settings.ui.SettingsScreen
 import br.com.rbrthmn.ui.BaseUITest
 import org.junit.Test
 

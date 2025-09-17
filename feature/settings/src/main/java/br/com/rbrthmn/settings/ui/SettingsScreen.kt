@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.settings
+package br.com.rbrthmn.settings.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,8 +39,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -54,6 +53,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.navigation.NavigationDestination
+import br.com.rbrthmn.settings.R
+import org.koin.androidx.compose.koinViewModel
 import br.com.rbrthmn.ui.R as commonR
 
 object SettingsDestination : NavigationDestination {
@@ -63,7 +64,10 @@ object SettingsDestination : NavigationDestination {
 const val SETTINGS_LIST_TAG = "settings_list"
 
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier) {
+fun SettingsScreen(
+    modifier: Modifier = Modifier,
+    viewModel: SettingsContract.ViewModel = koinViewModel()
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_medium)),
@@ -72,12 +76,12 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        SettingsContent()
+        SettingsContent(viewModel)
     }
 }
 
 @Composable
-private fun SettingsContent(modifier: Modifier = Modifier) {
+private fun SettingsContent(viewModel: SettingsContract.ViewModel, modifier: Modifier = Modifier) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
@@ -94,17 +98,17 @@ private fun SettingsContent(modifier: Modifier = Modifier) {
                 )
                 .testTag(SETTINGS_LIST_TAG)
         ) {
-            DarkModeSetting()
+            DarkModeSetting(viewModel)
         }
     }
 }
 
 @Composable
-private fun DarkModeSetting(modifier: Modifier = Modifier) {
-    val showDialog = remember { mutableStateOf(false) }
+private fun DarkModeSetting(viewModel: SettingsContract.ViewModel, modifier: Modifier = Modifier) {
+    val uiState = (viewModel.uiState).collectAsState().value
 
-    if (showDialog.value) {
-        Dialog(onDismissRequest = { showDialog.value = false }) {
+    if (uiState.showDarkModeDialog) {
+        Dialog(onDismissRequest = { viewModel.onIntent(SettingsContract.Intent.OnDismissDarkModeDialog) }) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -116,7 +120,16 @@ private fun DarkModeSetting(modifier: Modifier = Modifier) {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    DarkModeRadioOptions(onOptionSelected = { showDialog.value = false })
+                    DarkModeRadioOptions(
+                        selected = uiState.selectedTheme,
+                        onOptionSelected = { option ->
+                            viewModel.onIntent(
+                                SettingsContract.Intent.OnThemeSelected(
+                                    option
+                                )
+                            )
+                        }
+                    )
                 }
             }
         }
@@ -125,7 +138,7 @@ private fun DarkModeSetting(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { showDialog.value = true },
+            .clickable { viewModel.onIntent(SettingsContract.Intent.OnDarkModeClick) },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -134,32 +147,42 @@ private fun DarkModeSetting(modifier: Modifier = Modifier) {
             fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp
         )
         Text(
-            text = "Desativado",
+            text = when (uiState.selectedTheme) {
+                SettingsContract.ThemeOption.System -> stringResource(id = R.string.theme_option_system)
+                SettingsContract.ThemeOption.Light -> stringResource(id = R.string.theme_option_light)
+                SettingsContract.ThemeOption.Dark -> stringResource(id = R.string.theme_option_dark)
+            },
             fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
         )
     }
 }
 
 @Composable
-private fun DarkModeRadioOptions(onOptionSelected: () -> Unit) {
-    val radioOptions = listOf("Padrão do sistema", "Claro", "Noturno")
-    val (selectedOption) = remember { mutableStateOf(radioOptions[0]) }
+private fun DarkModeRadioOptions(
+    selected: SettingsContract.ThemeOption,
+    onOptionSelected: (SettingsContract.ThemeOption) -> Unit
+) {
+    val radioOptions = listOf(
+        SettingsContract.ThemeOption.System to stringResource(id = R.string.theme_option_system),
+        SettingsContract.ThemeOption.Light to stringResource(id = R.string.theme_option_light),
+        SettingsContract.ThemeOption.Dark to stringResource(id = R.string.theme_option_dark)
+    )
     Column(Modifier.selectableGroup()) {
-        radioOptions.forEach { text ->
+        radioOptions.forEach { (option, text) ->
             Row(
                 Modifier
                     .fillMaxWidth()
                     .height(56.dp)
                     .selectable(
-                        selected = (text == selectedOption),
-                        onClick = { onOptionSelected() },
+                        selected = (option == selected),
+                        onClick = { onOptionSelected(option) },
                         role = Role.RadioButton
                     )
                     .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
-                    selected = (text == selectedOption),
+                    selected = (option == selected),
                     onClick = null
                 )
                 Text(

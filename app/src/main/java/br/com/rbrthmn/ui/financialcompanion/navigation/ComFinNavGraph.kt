@@ -37,8 +37,8 @@ import br.com.rbrthmn.misc.ui.reserves.ReservesDestination
 import br.com.rbrthmn.misc.ui.reserves.ReservesScreen
 import br.com.rbrthmn.operations.ui.OperationsDestination
 import br.com.rbrthmn.operations.ui.OperationsScreen
-import br.com.rbrthmn.settings.SettingsDestination
-import br.com.rbrthmn.settings.SettingsScreen
+import br.com.rbrthmn.settings.ui.SettingsDestination
+import br.com.rbrthmn.settings.ui.SettingsScreen
 
 @Composable
 fun ComFinNavGraph(

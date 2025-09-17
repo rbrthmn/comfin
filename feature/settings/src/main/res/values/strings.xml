@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings_dark_mode">Modo escuro</string>
+    <string name="theme_option_system">Padrão do sistema</string>
+    <string name="theme_option_light">Claro</string>
+    <string name="theme_option_dark">Noturno</string>
 </resources>

@@ -47,7 +47,7 @@ import br.com.rbrthmn.misc.ui.incomedivisions.IncomeDivisionsDestination
 import br.com.rbrthmn.misc.ui.recurringexpenses.RecurringExpensesDestination
 import br.com.rbrthmn.misc.ui.reserves.ReservesDestination
 import br.com.rbrthmn.navigation.NavigationDestination
-import br.com.rbrthmn.settings.SettingsDestination
+import br.com.rbrthmn.settings.ui.SettingsDestination
 import br.com.rbrthmn.ui.R as commonR
 
 data class FeatureLabel(val name: String, val route: String)
