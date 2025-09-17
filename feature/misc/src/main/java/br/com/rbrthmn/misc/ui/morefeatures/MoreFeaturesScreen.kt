@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.misc.morefeatures
+package br.com.rbrthmn.misc.ui.morefeatures
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,9 +43,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.misc.R
-import br.com.rbrthmn.misc.incomedivisions.IncomeDivisionsDestination
-import br.com.rbrthmn.misc.recurringexpenses.RecurringExpensesDestination
-import br.com.rbrthmn.misc.reserves.ReservesDestination
+import br.com.rbrthmn.misc.ui.incomedivisions.IncomeDivisionsDestination
+import br.com.rbrthmn.misc.ui.recurringexpenses.RecurringExpensesDestination
+import br.com.rbrthmn.misc.ui.reserves.ReservesDestination
 import br.com.rbrthmn.navigation.NavigationDestination
 import br.com.rbrthmn.settings.SettingsDestination
 import br.com.rbrthmn.ui.R as commonR

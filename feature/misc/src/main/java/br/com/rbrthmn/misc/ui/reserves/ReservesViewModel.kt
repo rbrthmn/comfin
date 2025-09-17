@@ -1,4 +1,4 @@
-package br.com.rbrthmn.misc.reserves
+package br.com.rbrthmn.misc.ui.reserves
 
 import android.util.Log
 import br.com.rbrthmn.ui.utils.canBeFormatted

@@ -29,7 +29,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import br.com.rbrthmn.misc.incomedivisions.IncomeDivisionsDestination
+import br.com.rbrthmn.misc.ui.incomedivisions.IncomeDivisionsDestination
 import org.junit.Test
 import br.com.rbrthmn.ui.R as commonR
 

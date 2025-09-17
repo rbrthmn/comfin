@@ -1,4 +1,4 @@
-package br.com.rbrthmn.misc.reserves
+package br.com.rbrthmn.misc.ui.reserves
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -40,7 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.misc.R
-import br.com.rbrthmn.misc.reserves.components.ReserveItem
+import br.com.rbrthmn.misc.ui.reserves.components.ReserveItem
 import br.com.rbrthmn.navigation.NavigationDestination
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel

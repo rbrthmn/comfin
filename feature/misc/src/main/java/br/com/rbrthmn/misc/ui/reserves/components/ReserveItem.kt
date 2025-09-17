@@ -1,4 +1,4 @@
-package br.com.rbrthmn.misc.reserves.components
+package br.com.rbrthmn.misc.ui.reserves.components
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateFloatAsState
@@ -33,8 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import br.com.rbrthmn.misc.reserves.Reserve
-import br.com.rbrthmn.misc.reserves.ReserveOperation
+import br.com.rbrthmn.misc.ui.reserves.Reserve
+import br.com.rbrthmn.misc.ui.reserves.ReserveOperation
 import br.com.rbrthmn.operations.ui.OperationType
 import br.com.rbrthmn.operations.ui.OperationsScreenContract
 import br.com.rbrthmn.operations.ui.OperationsScreenViewModel

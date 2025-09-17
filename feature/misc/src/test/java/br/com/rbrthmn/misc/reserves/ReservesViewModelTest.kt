@@ -1,5 +1,9 @@
 package br.com.rbrthmn.misc.reserves
 
+import br.com.rbrthmn.misc.ui.reserves.Reserve
+import br.com.rbrthmn.misc.ui.reserves.ReserveOperation
+import br.com.rbrthmn.misc.ui.reserves.ReservesContract
+import br.com.rbrthmn.misc.ui.reserves.ReservesViewModel
 import br.com.rbrthmn.ui.utils.canBeFormatted
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue

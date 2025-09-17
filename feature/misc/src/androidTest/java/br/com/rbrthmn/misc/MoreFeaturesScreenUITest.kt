@@ -30,11 +30,11 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import br.com.rbrthmn.misc.incomedivisions.IncomeDivisionsDestination
-import br.com.rbrthmn.misc.morefeatures.FEATURES_LIST_TAG
-import br.com.rbrthmn.misc.morefeatures.MoreFeaturesDestination
-import br.com.rbrthmn.misc.recurringexpenses.RecurringExpensesDestination
-import br.com.rbrthmn.misc.reserves.ReservesDestination
+import br.com.rbrthmn.misc.ui.incomedivisions.IncomeDivisionsDestination
+import br.com.rbrthmn.misc.ui.morefeatures.FEATURES_LIST_TAG
+import br.com.rbrthmn.misc.ui.morefeatures.MoreFeaturesDestination
+import br.com.rbrthmn.misc.ui.recurringexpenses.RecurringExpensesDestination
+import br.com.rbrthmn.misc.ui.reserves.ReservesDestination
 import br.com.rbrthmn.settings.SettingsDestination
 import org.junit.Assert.assertEquals
 import org.junit.Test

@@ -1,4 +1,4 @@
-package br.com.rbrthmn.misc.reserves
+package br.com.rbrthmn.misc.ui.reserves
 
 data class Reserve(
     val name: String,
