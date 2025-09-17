@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.operations.ui.components
+package br.com.rbrthmn.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,7 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import br.com.rbrthmn.operations.R
+import br.com.rbrthmn.ui.R
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId

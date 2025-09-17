@@ -23,9 +23,4 @@
     <string name="add_account_option">Adicionar outra conta</string>
     <string name="operation_description_hint">Descrição</string>
     <string name="operation_account_icon_description">Ícone de banco</string>
-
-    <string name="date_picker_title">Selecione uma data</string>
-    <string name="date_picker_label">Data da operação</string>
-    <string name="date_picker_cancel">Cancelar</string>
-    <string name="date_picker_ok">OK</string>
 </resources>

@@ -70,6 +70,7 @@ import br.com.rbrthmn.operations.ui.Operation
 import br.com.rbrthmn.operations.ui.OperationType
 import br.com.rbrthmn.operations.ui.OperationsScreenContract
 import br.com.rbrthmn.operations.ui.OperationsScreenViewModel
+import br.com.rbrthmn.ui.components.DatePickerField
 import br.com.rbrthmn.ui.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import java.time.LocalDate

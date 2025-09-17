@@ -18,4 +18,9 @@
     <string name="apply_date_button">Aplicar</string>
 
     <string name="reserve_hint">Reserva</string>
+
+    <string name="date_picker_title">Selecione uma data</string>
+    <string name="date_picker_label">Data da operação</string>
+    <string name="date_picker_cancel">Cancelar</string>
+    <string name="date_picker_ok">OK</string>
 </resources>
