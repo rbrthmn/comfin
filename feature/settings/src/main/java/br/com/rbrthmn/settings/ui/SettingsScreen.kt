@@ -20,6 +20,7 @@
 
 package br.com.rbrthmn.settings.ui
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -68,6 +69,34 @@ fun SettingsScreen(
     modifier: Modifier = Modifier,
     viewModel: SettingsContract.ViewModel = koinViewModel()
 ) {
+    val uiState = (viewModel.uiState).collectAsState().value
+
+    SettingsScreen(
+        uiState = uiState,
+        onDismissRequest = { viewModel.onIntent(SettingsContract.Intent.OnDismissDarkModeDialog) },
+        onOptionSelected = { option ->
+            viewModel.onIntent(
+                SettingsContract.Intent.OnThemeSelected(
+                    option
+                )
+            )
+        },
+        onDarkModeClick = {
+            Log.d("SettingsScreen", "Dark Mode Clicked")
+            viewModel.onIntent(SettingsContract.Intent.OnDarkModeClick)
+        },
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun SettingsScreen(
+    uiState: SettingsContract.UiState,
+    onDismissRequest: () -> Unit,
+    onOptionSelected: (SettingsContract.ThemeOption) -> Unit,
+    onDarkModeClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_medium)),
@@ -76,12 +105,24 @@ fun SettingsScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        SettingsContent(viewModel)
+        SettingsContent(
+            uiState = uiState,
+            onDismissRequest = onDismissRequest,
+            onOptionSelected = onOptionSelected,
+            onDarkModeClick = onDarkModeClick,
+            modifier = modifier
+        )
     }
 }
 
 @Composable
-private fun SettingsContent(viewModel: SettingsContract.ViewModel, modifier: Modifier = Modifier) {
+private fun SettingsContent(
+    uiState: SettingsContract.UiState,
+    onDismissRequest: () -> Unit,
+    onOptionSelected: (SettingsContract.ThemeOption) -> Unit,
+    onDarkModeClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
@@ -98,17 +139,27 @@ private fun SettingsContent(viewModel: SettingsContract.ViewModel, modifier: Mod
                 )
                 .testTag(SETTINGS_LIST_TAG)
         ) {
-            DarkModeSetting(viewModel)
+            DarkModeSetting(
+                uiState = uiState,
+                onDismissRequest = onDismissRequest,
+                onOptionSelected = onOptionSelected,
+                onDarkModeClick = onDarkModeClick,
+                modifier = modifier
+            )
         }
     }
 }
 
 @Composable
-private fun DarkModeSetting(viewModel: SettingsContract.ViewModel, modifier: Modifier = Modifier) {
-    val uiState = (viewModel.uiState).collectAsState().value
-
+private fun DarkModeSetting(
+    uiState: SettingsContract.UiState,
+    onDismissRequest: () -> Unit,
+    onOptionSelected: (SettingsContract.ThemeOption) -> Unit,
+    onDarkModeClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     if (uiState.showDarkModeDialog) {
-        Dialog(onDismissRequest = { viewModel.onIntent(SettingsContract.Intent.OnDismissDarkModeDialog) }) {
+        Dialog(onDismissRequest = onDismissRequest) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -123,11 +174,7 @@ private fun DarkModeSetting(viewModel: SettingsContract.ViewModel, modifier: Mod
                     DarkModeRadioOptions(
                         selected = uiState.selectedTheme,
                         onOptionSelected = { option ->
-                            viewModel.onIntent(
-                                SettingsContract.Intent.OnThemeSelected(
-                                    option
-                                )
-                            )
+                            onOptionSelected(option)
                         }
                     )
                 }
@@ -138,7 +185,7 @@ private fun DarkModeSetting(viewModel: SettingsContract.ViewModel, modifier: Mod
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { viewModel.onIntent(SettingsContract.Intent.OnDarkModeClick) },
+            .clickable { onDarkModeClick() },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -199,5 +246,10 @@ private fun DarkModeRadioOptions(
 @Preview(showBackground = true)
 @Composable
 private fun SettingsScreenPreview() {
-    SettingsScreen()
+    SettingsScreen(
+        uiState = SettingsContract.UiState(),
+        onDismissRequest = {},
+        onOptionSelected = {},
+        onDarkModeClick = {}
+    )
 }
