@@ -25,18 +25,18 @@ Adherence to this modular structure is crucial for maintaining a clean and scala
 
 * **ViewModels:**
     * All ViewModels **must** extend the project's base ViewModel class:
-      `br.com.rbrthmn.ui.BaseViewModel<S : ViewState, E : ViewEvent>`. (Note: `S` typically
-      corresponds to a `Contract.State` and `E` to a `Contract.Event`).
-    * ViewModels are responsible for holding and managing UI-related data (State, a `ViewState`
-      subclass exposed via `uiState: StateFlow<S>`) and processing user actions (Events, a
-      `ViewEvent` subclass passed to `onIntent(event: E)`).
-    * Side effects (Effects, typically a `ViewSideEffect` subclass defined in the Contract) should
+      `br.com.rbrthmn.ui.BaseViewModel<U : UIState, I : Intent>`. (Note: `U` typically
+      corresponds to a `Contract.UIState` and `I` to a `Contract.Intent`).
+    * ViewModels are responsible for holding and managing UI-related data (State, a `UIState`
+      subclass exposed via `uiState: StateFlow<U>`) and processing user actions (Intents, a
+      `Intent` subclass passed to `onIntent(event: I)`).
+    * Side effects (Effects, typically a `SideEffect` subclass defined in the Contract) should
       be managed by the ViewModel and communicated to the UI, often through a separate `SharedFlow`
       or `Channel` in the ViewModel.
     * State should be immutable.
 * **Contracts:** Each screen or significant UI component **must** have a `Contract` file (e.g.,
-  `HomeScreenContract.kt`) defining its `State` (implementing `ViewState`), `Event` (implementing
-  `ViewEvent`), and `Effect` (implementing `ViewSideEffect`) sealed interfaces/classes.
+  `HomeScreenContract.kt`) defining its `State` (implementing `UIState`), `Intent` (implementing
+  `Intent`), and `Effect` (implementing `SideEffect`) sealed interfaces/classes.
 * **UI (Views):**
     * Composable functions in Jetpack Compose are used for the UI.
     * Views should observe the ViewModel's state and send events/intents to the ViewModel.
@@ -52,15 +52,15 @@ Key project dependencies include (but are not limited to):
 * **Dependency Injection:** Koin (e.g., `org.koin.androidx.compose.koinViewModel`,
   `org.koin.compose.koinInject`, `org.koin.core.module.Module`)
 * **UI:** Jetpack Compose, Material 3
-* **Navigation:** Custom navigation solution based on
-  `br.com.rbrthmn.navigation.NavigationDestination`.
+* **Navigation:** Each screen has a route defined by extending
+  `br.com.rbrthmn.navigation.NavigationDestination`. NavHost, NavController and NavGraph are also
+  used.
 * **Asynchronous Programming:** Kotlin Coroutines (e.g., `viewModelScope.launch`,
   `kotlinx.coroutines.flow.Flow`, `kotlinx.coroutines.flow.StateFlow`,
   `kotlinx.coroutines.flow.SharedFlow`)
-* **Base UI classes:** `br.com.rbrthmn.ui.BaseViewModel`, `br.com.rbrthmn.ui.base.ViewEvent`,
-  `br.com.rbrthmn.ui.base.ViewState`, `br.com.rbrthmn.ui.base.ViewSideEffect`.
-* **(User: Please add other key libraries here, e.g., for networking (Retrofit, Ktor), database (
-  Room, SQLDelight), image loading (Coil, Glide))**
+* **Base UI classes:** `br.com.rbrthmn.ui.BaseViewModel`.
+* **Networking:** Retrofit.
+* **Database:** Room
 
 Code generation should primarily utilize these libraries and their established patterns within the
 project.
@@ -72,13 +72,18 @@ organization and its multi-module nature.
 
 * **Unit Tests:**
     * ViewModel unit tests are crucial.
-    * **(User: Please specify the project's base test class for ViewModels if available,
-      e.g., `BaseViewModelTest`). If not, standard JUnit5, Mockito/MockK, and Turbine (for Flow
-      testing) practices should be followed.**
+  * Junit5 and Mockk.
     * Focus on testing state changes and side effects in response to events. Mock dependencies as
-      needed using Koin's testing utilities or manual mocks.
-* **(User: Please specify conventions for UI tests (e.g., using `androidx.compose.ui.test`) if
-  applicable)**
+      needed using Koin's testing utilities or using Mockk.
+  * Tests names should follow the pattern
+    `{method name} with {use case conditions} should {expected result}`.
+  * Tests body should follow AAA pattern: arrenge, act and assert.
+* **UI Tests:**
+    * UI test are crucial for screens and more complex composables.
+    * Must extend `br.com.rbrthmn.ui.BaseUITest`.
+    * Tests names should follow the pattern
+      `{method name}_with{use case conditions}_should{expected result}`.
+    * Tests body should follow AAA pattern: arrenge, act and assert.
 
 ### 4. Coding Standards
 
@@ -107,6 +112,10 @@ organization and its multi-module nature.
 * Before modifying existing code, try to understand its current purpose and context.
 * When proposing file changes, use the available tools to write directly to files rather than
   printing out the full content for you to copy-paste.
+
+### 6. Comments
+
+* Comments should only be generated if explicited asked for.
 
 ## Tools
 
