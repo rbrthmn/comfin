@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.misc.incomedivisions
+package br.com.rbrthmn.misc.ui.incomedivisions
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

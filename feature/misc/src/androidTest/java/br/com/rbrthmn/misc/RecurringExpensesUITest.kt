@@ -26,8 +26,8 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import br.com.rbrthmn.misc.recurringexpenses.NEW_RECURRING_EXPENSE_DIALOG_TAG
-import br.com.rbrthmn.misc.recurringexpenses.RecurringExpenses
+import br.com.rbrthmn.misc.ui.recurringexpenses.NEW_RECURRING_EXPENSE_DIALOG_TAG
+import br.com.rbrthmn.misc.ui.recurringexpenses.RecurringExpenses
 import br.com.rbrthmn.ui.onNodeWithStringId
 import org.junit.Test
 import br.com.rbrthmn.ui.R as commonR

@@ -26,8 +26,8 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import br.com.rbrthmn.misc.reserves.NEW_RESERVE_DIALOG_TAG
-import br.com.rbrthmn.misc.reserves.ReservesScreen
+import br.com.rbrthmn.misc.ui.reserves.NEW_RESERVE_DIALOG_TAG
+import br.com.rbrthmn.misc.ui.reserves.ReservesScreen
 import br.com.rbrthmn.ui.onNodeWithStringId
 import org.junit.Test
 import br.com.rbrthmn.ui.R as commonR

@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.misc.reserves
+package br.com.rbrthmn.misc.ui.reserves
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing

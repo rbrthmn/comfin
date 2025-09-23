@@ -18,7 +18,7 @@
  *
  */
 
-package br.com.rbrthmn.misc.recurringexpenses
+package br.com.rbrthmn.misc.ui.recurringexpenses
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
