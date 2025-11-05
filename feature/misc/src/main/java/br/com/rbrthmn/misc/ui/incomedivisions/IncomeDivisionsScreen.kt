@@ -74,7 +74,6 @@ object IncomeDivisionsDestination : NavigationDestination {
     override val route = "income_divisions"
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IncomeDivisionsScreen(
     modifier: Modifier = Modifier,
@@ -82,7 +81,23 @@ fun IncomeDivisionsScreen(
     onRecurringExpensesDivisionClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val sendIntent = { intent: IncomeDivisionsContract.Intent -> viewModel.onIntent(intent) }
+
+    IncomeDivisionsScreen(
+        modifier = modifier,
+        uiState = uiState,
+        onIntent = viewModel::onIntent,
+        onRecurringExpensesDivisionClick = onRecurringExpensesDivisionClick
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun IncomeDivisionsScreen(
+    modifier: Modifier = Modifier,
+    uiState: IncomeDivisionsContract.UIState,
+    onIntent: (IncomeDivisionsContract.Intent) -> Unit,
+    onRecurringExpensesDivisionClick: () -> Unit
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(topBar = {
@@ -92,91 +107,73 @@ fun IncomeDivisionsScreen(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
     }, modifier = modifier) { innerPadding ->
-        IncomeDivisionsScreenContent(
-            innerPaddingValues = innerPadding,
-            modifier = modifier,
-            uiState = uiState,
-            sendIntent = sendIntent,
-            onRecurringExpensesDivisionClick = onRecurringExpensesDivisionClick
-        )
-    }
-}
-
-@Composable
-private fun IncomeDivisionsScreenContent(
-    modifier: Modifier = Modifier,
-    innerPaddingValues: PaddingValues,
-    uiState: IncomeDivisionsContract.UIState,
-    sendIntent: (IncomeDivisionsContract.Intent) -> Unit,
-    onRecurringExpensesDivisionClick: () -> Unit
-) {
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_medium)),
-        modifier = modifier
-            .padding(innerPaddingValues)
-            .padding(horizontal = dimensionResource(id = commonR.dimen.padding_medium))
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    ) {
-        Card(
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_medium)),
             modifier = modifier
-                .padding(vertical = dimensionResource(id = commonR.dimen.padding_medium))
-                .shadow(elevation = dimensionResource(id = commonR.dimen.padding_small))
+                .padding(innerPadding)
+                .padding(horizontal = dimensionResource(id = commonR.dimen.padding_medium))
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier.padding(dimensionResource(id = commonR.dimen.padding_medium))
+            Card(
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                modifier = modifier
+                    .padding(vertical = dimensionResource(id = commonR.dimen.padding_medium))
+                    .shadow(elevation = dimensionResource(id = commonR.dimen.padding_small))
             ) {
-                uiState.incomeDivisions.forEachIndexed { index, division ->
-                    IncomeDivision(
-                        index = index,
-                        data = division,
-                        sendIntent = sendIntent,
-                        onRecurringExpensesDivisionClick = onRecurringExpensesDivisionClick
-                    )
-                    if (index == uiState.incomeDivisions.lastIndex - 1) {
-                        HorizontalDivider(modifier.padding(vertical = dimensionResource(id = commonR.dimen.padding_small)))
-                        AddDivisionButton(
-                            modifier = modifier,
-                            onClick = { sendIntent(IncomeDivisionsContract.Intent.OnAddDivisionButtonClick) }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = modifier.padding(dimensionResource(id = commonR.dimen.padding_medium))
+                ) {
+                    uiState.incomeDivisions.forEachIndexed { index, division ->
+                        IncomeDivision(
+                            index = index,
+                            data = division,
+                            onIntent = onIntent,
+                            onRecurringExpensesDivisionClick = onRecurringExpensesDivisionClick
                         )
-                    }
-                    if (index != uiState.incomeDivisions.lastIndex) {
-                        HorizontalDivider(modifier.padding(vertical = dimensionResource(id = commonR.dimen.padding_small)))
+                        if (index == uiState.incomeDivisions.lastIndex - 1) {
+                            HorizontalDivider(modifier.padding(vertical = dimensionResource(id = commonR.dimen.padding_small)))
+                            AddDivisionButton(
+                                modifier = modifier,
+                                onClick = { onIntent(IncomeDivisionsContract.Intent.OnAddDivisionButtonClick) }
+                            )
+                        }
+                        if (index != uiState.incomeDivisions.lastIndex) {
+                            HorizontalDivider(modifier.padding(vertical = dimensionResource(id = commonR.dimen.padding_small)))
+                        }
                     }
                 }
             }
-        }
-        if (uiState.showNewDivisionDialog) {
-            NewDivisionDialog(
-                uiState = uiState,
-                onNameChange = {
-                    sendIntent(
-                        IncomeDivisionsContract.Intent.OnNewDivisionNameChange(
-                            it
+            if (uiState.showNewDivisionDialog) {
+                NewDivisionDialog(
+                    uiState = uiState,
+                    onNameChange = {
+                        onIntent(
+                            IncomeDivisionsContract.Intent.OnNewDivisionNameChange(
+                                it
+                            )
                         )
-                    )
-                },
-                onValueChange = {
-                    sendIntent(
-                        IncomeDivisionsContract.Intent.OnNewDivisionValueChange(
-                            it
+                    },
+                    onValueChange = {
+                        onIntent(
+                            IncomeDivisionsContract.Intent.OnNewDivisionValueChange(
+                                it
+                            )
                         )
-                    )
-                },
-                onPercentageChange = {
-                    sendIntent(
-                        IncomeDivisionsContract.Intent.OnNewDivisionPercentageChange(
-                            it
+                    },
+                    onPercentageChange = {
+                        onIntent(
+                            IncomeDivisionsContract.Intent.OnNewDivisionPercentageChange(
+                                it
+                            )
                         )
-                    )
-                },
-                onSaveButtonClick = { sendIntent(IncomeDivisionsContract.Intent.OnSaveNewDivision) },
-                onCancelButtonClick = { sendIntent(IncomeDivisionsContract.Intent.OnCancelNewDivision) }
-            )
+                    },
+                    onSaveButtonClick = { onIntent(IncomeDivisionsContract.Intent.OnSaveNewDivision) },
+                    onCancelButtonClick = { onIntent(IncomeDivisionsContract.Intent.OnCancelNewDivision) }
+                )
+            }
         }
     }
 }
@@ -186,7 +183,7 @@ private fun IncomeDivision(
     modifier: Modifier = Modifier,
     index: Int,
     data: IncomeDivision,
-    sendIntent: (IncomeDivisionsContract.Intent) -> Unit,
+    onIntent: (IncomeDivisionsContract.Intent) -> Unit,
     onRecurringExpensesDivisionClick: () -> Unit
 ) {
     Row(
@@ -213,7 +210,7 @@ private fun IncomeDivision(
                 prefix = { Text(text = "R$") },
                 value = data.value,
                 onValueChange = {
-                    sendIntent(
+                    onIntent(
                         IncomeDivisionsContract.Intent.OnDivisionValueChanged(
                             index,
                             it
@@ -229,7 +226,7 @@ private fun IncomeDivision(
                 suffix = { Text(text = "%") },
                 value = data.percentage,
                 onValueChange = {
-                    sendIntent(
+                    onIntent(
                         IncomeDivisionsContract.Intent.OnDivisionPercentageChanged(
                             index,
                             it
@@ -339,14 +336,38 @@ private fun NewDivisionDialog(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun IncomeDivisionsScreenPreview() {
-    val viewModel = IncomeDivisionsViewModel()
+private fun IncomeDivisionsScreenPreview() {
     IncomeDivisionsScreen(
-        modifier = Modifier,
-        viewModel = viewModel,
-        onRecurringExpensesDivisionClick = {})
+        uiState = IncomeDivisionsContract.UIState(
+            incomeDivisions = listOf(
+                IncomeDivision(
+                    name = "Total income",
+                    value = "1000",
+                    percentage = "100",
+                    canEditValue = true,
+                    canEditPercentage = false,
+                ),
+                IncomeDivision(
+                    name = "Recurring expenses",
+                    value = "100",
+                    percentage = "10",
+                    canEditValue = false,
+                    isRecurringExpenses = true,
+                ),
+                IncomeDivision(
+                    name = "Remaining for the month",
+                    value = "100",
+                    canEditValue = false,
+                    percentage = "10",
+                    canEditPercentage = false,
+                ),
+            )
+        ),
+        onIntent = {},
+        onRecurringExpensesDivisionClick = {}
+    )
 }
 
 @Preview

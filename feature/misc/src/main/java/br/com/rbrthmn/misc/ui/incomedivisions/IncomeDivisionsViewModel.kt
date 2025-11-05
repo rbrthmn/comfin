@@ -8,7 +8,7 @@ class IncomeDivisionsViewModel : IncomeDivisionsContract.ViewModel() {
 
     override val uiState = MutableStateFlow(IncomeDivisionsContract.UIState())
 
-    override fun doOnInit(): IncomeDivisionsViewModel {
+    override fun doOnInit(): IncomeDivisionsContract.ViewModel {
         uiState.update {
             it.copy(
                 incomeDivisions = listOf(
