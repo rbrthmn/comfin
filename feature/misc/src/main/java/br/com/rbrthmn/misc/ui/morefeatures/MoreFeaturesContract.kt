@@ -3,7 +3,7 @@ package br.com.rbrthmn.misc.ui.morefeatures
 import androidx.annotation.StringRes
 import br.com.rbrthmn.ui.BaseViewModel
 
-data class FeatureLabel(@param:StringRes val nameResId: Int, val route: String)
+data class FeatureLabel(@StringRes val nameResId: Int, val route: String)
 
 abstract class MoreFeaturesContract {
 
