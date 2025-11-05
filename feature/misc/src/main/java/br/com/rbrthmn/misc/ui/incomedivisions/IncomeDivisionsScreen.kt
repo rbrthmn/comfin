@@ -48,8 +48,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -64,6 +64,7 @@ import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.misc.R
 import br.com.rbrthmn.navigation.NavigationDestination
 import br.com.rbrthmn.ui.components.MonthSelectionTopBar
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 import br.com.rbrthmn.ui.R as commonR
 
@@ -77,8 +78,11 @@ object IncomeDivisionsDestination : NavigationDestination {
 @Composable
 fun IncomeDivisionsScreen(
     modifier: Modifier = Modifier,
+    viewModel: IncomeDivisionsContract.ViewModel = koinViewModel<IncomeDivisionsContract.ViewModel>(),
     onRecurringExpensesDivisionClick: () -> Unit
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+    val sendIntent = { intent: IncomeDivisionsContract.Intent -> viewModel.onIntent(intent) }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(topBar = {
@@ -91,6 +95,8 @@ fun IncomeDivisionsScreen(
         IncomeDivisionsScreenContent(
             innerPaddingValues = innerPadding,
             modifier = modifier,
+            uiState = uiState,
+            sendIntent = sendIntent,
             onRecurringExpensesDivisionClick = onRecurringExpensesDivisionClick
         )
     }
@@ -100,31 +106,10 @@ fun IncomeDivisionsScreen(
 private fun IncomeDivisionsScreenContent(
     modifier: Modifier = Modifier,
     innerPaddingValues: PaddingValues,
+    uiState: IncomeDivisionsContract.UIState,
+    sendIntent: (IncomeDivisionsContract.Intent) -> Unit,
     onRecurringExpensesDivisionClick: () -> Unit
 ) {
-    val incomeDivisions = listOf(
-        IncomeDivision(
-            name = stringResource(id = R.string.total_income),
-            value = "1000",
-            percentage = "100",
-            canEditPercentage = false,
-        ),
-        IncomeDivision(
-            name = stringResource(id = R.string.recurring_expenses),
-            value = "100",
-            percentage = "10",
-            canEditValue = false,
-            isRecurringExpenses = true,
-            onRecurringExpensesClick = onRecurringExpensesDivisionClick
-        ),
-        IncomeDivision(
-            name = stringResource(id = R.string.remaining_month),
-            value = "100",
-            canEditValue = false,
-            percentage = "10",
-            canEditPercentage = false,
-        ),
-    )
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -145,17 +130,53 @@ private fun IncomeDivisionsScreenContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier.padding(dimensionResource(id = commonR.dimen.padding_medium))
             ) {
-                incomeDivisions.forEachIndexed { index, division ->
-                    IncomeDivision(data = division)
-                    if (index == incomeDivisions.lastIndex - 1) {
+                uiState.incomeDivisions.forEachIndexed { index, division ->
+                    IncomeDivision(
+                        index = index,
+                        data = division,
+                        sendIntent = sendIntent,
+                        onRecurringExpensesDivisionClick = onRecurringExpensesDivisionClick
+                    )
+                    if (index == uiState.incomeDivisions.lastIndex - 1) {
                         HorizontalDivider(modifier.padding(vertical = dimensionResource(id = commonR.dimen.padding_small)))
-                        AddDivisionButton(modifier = modifier)
+                        AddDivisionButton(
+                            modifier = modifier,
+                            onClick = { sendIntent(IncomeDivisionsContract.Intent.OnAddDivisionButtonClick) }
+                        )
                     }
-                    if (index != incomeDivisions.lastIndex) {
+                    if (index != uiState.incomeDivisions.lastIndex) {
                         HorizontalDivider(modifier.padding(vertical = dimensionResource(id = commonR.dimen.padding_small)))
                     }
                 }
             }
+        }
+        if (uiState.showNewDivisionDialog) {
+            NewDivisionDialog(
+                uiState = uiState,
+                onNameChange = {
+                    sendIntent(
+                        IncomeDivisionsContract.Intent.OnNewDivisionNameChange(
+                            it
+                        )
+                    )
+                },
+                onValueChange = {
+                    sendIntent(
+                        IncomeDivisionsContract.Intent.OnNewDivisionValueChange(
+                            it
+                        )
+                    )
+                },
+                onPercentageChange = {
+                    sendIntent(
+                        IncomeDivisionsContract.Intent.OnNewDivisionPercentageChange(
+                            it
+                        )
+                    )
+                },
+                onSaveButtonClick = { sendIntent(IncomeDivisionsContract.Intent.OnSaveNewDivision) },
+                onCancelButtonClick = { sendIntent(IncomeDivisionsContract.Intent.OnCancelNewDivision) }
+            )
         }
     }
 }
@@ -163,17 +184,17 @@ private fun IncomeDivisionsScreenContent(
 @Composable
 private fun IncomeDivision(
     modifier: Modifier = Modifier,
+    index: Int,
     data: IncomeDivision,
+    sendIntent: (IncomeDivisionsContract.Intent) -> Unit,
+    onRecurringExpensesDivisionClick: () -> Unit
 ) {
-    var value = data.value
-    var percentage = data.percentage
-
     Row(
         modifier = if (data.isRecurringExpenses) {
             modifier
                 .testTag(RECURRING_EXPENSES_DIVISION_TAG)
                 .fillMaxWidth()
-                .clickable { data.onRecurringExpensesClick() }
+                .clickable { onRecurringExpensesDivisionClick() }
         } else modifier
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -190,18 +211,32 @@ private fun IncomeDivision(
         ) {
             TextField(
                 prefix = { Text(text = "R$") },
-                value = value,
-                onValueChange = { value = it },
-                readOnly = data.canEditValue,
+                value = data.value,
+                onValueChange = {
+                    sendIntent(
+                        IncomeDivisionsContract.Intent.OnDivisionValueChanged(
+                            index,
+                            it
+                        )
+                    )
+                },
+                readOnly = !data.canEditValue,
                 maxLines = 1,
                 modifier = modifier.weight(0.5f)
             )
             VerticalDivider()
             TextField(
                 suffix = { Text(text = "%") },
-                value = percentage,
-                onValueChange = { percentage = it },
-                readOnly = data.canEditPercentage,
+                value = data.percentage,
+                onValueChange = {
+                    sendIntent(
+                        IncomeDivisionsContract.Intent.OnDivisionPercentageChanged(
+                            index,
+                            it
+                        )
+                    )
+                },
+                readOnly = !data.canEditPercentage,
                 maxLines = 1,
                 modifier = modifier.weight(0.5f)
             )
@@ -210,17 +245,12 @@ private fun IncomeDivision(
 }
 
 @Composable
-private fun AddDivisionButton(modifier: Modifier = Modifier) {
-    val showDialog = remember { mutableStateOf(false) }
-
-    if (showDialog.value) {
-        NewDivisionDialog(
-            onSaveButtonClick = { showDialog.value = false },
-            onCancelButtonClick = { showDialog.value = false })
-    }
-
+private fun AddDivisionButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     TextButton(
-        onClick = { showDialog.value = true },
+        onClick = onClick,
         contentPadding = PaddingValues(dimensionResource(id = commonR.dimen.zero_padding)),
         modifier = modifier.fillMaxWidth()
     ) {
@@ -249,7 +279,14 @@ private fun AddDivisionButton(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick: () -> Unit) {
+private fun NewDivisionDialog(
+    uiState: IncomeDivisionsContract.UIState,
+    onNameChange: (String) -> Unit,
+    onValueChange: (String) -> Unit,
+    onPercentageChange: (String) -> Unit,
+    onSaveButtonClick: () -> Unit,
+    onCancelButtonClick: () -> Unit
+) {
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
             modifier = Modifier
@@ -264,21 +301,24 @@ private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick
             ) {
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.division_name_hint)) },
-                    value = "",
-                    onValueChange = { }
+                    value = uiState.newDivisionName,
+                    onValueChange = onNameChange,
+                    isError = !uiState.isNewDivisionNameValid
                 )
                 OutlinedTextField(
                     prefix = { Text(text = stringResource(id = commonR.string.brl_currency)) },
                     label = { Text(text = stringResource(id = R.string.division_value_hint)) },
-                    value = "",
-                    onValueChange = { },
+                    value = uiState.newDivisionValue,
+                    onValueChange = onValueChange,
+                    isError = !uiState.isNewDivisionValueValid,
                     singleLine = true
                 )
                 OutlinedTextField(
                     suffix = { Text(text = stringResource(id = R.string.division_percentage)) },
                     label = { Text(text = stringResource(id = R.string.division_percentage_hint)) },
-                    value = "",
-                    onValueChange = { }
+                    value = uiState.newDivisionPercentage,
+                    onValueChange = onPercentageChange,
+                    isError = !uiState.isNewDivisionPercentageValid
                 )
                 Row(
                     modifier = Modifier
@@ -302,11 +342,22 @@ private fun NewDivisionDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick
 @Preview
 @Composable
 fun IncomeDivisionsScreenPreview() {
-    IncomeDivisionsScreen(modifier = Modifier, onRecurringExpensesDivisionClick = {})
+    val viewModel = IncomeDivisionsViewModel()
+    IncomeDivisionsScreen(
+        modifier = Modifier,
+        viewModel = viewModel,
+        onRecurringExpensesDivisionClick = {})
 }
 
 @Preview
 @Composable
 fun NewDivisionDialogPreview() {
-    NewDivisionDialog(onSaveButtonClick = { }, onCancelButtonClick = { })
+    NewDivisionDialog(
+        uiState = IncomeDivisionsContract.UIState(),
+        onNameChange = {},
+        onValueChange = {},
+        onPercentageChange = {},
+        onSaveButtonClick = {},
+        onCancelButtonClick = {}
+    )
 }
