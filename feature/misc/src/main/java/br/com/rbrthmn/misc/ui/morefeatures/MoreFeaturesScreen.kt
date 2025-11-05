@@ -34,6 +34,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -43,14 +45,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.rbrthmn.misc.R
-import br.com.rbrthmn.misc.ui.incomedivisions.IncomeDivisionsDestination
-import br.com.rbrthmn.misc.ui.recurringexpenses.RecurringExpensesDestination
-import br.com.rbrthmn.misc.ui.reserves.ReservesDestination
 import br.com.rbrthmn.navigation.NavigationDestination
-import br.com.rbrthmn.settings.ui.SettingsDestination
+import org.koin.androidx.compose.koinViewModel
 import br.com.rbrthmn.ui.R as commonR
-
-data class FeatureLabel(val name: String, val route: String)
 
 object MoreFeaturesDestination : NavigationDestination {
     override val route = "more_features"
@@ -59,7 +56,25 @@ object MoreFeaturesDestination : NavigationDestination {
 const val FEATURES_LIST_TAG = "features_list"
 
 @Composable
-fun MoreFeaturesScreen(onFeatureClick: (String) -> Unit, modifier: Modifier = Modifier) {
+fun MoreFeaturesScreen(
+    modifier: Modifier = Modifier,
+    viewModel: MoreFeaturesContract.ViewModel = koinViewModel<MoreFeaturesContract.ViewModel>(),
+    onFeatureClick: (String) -> Unit
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    MoreFeaturesScreen(
+        modifier = modifier,
+        uiState = uiState,
+        onFeatureClick = onFeatureClick
+    )
+}
+
+@Composable
+private fun MoreFeaturesScreen(
+    modifier: Modifier = Modifier,
+    uiState: MoreFeaturesContract.UIState,
+    onFeatureClick: (String) -> Unit
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_medium)),
@@ -68,31 +83,12 @@ fun MoreFeaturesScreen(onFeatureClick: (String) -> Unit, modifier: Modifier = Mo
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        MoreFeaturesCard(onFeatureClick)
+        MoreFeaturesCard(uiState.features, onFeatureClick)
     }
 }
 
 @Composable
-private fun MoreFeaturesCard(onFeatureClick: (String) -> Unit) {
-    val featuresList = listOf(
-        FeatureLabel(
-            name = stringResource(id = R.string.feature_label_reserves),
-            route = ReservesDestination.route
-        ),
-        FeatureLabel(
-            name = stringResource(id = R.string.feature_label_recurring_expenses),
-            route = RecurringExpensesDestination.route
-        ),
-        FeatureLabel(
-            name = stringResource(id = R.string.feature_label_income_distribution),
-            route = IncomeDivisionsDestination.route
-        ),
-        FeatureLabel(
-            name = stringResource(id = R.string.feature_label_settings),
-            route = SettingsDestination.route
-        )
-    )
-
+private fun MoreFeaturesCard(features: List<FeatureLabel>, onFeatureClick: (String) -> Unit) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
@@ -107,15 +103,18 @@ private fun MoreFeaturesCard(onFeatureClick: (String) -> Unit) {
                 .padding(horizontal = dimensionResource(id = commonR.dimen.padding_medium))
                 .testTag(FEATURES_LIST_TAG)
         ) {
-            for (index in featuresList.indices) {
+            features.forEachIndexed { index, feature ->
                 TextButton(
-                    onClick = { onFeatureClick(featuresList[index].route) },
+                    onClick = { onFeatureClick(feature.route) },
                     contentPadding = PaddingValues(dimensionResource(id = commonR.dimen.zero_padding)),
-                    modifier = Modifier.testTag(featuresList[index].route)
+                    modifier = Modifier.testTag(feature.route)
                 ) {
-                    Text(text = featuresList[index].name, modifier = Modifier.fillMaxWidth())
+                    Text(
+                        text = stringResource(id = feature.nameResId),
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
-                if (index < featuresList.size - 1) {
+                if (index < features.size - 1) {
                     HorizontalDivider()
                 }
             }
@@ -126,5 +125,14 @@ private fun MoreFeaturesCard(onFeatureClick: (String) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun MoreFeaturesScreenPreview() {
-    MoreFeaturesScreen(onFeatureClick = {})
+    val features = listOf(
+        FeatureLabel(R.string.feature_label_reserves, "reserves"),
+        FeatureLabel(R.string.feature_label_recurring_expenses, "recurring_expenses"),
+        FeatureLabel(R.string.feature_label_income_distribution, "income_divisions"),
+        FeatureLabel(R.string.feature_label_settings, "settings")
+    )
+    MoreFeaturesScreen(
+        uiState = MoreFeaturesContract.UIState(features = features),
+        onFeatureClick = {}
+    )
 }
