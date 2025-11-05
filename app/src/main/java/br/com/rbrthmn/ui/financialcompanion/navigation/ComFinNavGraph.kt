@@ -31,8 +31,8 @@ import br.com.rbrthmn.misc.ui.incomedivisions.IncomeDivisionsDestination
 import br.com.rbrthmn.misc.ui.incomedivisions.IncomeDivisionsScreen
 import br.com.rbrthmn.misc.ui.morefeatures.MoreFeaturesDestination
 import br.com.rbrthmn.misc.ui.morefeatures.MoreFeaturesScreen
-import br.com.rbrthmn.misc.ui.recurringexpenses.RecurringExpenses
 import br.com.rbrthmn.misc.ui.recurringexpenses.RecurringExpensesDestination
+import br.com.rbrthmn.misc.ui.recurringexpenses.RecurringExpensesScreen
 import br.com.rbrthmn.misc.ui.reserves.ReservesDestination
 import br.com.rbrthmn.misc.ui.reserves.ReservesScreen
 import br.com.rbrthmn.operations.ui.OperationsDestination
@@ -70,7 +70,7 @@ fun ComFinNavGraph(
             ReservesScreen()
         }
         composable(route = RecurringExpensesDestination.route) {
-            RecurringExpenses()
+            RecurringExpensesScreen()
         }
         composable(route = SettingsDestination.route) {
             SettingsScreen()

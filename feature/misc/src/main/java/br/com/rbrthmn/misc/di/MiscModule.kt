@@ -4,6 +4,8 @@ import br.com.rbrthmn.misc.ui.incomedivisions.IncomeDivisionsContract
 import br.com.rbrthmn.misc.ui.incomedivisions.IncomeDivisionsViewModel
 import br.com.rbrthmn.misc.ui.morefeatures.MoreFeaturesContract
 import br.com.rbrthmn.misc.ui.morefeatures.MoreFeaturesViewModel
+import br.com.rbrthmn.misc.ui.recurringexpenses.RecurringExpensesContract
+import br.com.rbrthmn.misc.ui.recurringexpenses.RecurringExpensesViewModel
 import br.com.rbrthmn.misc.ui.reserves.ReservesContract
 import br.com.rbrthmn.misc.ui.reserves.ReservesViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -18,5 +20,8 @@ val miscModule = module {
     }
     viewModel<MoreFeaturesContract.ViewModel> {
         MoreFeaturesViewModel().doOnInit()
+    }
+    viewModel<RecurringExpensesContract.ViewModel> {
+        RecurringExpensesViewModel().doOnInit()
     }
 }
