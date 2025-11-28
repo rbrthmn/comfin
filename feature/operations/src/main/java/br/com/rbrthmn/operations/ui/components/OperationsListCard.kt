@@ -50,6 +50,7 @@ import br.com.rbrthmn.operations.ui.Operation
 import br.com.rbrthmn.operations.ui.OperationType
 import br.com.rbrthmn.operations.ui.OperationsScreenContract
 import br.com.rbrthmn.operations.ui.OperationsScreenViewModel
+import br.com.rbrthmn.ui.components.DatePickerField
 import br.com.rbrthmn.ui.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import java.time.LocalDate
@@ -60,13 +61,16 @@ const val NEW_OPERATION_DIALOG_TAG = "new_operation_dialog"
 const val OPERATION_TYPES_DROPDOWN_MENU_TAG = "operation_types_dropdown_menu"
 
 @Composable
-fun OperationsListCard(modifier: Modifier = Modifier, viewModel: OperationsScreenContract.ViewModel) {
+fun OperationsListCard(
+    modifier: Modifier = Modifier,
+    viewModel: OperationsScreenContract.ViewModel
+) {
     val uiState by viewModel.uiState.collectAsState()
     val showAddOperationDialog = rememberSaveable { mutableStateOf(false) }
 
     if (showAddOperationDialog.value)
         AddOperationDialog(
-            viewModel = viewModel,
+            uiState = uiState,
             onSaveButtonClick = {
                 viewModel.onIntent(
                     OperationsScreenContract.Intent.OnSaveButtonClick(
@@ -77,6 +81,18 @@ fun OperationsListCard(modifier: Modifier = Modifier, viewModel: OperationsScree
             onCancelButtonClick = {
                 viewModel.onIntent(OperationsScreenContract.Intent.OnResetDialogFields)
                 showAddOperationDialog.value = false
+            },
+            onDescriptionChange = {
+                viewModel.onIntent(OperationsScreenContract.Intent.OnDescriptionChange(description = it))
+            },
+            onValueChange = {
+                viewModel.onIntent(OperationsScreenContract.Intent.OnValueChange(value = it))
+            },
+            onTypeChange = {
+                viewModel.onIntent(OperationsScreenContract.Intent.OnOperationTypeChange(it))
+            },
+            onDateChange = {
+                viewModel.onIntent(OperationsScreenContract.Intent.OnOperationDateChange(it))
             }
         )
 
@@ -139,12 +155,15 @@ fun OperationsListCard(modifier: Modifier = Modifier, viewModel: OperationsScree
 @Composable
 fun AddOperationDialog(
     modifier: Modifier = Modifier,
-    viewModel: OperationsScreenContract.ViewModel,
+    uiState: OperationsScreenContract.UiState,
     onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
+    onDescriptionChange: (String) -> Unit,
+    onValueChange: (String) -> Unit,
+    onTypeChange: (OperationType) -> Unit,
+    onDateChange: (LocalDate) -> Unit,
     availableOperationTypes: List<OperationType> = OperationType.entries
 ) {
-    val uiState by viewModel.uiState.collectAsState()
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
             modifier = modifier
@@ -161,13 +180,7 @@ fun AddOperationDialog(
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.operation_description_hint)) },
                     value = uiState.newOperationDescription,
-                    onValueChange = {
-                        viewModel.onIntent(
-                            OperationsScreenContract.Intent.OnDescriptionChange(
-                                it
-                            )
-                        )
-                    },
+                    onValueChange = onDescriptionChange,
                     isError = !uiState.isNewOperationDescriptionValid,
                     singleLine = true
                 )
@@ -176,24 +189,12 @@ fun AddOperationDialog(
                     label = { Text(text = stringResource(id = R.string.operation_value_hint)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = uiState.newOperationValue,
-                    onValueChange = {
-                        viewModel.onIntent(
-                            OperationsScreenContract.Intent.OnValueChange(
-                                it
-                            )
-                        )
-                    },
+                    onValueChange = onValueChange,
                     isError = !uiState.isNewOperationValueValid,
                     singleLine = true
                 )
                 OperationTypeDropdownMenu(
-                    onTypeClicked = {
-                        viewModel.onIntent(
-                            OperationsScreenContract.Intent.OnOperationTypeChange(
-                                it
-                            )
-                        )
-                    },
+                    onTypeClicked = onTypeChange,
                     operationTypes = availableOperationTypes,
                     isError = !uiState.isNewOperationTypeValid
                 )
@@ -201,13 +202,7 @@ fun AddOperationDialog(
                     composableFunction()
                 }
                 DatePickerField(
-                    onDateSelected = {
-                        viewModel.onIntent(
-                            OperationsScreenContract.Intent.OnOperationDateChange(
-                                it
-                            )
-                        )
-                    },
+                    onDateSelected = onDateChange,
                     isError = !uiState.isNewOperationDateValid
                 )
                 Row(
@@ -377,12 +372,13 @@ fun OperationsListCardPreview() {
 @Preview
 @Composable
 fun AddOperationDialogPreview() {
-    val context = LocalContext.current
-    val stringProvider = ResourceStringProvider(context)
-
     AddOperationDialog(
-        viewModel = OperationsScreenViewModel(stringProvider).doOnInit(),
+        uiState = OperationsScreenContract.UiState(),
         onSaveButtonClick = {},
-        onCancelButtonClick = {}
+        onCancelButtonClick = {},
+        onDescriptionChange = {},
+        onValueChange = {},
+        onTypeChange = {},
+        onDateChange = {}
     )
 }

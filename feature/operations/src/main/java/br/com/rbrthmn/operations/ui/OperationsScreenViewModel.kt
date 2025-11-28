@@ -225,9 +225,9 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
         if (resetFields) {
             uiState.update {
                 it.copy(
-                    newOperationOriginAccount = OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE,
-                    newOperationDestinationAccount = OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE,
-                    newOperationReserve = OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE
+                    newOperationOriginAccount = OperationsScreenContract.UiState.Companion.DEFAULT_STRING_VALUE,
+                    newOperationDestinationAccount = OperationsScreenContract.UiState.Companion.DEFAULT_STRING_VALUE,
+                    newOperationReserve = OperationsScreenContract.UiState.Companion.DEFAULT_STRING_VALUE
                 )
             }
         }
