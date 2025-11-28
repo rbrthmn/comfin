@@ -14,7 +14,6 @@ import br.com.rbrthmn.misc.ui.incomedivisions.IncomeDivisionsDestination
 import br.com.rbrthmn.misc.ui.morefeatures.FEATURES_LIST_TAG
 import br.com.rbrthmn.misc.ui.morefeatures.MoreFeaturesDestination
 import br.com.rbrthmn.misc.ui.recurringexpenses.RecurringExpensesDestination
-import br.com.rbrthmn.misc.ui.reserves.ReservesDestination
 import br.com.rbrthmn.settings.ui.SettingsDestination
 import org.junit.Assert.assertEquals
 import org.junit.Test

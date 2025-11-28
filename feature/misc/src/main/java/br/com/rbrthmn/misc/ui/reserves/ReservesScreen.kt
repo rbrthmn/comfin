@@ -2,7 +2,9 @@ package br.com.rbrthmn.misc.ui.reserves
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -26,8 +29,14 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
@@ -42,9 +51,23 @@ import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.misc.R
 import br.com.rbrthmn.misc.ui.reserves.components.ReserveItem
 import br.com.rbrthmn.navigation.NavigationDestination
+import br.com.rbrthmn.operations.ui.OperationType
+import br.com.rbrthmn.operations.ui.OperationsScreenContract
+import br.com.rbrthmn.operations.ui.components.AddOperationDialog
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
+import br.com.rbrthmn.operations.R as operationR
 import br.com.rbrthmn.ui.R as commonR
+
+data class Reserve(
+    val name: String,
+    val value: String,
+    val operations: List<ReserveOperation> = listOf()
+)
+
+data class ReserveOperation(val date: String, val value: String, val isWithdrawal: Boolean)
 
 object ReservesDestination : NavigationDestination {
     override val route = "reserves"
@@ -266,6 +289,144 @@ private fun NewReserveDialog(
                         Text(text = stringResource(id = commonR.string.save_button))
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
+    var isExpanded by remember { mutableStateOf(false) }
+    val rotationState by animateFloatAsState(
+        targetValue = if (isExpanded) 180f else 0f, label = ""
+    )
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(dimensionResource(id = commonR.dimen.corner_shape_round)))
+            .clickable { isExpanded = !isExpanded }
+            .padding(end = dimensionResource(id = commonR.dimen.padding_extra_small)),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier.weight(1f)) {
+            Icon(
+                imageVector = Icons.Default.ArrowDropDown,
+                contentDescription = stringResource(id = commonR.string.drop_down_arrow_icon_description),
+                modifier = modifier
+                    .alpha(0.2f)
+                    .rotate(rotationState)
+                    .padding(dimensionResource(id = commonR.dimen.padding_extra_small)),
+            )
+            Text(
+                text = reserve.name,
+                fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+        Text(
+            text = valueWithCurrencyString(
+                currencyStringId = commonR.string.brl_currency, value = reserve.value
+            ),
+            maxLines = 1,
+            fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
+            fontWeight = FontWeight.Bold,
+        )
+    }
+
+    if (isExpanded) {
+        ReserveOperationsList(reserve, modifier)
+    }
+}
+
+@Composable
+private fun ReserveOperationsList(
+    reserve: Reserve,
+    modifier: Modifier = Modifier
+) {
+    val showDialog = remember { mutableStateOf(false) }
+    val operationsScreenViewModel: OperationsScreenContract.ViewModel =
+        koinViewModel()
+
+    if (showDialog.value) {
+        AddOperationDialog(
+            viewModel = operationsScreenViewModel,
+            onSaveButtonClick = {
+                operationsScreenViewModel.onIntent(
+                    OperationsScreenContract.Intent.OnSaveButtonClick(
+                        showDialog
+                    )
+                )
+            },
+            onCancelButtonClick = {
+                showDialog.value = false
+                operationsScreenViewModel.onIntent(OperationsScreenContract.Intent.OnResetDialogFields)
+            },
+            availableOperationTypes = listOf(
+                OperationType.RESERVE_ALLOCATION,
+                OperationType.RESERVE_WITHDRAWAL
+            )
+        )
+    }
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_extra_small))
+    ) {
+        for (operation in reserve.operations) {
+            val operationValueColor = if (operation.isWithdrawal) Color.Red else Color.Green
+            val operationValueSymbol = if (operation.isWithdrawal) "-" else "+"
+
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = dimensionResource(id = commonR.dimen.padding_medium))
+                    .padding(vertical = dimensionResource(id = commonR.dimen.padding_extra_small)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(
+                        SimpleDateFormat(
+                            "yyyy-MM-dd",
+                            Locale.getDefault()
+                        ).parse(operation.date)!!
+                    ),
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
+                )
+                Text(
+                    text = operationValueSymbol + valueWithCurrencyString(
+                        currencyStringId = commonR.string.brl_currency,
+                        value = operation.value
+                    ),
+                    color = operationValueColor,
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
+                )
+            }
+        }
+        TextButton(
+            onClick = { showDialog.value = true },
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(id = commonR.dimen.padding_extra_small))
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(id = commonR.string.add_icon_description),
+                    tint = Color.Gray,
+                )
+                Text(
+                    text = stringResource(id = operationR.string.add_operation_button),
+                    fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
+                )
             }
         }
     }

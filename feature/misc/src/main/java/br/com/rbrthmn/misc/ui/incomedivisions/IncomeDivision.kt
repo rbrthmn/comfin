@@ -1,11 +1,11 @@
 package br.com.rbrthmn.misc.ui.incomedivisions
 
-data class IncomeDivision(
+class IncomeDivision(
     val name: String,
     val value: String,
+    val canEditValue: Boolean = true,
     val percentage: String,
-    val canEditValue: Boolean = false,
     val canEditPercentage: Boolean = true,
     val isRecurringExpenses: Boolean = false,
-    val onRecurringExpensesClick: () -> Unit = {}
+    val onRecurringExpensesClick: () -> Unit = { }
 )
