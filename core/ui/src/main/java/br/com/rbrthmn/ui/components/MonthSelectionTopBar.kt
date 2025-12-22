@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Modifications made by Roberto Kenzo Hamano, 2024
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package br.com.rbrthmn.ui.components
 
 import androidx.compose.foundation.clickable
@@ -22,6 +40,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -29,6 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,6 +73,10 @@ fun MonthSelectionTopBar(
     var currentYear by rememberSaveable { mutableIntStateOf(initialDate.year) }
     var showDialog by rememberSaveable { mutableStateOf(false) }
 
+    val configuration = LocalConfiguration.current
+    val locale = configuration.locales[0] ?: Locale.getDefault()
+    val monthsShort = remember(locale) { getMonthsOfYearShort(locale) }
+
     if (showDialog)
         MonthSelectionDialog(
             onDismissRequest = { showDialog = false },
@@ -75,8 +99,8 @@ fun MonthSelectionTopBar(
             InfiniteHorizontalCircularList(
                 height = dimensionResource(id = R.dimen.dates_circular_list_item_height),
                 itemWidth = 80.dp,
-                items = getMonthsOfYearShort(),
-                initialItem = getMonthsOfYearShort()[currentMonth.value - 1],
+                items = monthsShort,
+                initialItem = monthsShort.getOrElse(currentMonth.value - 1) { monthsShort[0] },
                 fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
                 textColor = Color.LightGray,
                 selectedTextColor = Color.Black,
@@ -111,6 +135,10 @@ private fun MonthSelectionDialog(
     initialMonth: Month,
     onMonthSelected: (Month) -> Unit
 ) {
+    val configuration = LocalConfiguration.current
+    val locale = configuration.locales[0] ?: Locale.getDefault()
+    val monthsFull = remember(locale) { getMonthsOfYear(locale) }
+
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card {
             Box {
@@ -139,8 +167,8 @@ private fun MonthSelectionDialog(
                         InfiniteVerticalCircularList(
                             width = dimensionResource(id = R.dimen.dates_circular_list_width),
                             itemHeight = dimensionResource(id = R.dimen.dates_circular_list_item_height),
-                            items = getMonthsOfYear(),
-                            initialItem = getMonthsOfYear()[initialMonth.value - 1],
+                            items = monthsFull,
+                            initialItem = monthsFull.getOrElse(initialMonth.value - 1) { monthsFull[0] },
                             fontSize = dimensionResource(id = R.dimen.font_size_medium).value.sp,
                             textColor = Color.LightGray,
                             selectedTextColor = Color.Black,
@@ -181,15 +209,15 @@ private fun MonthSelectionDialog(
     }
 }
 
-private fun getMonthsOfYear(): List<String> {
+private fun getMonthsOfYear(locale: Locale): List<String> {
     return Month.entries.map { month ->
-        month.getDisplayName(TextStyle.FULL, Locale.getDefault())
+        month.getDisplayName(TextStyle.FULL, locale)
     }
 }
 
-private fun getMonthsOfYearShort(): List<String> {
+private fun getMonthsOfYearShort(locale: Locale): List<String> {
     return Month.entries.map { month ->
-        month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+        month.getDisplayName(TextStyle.SHORT, locale)
             .uppercase()
             .removeSuffix(".")
     }
