@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Modifications made by Roberto Kenzo Hamano, 2024
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package br.com.rbrthmn.operations.ui.components
 
 import android.annotation.SuppressLint
@@ -50,7 +68,6 @@ import br.com.rbrthmn.operations.ui.Operation
 import br.com.rbrthmn.operations.ui.OperationType
 import br.com.rbrthmn.operations.ui.OperationsScreenContract
 import br.com.rbrthmn.operations.ui.OperationsScreenViewModel
-import br.com.rbrthmn.ui.components.DatePickerField
 import br.com.rbrthmn.ui.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import java.time.LocalDate
@@ -70,7 +87,7 @@ fun OperationsListCard(
 
     if (showAddOperationDialog.value)
         AddOperationDialog(
-            uiState = uiState,
+            viewModel = viewModel,
             onSaveButtonClick = {
                 viewModel.onIntent(
                     OperationsScreenContract.Intent.OnSaveButtonClick(
@@ -81,18 +98,6 @@ fun OperationsListCard(
             onCancelButtonClick = {
                 viewModel.onIntent(OperationsScreenContract.Intent.OnResetDialogFields)
                 showAddOperationDialog.value = false
-            },
-            onDescriptionChange = {
-                viewModel.onIntent(OperationsScreenContract.Intent.OnDescriptionChange(description = it))
-            },
-            onValueChange = {
-                viewModel.onIntent(OperationsScreenContract.Intent.OnValueChange(value = it))
-            },
-            onTypeChange = {
-                viewModel.onIntent(OperationsScreenContract.Intent.OnOperationTypeChange(it))
-            },
-            onDateChange = {
-                viewModel.onIntent(OperationsScreenContract.Intent.OnOperationDateChange(it))
             }
         )
 
@@ -155,15 +160,12 @@ fun OperationsListCard(
 @Composable
 fun AddOperationDialog(
     modifier: Modifier = Modifier,
-    uiState: OperationsScreenContract.UiState,
+    viewModel: OperationsScreenContract.ViewModel,
     onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
-    onDescriptionChange: (String) -> Unit,
-    onValueChange: (String) -> Unit,
-    onTypeChange: (OperationType) -> Unit,
-    onDateChange: (LocalDate) -> Unit,
     availableOperationTypes: List<OperationType> = OperationType.entries
 ) {
+    val uiState by viewModel.uiState.collectAsState()
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
             modifier = modifier
@@ -180,7 +182,13 @@ fun AddOperationDialog(
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.operation_description_hint)) },
                     value = uiState.newOperationDescription,
-                    onValueChange = onDescriptionChange,
+                    onValueChange = {
+                        viewModel.onIntent(
+                            OperationsScreenContract.Intent.OnDescriptionChange(
+                                it
+                            )
+                        )
+                    },
                     isError = !uiState.isNewOperationDescriptionValid,
                     singleLine = true
                 )
@@ -189,12 +197,24 @@ fun AddOperationDialog(
                     label = { Text(text = stringResource(id = R.string.operation_value_hint)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = uiState.newOperationValue,
-                    onValueChange = onValueChange,
+                    onValueChange = {
+                        viewModel.onIntent(
+                            OperationsScreenContract.Intent.OnValueChange(
+                                it
+                            )
+                        )
+                    },
                     isError = !uiState.isNewOperationValueValid,
                     singleLine = true
                 )
                 OperationTypeDropdownMenu(
-                    onTypeClicked = onTypeChange,
+                    onTypeClicked = {
+                        viewModel.onIntent(
+                            OperationsScreenContract.Intent.OnOperationTypeChange(
+                                it
+                            )
+                        )
+                    },
                     operationTypes = availableOperationTypes,
                     isError = !uiState.isNewOperationTypeValid
                 )
@@ -202,7 +222,13 @@ fun AddOperationDialog(
                     composableFunction()
                 }
                 DatePickerField(
-                    onDateSelected = onDateChange,
+                    onDateSelected = {
+                        viewModel.onIntent(
+                            OperationsScreenContract.Intent.OnOperationDateChange(
+                                it
+                            )
+                        )
+                    },
                     isError = !uiState.isNewOperationDateValid
                 )
                 Row(
@@ -372,13 +398,12 @@ fun OperationsListCardPreview() {
 @Preview
 @Composable
 fun AddOperationDialogPreview() {
+    val context = LocalContext.current
+    val stringProvider = ResourceStringProvider(context)
+
     AddOperationDialog(
-        uiState = OperationsScreenContract.UiState(),
+        viewModel = OperationsScreenViewModel(stringProvider).doOnInit(),
         onSaveButtonClick = {},
-        onCancelButtonClick = {},
-        onDescriptionChange = {},
-        onValueChange = {},
-        onTypeChange = {},
-        onDateChange = {}
+        onCancelButtonClick = {}
     )
 }
