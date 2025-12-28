@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Modifications made by Roberto Kenzo Hamano, 2024
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package br.com.rbrthmn.home.ui.components.creditcardbillscard
 
 import androidx.compose.runtime.MutableState
@@ -17,8 +35,20 @@ class CreditCardBillsCardViewModel : Contract.ViewModel() {
             Contract.CreditCardBillUiState(
                 name = CREDIT_CARD_MOCK,
                 value = formatDouble(BILL_VALUE_MOCK),
-                dueDay = DUE_DAY_MOCK,
+                dueDay = 29,
                 bankName = BANK_NAME_MOCK,
+            ),
+            Contract.CreditCardBillUiState(
+                name = "BTG",
+                value = formatDouble(378.82),
+                dueDay = 8,
+                bankName = "BTG",
+            ),
+            Contract.CreditCardBillUiState(
+                name = "XP",
+                value = formatDouble(3546.05),
+                dueDay = 7,
+                bankName = "XP Inc.",
             ),
         )
         uiState.value = Contract.CreditCardsBillCardUiState(
@@ -124,10 +154,10 @@ class CreditCardBillsCardViewModel : Contract.ViewModel() {
 
     companion object {
         const val INVALID_BILL_DATE = 0
-        const val CREDIT_CARD_MOCK = "Cartao"
-        const val BILL_VALUE_MOCK = 1000.00
+        const val CREDIT_CARD_MOCK = "Nubank"
+        const val BILL_VALUE_MOCK = 299.47
         const val DUE_DAY_MOCK = 30
-        const val BANK_NAME_MOCK = "Meu Banco"
-        const val TOTAL_BILL_MOCK = 2000.00
+        const val BANK_NAME_MOCK = "Nubank"
+        const val TOTAL_BILL_MOCK = 4224.34
     }
 }
