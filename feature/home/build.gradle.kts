@@ -53,6 +53,7 @@ android {
 dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:navigation"))
+    implementation(project(":core:data"))
 
     testImplementation(project(":core:test"))
     androidTestImplementation(project(":core:test"))

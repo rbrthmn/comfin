@@ -20,7 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import br.com.rbrthmn.R
 import br.com.rbrthmn.home.ui.HomeDestination
-import br.com.rbrthmn.misc.ui.morefeatures.MoreFeaturesDestination
+import br.com.rbrthmn.misc.morefeatures.MoreFeaturesDestination
 import br.com.rbrthmn.navigation.ComFinNavigationBar
 import br.com.rbrthmn.navigation.ComFinNavigationType
 import br.com.rbrthmn.navigation.NavigationItemContent
