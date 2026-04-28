@@ -1,13 +1,13 @@
 package br.com.rbrthmn.data.repository
 
-import br.com.rbrthmn.data.entity.InvestmentEntity
+import br.com.rbrthmn.data.model.Investment
 import kotlinx.coroutines.flow.Flow
 
 interface InvestmentRepository {
-    fun getAll(): Flow<List<InvestmentEntity>>
-    fun getByType(type: String): Flow<List<InvestmentEntity>>
-    suspend fun getById(id: Long): InvestmentEntity?
-    suspend fun insert(investment: InvestmentEntity): Long
-    suspend fun update(investment: InvestmentEntity): Int
-    suspend fun delete(investment: InvestmentEntity): Int
+    fun getAll(): Flow<List<Investment>>
+    fun getByType(type: String): Flow<List<Investment>>
+    suspend fun getById(id: Long): Investment?
+    suspend fun insert(investment: Investment): Long
+    suspend fun update(investment: Investment): Int
+    suspend fun delete(investment: Investment): Int
 }

@@ -1,12 +1,12 @@
 package br.com.rbrthmn.data.repository
 
-import br.com.rbrthmn.data.entity.AllocationEntity
+import br.com.rbrthmn.data.model.Allocation
 import kotlinx.coroutines.flow.Flow
 
 interface AllocationRepository {
-    fun getAll(): Flow<List<AllocationEntity>>
-    suspend fun getById(id: Long): AllocationEntity?
-    suspend fun insert(allocation: AllocationEntity): Long
-    suspend fun update(allocation: AllocationEntity): Int
-    suspend fun delete(allocation: AllocationEntity): Int
+    fun getAll(): Flow<List<Allocation>>
+    suspend fun getById(id: Long): Allocation?
+    suspend fun insert(allocation: Allocation): Long
+    suspend fun update(allocation: Allocation): Int
+    suspend fun delete(allocation: Allocation): Int
 }

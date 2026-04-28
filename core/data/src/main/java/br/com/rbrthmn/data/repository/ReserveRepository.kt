@@ -1,16 +1,16 @@
 package br.com.rbrthmn.data.repository
 
-import br.com.rbrthmn.data.entity.ReserveEntity
-import br.com.rbrthmn.data.entity.ReserveTransactionEntity
+import br.com.rbrthmn.data.model.Reserve
+import br.com.rbrthmn.data.model.ReserveTransaction
 import kotlinx.coroutines.flow.Flow
 
 interface ReserveRepository {
-    fun getAll(): Flow<List<ReserveEntity>>
-    suspend fun getById(id: Long): ReserveEntity?
-    suspend fun insert(reserve: ReserveEntity): Long
-    suspend fun update(reserve: ReserveEntity): Int
-    suspend fun delete(reserve: ReserveEntity): Int
-    fun getTransactionsByReserve(reserveId: Long): Flow<List<ReserveTransactionEntity>>
-    suspend fun insertTransaction(transaction: ReserveTransactionEntity): Long
-    suspend fun deleteTransaction(transaction: ReserveTransactionEntity): Int
+    fun getAll(): Flow<List<Reserve>>
+    suspend fun getById(id: Long): Reserve?
+    suspend fun insert(reserve: Reserve): Long
+    suspend fun update(reserve: Reserve): Int
+    suspend fun delete(reserve: Reserve): Int
+    fun getTransactionsByReserve(reserveId: Long): Flow<List<ReserveTransaction>>
+    suspend fun insertTransaction(transaction: ReserveTransaction): Long
+    suspend fun deleteTransaction(transaction: ReserveTransaction): Int
 }
