@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,9 +49,8 @@ import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.misc.R
 import br.com.rbrthmn.navigation.NavigationDestination
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
+import org.koin.androidx.compose.koinViewModel
 import br.com.rbrthmn.ui.R as commonR
-
-data class RecurringExpense(val description: String, val value: String, val billingDay: String)
 
 object RecurringExpensesDestination : NavigationDestination {
     override val route = "recurring_expenses"
@@ -59,23 +59,11 @@ object RecurringExpensesDestination : NavigationDestination {
 const val NEW_RECURRING_EXPENSE_DIALOG_TAG = "new_recurring_expense_dialog"
 
 @Composable
-fun RecurringExpenses(modifier: Modifier = Modifier) {
-    val recurringExpenses = listOf(
-        RecurringExpense(
-            description = "Aluguel",
-            value = "1500.00",
-            billingDay = "05" // Day of the month (e.g., 5th)
-        ), RecurringExpense(
-            description = "Internet",
-            value = "100.00",
-            billingDay = "10" // Day of the month (e.g., 20th)
-        ), RecurringExpense(
-            description = "Energia",
-            value = "80.00",
-            billingDay = "13"  // Day of the month (e.g., 10th)
-        )
-    )
-    val totalExpensesValue = recurringExpenses.sumOf { it.value.toDouble() }.toString()
+fun RecurringExpenses(
+    modifier: Modifier = Modifier,
+    viewModel: RecurringExpensesScreenContract.ViewModel = koinViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -85,13 +73,38 @@ fun RecurringExpenses(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        RecurringExpensesCard(expenses = recurringExpenses, totalExpensesValue = totalExpensesValue)
+        RecurringExpensesCard(
+            expenses = uiState.recurringExpenses,
+            totalExpensesValue = uiState.totalExpensesValue,
+            showAddExpenseDialog = uiState.showAddExpenseDialog,
+            newExpenseDescription = uiState.newExpenseDescription,
+            newExpenseValue = uiState.newExpenseValue,
+            newExpenseBillingDay = uiState.newExpenseBillingDay,
+            onOpenAddExpenseDialog = { viewModel.onIntent(RecurringExpensesScreenContract.Intent.OnOpenAddExpenseDialog) },
+            onDismissAddExpenseDialog = { viewModel.onIntent(RecurringExpensesScreenContract.Intent.OnDismissAddExpenseDialog) },
+            onDescriptionChange = { viewModel.onIntent(RecurringExpensesScreenContract.Intent.OnNewExpenseDescriptionChange(it)) },
+            onValueChange = { viewModel.onIntent(RecurringExpensesScreenContract.Intent.OnNewExpenseValueChange(it)) },
+            onBillingDayChange = { viewModel.onIntent(RecurringExpensesScreenContract.Intent.OnNewExpenseBillingDayChange(it)) },
+            onSaveNewExpense = { viewModel.onIntent(RecurringExpensesScreenContract.Intent.OnSaveNewExpense) }
+        )
     }
 }
 
 @Composable
 private fun RecurringExpensesCard(
-    modifier: Modifier = Modifier, expenses: List<RecurringExpense>, totalExpensesValue: String
+    modifier: Modifier = Modifier,
+    expenses: List<RecurringExpense>,
+    totalExpensesValue: String,
+    showAddExpenseDialog: Boolean,
+    newExpenseDescription: String,
+    newExpenseValue: String,
+    newExpenseBillingDay: String,
+    onOpenAddExpenseDialog: () -> Unit,
+    onDismissAddExpenseDialog: () -> Unit,
+    onDescriptionChange: (String) -> Unit,
+    onValueChange: (String) -> Unit,
+    onBillingDayChange: (String) -> Unit,
+    onSaveNewExpense: () -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -118,7 +131,8 @@ private fun RecurringExpensesCard(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     text = valueWithCurrencyString(
-                        currencyStringId = commonR.string.brl_currency, value = totalExpensesValue
+                        currencyStringId = commonR.string.brl_currency,
+                        value = totalExpensesValue
                     ),
                     fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp
                 )
@@ -128,9 +142,7 @@ private fun RecurringExpensesCard(
                     .fillMaxWidth()
                     .padding(horizontal = dimensionResource(id = commonR.dimen.padding_extra_small))
                     .animateContentSize(
-                        animationSpec = tween(
-                            durationMillis = 300, easing = LinearOutSlowInEasing
-                        )
+                        animationSpec = tween(durationMillis = 300, easing = LinearOutSlowInEasing)
                     ),
             ) {
                 for (expense in expenses) {
@@ -140,7 +152,18 @@ private fun RecurringExpensesCard(
                     )
                 }
             }
-            AddExpenseButton()
+            AddExpenseButton(
+                showDialog = showAddExpenseDialog,
+                newExpenseDescription = newExpenseDescription,
+                newExpenseValue = newExpenseValue,
+                newExpenseBillingDay = newExpenseBillingDay,
+                onOpenDialog = onOpenAddExpenseDialog,
+                onDismissDialog = onDismissAddExpenseDialog,
+                onDescriptionChange = onDescriptionChange,
+                onValueChange = onValueChange,
+                onBillingDayChange = onBillingDayChange,
+                onSave = onSaveNewExpense
+            )
         }
     }
 }
@@ -176,7 +199,8 @@ private fun ExpenseItem(expense: RecurringExpense, modifier: Modifier = Modifier
         }
         Text(
             text = valueWithCurrencyString(
-                currencyStringId = commonR.string.brl_currency, value = expense.value
+                currencyStringId = commonR.string.brl_currency,
+                value = expense.value
             ),
             maxLines = 1,
             fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
@@ -185,16 +209,34 @@ private fun ExpenseItem(expense: RecurringExpense, modifier: Modifier = Modifier
 }
 
 @Composable
-private fun AddExpenseButton(modifier: Modifier = Modifier) {
-    val showDialog = remember { mutableStateOf(false) }
-
-    if (showDialog.value)
+private fun AddExpenseButton(
+    modifier: Modifier = Modifier,
+    showDialog: Boolean,
+    newExpenseDescription: String,
+    newExpenseValue: String,
+    newExpenseBillingDay: String,
+    onOpenDialog: () -> Unit,
+    onDismissDialog: () -> Unit,
+    onDescriptionChange: (String) -> Unit,
+    onValueChange: (String) -> Unit,
+    onBillingDayChange: (String) -> Unit,
+    onSave: () -> Unit
+) {
+    if (showDialog) {
         NewRecurringExpenseDialog(
-            onSaveButtonClick = { showDialog.value = false },
-            onCancelButtonClick = { showDialog.value = false })
+            description = newExpenseDescription,
+            value = newExpenseValue,
+            selectedBillingDay = newExpenseBillingDay,
+            onDescriptionChange = onDescriptionChange,
+            onValueChange = onValueChange,
+            onBillingDayChange = onBillingDayChange,
+            onSaveButtonClick = onSave,
+            onCancelButtonClick = onDismissDialog
+        )
+    }
 
     Button(
-        onClick = { showDialog.value = true },
+        onClick = onOpenDialog,
         contentPadding = PaddingValues(dimensionResource(id = commonR.dimen.zero_padding)),
         modifier = modifier.fillMaxWidth()
     ) {
@@ -218,7 +260,16 @@ private fun AddExpenseButton(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun NewRecurringExpenseDialog(onSaveButtonClick: () -> Unit, onCancelButtonClick: () -> Unit) {
+private fun NewRecurringExpenseDialog(
+    description: String,
+    value: String,
+    selectedBillingDay: String,
+    onDescriptionChange: (String) -> Unit,
+    onValueChange: (String) -> Unit,
+    onBillingDayChange: (String) -> Unit,
+    onSaveButtonClick: () -> Unit,
+    onCancelButtonClick: () -> Unit
+) {
     Dialog(onDismissRequest = onCancelButtonClick) {
         Card(
             modifier = Modifier
@@ -234,15 +285,18 @@ private fun NewRecurringExpenseDialog(onSaveButtonClick: () -> Unit, onCancelBut
             ) {
                 OutlinedTextField(
                     label = { Text(text = stringResource(id = R.string.recurring_expense_description_hint)) },
-                    value = "",
-                    onValueChange = { }
+                    value = description,
+                    onValueChange = onDescriptionChange
                 )
-                ExpenseBillingDayDropdownMenu()
+                ExpenseBillingDayDropdownMenu(
+                    selectedBillingDay = selectedBillingDay,
+                    onBillingDaySelected = onBillingDayChange
+                )
                 OutlinedTextField(
                     prefix = { Text(text = stringResource(id = commonR.string.brl_currency)) },
                     label = { Text(text = stringResource(id = R.string.recurring_expense_value_hint)) },
-                    value = "",
-                    onValueChange = { },
+                    value = value,
+                    onValueChange = onValueChange,
                     singleLine = true
                 )
                 Row(
@@ -263,16 +317,19 @@ private fun NewRecurringExpenseDialog(onSaveButtonClick: () -> Unit, onCancelBut
         }
     }
 }
+
 @Composable
-private fun ExpenseBillingDayDropdownMenu() {
+private fun ExpenseBillingDayDropdownMenu(
+    selectedBillingDay: String,
+    onBillingDaySelected: (String) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText: String? by remember { mutableStateOf(null) }
     val options = List(31) { (it + 1).toString() }
 
     OutlinedTextField(
-        value = selectedOptionText ?: stringResource(id = commonR.string.blank),
+        value = selectedBillingDay.ifEmpty { stringResource(id = commonR.string.blank) },
         label = { Text(text = stringResource(id = R.string.card_bill_close_day_hint)) },
-        onValueChange = { selectedOptionText = it },
+        onValueChange = { },
         readOnly = true,
         trailingIcon = {
             IconButton(onClick = { expanded = true }) {
@@ -288,7 +345,7 @@ private fun ExpenseBillingDayDropdownMenu() {
         options.forEach { selectionOption ->
             DropdownMenuItem(
                 onClick = {
-                    selectedOptionText = selectionOption
+                    onBillingDaySelected(selectionOption)
                     expanded = false
                 },
                 text = { Text(text = selectionOption) }
@@ -300,11 +357,36 @@ private fun ExpenseBillingDayDropdownMenu() {
 @Preview(showBackground = true)
 @Composable
 private fun RecurringExpensesScreenPreview() {
-    RecurringExpenses()
+    RecurringExpensesCard(
+        expenses = listOf(
+            RecurringExpense(description = "Aluguel", value = "1500.00", billingDay = "05"),
+            RecurringExpense(description = "Internet", value = "100.00", billingDay = "10")
+        ),
+        totalExpensesValue = "1600.00",
+        showAddExpenseDialog = false,
+        newExpenseDescription = "",
+        newExpenseValue = "",
+        newExpenseBillingDay = "",
+        onOpenAddExpenseDialog = {},
+        onDismissAddExpenseDialog = {},
+        onDescriptionChange = {},
+        onValueChange = {},
+        onBillingDayChange = {},
+        onSaveNewExpense = {}
+    )
 }
 
 @Preview
 @Composable
 private fun NewRecurringExpenseDialogPreview() {
-    NewRecurringExpenseDialog(onSaveButtonClick = {}, onCancelButtonClick = {})
+    NewRecurringExpenseDialog(
+        description = "",
+        value = "",
+        selectedBillingDay = "",
+        onDescriptionChange = {},
+        onValueChange = {},
+        onBillingDayChange = {},
+        onSaveButtonClick = {},
+        onCancelButtonClick = {}
+    )
 }
