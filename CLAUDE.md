@@ -75,6 +75,7 @@ No new library dependencies without explicit instruction.
 
 ## Key Conventions
 
+- No license headers in any file
 - `UiState` is always an immutable `data class` — use `copy()` for updates
 - String/dimension/color values come from resources (`R.string`, etc.), never hardcoded in composables
 - No comments unless explicitly requested

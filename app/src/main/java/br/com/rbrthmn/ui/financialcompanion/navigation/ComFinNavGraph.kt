@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Modifications made by Roberto Kenzo Hamano, 2024
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package br.com.rbrthmn.ui.financialcompanion.navigation
 
 import androidx.compose.runtime.Composable
@@ -7,14 +25,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import br.com.rbrthmn.home.ui.HomeDestination
 import br.com.rbrthmn.home.ui.HomeScreen
-import br.com.rbrthmn.misc.ui.incomedivisions.IncomeDivisionsDestination
-import br.com.rbrthmn.misc.ui.incomedivisions.IncomeDivisionsScreen
-import br.com.rbrthmn.misc.ui.morefeatures.MoreFeaturesDestination
-import br.com.rbrthmn.misc.ui.morefeatures.MoreFeaturesScreen
-import br.com.rbrthmn.misc.ui.recurringexpenses.RecurringExpenses
-import br.com.rbrthmn.misc.ui.recurringexpenses.RecurringExpensesDestination
-import br.com.rbrthmn.misc.ui.reserves.ReservesDestination
-import br.com.rbrthmn.misc.ui.reserves.ReservesScreen
+import br.com.rbrthmn.misc.incomedivisions.IncomeDivisionsDestination
+import br.com.rbrthmn.misc.incomedivisions.IncomeDivisionsScreen
+import br.com.rbrthmn.misc.morefeatures.MoreFeaturesDestination
+import br.com.rbrthmn.misc.morefeatures.MoreFeaturesScreen
+import br.com.rbrthmn.misc.recurringexpenses.RecurringExpenses
+import br.com.rbrthmn.misc.recurringexpenses.RecurringExpensesDestination
+import br.com.rbrthmn.misc.reserves.ReservesDestination
+import br.com.rbrthmn.misc.reserves.ReservesScreen
 import br.com.rbrthmn.operations.ui.OperationsDestination
 import br.com.rbrthmn.operations.ui.OperationsScreen
 import br.com.rbrthmn.settings.SettingsDestination
