@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" version="29.3.4">
+  <diagram name="Domain Classes" id="domain-classes">
+    <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Transaction -->
+        <mxCell id="tx-1" value="Transaction" style="swimlane;fontStyle=1;align=center;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="260" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="tx-2" value="+id: Long" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="tx-1">
+          <mxGeometry y="30" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tx-3" value="+date: LocalDate" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="tx-1">
+          <mxGeometry y="60" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tx-4" value="+counterparty: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="tx-1">
+          <mxGeometry y="90" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tx-5" value="+notes: String?" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="tx-1">
+          <mxGeometry y="120" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tx-6" value="+amount: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="tx-1">
+          <mxGeometry y="150" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tx-7" value="+type: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="tx-1">
+          <mxGeometry y="180" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tx-8" value="+category: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="tx-1">
+          <mxGeometry y="210" width="260" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- BankAccount -->
+        <mxCell id="ba-1" value="BankAccount" style="swimlane;fontStyle=1;align=center;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="360" y="40" width="220" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="ba-2" value="+id: Long" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="ba-1">
+          <mxGeometry y="30" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ba-3" value="+name: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="ba-1">
+          <mxGeometry y="60" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ba-4" value="+bankName: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="ba-1">
+          <mxGeometry y="90" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ba-5" value="+balanceValue: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="ba-1">
+          <mxGeometry y="120" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ba-6" value="+isMainAccount: Boolean" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="ba-1">
+          <mxGeometry y="150" width="220" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- CreditCard -->
+        <mxCell id="cc-1" value="CreditCard" style="swimlane;fontStyle=1;align=center;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="640" y="40" width="240" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="cc-2" value="+id: Long" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="cc-1">
+          <mxGeometry y="30" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cc-3" value="+name: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="cc-1">
+          <mxGeometry y="60" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cc-4" value="+issuerName: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="cc-1">
+          <mxGeometry y="90" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cc-5" value="+currentStatementValue: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="cc-1">
+          <mxGeometry y="120" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cc-6" value="+availableLimit: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="cc-1">
+          <mxGeometry y="150" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cc-7" value="+dueDay: Int" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="cc-1">
+          <mxGeometry y="180" width="240" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Reserve -->
+        <mxCell id="rv-1" value="Reserve" style="swimlane;fontStyle=1;align=center;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="40" y="360" width="240" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="rv-2" value="+id: Long" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rv-1">
+          <mxGeometry y="30" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rv-3" value="+name: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rv-1">
+          <mxGeometry y="60" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rv-4" value="+institution: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rv-1">
+          <mxGeometry y="90" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rv-5" value="+currentTotal: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rv-1">
+          <mxGeometry y="120" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rv-6" value="+monthlyYield: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rv-1">
+          <mxGeometry y="150" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rv-7" value="+totalInflow: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rv-1">
+          <mxGeometry y="180" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rv-8" value="+totalOutflow: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rv-1">
+          <mxGeometry y="210" width="240" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ReserveTransaction -->
+        <mxCell id="rt-1" value="ReserveTransaction" style="swimlane;fontStyle=1;align=center;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="340" y="360" width="240" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="rt-2" value="+id: Long" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rt-1">
+          <mxGeometry y="30" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rt-3" value="+reserveId: Long" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rt-1">
+          <mxGeometry y="60" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rt-4" value="+date: LocalDate" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rt-1">
+          <mxGeometry y="90" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rt-5" value="+inflow: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rt-1">
+          <mxGeometry y="120" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rt-6" value="+outflow: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rt-1">
+          <mxGeometry y="150" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rt-7" value="+yield: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rt-1">
+          <mxGeometry y="180" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rt-8" value="+value: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="rt-1">
+          <mxGeometry y="210" width="240" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- RecurringExpense -->
+        <mxCell id="re-1" value="RecurringExpense" style="swimlane;fontStyle=1;align=center;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="640" y="360" width="240" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="re-2" value="+id: Long" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="re-1">
+          <mxGeometry y="30" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="re-3" value="+description: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="re-1">
+          <mxGeometry y="60" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="re-4" value="+amount: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="re-1">
+          <mxGeometry y="90" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="re-5" value="+paymentDay: Int" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="re-1">
+          <mxGeometry y="120" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="re-6" value="+validUntil: LocalDate?" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="re-1">
+          <mxGeometry y="150" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="re-7" value="+isPaid: Boolean" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="re-1">
+          <mxGeometry y="180" width="240" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Allocation -->
+        <mxCell id="al-1" value="Allocation" style="swimlane;fontStyle=1;align=center;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="40" y="700" width="240" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="al-2" value="+id: Long" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="al-1">
+          <mxGeometry y="30" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="al-3" value="+name: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="al-1">
+          <mxGeometry y="60" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="al-4" value="+plannedPercentage: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="al-1">
+          <mxGeometry y="90" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="al-5" value="+targetValue: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="al-1">
+          <mxGeometry y="120" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="al-6" value="+actualAllocated: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="al-1">
+          <mxGeometry y="150" width="240" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Investment -->
+        <mxCell id="iv-1" value="Investment" style="swimlane;fontStyle=1;align=center;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="340" y="700" width="260" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="iv-2" value="+id: Long" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="iv-1">
+          <mxGeometry y="30" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iv-3" value="+type: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="iv-1">
+          <mxGeometry y="60" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iv-4" value="+institution: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="iv-1">
+          <mxGeometry y="90" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iv-5" value="+assetName: String" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="iv-1">
+          <mxGeometry y="120" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iv-6" value="+purchaseDate: LocalDate?" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="iv-1">
+          <mxGeometry y="150" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iv-7" value="+expiryDate: LocalDate?" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="iv-1">
+          <mxGeometry y="180" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iv-8" value="+quantity: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="iv-1">
+          <mxGeometry y="210" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iv-9" value="+proventos: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="iv-1">
+          <mxGeometry y="240" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iv-10" value="+investedValue: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="iv-1">
+          <mxGeometry y="270" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iv-11" value="+currentValue: Double" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=4;overflow=hidden;" vertex="1" parent="iv-1">
+          <mxGeometry y="300" width="260" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Relations -->
+        <!-- ReserveTransaction → Reserve (many-to-one) -->
+        <mxCell id="rel-rt-rv" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;endSize=10;startArrow=ERmany;startSize=10;" edge="1" parent="1" source="rt-1" target="rv-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-rt-rv-lbl" value="0..*" style="edgeLabel;fontSize=11;" vertex="1" connectable="0" parent="rel-rt-rv">
+          <mxGeometry relative="0" x="-0.8" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+
+        <!-- Transaction → Reserve (optional FK) -->
+        <mxCell id="rel-tx-rv" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;endSize=10;startArrow=ERmanyToOne;startSize=10;dashed=1;" edge="1" parent="1" source="tx-1" target="rv-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="170" y="320" />
+              <mxPoint x="160" y="320" />
+              <mxPoint x="160" y="470" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Transaction → BankAccount (optional FK) -->
+        <mxCell id="rel-tx-ba" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;endSize=10;startArrow=ERmanyToOne;startSize=10;dashed=1;" edge="1" parent="1" source="tx-1" target="ba-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Transaction → CreditCard (optional FK) -->
+        <mxCell id="rel-tx-cc" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;endSize=10;startArrow=ERmanyToOne;startSize=10;dashed=1;" edge="1" parent="1" source="tx-1" target="cc-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

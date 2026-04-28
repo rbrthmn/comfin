@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(grep -E \"\\\\.kt$\")",
+      "Bash(xargs grep *)",
+      "Bash(git checkout *)",
+      "Bash(git commit *)",
+      "Bash(gh pr *)",
+      "Bash(gh auth *)",
+      "Bash(xargs ls *)",
+      "Bash(python3 -c \"import openpyxl; wb = openpyxl.load_workbook\\('data/2026/1.xlsx'\\); ws = wb.active; [print\\([cell.value for cell in row]\\) for row in ws.iter_rows\\(max_row=5\\)]\")",
+      "Bash(python3 -c \"import xlrd; wb = xlrd.open_workbook\\('data/2026/1.xlsx'\\); ws = wb.sheet_by_index\\(0\\); [print\\(ws.row_values\\(i\\)\\) for i in range\\(5\\)]\")",
+      "Bash(./gradlew :core:data:compileDebugKotlin)",
+      "PowerShell($env:JAVA_HOME = \\(Get-ChildItem \"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName\\); if \\(-not $env:JAVA_HOME\\) { $env:JAVA_HOME = \\(Get-ChildItem \"C:\\\\Program Files\\\\Java\" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName\\) }; Write-Output \"JAVA_HOME: $env:JAVA_HOME\"; & \".\\\\gradlew.bat\" \":core:data:compileDebugKotlin\" 2>&1 | Select-Object -Last 30)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\"; Write-Output \"JAVA_HOME: $env:JAVA_HOME\"; .\\\\gradlew.bat \":core:data:compileDebugKotlin\" 2>&1 | Select-Object -Last 40)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\"; $env:ANDROID_HOME = \"$env:LOCALAPPDATA\\\\Android\\\\Sdk\"; .\\\\gradlew.bat \":core:data:compileDebugKotlin\" 2>&1 | Select-Object -Last 40)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\"; $env:ANDROID_HOME = \"$env:LOCALAPPDATA\\\\Android\\\\Sdk\"; .\\\\gradlew.bat \":core:data:kspDebugKotlin\" --stacktrace 2>&1 | Select-String -Pattern \"IllegalState|jvm signature|at com.google|at androidx.room|DatabaseConverters|TypeConverter\" | Select-Object -First 30)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\"; $env:ANDROID_HOME = \"$env:LOCALAPPDATA\\\\Android\\\\Sdk\"; .\\\\gradlew.bat \":core:data:kspDebugKotlin\" --stacktrace 2>&1 | Select-String -Pattern \"IllegalState|jvm signature|ShortcutMethod|Deletion|Update\" | Select-Object -First 20)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\"; $env:ANDROID_HOME = \"$env:LOCALAPPDATA\\\\Android\\\\Sdk\"; .\\\\gradlew.bat \":core:data:compileDebugKotlin\" 2>&1 | Select-Object -Last 20)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\"; $env:ANDROID_HOME = \"$env:LOCALAPPDATA\\\\Android\\\\Sdk\"; .\\\\gradlew.bat assembleDebug 2>&1 | Select-Object -Last 30)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\"; $env:ANDROID_HOME = \"$env:LOCALAPPDATA\\\\Android\\\\Sdk\"; .\\\\gradlew.bat assembleDebug 2>&1 | Select-Object -Last 25)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\"; $env:ANDROID_HOME = \"$env:LOCALAPPDATA\\\\Android\\\\Sdk\"; .\\\\gradlew.bat assembleDebug 2>&1 | Select-Object -Last 20)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\"; $env:ANDROID_HOME = \"$env:LOCALAPPDATA\\\\Android\\\\Sdk\"; .\\\\gradlew.bat assembleDebug 2>&1 | Select-Object -Last 15)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\"; $env:ANDROID_HOME = \"$env:LOCALAPPDATA\\\\Android\\\\Sdk\"; .\\\\gradlew.bat testDebugUnitTest 2>&1 | Select-Object -Last 20)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\"; $env:ANDROID_HOME = \"$env:LOCALAPPDATA\\\\Android\\\\Sdk\"; .\\\\gradlew.bat \":core:data:compileDebugKotlin\" 2>&1 | Select-Object -Last 10)"
+    ]
+  }
+}
