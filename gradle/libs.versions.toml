@@ -52,6 +52,8 @@ koin-androidx-workmanager = { module = "io.insert-koin:koin-androidx-workmanager
 koin-androidx-navigation = { module = "io.insert-koin:koin-androidx-navigation" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
 junit = { module = "junit:junit", version.ref = "junit" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk"}

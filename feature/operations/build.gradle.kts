@@ -54,6 +54,11 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:data"))
 
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+
     testImplementation(project(":core:test"))
     androidTestImplementation(project(":core:test"))
 }
