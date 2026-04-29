@@ -52,7 +52,8 @@ android {
 dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:navigation"))
-    implementation(project(":core:data"))
+    implementation(project(":core:data:wealth"))
+    implementation(project(":core:data:budget"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:operations"))
 

@@ -79,6 +79,9 @@ dependencies {
 
     // Data layer
     implementation(project(":core:data"))
+    implementation(project(":core:data:finance"))
+    implementation(project(":core:data:wealth"))
+    implementation(project(":core:data:budget"))
 
     // JUnit KTX
     implementation(libs.androidx.junit.ktx)

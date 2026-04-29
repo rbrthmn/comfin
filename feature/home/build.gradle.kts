@@ -53,7 +53,7 @@ android {
 dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:navigation"))
-    implementation(project(":core:data"))
+    implementation(project(":core:data:finance"))
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(platform(libs.koin.bom))

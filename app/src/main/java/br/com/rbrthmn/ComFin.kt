@@ -19,7 +19,10 @@
 package br.com.rbrthmn
 
 import android.app.Application
+import br.com.rbrthmn.data.budget.di.budgetDataModule
 import br.com.rbrthmn.data.di.dataModule
+import br.com.rbrthmn.data.finance.di.financeDataModule
+import br.com.rbrthmn.data.wealth.di.wealthDataModule
 import br.com.rbrthmn.di.uiModule
 import br.com.rbrthmn.home.di.homeModule
 import br.com.rbrthmn.misc.di.miscModule
@@ -36,7 +39,17 @@ class ComFin : Application() {
         startKoin {
             androidLogger()
             androidContext(this@ComFin)
-            modules(dataModule, uiModule, homeModule, operationsModule, settingsModule, miscModule)
+            modules(
+                dataModule,
+                financeDataModule,
+                wealthDataModule,
+                budgetDataModule,
+                uiModule,
+                homeModule,
+                operationsModule,
+                settingsModule,
+                miscModule
+            )
         }
     }
 }
