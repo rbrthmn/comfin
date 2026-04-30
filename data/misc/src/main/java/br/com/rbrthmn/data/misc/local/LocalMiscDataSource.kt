@@ -1,10 +1,10 @@
 package br.com.rbrthmn.data.misc.local
 
-import br.com.rbrthmn.data.dao.budget.AllocationDao
-import br.com.rbrthmn.data.dao.wealth.InvestmentDao
-import br.com.rbrthmn.data.dao.budget.RecurringExpenseDao
-import br.com.rbrthmn.data.dao.wealth.ReserveDao
-import br.com.rbrthmn.data.dao.wealth.ReserveTransactionDao
+import br.com.rbrthmn.data.dao.AllocationDao
+import br.com.rbrthmn.data.dao.InvestmentDao
+import br.com.rbrthmn.data.dao.RecurringExpenseDao
+import br.com.rbrthmn.data.dao.ReserveDao
+import br.com.rbrthmn.data.dao.ReserveTransactionDao
 import br.com.rbrthmn.data.misc.model.AllocationDetail
 import br.com.rbrthmn.data.misc.model.InvestmentDetail
 import br.com.rbrthmn.data.misc.model.RecurringExpenseDetail

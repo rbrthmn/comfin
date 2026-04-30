@@ -1,4 +1,4 @@
-package br.com.rbrthmn.data.dao.wealth
+package br.com.rbrthmn.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import br.com.rbrthmn.data.entity.wealth.ReserveTransactionEntity
+import br.com.rbrthmn.data.entity.ReserveTransactionEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

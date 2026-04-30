@@ -1,9 +1,9 @@
 package br.com.rbrthmn.data.operations.local
 
-import br.com.rbrthmn.data.dao.finance.BankAccountDao
-import br.com.rbrthmn.data.dao.finance.CreditCardDao
-import br.com.rbrthmn.data.dao.wealth.ReserveDao
-import br.com.rbrthmn.data.dao.finance.TransactionDao
+import br.com.rbrthmn.data.dao.BankAccountDao
+import br.com.rbrthmn.data.dao.CreditCardDao
+import br.com.rbrthmn.data.dao.ReserveDao
+import br.com.rbrthmn.data.dao.TransactionDao
 import br.com.rbrthmn.data.operations.model.AccountItem
 import br.com.rbrthmn.data.operations.model.OperationItem
 import br.com.rbrthmn.data.operations.model.OperationsData

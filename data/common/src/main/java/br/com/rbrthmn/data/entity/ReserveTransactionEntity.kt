@@ -1,10 +1,9 @@
-package br.com.rbrthmn.data.entity.wealth
+package br.com.rbrthmn.data.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import br.com.rbrthmn.data.entity.wealth.ReserveEntity
 
 @Entity(
     tableName = "reserve_transactions",
