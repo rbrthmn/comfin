@@ -2,18 +2,29 @@ package br.com.rbrthmn.operations
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import br.com.rbrthmn.data.finance.model.BankAccount
+import br.com.rbrthmn.data.finance.model.CreditCard
+import br.com.rbrthmn.data.finance.model.Transaction
+import br.com.rbrthmn.data.finance.repository.BankAccountRepository
+import br.com.rbrthmn.data.finance.repository.CreditCardRepository
+import br.com.rbrthmn.data.finance.repository.TransactionRepository
 import br.com.rbrthmn.operations.ui.OperationType
 import br.com.rbrthmn.operations.ui.OperationsScreenContract.Intent
 import br.com.rbrthmn.operations.ui.OperationsScreenViewModel
-import br.com.rbrthmn.operations.ui.OperationsScreenViewModel.Companion.TOTAL_BALANCE_MOCK
-import br.com.rbrthmn.operations.ui.OperationsScreenViewModel.Companion.TOTAL_INCOME_MOCK
-import br.com.rbrthmn.operations.ui.OperationsScreenViewModel.Companion.TOTAL_OUTCOME_MOCK
 import br.com.rbrthmn.ui.utils.StringProvider
 import br.com.rbrthmn.ui.utils.formatDouble
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -22,24 +33,75 @@ import org.junit.Before
 import org.junit.Test
 import java.time.LocalDate
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class OperationsScreenViewModelTest {
     private lateinit var viewModel: OperationsScreenViewModel
     private val stringProvider: StringProvider = mockk(relaxed = true)
+    private val transactionRepository: TransactionRepository = mockk()
+    private val bankAccountRepository: BankAccountRepository = mockk()
+    private val creditCardRepository: CreditCardRepository = mockk()
 
     @Before
     fun setup() {
-        viewModel = OperationsScreenViewModel(stringProvider)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        every { transactionRepository.getByMonth(any(), any()) } returns flowOf(emptyList())
+        every { bankAccountRepository.getAll() } returns flowOf(emptyList())
+        every { creditCardRepository.getAll() } returns flowOf(emptyList())
+        viewModel = OperationsScreenViewModel(
+            stringProvider = stringProvider,
+            transactionRepository = transactionRepository,
+            bankAccountRepository = bankAccountRepository,
+            creditCardRepository = creditCardRepository
+        )
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 
     @Test
-    fun `doOnInit should assign initial values`() {
+    fun `doOnInit should collect from repo and set empty state when no transactions`() {
         viewModel.doOnInit()
 
-        assertEquals(formatDouble(TOTAL_BALANCE_MOCK), viewModel.uiState.value.totalBalance)
-        assertEquals(formatDouble(TOTAL_INCOME_MOCK), viewModel.uiState.value.totalIncome)
-        assertEquals(formatDouble(TOTAL_OUTCOME_MOCK), viewModel.uiState.value.totalOutcome)
+        assertEquals(formatDouble(0.0), viewModel.uiState.value.totalBalance)
+        assertEquals(formatDouble(0.0), viewModel.uiState.value.totalIncome)
+        assertEquals(formatDouble(0.0), viewModel.uiState.value.totalOutcome)
         assertEquals(emptyList<@Composable () -> Unit>(), viewModel.uiState.value.dialogFields)
-        assertTrue(viewModel.uiState.value.operations.isNotEmpty())
+        assertTrue(viewModel.uiState.value.operations.isEmpty())
+    }
+
+    @Test
+    fun `doOnInit should display transactions from repo`() {
+        val transactions = listOf(VALID_TRANSACTION_MODEL)
+        every { transactionRepository.getByMonth(any(), any()) } returns flowOf(transactions)
+
+        viewModel.doOnInit()
+
+        assertEquals(1, viewModel.uiState.value.operations.size)
+        assertEquals(VALID_TRANSACTION_MODEL.counterparty, viewModel.uiState.value.operations[0].description)
+    }
+
+    @Test
+    fun `doOnInit should resolve bank account name as extras`() {
+        val transactions = listOf(VALID_TRANSACTION_MODEL.copy(bankAccountId = 1L))
+        val accounts = listOf(BankAccount(id = 1L, name = "My Bank", bankName = "Bank", balanceValue = 0.0, isMainAccount = true))
+        every { transactionRepository.getByMonth(any(), any()) } returns flowOf(transactions)
+        every { bankAccountRepository.getAll() } returns flowOf(accounts)
+
+        viewModel.doOnInit()
+
+        assertEquals("My Bank", viewModel.uiState.value.operations[0].extras)
+    }
+
+    @Test
+    fun `onDateFilterChange should update currentDateFilter and re-collect transactions`() {
+        viewModel.doOnInit()
+
+        viewModel.onIntent(Intent.OnDateFilterChange(VALID_DATE))
+
+        assertEquals(VALID_DATE, viewModel.uiState.value.currentDateFilter)
+        verify(exactly = 2) { transactionRepository.getByMonth(any(), any()) }
     }
 
     @Test
@@ -186,12 +248,8 @@ class OperationsScreenViewModelTest {
         viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.DEPOSIT))
         viewModel.onIntent(Intent.OnDestinationAccountChange(VALID_DESTINATION_ACCOUNT))
 
-
         assertTrue(viewModel.uiState.value.isNewOperationDestinationAccountValid)
-        assertEquals(
-            VALID_DESTINATION_ACCOUNT,
-            viewModel.uiState.value.newOperationDestinationAccount
-        )
+        assertEquals(VALID_DESTINATION_ACCOUNT, viewModel.uiState.value.newOperationDestinationAccount)
     }
 
     @Test
@@ -229,26 +287,19 @@ class OperationsScreenViewModelTest {
         val filteredOperations = viewModel.uiState.first().operations
 
         assertTrue(filteredOperations.all {
-            it.type.contains(
-                SEARCH_QUERY,
-                ignoreCase = true
-            )
+            it.type.contains(SEARCH_QUERY, ignoreCase = true)
         })
     }
 
     @Test
-    fun `onSearchQueryChange with operation description query should filter operations`() =
-        runBlocking {
-            viewModel.onIntent(Intent.OnSearchQueryChange(VALID_DESCRIPTION))
-            val filteredOperations = viewModel.uiState.first().operations
+    fun `onSearchQueryChange with operation description query should filter operations`() = runBlocking {
+        viewModel.onIntent(Intent.OnSearchQueryChange(VALID_DESCRIPTION))
+        val filteredOperations = viewModel.uiState.first().operations
 
-            assertTrue(filteredOperations.all {
-                it.description.contains(
-                    VALID_DESCRIPTION,
-                    ignoreCase = true
-                )
-            })
-        }
+        assertTrue(filteredOperations.all {
+            it.description.contains(VALID_DESCRIPTION, ignoreCase = true)
+        })
+    }
 
     @Test
     fun `onSearchQueryChange with operation value query should filter operations`() = runBlocking {
@@ -256,10 +307,7 @@ class OperationsScreenViewModelTest {
         val filteredOperations = viewModel.uiState.first().operations
 
         assertTrue(filteredOperations.all {
-            it.value.contains(
-                VALID_VALUE,
-                ignoreCase = true
-            )
+            it.value.contains(VALID_VALUE, ignoreCase = true)
         })
     }
 
@@ -269,10 +317,7 @@ class OperationsScreenViewModelTest {
         val filteredOperations = viewModel.uiState.first().operations
 
         assertTrue(filteredOperations.all {
-            it.extras?.contains(
-                VALID_DESTINATION_ACCOUNT,
-                ignoreCase = true
-            ) == true
+            it.extras?.contains(VALID_DESTINATION_ACCOUNT, ignoreCase = true) == true
         })
     }
 
@@ -353,7 +398,7 @@ class OperationsScreenViewModelTest {
     }
 
     @Test
-    fun `validateFields for DEPOSIT should require origin account`() {
+    fun `validateFields for DEPOSIT should require destination account`() {
         viewModel.run {
             onIntent(Intent.OnOperationTypeChange(OperationType.DEPOSIT))
             onIntent(Intent.OnDescriptionChange(VALID_DESCRIPTION))
@@ -365,7 +410,7 @@ class OperationsScreenViewModelTest {
     }
 
     @Test
-    fun `validateFields for INCOME should require origin account`() {
+    fun `validateFields for INCOME should require destination account`() {
         viewModel.run {
             onIntent(Intent.OnOperationTypeChange(OperationType.INCOME))
             onIntent(Intent.OnDescriptionChange(VALID_DESCRIPTION))
@@ -434,5 +479,17 @@ class OperationsScreenViewModelTest {
         const val VALID_TRANSACTION = "Test Transaction"
         const val SEARCH_QUERY = "reserve"
         val VALID_DATE: LocalDate = LocalDate.of(1998, 10, 20)
+        val VALID_TRANSACTION_MODEL = Transaction(
+            id = 1L,
+            date = LocalDate.now(),
+            counterparty = "Market",
+            notes = null,
+            amount = 50.0,
+            type = "DEBIT_PURCHASE",
+            category = "Food",
+            reserveId = null,
+            creditCardId = null,
+            bankAccountId = null
+        )
     }
 }

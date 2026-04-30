@@ -63,6 +63,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import br.com.rbrthmn.data.finance.model.BankAccount
+import br.com.rbrthmn.data.finance.model.CreditCard
+import br.com.rbrthmn.data.finance.model.Transaction
+import br.com.rbrthmn.data.finance.repository.BankAccountRepository
+import br.com.rbrthmn.data.finance.repository.CreditCardRepository
+import br.com.rbrthmn.data.finance.repository.TransactionRepository
 import br.com.rbrthmn.operations.R
 import br.com.rbrthmn.operations.ui.Operation
 import br.com.rbrthmn.operations.ui.OperationType
@@ -70,6 +76,7 @@ import br.com.rbrthmn.operations.ui.OperationsScreenContract
 import br.com.rbrthmn.operations.ui.OperationsScreenViewModel
 import br.com.rbrthmn.ui.utils.ResourceStringProvider
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
+import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import br.com.rbrthmn.ui.R as uiR
@@ -389,9 +396,7 @@ private fun OperationItem(
 @Composable
 fun OperationsListCardPreview() {
     val context = LocalContext.current
-    val stringProvider = ResourceStringProvider(context)
-
-    OperationsListCard(viewModel = OperationsScreenViewModel(stringProvider).doOnInit())
+    OperationsListCard(viewModel = previewOperationsViewModel(context))
 }
 
 @SuppressLint("ViewModelConstructorInComposable")
@@ -399,11 +404,40 @@ fun OperationsListCardPreview() {
 @Composable
 fun AddOperationDialogPreview() {
     val context = LocalContext.current
-    val stringProvider = ResourceStringProvider(context)
-
     AddOperationDialog(
-        viewModel = OperationsScreenViewModel(stringProvider).doOnInit(),
+        viewModel = previewOperationsViewModel(context),
         onSaveButtonClick = {},
         onCancelButtonClick = {}
     )
+}
+
+private fun previewOperationsViewModel(context: android.content.Context): OperationsScreenViewModel {
+    val emptyTransactions = flowOf(emptyList<Transaction>())
+    val emptyAccounts = flowOf(emptyList<BankAccount>())
+    val emptyCards = flowOf(emptyList<CreditCard>())
+    return OperationsScreenViewModel(
+        stringProvider = ResourceStringProvider(context),
+        transactionRepository = object : TransactionRepository {
+            override fun getAll() = emptyTransactions
+            override fun getByMonth(startEpochDay: Long, endEpochDay: Long) = emptyTransactions
+            override suspend fun getById(id: Long): Transaction? = null
+            override suspend fun insert(transaction: Transaction) = 0L
+            override suspend fun update(transaction: Transaction) = 0
+            override suspend fun delete(transaction: Transaction) = 0
+        },
+        bankAccountRepository = object : BankAccountRepository {
+            override fun getAll() = emptyAccounts
+            override suspend fun getById(id: Long): BankAccount? = null
+            override suspend fun insert(account: BankAccount) = 0L
+            override suspend fun update(account: BankAccount) = 0
+            override suspend fun delete(account: BankAccount) = 0
+        },
+        creditCardRepository = object : CreditCardRepository {
+            override fun getAll() = emptyCards
+            override suspend fun getById(id: Long): CreditCard? = null
+            override suspend fun insert(card: CreditCard) = 0L
+            override suspend fun update(card: CreditCard) = 0
+            override suspend fun delete(card: CreditCard) = 0
+        }
+    ).doOnInit()
 }

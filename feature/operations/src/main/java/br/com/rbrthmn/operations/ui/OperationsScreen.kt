@@ -22,12 +22,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.rbrthmn.data.finance.model.BankAccount
+import br.com.rbrthmn.data.finance.model.CreditCard
+import br.com.rbrthmn.data.finance.model.Transaction
+import br.com.rbrthmn.data.finance.repository.BankAccountRepository
+import br.com.rbrthmn.data.finance.repository.CreditCardRepository
+import br.com.rbrthmn.data.finance.repository.TransactionRepository
 import br.com.rbrthmn.navigation.NavigationDestination
 import br.com.rbrthmn.operations.ui.components.OperationsListCard
 import br.com.rbrthmn.operations.ui.components.TotalBalanceCard
 import br.com.rbrthmn.ui.R
 import br.com.rbrthmn.ui.components.MonthSelectionTopBar
 import br.com.rbrthmn.ui.utils.ResourceStringProvider
+import kotlinx.coroutines.flow.flowOf
 import org.koin.androidx.compose.koinViewModel
 
 object OperationsDestination : NavigationDestination {
@@ -98,7 +105,36 @@ private fun OperationsScreenContent(
 @Composable
 private fun OperationsScreenPreview() {
     val context = LocalContext.current
-    val stringProvider = ResourceStringProvider(context)
+    OperationsScreen(viewModel = previewOperationsViewModel(context))
+}
 
-    OperationsScreen(viewModel = OperationsScreenViewModel(stringProvider).doOnInit())
+private fun previewOperationsViewModel(context: android.content.Context): OperationsScreenViewModel {
+    val emptyTransactions = flowOf(emptyList<Transaction>())
+    val emptyAccounts = flowOf(emptyList<BankAccount>())
+    val emptyCards = flowOf(emptyList<CreditCard>())
+    return OperationsScreenViewModel(
+        stringProvider = ResourceStringProvider(context),
+        transactionRepository = object : TransactionRepository {
+            override fun getAll() = emptyTransactions
+            override fun getByMonth(startEpochDay: Long, endEpochDay: Long) = emptyTransactions
+            override suspend fun getById(id: Long): Transaction? = null
+            override suspend fun insert(transaction: Transaction) = 0L
+            override suspend fun update(transaction: Transaction) = 0
+            override suspend fun delete(transaction: Transaction) = 0
+        },
+        bankAccountRepository = object : BankAccountRepository {
+            override fun getAll() = emptyAccounts
+            override suspend fun getById(id: Long): BankAccount? = null
+            override suspend fun insert(account: BankAccount) = 0L
+            override suspend fun update(account: BankAccount) = 0
+            override suspend fun delete(account: BankAccount) = 0
+        },
+        creditCardRepository = object : CreditCardRepository {
+            override fun getAll() = emptyCards
+            override suspend fun getById(id: Long): CreditCard? = null
+            override suspend fun insert(card: CreditCard) = 0L
+            override suspend fun update(card: CreditCard) = 0
+            override suspend fun delete(card: CreditCard) = 0
+        }
+    ).doOnInit()
 }
