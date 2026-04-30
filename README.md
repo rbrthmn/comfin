@@ -39,7 +39,8 @@ User action → onIntent() → ViewModel → MutableStateFlow → UI collectAsSt
 
 ## Module Structure
 
-> Open interactive diagram in diagrams.net: [docs/modules_dependency_map.drawio.xml](docs/modules_dependency_map.drawio.xml)
+![Module Dependency Map](docs/dependencies_map.drawio.png)
+> Open interactive diagram: [docs/modules_dependency_map.drawio.xml](docs/modules_dependency_map.drawio.xml)
 
 **Legend:**
 
@@ -58,83 +59,7 @@ User action → onIntent() → ViewModel → MutableStateFlow → UI collectAsSt
 
 ## Domain Model
 
-```mermaid
-classDiagram
-    Transaction --> BankAccount : bankAccountId (opt)
-    Transaction --> CreditCard : creditCardId (opt)
-    Transaction --> Reserve : reserveId (opt)
-    ReserveTransaction --> Reserve : reserveId (CASCADE)
-
-    class Transaction {
-        +Long id
-        +LocalDate date
-        +String counterparty
-        +String notes
-        +Double amount
-        +String type
-        +String category
-    }
-    class BankAccount {
-        +Long id
-        +String name
-        +String bankName
-        +Double balanceValue
-        +Boolean isMainAccount
-    }
-    class CreditCard {
-        +Long id
-        +String name
-        +String issuerName
-        +Double currentStatementValue
-        +Double availableLimit
-        +Int dueDay
-    }
-    class Reserve {
-        +Long id
-        +String name
-        +String institution
-        +Double currentTotal
-        +Double monthlyYield
-        +Double totalInflow
-        +Double totalOutflow
-    }
-    class ReserveTransaction {
-        +Long id
-        +Long reserveId
-        +LocalDate date
-        +Double inflow
-        +Double outflow
-        +Double yield
-        +Double value
-    }
-    class RecurringExpense {
-        +Long id
-        +String description
-        +Double amount
-        +Int paymentDay
-        +LocalDate validUntil
-        +Boolean isPaid
-    }
-    class Allocation {
-        +Long id
-        +String name
-        +Double plannedPercentage
-        +Double targetValue
-        +Double actualAllocated
-    }
-    class Investment {
-        +Long id
-        +String type
-        +String institution
-        +String assetName
-        +LocalDate purchaseDate
-        +LocalDate expiryDate
-        +Double quantity
-        +Double proventos
-        +Double investedValue
-        +Double currentValue
-    }
-```
+See [`data/README.md`](data/README.md) for full entity diagram.
 
 ## Getting Started
 
