@@ -48,4 +48,7 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.android)
 
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }
