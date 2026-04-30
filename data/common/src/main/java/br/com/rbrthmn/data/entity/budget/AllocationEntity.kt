@@ -1,4 +1,4 @@
-package br.com.rbrthmn.data.entity
+package br.com.rbrthmn.data.entity.budget
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

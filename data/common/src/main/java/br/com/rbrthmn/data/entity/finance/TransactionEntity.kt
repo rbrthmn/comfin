@@ -1,9 +1,12 @@
-package br.com.rbrthmn.data.entity
+package br.com.rbrthmn.data.entity.finance
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import br.com.rbrthmn.data.entity.finance.BankAccountEntity
+import br.com.rbrthmn.data.entity.finance.CreditCardEntity
+import br.com.rbrthmn.data.entity.wealth.ReserveEntity
 
 @Entity(
     tableName = "transactions",

@@ -1,7 +1,7 @@
 package br.com.rbrthmn.data.home.local
 
-import br.com.rbrthmn.data.dao.BankAccountDao
-import br.com.rbrthmn.data.dao.CreditCardDao
+import br.com.rbrthmn.data.dao.finance.BankAccountDao
+import br.com.rbrthmn.data.dao.finance.CreditCardDao
 import br.com.rbrthmn.data.home.model.AccountsSummary
 import br.com.rbrthmn.data.home.model.AccountSummaryItem
 import br.com.rbrthmn.data.home.model.CreditCardBillItem
