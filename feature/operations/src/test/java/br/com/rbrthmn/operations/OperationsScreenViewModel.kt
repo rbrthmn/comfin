@@ -83,8 +83,8 @@ class OperationsScreenViewModelTest {
     }
 
     @Test
-    fun `onOperationTypeChange with TRANSFER should have 2 new operation fields`() {
-        viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.TRANSFER))
+    fun `onOperationTypeChange with PIX should have 2 new operation fields`() {
+        viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.PIX))
         val fields = viewModel.uiState.value.dialogFields
 
         assertEquals(2, fields.size)
@@ -131,16 +131,16 @@ class OperationsScreenViewModelTest {
     }
 
     @Test
-    fun `onOperationTypeChange with RESERVE_ALLOCATION should have 2 new operation fields`() {
-        viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.RESERVE_ALLOCATION))
+    fun `onOperationTypeChange with RESERVE_CONTRIBUTION should have 2 new operation fields`() {
+        viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.RESERVE_CONTRIBUTION))
         val fields = viewModel.uiState.value.dialogFields
 
         assertEquals(2, fields.size)
     }
 
     @Test
-    fun `onOperationTypeChange with RESERVE_WITHDRAWAL should have 2 new operation fields`() {
-        viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.RESERVE_WITHDRAWAL))
+    fun `onOperationTypeChange with RESERVE_REDEMPTION should have 2 new operation fields`() {
+        viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.RESERVE_REDEMPTION))
         val fields = viewModel.uiState.value.dialogFields
 
         assertEquals(2, fields.size)
@@ -196,7 +196,7 @@ class OperationsScreenViewModelTest {
 
     @Test
     fun `onReserveChange should update reserve if required`() {
-        viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.RESERVE_ALLOCATION))
+        viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.RESERVE_CONTRIBUTION))
         viewModel.onIntent(Intent.OnReserveChange(VALID_RESERVE))
 
         assertTrue(viewModel.uiState.value.isNewOperationReserveValid)
@@ -304,9 +304,9 @@ class OperationsScreenViewModelTest {
     }
 
     @Test
-    fun `validateFields for TRANSFER should require both origin and destination accounts`() {
+    fun `validateFields for PIX should require both origin and destination accounts`() {
         viewModel.run {
-            onIntent(Intent.OnOperationTypeChange(OperationType.TRANSFER))
+            onIntent(Intent.OnOperationTypeChange(OperationType.PIX))
             onIntent(Intent.OnDescriptionChange(VALID_DESCRIPTION))
             onIntent(Intent.OnValueChange(VALID_VALUE))
             onIntent(Intent.OnOriginAccountChange(VALID_ACCOUNT))
@@ -377,9 +377,9 @@ class OperationsScreenViewModelTest {
     }
 
     @Test
-    fun `validateFields for RESERVE_ALLOCATION should require reserve and origin account`() {
+    fun `validateFields for RESERVE_CONTRIBUTION should require reserve and origin account`() {
         viewModel.run {
-            onIntent(Intent.OnOperationTypeChange(OperationType.RESERVE_ALLOCATION))
+            onIntent(Intent.OnOperationTypeChange(OperationType.RESERVE_CONTRIBUTION))
             onIntent(Intent.OnDescriptionChange(VALID_DESCRIPTION))
             onIntent(Intent.OnValueChange(VALID_VALUE))
             onIntent(Intent.OnOriginAccountChange(VALID_ACCOUNT))
@@ -390,9 +390,9 @@ class OperationsScreenViewModelTest {
     }
 
     @Test
-    fun `validateFields for RESERVE_WITHDRAWAL should require reserve and destination account`() {
+    fun `validateFields for RESERVE_REDEMPTION should require reserve and destination account`() {
         viewModel.run {
-            onIntent(Intent.OnOperationTypeChange(OperationType.RESERVE_WITHDRAWAL))
+            onIntent(Intent.OnOperationTypeChange(OperationType.RESERVE_REDEMPTION))
             onIntent(Intent.OnDescriptionChange(VALID_DESCRIPTION))
             onIntent(Intent.OnValueChange(VALID_VALUE))
             onIntent(Intent.OnDestinationAccountChange(VALID_ACCOUNT))

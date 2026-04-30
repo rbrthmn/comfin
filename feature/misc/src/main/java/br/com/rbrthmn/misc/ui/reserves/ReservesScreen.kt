@@ -354,8 +354,8 @@ private fun ReserveOperationsList(
                 operationsScreenViewModel.onIntent(OperationsScreenContract.Intent.OnResetDialogFields)
             },
             availableOperationTypes = listOf(
-                OperationType.RESERVE_ALLOCATION,
-                OperationType.RESERVE_WITHDRAWAL
+                OperationType.RESERVE_CONTRIBUTION,
+                OperationType.RESERVE_REDEMPTION
             )
         )
     }

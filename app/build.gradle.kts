@@ -2,8 +2,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
     id("com.google.android.gms.oss-licenses-plugin") version "0.10.7"
 }
@@ -23,11 +21,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-    }
-
-    // Enable room auto-migrations
-    ksp {
-        arg("room.schemaLocation", "$projectDir/schemas")
     }
 
     buildTypes {
@@ -78,13 +71,17 @@ dependencies {
     implementation(project(":feature:misc"))
 
     // Koin
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.workmanager)
     implementation(libs.koin.androidx.navigation)
 
-    // Room
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
+    // Data layer
+    implementation(project(":data:common"))
+    implementation(project(":data:home"))
+    implementation(project(":data:operations"))
+    implementation(project(":data:misc"))
 
     // JUnit KTX
     implementation(libs.androidx.junit.ktx)

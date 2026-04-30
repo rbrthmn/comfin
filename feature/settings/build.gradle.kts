@@ -34,6 +34,10 @@ android {
         jvmTarget = "17"
     }
 
+    buildFeatures {
+        compose = true
+    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -48,6 +52,11 @@ android {
 dependencies {
     api(project(":core:ui"))
     implementation(project(":core:navigation"))
+
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
 
     testImplementation(project(":core:test"))
     androidTestImplementation(project(":core:test"))

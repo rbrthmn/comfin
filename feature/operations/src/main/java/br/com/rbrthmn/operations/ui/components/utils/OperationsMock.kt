@@ -40,14 +40,18 @@ fun getOperationsMock(): List<Operation> {
 
 fun OperationType.getLocalizedName(locale: Locale = Locale.getDefault()): String {
     return when (this) {
-        OperationType.TRANSFER -> when (locale.language) {
-            "pt" -> "Transferência"
-            else -> "Transfer"
-        }
+        OperationType.PIX -> "PIX"
+
+        OperationType.TED -> "TED"
 
         OperationType.DEBIT_PURCHASE -> when (locale.language) {
             "pt" -> "Compra no Débito"
             else -> "Debit Purchase"
+        }
+
+        OperationType.CREDIT_PURCHASE -> when (locale.language) {
+            "pt" -> "Compra no Crédito"
+            else -> "Credit Purchase"
         }
 
         OperationType.BILL_PAYMENT -> when (locale.language) {
@@ -65,14 +69,14 @@ fun OperationType.getLocalizedName(locale: Locale = Locale.getDefault()): String
             else -> "Deposit"
         }
 
-        OperationType.RESERVE_ALLOCATION -> when (locale.language) {
+        OperationType.RESERVE_CONTRIBUTION -> when (locale.language) {
             "pt" -> "Alocação de Reserva"
-            else -> "Reserve Allocation"
+            else -> "Reserve Contribution"
         }
 
-        OperationType.RESERVE_WITHDRAWAL -> when (locale.language) {
+        OperationType.RESERVE_REDEMPTION -> when (locale.language) {
             "pt" -> "Retirada de Reserva"
-            else -> "Reserve Withdrawal"
+            else -> "Reserve Redemption"
         }
 
         OperationType.INCOME -> when (locale.language) {
