@@ -19,10 +19,10 @@
 package br.com.rbrthmn
 
 import android.app.Application
-import br.com.rbrthmn.data.budget.di.budgetDataModule
 import br.com.rbrthmn.data.di.dataModule
-import br.com.rbrthmn.data.finance.di.financeDataModule
-import br.com.rbrthmn.data.wealth.di.wealthDataModule
+import br.com.rbrthmn.data.home.di.homeDataModule
+import br.com.rbrthmn.data.misc.di.miscDataModule
+import br.com.rbrthmn.data.operations.di.operationsDataModule
 import br.com.rbrthmn.di.uiModule
 import br.com.rbrthmn.home.di.homeModule
 import br.com.rbrthmn.misc.di.miscModule
@@ -41,9 +41,9 @@ class ComFin : Application() {
             androidContext(this@ComFin)
             modules(
                 dataModule,
-                financeDataModule,
-                wealthDataModule,
-                budgetDataModule,
+                homeDataModule,
+                operationsDataModule,
+                miscDataModule,
                 uiModule,
                 homeModule,
                 operationsModule,
