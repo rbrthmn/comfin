@@ -78,10 +78,10 @@ dependencies {
     implementation(libs.koin.androidx.navigation)
 
     // Data layer
-    implementation(project(":core:data"))
-    implementation(project(":core:data:finance"))
-    implementation(project(":core:data:wealth"))
-    implementation(project(":core:data:budget"))
+    implementation(project(":data:common"))
+    implementation(project(":data:finance"))
+    implementation(project(":data:wealth"))
+    implementation(project(":data:budget"))
 
     // JUnit KTX
     implementation(libs.androidx.junit.ktx)
