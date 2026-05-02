@@ -63,12 +63,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import br.com.rbrthmn.data.finance.model.BankAccount
-import br.com.rbrthmn.data.finance.model.CreditCard
-import br.com.rbrthmn.data.finance.model.Transaction
-import br.com.rbrthmn.data.finance.repository.BankAccountRepository
-import br.com.rbrthmn.data.finance.repository.CreditCardRepository
-import br.com.rbrthmn.data.finance.repository.TransactionRepository
+import br.com.rbrthmn.data.operations.model.OperationsData
+import br.com.rbrthmn.data.operations.repository.OperationsRepository
 import br.com.rbrthmn.operations.R
 import br.com.rbrthmn.operations.ui.Operation
 import br.com.rbrthmn.operations.ui.OperationType
@@ -412,32 +408,16 @@ fun AddOperationDialogPreview() {
 }
 
 private fun previewOperationsViewModel(context: android.content.Context): OperationsScreenViewModel {
-    val emptyTransactions = flowOf(emptyList<Transaction>())
-    val emptyAccounts = flowOf(emptyList<BankAccount>())
-    val emptyCards = flowOf(emptyList<CreditCard>())
+    val emptyData = flowOf(OperationsData(emptyList(), 0.0, 0.0, 0.0))
     return OperationsScreenViewModel(
         stringProvider = ResourceStringProvider(context),
-        transactionRepository = object : TransactionRepository {
-            override fun getAll() = emptyTransactions
-            override fun getByMonth(startEpochDay: Long, endEpochDay: Long) = emptyTransactions
-            override suspend fun getById(id: Long): Transaction? = null
-            override suspend fun insert(transaction: Transaction) = 0L
-            override suspend fun update(transaction: Transaction) = 0
-            override suspend fun delete(transaction: Transaction) = 0
-        },
-        bankAccountRepository = object : BankAccountRepository {
-            override fun getAll() = emptyAccounts
-            override suspend fun getById(id: Long): BankAccount? = null
-            override suspend fun insert(account: BankAccount) = 0L
-            override suspend fun update(account: BankAccount) = 0
-            override suspend fun delete(account: BankAccount) = 0
-        },
-        creditCardRepository = object : CreditCardRepository {
-            override fun getAll() = emptyCards
-            override suspend fun getById(id: Long): CreditCard? = null
-            override suspend fun insert(card: CreditCard) = 0L
-            override suspend fun update(card: CreditCard) = 0
-            override suspend fun delete(card: CreditCard) = 0
+        operationsRepository = object : OperationsRepository {
+            override fun getOperationsForMonth(year: Int, month: Int) = emptyData
+            override fun getAvailableAccounts() =
+                flowOf(emptyList<br.com.rbrthmn.data.operations.model.AccountItem>())
+
+            override fun getAvailableReserves() =
+                flowOf(emptyList<br.com.rbrthmn.data.operations.model.ReserveItem>())
         }
     ).doOnInit()
 }

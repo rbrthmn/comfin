@@ -1,12 +1,28 @@
+/*
+ * Copyright (C) 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Modifications made by Roberto Kenzo Hamano, 2024
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package br.com.rbrthmn.operations.ui
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.viewModelScope
-import br.com.rbrthmn.data.finance.repository.BankAccountRepository
-import br.com.rbrthmn.data.finance.repository.CreditCardRepository
-import br.com.rbrthmn.data.finance.repository.TransactionRepository
+import br.com.rbrthmn.data.operations.repository.OperationsRepository
 import br.com.rbrthmn.operations.R
 import br.com.rbrthmn.operations.ui.components.AccountsDropdownMenu
 import br.com.rbrthmn.operations.ui.components.OperationAimedAccount
@@ -18,16 +34,13 @@ import br.com.rbrthmn.ui.utils.formatDouble
 import br.com.rbrthmn.ui.utils.formatString
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class OperationsScreenViewModel(
     val stringProvider: StringProvider,
-    private val transactionRepository: TransactionRepository,
-    private val bankAccountRepository: BankAccountRepository,
-    private val creditCardRepository: CreditCardRepository
+    private val operationsRepository: OperationsRepository
 ) : OperationsScreenContract.ViewModel() {
 
     override var uiState = MutableStateFlow(OperationsScreenContract.UiState())
@@ -59,46 +72,27 @@ class OperationsScreenViewModel(
     private fun collectTransactions(date: LocalDate) {
         collectJob?.cancel()
         collectJob = viewModelScope.launch {
-            val start = date.withDayOfMonth(1).toEpochDay()
-            val end = date.withDayOfMonth(date.lengthOfMonth()).toEpochDay()
-            val incomeTypeStrings = incomeOperationTypes
-                .map { stringProvider.getString(it.stringId) }
-                .toSet()
-
-            combine(
-                transactionRepository.getByMonth(start, end),
-                bankAccountRepository.getAll(),
-                creditCardRepository.getAll()
-            ) { transactions, accounts, cards ->
-                val totalIncome = transactions
-                    .filter { it.type in incomeTypeStrings }
-                    .sumOf { it.amount }
-                val totalOutcome = transactions
-                    .filter { it.type !in incomeTypeStrings }
-                    .sumOf { it.amount }
-                val operations = transactions.map { transaction ->
-                    val extras = accounts.find { it.id == transaction.bankAccountId }?.name
-                        ?: cards.find { it.id == transaction.creditCardId }?.name
-                    Operation(
-                        description = transaction.counterparty,
-                        value = formatDouble(transaction.amount),
-                        type = transaction.type,
-                        date = transaction.date,
-                        extras = extras
-                    )
-                }.sortedByDescending { it.date }
-                Triple(operations, totalIncome, totalOutcome)
-            }.collect { (operations, totalIncome, totalOutcome) ->
-                allOperations = operations
-                uiState.update {
-                    it.copy(
-                        operations = applySearchFilter(operations, it.searchQuery),
-                        totalIncome = formatDouble(totalIncome),
-                        totalOutcome = formatDouble(totalOutcome),
-                        totalBalance = formatDouble(totalIncome - totalOutcome)
-                    )
+            operationsRepository.getOperationsForMonth(date.year, date.monthValue)
+                .collect { data ->
+                    val operations = data.operations.map { item ->
+                        Operation(
+                            description = item.counterparty,
+                            value = formatDouble(item.amount),
+                            type = item.type,
+                            date = item.date,
+                            extras = item.accountName
+                        )
+                    }
+                    allOperations = operations
+                    uiState.update {
+                        it.copy(
+                            operations = applySearchFilter(operations, it.searchQuery),
+                            totalIncome = formatDouble(data.totalIncome),
+                            totalOutcome = formatDouble(data.totalOutcome),
+                            totalBalance = formatDouble(data.totalBalance)
+                        )
+                    }
                 }
-            }
         }
     }
 
@@ -341,11 +335,4 @@ class OperationsScreenViewModel(
         collectTransactions(localDate)
     }
 
-    private companion object {
-        val incomeOperationTypes = setOf(
-            OperationType.INCOME,
-            OperationType.DEPOSIT,
-            OperationType.RESERVE_REDEMPTION
-        )
-    }
 }
