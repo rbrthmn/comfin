@@ -1,25 +1,24 @@
 package br.com.rbrthmn.operations
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import br.com.rbrthmn.data.finance.model.BankAccount
-import br.com.rbrthmn.data.finance.model.CreditCard
-import br.com.rbrthmn.data.finance.model.Transaction
-import br.com.rbrthmn.data.finance.repository.BankAccountRepository
-import br.com.rbrthmn.data.finance.repository.CreditCardRepository
-import br.com.rbrthmn.data.finance.repository.TransactionRepository
+import br.com.rbrthmn.data.operations.model.NewOperationData
+import br.com.rbrthmn.data.operations.model.OperationItem
+import br.com.rbrthmn.data.operations.model.OperationsData
+import br.com.rbrthmn.data.operations.repository.OperationsRepository
 import br.com.rbrthmn.operations.ui.OperationType
 import br.com.rbrthmn.operations.ui.OperationsScreenContract.Intent
 import br.com.rbrthmn.operations.ui.OperationsScreenViewModel
 import br.com.rbrthmn.ui.utils.StringProvider
 import br.com.rbrthmn.ui.utils.formatDouble
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -37,21 +36,16 @@ import java.time.LocalDate
 class OperationsScreenViewModelTest {
     private lateinit var viewModel: OperationsScreenViewModel
     private val stringProvider: StringProvider = mockk(relaxed = true)
-    private val transactionRepository: TransactionRepository = mockk()
-    private val bankAccountRepository: BankAccountRepository = mockk()
-    private val creditCardRepository: CreditCardRepository = mockk()
+    private val operationsRepository: OperationsRepository = mockk()
 
     @Before
     fun setup() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-        every { transactionRepository.getByMonth(any(), any()) } returns flowOf(emptyList())
-        every { bankAccountRepository.getAll() } returns flowOf(emptyList())
-        every { creditCardRepository.getAll() } returns flowOf(emptyList())
+        every { operationsRepository.getOperationsForMonth(any(), any()) } returns flowOf(EMPTY_OPERATIONS_DATA)
+        coEvery { operationsRepository.addOperation(any()) } returns Result.success(Unit)
         viewModel = OperationsScreenViewModel(
             stringProvider = stringProvider,
-            transactionRepository = transactionRepository,
-            bankAccountRepository = bankAccountRepository,
-            creditCardRepository = creditCardRepository
+            operationsRepository = operationsRepository
         )
     }
 
@@ -61,47 +55,44 @@ class OperationsScreenViewModelTest {
     }
 
     @Test
-    fun `doOnInit should collect from repo and set empty state when no transactions`() {
+    fun `doOnInit should collect from repo and set empty state when no data`() {
         viewModel.doOnInit()
 
         assertEquals(formatDouble(0.0), viewModel.uiState.value.totalBalance)
         assertEquals(formatDouble(0.0), viewModel.uiState.value.totalIncome)
         assertEquals(formatDouble(0.0), viewModel.uiState.value.totalOutcome)
-        assertEquals(emptyList<@Composable () -> Unit>(), viewModel.uiState.value.dialogFields)
         assertTrue(viewModel.uiState.value.operations.isEmpty())
     }
 
     @Test
-    fun `doOnInit should display transactions from repo`() {
-        val transactions = listOf(VALID_TRANSACTION_MODEL)
-        every { transactionRepository.getByMonth(any(), any()) } returns flowOf(transactions)
+    fun `doOnInit should display operations from repo`() {
+        every { operationsRepository.getOperationsForMonth(any(), any()) } returns flowOf(VALID_OPERATIONS_DATA)
 
         viewModel.doOnInit()
 
         assertEquals(1, viewModel.uiState.value.operations.size)
-        assertEquals(VALID_TRANSACTION_MODEL.counterparty, viewModel.uiState.value.operations[0].description)
+        assertEquals(VALID_OPERATION_ITEM.counterparty, viewModel.uiState.value.operations[0].description)
     }
 
     @Test
-    fun `doOnInit should resolve bank account name as extras`() {
-        val transactions = listOf(VALID_TRANSACTION_MODEL.copy(bankAccountId = 1L))
-        val accounts = listOf(BankAccount(id = 1L, name = "My Bank", bankName = "Bank", balanceValue = 0.0, isMainAccount = true))
-        every { transactionRepository.getByMonth(any(), any()) } returns flowOf(transactions)
-        every { bankAccountRepository.getAll() } returns flowOf(accounts)
+    fun `doOnInit should show totals from repo`() {
+        every { operationsRepository.getOperationsForMonth(any(), any()) } returns flowOf(VALID_OPERATIONS_DATA)
 
         viewModel.doOnInit()
 
-        assertEquals("My Bank", viewModel.uiState.value.operations[0].extras)
+        assertEquals(formatDouble(1000.0), viewModel.uiState.value.totalIncome)
+        assertEquals(formatDouble(500.0), viewModel.uiState.value.totalOutcome)
+        assertEquals(formatDouble(500.0), viewModel.uiState.value.totalBalance)
     }
 
     @Test
-    fun `onDateFilterChange should update currentDateFilter and re-collect transactions`() {
+    fun `onDateFilterChange should update currentDateFilter and re-collect operations`() {
         viewModel.doOnInit()
 
         viewModel.onIntent(Intent.OnDateFilterChange(VALID_DATE))
 
         assertEquals(VALID_DATE, viewModel.uiState.value.currentDateFilter)
-        verify(exactly = 2) { transactionRepository.getByMonth(any(), any()) }
+        verify(exactly = 2) { operationsRepository.getOperationsForMonth(any(), any()) }
     }
 
     @Test
@@ -147,73 +138,55 @@ class OperationsScreenViewModelTest {
     @Test
     fun `onOperationTypeChange with PIX should have 2 new operation fields`() {
         viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.PIX))
-        val fields = viewModel.uiState.value.dialogFields
-
-        assertEquals(2, fields.size)
+        assertEquals(2, viewModel.uiState.value.dialogFields.size)
     }
 
     @Test
     fun `onOperationTypeChange with DEBIT_PURCHASE should have 1 new operation field`() {
         viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.DEBIT_PURCHASE))
-        val fields = viewModel.uiState.value.dialogFields
-
-        assertEquals(1, fields.size)
+        assertEquals(1, viewModel.uiState.value.dialogFields.size)
     }
 
     @Test
     fun `onOperationTypeChange with BILL_PAYMENT should have 1 new operation field`() {
         viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.BILL_PAYMENT))
-        val fields = viewModel.uiState.value.dialogFields
-
-        assertEquals(1, fields.size)
+        assertEquals(1, viewModel.uiState.value.dialogFields.size)
     }
 
     @Test
     fun `onOperationTypeChange with WITHDRAWAL should have 1 new operation field`() {
         viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.WITHDRAWAL))
-        val fields = viewModel.uiState.value.dialogFields
-
-        assertEquals(1, fields.size)
+        assertEquals(1, viewModel.uiState.value.dialogFields.size)
     }
 
     @Test
     fun `onOperationTypeChange with DEPOSIT should have 1 new operation field`() {
         viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.DEPOSIT))
-        val fields = viewModel.uiState.value.dialogFields
-
-        assertEquals(1, fields.size)
+        assertEquals(1, viewModel.uiState.value.dialogFields.size)
     }
 
     @Test
     fun `onOperationTypeChange with INCOME should have 1 new operation field`() {
         viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.INCOME))
-        val fields = viewModel.uiState.value.dialogFields
-
-        assertEquals(1, fields.size)
+        assertEquals(1, viewModel.uiState.value.dialogFields.size)
     }
 
     @Test
     fun `onOperationTypeChange with RESERVE_CONTRIBUTION should have 2 new operation fields`() {
         viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.RESERVE_CONTRIBUTION))
-        val fields = viewModel.uiState.value.dialogFields
-
-        assertEquals(2, fields.size)
+        assertEquals(2, viewModel.uiState.value.dialogFields.size)
     }
 
     @Test
     fun `onOperationTypeChange with RESERVE_REDEMPTION should have 2 new operation fields`() {
         viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.RESERVE_REDEMPTION))
-        val fields = viewModel.uiState.value.dialogFields
-
-        assertEquals(2, fields.size)
+        assertEquals(2, viewModel.uiState.value.dialogFields.size)
     }
 
     @Test
     fun `onOperationTypeChange with OTHER should have 1 new operation field`() {
         viewModel.onIntent(Intent.OnOperationTypeChange(OperationType.OTHER))
-        val fields = viewModel.uiState.value.dialogFields
-
-        assertEquals(1, fields.size)
+        assertEquals(1, viewModel.uiState.value.dialogFields.size)
     }
 
     @Test
@@ -262,23 +235,37 @@ class OperationsScreenViewModelTest {
     }
 
     @Test
-    fun `onSaveButtonClick with valid inputs should reset fields`() {
+    fun `onSaveButtonClick with valid inputs should call addOperation and reset fields`() {
         viewModel.run {
             onIntent(Intent.OnOperationTypeChange(VALID_OPERATION_TYPE))
-            onIntent(Intent.OnDescriptionChange(VALID_TRANSACTION))
+            onIntent(Intent.OnDescriptionChange(VALID_DESCRIPTION))
             onIntent(Intent.OnValueChange(VALID_VALUE))
             onIntent(Intent.OnDestinationAccountChange(VALID_DESTINATION_ACCOUNT))
         }
         val mockDialog = mockk<MutableState<Boolean>>(relaxed = true)
-        val expectedNewOperationsSize = viewModel.uiState.value.operations.size + 1
 
         viewModel.onIntent(Intent.OnSaveButtonClick(mockDialog))
 
+        coVerify { operationsRepository.addOperation(any<NewOperationData>()) }
         verify { mockDialog.value = false }
         assertEquals(EMPTY_STRING, viewModel.uiState.value.newOperationDescription)
         assertEquals(EMPTY_STRING, viewModel.uiState.value.newOperationValue)
-        assertEquals(expectedNewOperationsSize, viewModel.uiState.value.operations.size)
         assertNull(viewModel.uiState.value.newOperationType)
+    }
+
+    @Test
+    fun `onSaveButtonClick should persist correct amount`() {
+        viewModel.run {
+            onIntent(Intent.OnOperationTypeChange(VALID_OPERATION_TYPE))
+            onIntent(Intent.OnDescriptionChange(VALID_DESCRIPTION))
+            onIntent(Intent.OnValueChange(VALID_VALUE))
+            onIntent(Intent.OnDestinationAccountChange(VALID_DESTINATION_ACCOUNT))
+        }
+        val mockDialog = mockk<MutableState<Boolean>>(relaxed = true)
+
+        viewModel.onIntent(Intent.OnSaveButtonClick(mockDialog))
+
+        coVerify { operationsRepository.addOperation(match { it.amount == 1000.50 }) }
     }
 
     @Test
@@ -286,9 +273,7 @@ class OperationsScreenViewModelTest {
         viewModel.onIntent(Intent.OnSearchQueryChange(SEARCH_QUERY))
         val filteredOperations = viewModel.uiState.first().operations
 
-        assertTrue(filteredOperations.all {
-            it.type.contains(SEARCH_QUERY, ignoreCase = true)
-        })
+        assertTrue(filteredOperations.all { it.type.contains(SEARCH_QUERY, ignoreCase = true) })
     }
 
     @Test
@@ -296,9 +281,7 @@ class OperationsScreenViewModelTest {
         viewModel.onIntent(Intent.OnSearchQueryChange(VALID_DESCRIPTION))
         val filteredOperations = viewModel.uiState.first().operations
 
-        assertTrue(filteredOperations.all {
-            it.description.contains(VALID_DESCRIPTION, ignoreCase = true)
-        })
+        assertTrue(filteredOperations.all { it.description.contains(VALID_DESCRIPTION, ignoreCase = true) })
     }
 
     @Test
@@ -306,9 +289,7 @@ class OperationsScreenViewModelTest {
         viewModel.onIntent(Intent.OnSearchQueryChange(VALID_VALUE))
         val filteredOperations = viewModel.uiState.first().operations
 
-        assertTrue(filteredOperations.all {
-            it.value.contains(VALID_VALUE, ignoreCase = true)
-        })
+        assertTrue(filteredOperations.all { it.value.contains(VALID_VALUE, ignoreCase = true) })
     }
 
     @Test
@@ -316,15 +297,12 @@ class OperationsScreenViewModelTest {
         viewModel.onIntent(Intent.OnSearchQueryChange(VALID_DESTINATION_ACCOUNT))
         val filteredOperations = viewModel.uiState.first().operations
 
-        assertTrue(filteredOperations.all {
-            it.extras?.contains(VALID_DESTINATION_ACCOUNT, ignoreCase = true) == true
-        })
+        assertTrue(filteredOperations.all { it.extras?.contains(VALID_DESTINATION_ACCOUNT, ignoreCase = true) == true })
     }
 
     @Test
     fun `validateFields with empty description should be invalid`() {
         viewModel.onIntent(Intent.OnDescriptionChange(EMPTY_STRING))
-
         assertFalse(viewModel.validateFields())
     }
 
@@ -332,7 +310,6 @@ class OperationsScreenViewModelTest {
     fun `validateFields with invalid value format should be invalid`() {
         viewModel.onIntent(Intent.OnDescriptionChange(VALID_DESCRIPTION))
         viewModel.onIntent(Intent.OnValueChange(INVALID_VALUE))
-
         assertFalse(viewModel.validateFields())
     }
 
@@ -344,7 +321,6 @@ class OperationsScreenViewModelTest {
             onIntent(Intent.OnDescriptionChange(VALID_DESCRIPTION))
             onIntent(Intent.OnValueChange(VALID_VALUE))
         }
-
         assertTrue(viewModel.validateFields())
     }
 
@@ -357,7 +333,6 @@ class OperationsScreenViewModelTest {
             onIntent(Intent.OnOriginAccountChange(VALID_ACCOUNT))
             onIntent(Intent.OnDestinationAccountChange(VALID_DESTINATION_ACCOUNT))
         }
-
         assertTrue(viewModel.validateFields())
     }
 
@@ -369,7 +344,6 @@ class OperationsScreenViewModelTest {
             onIntent(Intent.OnValueChange(VALID_VALUE))
             onIntent(Intent.OnOriginAccountChange(VALID_ACCOUNT))
         }
-
         assertTrue(viewModel.validateFields())
     }
 
@@ -381,7 +355,6 @@ class OperationsScreenViewModelTest {
             onIntent(Intent.OnValueChange(VALID_VALUE))
             onIntent(Intent.OnOriginAccountChange(VALID_ACCOUNT))
         }
-
         assertTrue(viewModel.validateFields())
     }
 
@@ -393,7 +366,6 @@ class OperationsScreenViewModelTest {
             onIntent(Intent.OnValueChange(VALID_VALUE))
             onIntent(Intent.OnOriginAccountChange(VALID_ACCOUNT))
         }
-
         assertTrue(viewModel.validateFields())
     }
 
@@ -405,7 +377,6 @@ class OperationsScreenViewModelTest {
             onIntent(Intent.OnValueChange(VALID_VALUE))
             onIntent(Intent.OnDestinationAccountChange(VALID_DESTINATION_ACCOUNT))
         }
-
         assertTrue(viewModel.validateFields())
     }
 
@@ -417,7 +388,6 @@ class OperationsScreenViewModelTest {
             onIntent(Intent.OnValueChange(VALID_VALUE))
             onIntent(Intent.OnDestinationAccountChange(VALID_DESTINATION_ACCOUNT))
         }
-
         assertTrue(viewModel.validateFields())
     }
 
@@ -430,7 +400,6 @@ class OperationsScreenViewModelTest {
             onIntent(Intent.OnOriginAccountChange(VALID_ACCOUNT))
             onIntent(Intent.OnReserveChange(VALID_RESERVE))
         }
-
         assertTrue(viewModel.validateFields())
     }
 
@@ -443,7 +412,6 @@ class OperationsScreenViewModelTest {
             onIntent(Intent.OnDestinationAccountChange(VALID_ACCOUNT))
             onIntent(Intent.OnReserveChange(VALID_RESERVE))
         }
-
         assertTrue(viewModel.validateFields())
     }
 
@@ -456,14 +424,12 @@ class OperationsScreenViewModelTest {
             onIntent(Intent.OnOriginAccountChange(VALID_ACCOUNT))
             onIntent(Intent.OnDestinationAccountChange(VALID_DESTINATION_ACCOUNT))
         }
-
         assertTrue(viewModel.validateFields())
     }
 
     @Test
     fun `onDateFilterChange should update currentDate`() {
         viewModel.onIntent(Intent.OnDateFilterChange(VALID_DATE))
-
         assertEquals(VALID_DATE, viewModel.uiState.value.currentDateFilter)
     }
 
@@ -476,10 +442,17 @@ class OperationsScreenViewModelTest {
         const val VALID_ACCOUNT = "My Bank"
         const val VALID_DESTINATION_ACCOUNT = "Savings Account"
         const val VALID_RESERVE = "Emergency Fund"
-        const val VALID_TRANSACTION = "Test Transaction"
         const val SEARCH_QUERY = "reserve"
         val VALID_DATE: LocalDate = LocalDate.of(1998, 10, 20)
-        val VALID_TRANSACTION_MODEL = Transaction(
+
+        val EMPTY_OPERATIONS_DATA = OperationsData(
+            operations = emptyList(),
+            totalIncome = 0.0,
+            totalOutcome = 0.0,
+            totalBalance = 0.0
+        )
+
+        val VALID_OPERATION_ITEM = OperationItem(
             id = 1L,
             date = LocalDate.now(),
             counterparty = "Market",
@@ -487,9 +460,14 @@ class OperationsScreenViewModelTest {
             amount = 50.0,
             type = "DEBIT_PURCHASE",
             category = "Food",
-            reserveId = null,
-            creditCardId = null,
-            bankAccountId = null
+            accountName = null
+        )
+
+        val VALID_OPERATIONS_DATA = OperationsData(
+            operations = listOf(VALID_OPERATION_ITEM),
+            totalIncome = 1000.0,
+            totalOutcome = 500.0,
+            totalBalance = 500.0
         )
     }
 }

@@ -22,6 +22,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.viewModelScope
+import br.com.rbrthmn.data.operations.model.NewOperationData
 import br.com.rbrthmn.data.operations.repository.OperationsRepository
 import br.com.rbrthmn.operations.R
 import br.com.rbrthmn.operations.ui.components.AccountsDropdownMenu
@@ -171,27 +172,39 @@ class OperationsScreenViewModel(
 
     private fun onSaveButtonClick(showDialog: MutableState<Boolean>) {
         if (validateFields()) {
-            val operations = uiState.value.operations.toMutableList()
-            val newOperation: Operation
-
-            with(uiState.value) {
-                newOperation = Operation(
-                    description = newOperationDescription,
-                    value = formatString(newOperationValue),
-                    type = stringProvider.getString(
-                        newOperationType?.stringId ?: R.string.operation_type_other
-                    ),
-                    date = newOperationDate,
-                    extras = newOperationOriginAccount.ifBlank { newOperationDestinationAccount }
-                )
+            viewModelScope.launch {
+                with(uiState.value) {
+                    val type = newOperationType ?: OperationType.OTHER
+                    val operationData = when {
+                        type == OperationType.CREDIT_PURCHASE -> NewOperationData.CreditCardOperation(
+                            counterparty = newOperationDescription,
+                            amount = newOperationValue.replace(',', '.').toDouble(),
+                            type = stringProvider.getString(type.stringId),
+                            category = type.name,
+                            date = newOperationDate,
+                            creditCardId = null
+                        )
+                        type.hasReserve -> NewOperationData.ReserveOperation(
+                            counterparty = newOperationDescription,
+                            amount = newOperationValue.replace(',', '.').toDouble(),
+                            type = stringProvider.getString(type.stringId),
+                            category = type.name,
+                            date = newOperationDate,
+                            reserveId = null,
+                            bankAccountId = null
+                        )
+                        else -> NewOperationData.BankAccountOperation(
+                            counterparty = newOperationDescription,
+                            amount = newOperationValue.replace(',', '.').toDouble(),
+                            type = stringProvider.getString(type.stringId),
+                            category = type.name,
+                            date = newOperationDate,
+                            bankAccountId = null
+                        )
+                    }
+                    operationsRepository.addOperation(operationData)
+                }
             }
-
-            with(operations) {
-                add(newOperation)
-                sortByDescending { it.date }
-            }
-
-            uiState.value = uiState.value.copy(operations = operations)
             resetDialogFields()
             showDialog.value = false
         }

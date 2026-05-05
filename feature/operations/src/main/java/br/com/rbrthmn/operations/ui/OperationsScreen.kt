@@ -130,9 +130,10 @@ private fun previewOperationsViewModel(context: android.content.Context): Operat
             override fun getOperationsForMonth(year: Int, month: Int) = emptyData
             override fun getAvailableAccounts() =
                 flowOf(emptyList<br.com.rbrthmn.data.operations.model.AccountItem>())
-
             override fun getAvailableReserves() =
                 flowOf(emptyList<br.com.rbrthmn.data.operations.model.ReserveItem>())
+            override suspend fun addOperation(data: br.com.rbrthmn.data.operations.model.NewOperationData) =
+                Result.success(Unit)
         }
     ).doOnInit()
 }
