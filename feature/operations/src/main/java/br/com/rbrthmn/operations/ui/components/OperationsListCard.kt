@@ -63,6 +63,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import br.com.rbrthmn.data.operations.model.OperationItem
 import br.com.rbrthmn.data.operations.model.OperationsData
 import br.com.rbrthmn.data.operations.repository.OperationsRepository
 import br.com.rbrthmn.operations.R
@@ -408,11 +409,49 @@ fun AddOperationDialogPreview() {
 }
 
 private fun previewOperationsViewModel(context: android.content.Context): OperationsScreenViewModel {
-    val emptyData = flowOf(OperationsData(emptyList(), 0.0, 0.0, 0.0))
+    val mockData = flowOf(
+        OperationsData(
+            operations = listOf(
+                OperationItem(
+                    id = 1,
+                    date = LocalDate.now(),
+                    counterparty = "Salary",
+                    notes = null,
+                    amount = 5000.0,
+                    type = "INCOME",
+                    category = "INCOME",
+                    accountName = "Conta Principal"
+                ),
+                OperationItem(
+                    id = 2,
+                    date = LocalDate.now(),
+                    counterparty = "Supermarket",
+                    notes = null,
+                    amount = 150.0,
+                    type = "DEBIT_PURCHASE",
+                    category = "DEBIT_PURCHASE",
+                    accountName = "Conta Principal"
+                ),
+                OperationItem(
+                    id = 3,
+                    date = LocalDate.now().minusDays(1),
+                    counterparty = "Transfer",
+                    notes = null,
+                    amount = 200.0,
+                    type = "PIX",
+                    category = "PIX",
+                    accountName = "Conta B"
+                ),
+            ),
+            totalIncome = 5000.0,
+            totalOutcome = 350.0,
+            totalBalance = 4650.0
+        )
+    )
     return OperationsScreenViewModel(
         stringProvider = ResourceStringProvider(context),
         operationsRepository = object : OperationsRepository {
-            override fun getOperationsForMonth(year: Int, month: Int) = emptyData
+            override fun getOperationsForMonth(year: Int, month: Int) = mockData
             override fun getAvailableAccounts() =
                 flowOf(emptyList<br.com.rbrthmn.data.operations.model.AccountItem>())
             override fun getAvailableReserves() =
