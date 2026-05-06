@@ -1,7 +1,13 @@
 package br.com.rbrthmn.data.di
 
 import androidx.room.Room
+import br.com.rbrthmn.data.BuildConfig
+import br.com.rbrthmn.data.DatabaseSeeder
 import br.com.rbrthmn.data.db.ComFinDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -11,7 +17,15 @@ val dataModule = module {
             androidContext(),
             ComFinDatabase::class.java,
             "comfin.db"
-        ).build()
+        ).build().also { db ->
+            if (BuildConfig.DEBUG) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (db.bankAccountDao().getAll().first().isEmpty()) {
+                        DatabaseSeeder.seed(db)
+                    }
+                }
+            }
+        }
     }
 
     single { get<ComFinDatabase>().transactionDao() }
