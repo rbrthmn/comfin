@@ -52,7 +52,13 @@
       "Bash(sed -i '' -e 's/br\\\\.com\\\\.rbrthmn\\\\.data\\\\.dao\\\\.AllocationDao/br.com.rbrthmn.data.dao.budget.AllocationDao/' -e 's/br\\\\.com\\\\.rbrthmn\\\\.data\\\\.dao\\\\.InvestmentDao/br.com.rbrthmn.data.dao.wealth.InvestmentDao/' -e 's/br\\\\.com\\\\.rbrthmn\\\\.data\\\\.dao\\\\.RecurringExpenseDao/br.com.rbrthmn.data.dao.budget.RecurringExpenseDao/' -e 's/br\\\\.com\\\\.rbrthmn\\\\.data\\\\.dao\\\\.ReserveDao/br.com.rbrthmn.data.dao.wealth.ReserveDao/' -e 's/br\\\\.com\\\\.rbrthmn\\\\.data\\\\.dao\\\\.ReserveTransactionDao/br.com.rbrthmn.data.dao.wealth.ReserveTransactionDao/' /Users/rober/git/android/comfin/data/misc/src/main/java/br/com/rbrthmn/data/misc/local/LocalMiscDataSource.kt)",
       "Bash(python3 -c ' *)",
       "Bash(pip3 install *)",
-      "Bash(./gradlew :data:common:assembleDebugAndroidTest)"
+      "Bash(./gradlew :data:common:assembleDebugAndroidTest)",
+      "Bash(./gradlew :feature:operations:assembleDebug)",
+      "Bash(./gradlew :feature:operations:compileDebugKotlin)",
+      "Bash(./gradlew :feature:operations:compileDebugUnitTestKotlin)",
+      "Bash(./gradlew :data:operations:compileDebugKotlin :feature:operations:compileDebugKotlin)",
+      "Bash(./gradlew :data:operations:compileDebugKotlin :feature:operations:testDebugUnitTest)",
+      "Bash(./gradlew :data:operations:compileDebugKotlin :feature:operations:compileDebugKotlin :feature:operations:testDebugUnitTest)"
     ]
   }
 }
