@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Room
 import br.com.rbrthmn.data.BuildConfig
 import br.com.rbrthmn.data.DatabaseSeeder
+import br.com.rbrthmn.data.SeederVersion
 import br.com.rbrthmn.data.db.ComFinDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import androidx.core.content.edit
 
 private const val PREFS_DEBUG = "debug_prefs"
 private const val KEY_SEEDER_VERSION = "seeder_version"
@@ -24,11 +26,11 @@ val dataModule = module {
             if (BuildConfig.DEBUG) {
                 val prefs = androidContext().getSharedPreferences(PREFS_DEBUG, Context.MODE_PRIVATE)
                 val storedVersion = prefs.getInt(KEY_SEEDER_VERSION, 0)
-                if (storedVersion < DatabaseSeeder.VERSION) {
+                if (storedVersion < SeederVersion.CURRENT) {
                     CoroutineScope(Dispatchers.IO).launch {
                         db.clearAllTables()
                         DatabaseSeeder.seed(db)
-                        prefs.edit().putInt(KEY_SEEDER_VERSION, DatabaseSeeder.VERSION).apply()
+                        prefs.edit { putInt(KEY_SEEDER_VERSION, SeederVersion.CURRENT) }
                     }
                 }
             }

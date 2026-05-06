@@ -30,8 +30,6 @@ import br.com.rbrthmn.data.entity.TransactionEntity
 import java.time.LocalDate
 
 object DatabaseSeeder {
-    const val VERSION = 2
-
     suspend fun seed(db: ComFinDatabase) {
         val accountIds = seedBankAccounts(db)
         val cardIds = seedCreditCards(db)
