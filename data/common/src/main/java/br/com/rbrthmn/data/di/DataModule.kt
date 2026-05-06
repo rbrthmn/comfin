@@ -1,15 +1,18 @@
 package br.com.rbrthmn.data.di
 
+import android.content.Context
 import androidx.room.Room
 import br.com.rbrthmn.data.BuildConfig
 import br.com.rbrthmn.data.DatabaseSeeder
 import br.com.rbrthmn.data.db.ComFinDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+
+private const val PREFS_DEBUG = "debug_prefs"
+private const val KEY_SEEDER_VERSION = "seeder_version"
 
 val dataModule = module {
     single {
@@ -19,9 +22,13 @@ val dataModule = module {
             "comfin.db"
         ).build().also { db ->
             if (BuildConfig.DEBUG) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    if (db.bankAccountDao().getAll().first().isEmpty()) {
+                val prefs = androidContext().getSharedPreferences(PREFS_DEBUG, Context.MODE_PRIVATE)
+                val storedVersion = prefs.getInt(KEY_SEEDER_VERSION, 0)
+                if (storedVersion < DatabaseSeeder.VERSION) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        db.clearAllTables()
                         DatabaseSeeder.seed(db)
+                        prefs.edit().putInt(KEY_SEEDER_VERSION, DatabaseSeeder.VERSION).apply()
                     }
                 }
             }
