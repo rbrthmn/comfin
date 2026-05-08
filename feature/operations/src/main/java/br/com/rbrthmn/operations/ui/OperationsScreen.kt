@@ -174,6 +174,9 @@ private fun previewOperationsViewModel(context: android.content.Context): Operat
                 flowOf(emptyList<br.com.rbrthmn.data.operations.model.ReserveItem>())
             override suspend fun addOperation(data: br.com.rbrthmn.data.operations.model.NewOperationData) =
                 Result.success(Unit)
+            override suspend fun deleteOperation(id: Long) = Result.success(Unit)
+            override suspend fun updateOperation(id: Long, data: br.com.rbrthmn.data.operations.model.NewOperationData) =
+                Result.success(Unit)
         }
     ).doOnInit()
 }

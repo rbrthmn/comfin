@@ -11,4 +11,6 @@ interface OperationsRepository {
     fun getAvailableAccounts(): Flow<List<AccountItem>>
     fun getAvailableReserves(): Flow<List<ReserveItem>>
     suspend fun addOperation(data: NewOperationData): Result<Unit>
+    suspend fun deleteOperation(id: Long): Result<Unit>
+    suspend fun updateOperation(id: Long, data: NewOperationData): Result<Unit>
 }

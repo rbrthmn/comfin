@@ -67,6 +67,8 @@ class OperationsScreenViewModel(
             is OperationsScreenContract.Intent.OnResetDialogFields -> updateDialogFields(resetFields = true)
             is OperationsScreenContract.Intent.OnSearchQueryChange -> onSearchQueryChange(intent.query)
             is OperationsScreenContract.Intent.OnDateFilterChange -> onDateFilterChange(intent.localDate)
+            is OperationsScreenContract.Intent.OnDeleteOperation -> onDeleteOperation(intent.id)
+            is OperationsScreenContract.Intent.OnEditOperation -> onEditOperation(intent.operation)
         }
     }
 
@@ -77,9 +79,11 @@ class OperationsScreenViewModel(
                 .collect { data ->
                     val operations = data.operations.map { item ->
                         Operation(
+                            id = item.id,
                             description = item.counterparty,
                             value = formatDouble(item.amount),
                             type = item.type,
+                            category = item.category,
                             date = item.date,
                             extras = item.accountName
                         )
@@ -202,12 +206,43 @@ class OperationsScreenViewModel(
                             bankAccountId = null
                         )
                     }
-                    operationsRepository.addOperation(operationData)
+                    val editId = editingOperationId
+                    if (editId != null) {
+                        operationsRepository.updateOperation(editId, operationData)
+                    } else {
+                        operationsRepository.addOperation(operationData)
+                    }
                 }
             }
             resetDialogFields()
             showDialog.value = false
         }
+    }
+
+    private fun onDeleteOperation(id: Long) {
+        viewModelScope.launch {
+            operationsRepository.deleteOperation(id)
+        }
+    }
+
+    private fun onEditOperation(operation: Operation) {
+        val resolvedType = OperationType.entries.find { it.name == operation.category }
+            ?: OperationType.entries.find { it.name == operation.type }
+            ?: OperationType.OTHER
+        val accountName = operation.extras ?: OperationsScreenContract.UiState.DEFAULT_STRING_VALUE
+        uiState.update {
+            it.copy(
+                editingOperationId = operation.id,
+                newOperationDescription = operation.description,
+                newOperationValue = operation.value,
+                newOperationType = resolvedType,
+                newOperationDate = operation.date,
+                newOperationOriginAccount = if (resolvedType.hasOriginAccount) accountName else OperationsScreenContract.UiState.DEFAULT_STRING_VALUE,
+                newOperationDestinationAccount = if (resolvedType.hasDestinationAccount) accountName else OperationsScreenContract.UiState.DEFAULT_STRING_VALUE,
+                newOperationReserve = if (resolvedType.hasReserve) accountName else OperationsScreenContract.UiState.DEFAULT_STRING_VALUE
+            )
+        }
+        updateDialogFields(resetFields = false)
     }
 
     @VisibleForTesting

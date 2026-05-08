@@ -112,6 +112,32 @@ class LocalOperationsDataSource(
         )
     }
 
+    override suspend fun deleteOperation(id: Long): Result<Unit> = runCatching {
+        transactionDao.getById(id)?.let { transactionDao.delete(it) }
+    }
+
+    override suspend fun updateOperation(id: Long, data: NewOperationData): Result<Unit> = runCatching {
+        val existing = transactionDao.getById(id) ?: return@runCatching
+        val (bankAccountId, creditCardId, reserveId) = when (data) {
+            is NewOperationData.BankAccountOperation -> Triple(data.bankAccountId, null, null)
+            is NewOperationData.CreditCardOperation  -> Triple(null, data.creditCardId, null)
+            is NewOperationData.ReserveOperation     -> Triple(data.bankAccountId, null, data.reserveId)
+        }
+        transactionDao.update(
+            existing.copy(
+                counterparty = data.counterparty,
+                amount = data.amount,
+                type = data.type,
+                category = data.category,
+                date = data.date.toEpochDay(),
+                notes = data.notes,
+                bankAccountId = bankAccountId,
+                creditCardId = creditCardId,
+                reserveId = reserveId
+            )
+        )
+    }
+
     private companion object {
         val INCOME_TYPES = setOf("INCOME", "DEPOSIT", "RESERVE_REDEMPTION")
     }

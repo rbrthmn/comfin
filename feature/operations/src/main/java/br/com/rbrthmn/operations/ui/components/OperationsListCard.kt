@@ -19,7 +19,11 @@
 package br.com.rbrthmn.operations.ui.components
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -30,12 +34,19 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -45,11 +56,14 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.key
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -155,7 +169,16 @@ fun OperationsListCard(
             }
             if (uiState.operations.isNotEmpty()) {
                 HorizontalDivider()
-                OperationsList(operations = uiState.operations)
+                OperationsList(
+                    operations = uiState.operations,
+                    onEdit = { operation ->
+                        viewModel.onIntent(OperationsScreenContract.Intent.OnEditOperation(operation))
+                        showAddOperationDialog.value = true
+                    },
+                    onDelete = { id ->
+                        viewModel.onIntent(OperationsScreenContract.Intent.OnDeleteOperation(id))
+                    }
+                )
             }
         }
     }
@@ -303,23 +326,33 @@ private fun OperationTypeDropdownMenu(
 
 
 @Composable
-private fun OperationsList(operations: List<Operation>) {
+private fun OperationsList(
+    operations: List<Operation>,
+    onEdit: (Operation) -> Unit,
+    onDelete: (Long) -> Unit
+) {
     val groupedOperations = operations.groupBy { it.date }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = uiR.dimen.padding_small)),
         modifier = Modifier.padding(top = dimensionResource(id = uiR.dimen.padding_small))
     ) {
-        groupedOperations.forEach { (_, operationsForDate) ->
-            DayOfWeekAndMonthText(date = operationsForDate[0].date)
+        groupedOperations.forEach { (date, operationsForDate) ->
+            key(date) {
+                DayOfWeekAndMonthText(date = operationsForDate[0].date)
 
-            operationsForDate.forEach { operation ->
-                OperationItem(
-                    description = operation.description,
-                    value = operation.value,
-                    type = operation.type,
-                    extras = operation.extras
-                )
+                operationsForDate.forEach { operation ->
+                    key(operation.id) {
+                        OperationItem(
+                            description = operation.description,
+                            value = operation.value,
+                            type = operation.type,
+                            extras = operation.extras,
+                            onEdit = { onEdit(operation) },
+                            onDelete = { onDelete(operation.id) }
+                        )
+                    }
+                }
             }
         }
     }
@@ -340,51 +373,110 @@ private fun OperationItem(
     description: String,
     value: String,
     type: String,
-    extras: String? = null
+    extras: String? = null,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = dimensionResource(id = uiR.dimen.padding_small))
+    var showDeleteConfirm by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    val dismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { dismissValue ->
+            when (dismissValue) {
+                SwipeToDismissBoxValue.EndToStart -> { showDeleteConfirm = true; true }
+                SwipeToDismissBoxValue.StartToEnd -> { onEdit(); false }
+                else -> false
+            }
+        }
+    )
+
+    if (showDeleteConfirm) {
+        AlertDialog(
+            onDismissRequest = {
+                showDeleteConfirm = false
+                coroutineScope.launch { dismissState.reset() }
+            },
+            title = { Text(stringResource(R.string.delete_operation_title)) },
+            text = { Text(stringResource(R.string.delete_operation_message)) },
+            confirmButton = {
+                Button(onClick = {
+                    showDeleteConfirm = false
+                    onDelete()
+                }) { Text(stringResource(R.string.delete_confirm)) }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showDeleteConfirm = false
+                    coroutineScope.launch { dismissState.reset() }
+                }) { Text(stringResource(R.string.cancel)) }
+            }
+        )
+    }
+
+    SwipeToDismissBox(
+        state = dismissState,
+        backgroundContent = {
+            val (bgColor, icon, alignment) = when (dismissState.targetValue) {
+                SwipeToDismissBoxValue.EndToStart ->
+                    Triple(Color.Red, Icons.Default.Delete, Alignment.CenterEnd)
+                SwipeToDismissBoxValue.StartToEnd ->
+                    Triple(Color(0xFF4CAF50), Icons.Default.Edit, Alignment.CenterStart)
+                else -> Triple(Color.Transparent, null, Alignment.Center)
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(bgColor)
+                    .padding(horizontal = dimensionResource(id = uiR.dimen.padding_medium)),
+                contentAlignment = alignment
+            ) {
+                icon?.let { Icon(it, contentDescription = null, tint = Color.White) }
+            }
+        }
     ) {
-        Column(
-            horizontalAlignment = Alignment.Start,
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .clickable { onEdit() }
+                .padding(start = dimensionResource(id = uiR.dimen.padding_small))
         ) {
-            Text(
-                text = description,
-                fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
-                lineHeight = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
-            )
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(horizontalAlignment = Alignment.Start) {
                 Text(
-                    text = type,
-                    fontSize = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
-                    lineHeight = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
+                    text = description,
+                    fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
+                    lineHeight = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
                 )
-                extras?.let {
-                    VerticalDivider(
-                        modifier = Modifier
-                            .height(dimensionResource(id = uiR.dimen.padding_small))
-                            .padding(horizontal = dimensionResource(id = uiR.dimen.padding_extra_small))
-                    )
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = it,
+                        text = type,
                         fontSize = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
                         lineHeight = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
                     )
+                    extras?.let {
+                        VerticalDivider(
+                            modifier = Modifier
+                                .height(dimensionResource(id = uiR.dimen.padding_small))
+                                .padding(horizontal = dimensionResource(id = uiR.dimen.padding_extra_small))
+                        )
+                        Text(
+                            text = it,
+                            fontSize = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
+                            lineHeight = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
+                        )
+                    }
                 }
             }
+            Text(
+                text = valueWithCurrencyString(
+                    currencyStringId = uiR.string.brl_currency,
+                    value = value
+                ),
+                fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
+                lineHeight = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
+            )
         }
-        Text(
-            text = valueWithCurrencyString(
-                currencyStringId = uiR.string.brl_currency,
-                value = value
-            ),
-            fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
-            lineHeight = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
-        )
     }
 }
 
@@ -457,6 +549,9 @@ private fun previewOperationsViewModel(context: android.content.Context): Operat
             override fun getAvailableReserves() =
                 flowOf(emptyList<br.com.rbrthmn.data.operations.model.ReserveItem>())
             override suspend fun addOperation(data: br.com.rbrthmn.data.operations.model.NewOperationData) =
+                Result.success(Unit)
+            override suspend fun deleteOperation(id: Long) = Result.success(Unit)
+            override suspend fun updateOperation(id: Long, data: br.com.rbrthmn.data.operations.model.NewOperationData) =
                 Result.success(Unit)
         }
     ).doOnInit()

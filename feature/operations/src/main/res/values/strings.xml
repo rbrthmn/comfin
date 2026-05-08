@@ -47,4 +47,8 @@
     <string name="date_picker_label">Data da operação</string>
     <string name="date_picker_cancel">Cancelar</string>
     <string name="date_picker_ok">OK</string>
+    <string name="delete_operation_title">Excluir operação?</string>
+    <string name="delete_operation_message">Esta ação não pode ser desfeita.</string>
+    <string name="delete_confirm">Excluir</string>
+    <string name="cancel">Cancelar</string>
 </resources>

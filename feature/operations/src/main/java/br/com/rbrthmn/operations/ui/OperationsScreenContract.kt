@@ -29,7 +29,8 @@ interface OperationsScreenContract {
         val newOperationReserve: String = DEFAULT_STRING_VALUE,
         val isNewOperationReserveValid: Boolean = true,
         val searchQuery: String = DEFAULT_STRING_VALUE,
-        val currentDateFilter: LocalDate = LocalDate.now()
+        val currentDateFilter: LocalDate = LocalDate.now(),
+        val editingOperationId: Long? = null
     ) {
         companion object {
             const val DEFAULT_STRING_VALUE = ""
@@ -49,13 +50,17 @@ interface OperationsScreenContract {
         object OnResetDialogFields : Intent()
         data class OnSearchQueryChange(val query: String) : Intent()
         data class OnDateFilterChange(val localDate: LocalDate) : Intent()
+        data class OnDeleteOperation(val id: Long) : Intent()
+        data class OnEditOperation(val operation: Operation) : Intent()
     }
 }
 
 data class Operation(
+    val id: Long,
     val extras: String? = null,
     val description: String,
     val value: String,
     val date: LocalDate,
-    val type: String
+    val type: String,
+    val category: String
 )
