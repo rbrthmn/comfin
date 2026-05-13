@@ -26,10 +26,12 @@ fun getOperationsMock(): List<Operation> {
 
         operations.add(
             Operation(
+                id = index.toLong(),
                 description = "Teste ${index + 1}",
                 value = value,
                 date = calendar.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
                 type = types.random(),
+                category = OperationType.entries.random().name,
                 extras = extras.randomOrNull()
             )
         )

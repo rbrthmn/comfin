@@ -1,10 +1,30 @@
+/*
+ * Copyright (C) 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Modifications made by Roberto Kenzo Hamano, 2024
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package br.com.rbrthmn.data.operations.local
 
 import br.com.rbrthmn.data.dao.BankAccountDao
 import br.com.rbrthmn.data.dao.CreditCardDao
 import br.com.rbrthmn.data.dao.ReserveDao
 import br.com.rbrthmn.data.dao.TransactionDao
+import br.com.rbrthmn.data.entity.TransactionEntity
 import br.com.rbrthmn.data.operations.model.AccountItem
+import br.com.rbrthmn.data.operations.model.NewOperationData
 import br.com.rbrthmn.data.operations.model.OperationItem
 import br.com.rbrthmn.data.operations.model.OperationsData
 import br.com.rbrthmn.data.operations.model.ReserveItem
@@ -32,10 +52,10 @@ class LocalOperationsDataSource(
             creditCardDao.getAll()
         ) { transactions, accounts, cards ->
             val totalIncome = transactions
-                .filter { it.type in INCOME_TYPES }
+                .filter { it.category in INCOME_TYPES }
                 .sumOf { it.amount }
             val totalOutcome = transactions
-                .filter { it.type !in INCOME_TYPES }
+                .filter { it.category !in INCOME_TYPES }
                 .sumOf { it.amount }
             val operations = transactions.map { t ->
                 val accountName = accounts.find { it.id == t.bankAccountId }?.name
@@ -70,6 +90,53 @@ class LocalOperationsDataSource(
         reserveDao.getAll().map { reserves ->
             reserves.map { ReserveItem(id = it.id, name = it.name, institution = it.institution) }
         }
+
+    override suspend fun addOperation(data: NewOperationData): Result<Unit> = runCatching {
+        val (bankAccountId, creditCardId, reserveId) = when (data) {
+            is NewOperationData.BankAccountOperation -> Triple(data.bankAccountId, null, null)
+            is NewOperationData.CreditCardOperation  -> Triple(null, data.creditCardId, null)
+            is NewOperationData.ReserveOperation     -> Triple(data.bankAccountId, null, data.reserveId)
+        }
+        transactionDao.insert(
+            TransactionEntity(
+                counterparty = data.counterparty,
+                amount = data.amount,
+                type = data.type,
+                category = data.category,
+                date = data.date.toEpochDay(),
+                notes = data.notes,
+                bankAccountId = bankAccountId,
+                creditCardId = creditCardId,
+                reserveId = reserveId
+            )
+        )
+    }
+
+    override suspend fun deleteOperation(id: Long): Result<Unit> = runCatching {
+        transactionDao.getById(id)?.let { transactionDao.delete(it) }
+    }
+
+    override suspend fun updateOperation(id: Long, data: NewOperationData): Result<Unit> = runCatching {
+        val existing = transactionDao.getById(id) ?: return@runCatching
+        val (bankAccountId, creditCardId, reserveId) = when (data) {
+            is NewOperationData.BankAccountOperation -> Triple(data.bankAccountId, null, null)
+            is NewOperationData.CreditCardOperation  -> Triple(null, data.creditCardId, null)
+            is NewOperationData.ReserveOperation     -> Triple(data.bankAccountId, null, data.reserveId)
+        }
+        transactionDao.update(
+            existing.copy(
+                counterparty = data.counterparty,
+                amount = data.amount,
+                type = data.type,
+                category = data.category,
+                date = data.date.toEpochDay(),
+                notes = data.notes,
+                bankAccountId = bankAccountId,
+                creditCardId = creditCardId,
+                reserveId = reserveId
+            )
+        )
+    }
 
     private companion object {
         val INCOME_TYPES = setOf("INCOME", "DEPOSIT", "RESERVE_REDEMPTION")

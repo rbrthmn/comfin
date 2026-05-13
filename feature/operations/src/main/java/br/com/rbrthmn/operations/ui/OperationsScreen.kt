@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Modifications made by Roberto Kenzo Hamano, 2024
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package br.com.rbrthmn.operations.ui
 
 import android.annotation.SuppressLint
@@ -22,13 +40,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.rbrthmn.data.operations.model.OperationItem
+import br.com.rbrthmn.data.operations.model.OperationsData
+import br.com.rbrthmn.data.operations.repository.OperationsRepository
 import br.com.rbrthmn.navigation.NavigationDestination
 import br.com.rbrthmn.operations.ui.components.OperationsListCard
 import br.com.rbrthmn.operations.ui.components.TotalBalanceCard
 import br.com.rbrthmn.ui.R
 import br.com.rbrthmn.ui.components.MonthSelectionTopBar
 import br.com.rbrthmn.ui.utils.ResourceStringProvider
+import kotlinx.coroutines.flow.flowOf
 import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDate
 
 object OperationsDestination : NavigationDestination {
     override val route = "operations"
@@ -98,7 +121,62 @@ private fun OperationsScreenContent(
 @Composable
 private fun OperationsScreenPreview() {
     val context = LocalContext.current
-    val stringProvider = ResourceStringProvider(context)
+    OperationsScreen(viewModel = previewOperationsViewModel(context))
+}
 
-    OperationsScreen(viewModel = OperationsScreenViewModel(stringProvider).doOnInit())
+private fun previewOperationsViewModel(context: android.content.Context): OperationsScreenViewModel {
+    val mockData = flowOf(
+        OperationsData(
+            operations = listOf(
+                OperationItem(
+                    id = 1,
+                    date = LocalDate.now(),
+                    counterparty = "Salary",
+                    notes = null,
+                    amount = 5000.0,
+                    type = "INCOME",
+                    category = "INCOME",
+                    accountName = "Conta Principal"
+                ),
+                OperationItem(
+                    id = 2,
+                    date = LocalDate.now(),
+                    counterparty = "Supermarket",
+                    notes = null,
+                    amount = 150.0,
+                    type = "DEBIT_PURCHASE",
+                    category = "DEBIT_PURCHASE",
+                    accountName = "Conta Principal"
+                ),
+                OperationItem(
+                    id = 3,
+                    date = LocalDate.now().minusDays(1),
+                    counterparty = "Transfer",
+                    notes = null,
+                    amount = 200.0,
+                    type = "PIX",
+                    category = "PIX",
+                    accountName = "Conta B"
+                ),
+            ),
+            totalIncome = 5000.0,
+            totalOutcome = 350.0,
+            totalBalance = 4650.0
+        )
+    )
+    return OperationsScreenViewModel(
+        stringProvider = ResourceStringProvider(context),
+        operationsRepository = object : OperationsRepository {
+            override fun getOperationsForMonth(year: Int, month: Int) = mockData
+            override fun getAvailableAccounts() =
+                flowOf(emptyList<br.com.rbrthmn.data.operations.model.AccountItem>())
+            override fun getAvailableReserves() =
+                flowOf(emptyList<br.com.rbrthmn.data.operations.model.ReserveItem>())
+            override suspend fun addOperation(data: br.com.rbrthmn.data.operations.model.NewOperationData) =
+                Result.success(Unit)
+            override suspend fun deleteOperation(id: Long) = Result.success(Unit)
+            override suspend fun updateOperation(id: Long, data: br.com.rbrthmn.data.operations.model.NewOperationData) =
+                Result.success(Unit)
+        }
+    ).doOnInit()
 }

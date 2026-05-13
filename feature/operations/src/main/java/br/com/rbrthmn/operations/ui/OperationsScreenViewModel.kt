@@ -21,34 +21,36 @@ package br.com.rbrthmn.operations.ui
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.lifecycle.viewModelScope
+import br.com.rbrthmn.data.operations.model.NewOperationData
+import br.com.rbrthmn.data.operations.repository.OperationsRepository
 import br.com.rbrthmn.operations.R
 import br.com.rbrthmn.operations.ui.components.AccountsDropdownMenu
 import br.com.rbrthmn.operations.ui.components.OperationAimedAccount
 import br.com.rbrthmn.operations.ui.components.OperationOriginAccount
-import br.com.rbrthmn.operations.ui.components.utils.getOperationsMock
 import br.com.rbrthmn.ui.components.ReservesDropdownMenu
 import br.com.rbrthmn.ui.utils.StringProvider
 import br.com.rbrthmn.ui.utils.canBeFormatted
 import br.com.rbrthmn.ui.utils.formatDouble
 import br.com.rbrthmn.ui.utils.formatString
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class OperationsScreenViewModel(val stringProvider: StringProvider) :
-    OperationsScreenContract.ViewModel() {
+class OperationsScreenViewModel(
+    val stringProvider: StringProvider,
+    private val operationsRepository: OperationsRepository
+) : OperationsScreenContract.ViewModel() {
+
     override var uiState = MutableStateFlow(OperationsScreenContract.UiState())
+    private var collectJob: Job? = null
+    private var allOperations: List<Operation> = emptyList()
 
     override fun doOnInit(): OperationsScreenViewModel {
-        uiState.value =
-            OperationsScreenContract.UiState(
-                operations = getOperationsMock().sortedByDescending { it.date },
-                totalBalance = formatDouble(TOTAL_BALANCE_MOCK),
-                totalIncome = formatDouble(TOTAL_INCOME_MOCK),
-                totalOutcome = formatDouble(TOTAL_OUTCOME_MOCK)
-            )
+        collectTransactions(LocalDate.now())
         updateDialogFields(resetFields = true)
-
         return this
     }
 
@@ -58,18 +60,55 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
             is OperationsScreenContract.Intent.OnValueChange -> onValueChange(intent.value)
             is OperationsScreenContract.Intent.OnOperationTypeChange -> onOperationTypeChange(intent.operationType)
             is OperationsScreenContract.Intent.OnOriginAccountChange -> onOriginAccountChange(intent.originAccount)
-            is OperationsScreenContract.Intent.OnDestinationAccountChange -> onDestinationAccountChange(
-                intent.destinationAccount
-            )
-
+            is OperationsScreenContract.Intent.OnDestinationAccountChange -> onDestinationAccountChange(intent.destinationAccount)
             is OperationsScreenContract.Intent.OnOperationDateChange -> onOperationDateChange(intent.operationDate)
             is OperationsScreenContract.Intent.OnReserveChange -> onReserveChange(intent.reserve)
             is OperationsScreenContract.Intent.OnSaveButtonClick -> onSaveButtonClick(intent.showDialog)
             is OperationsScreenContract.Intent.OnResetDialogFields -> updateDialogFields(resetFields = true)
             is OperationsScreenContract.Intent.OnSearchQueryChange -> onSearchQueryChange(intent.query)
             is OperationsScreenContract.Intent.OnDateFilterChange -> onDateFilterChange(intent.localDate)
+            is OperationsScreenContract.Intent.OnDeleteOperation -> onDeleteOperation(intent.id)
+            is OperationsScreenContract.Intent.OnEditOperation -> onEditOperation(intent.operation)
         }
     }
+
+    private fun collectTransactions(date: LocalDate) {
+        collectJob?.cancel()
+        collectJob = viewModelScope.launch {
+            operationsRepository.getOperationsForMonth(date.year, date.monthValue)
+                .collect { data ->
+                    val operations = data.operations.map { item ->
+                        Operation(
+                            id = item.id,
+                            description = item.counterparty,
+                            value = formatDouble(item.amount),
+                            type = item.type,
+                            category = item.category,
+                            date = item.date,
+                            extras = item.accountName
+                        )
+                    }
+                    allOperations = operations
+                    uiState.update {
+                        it.copy(
+                            operations = applySearchFilter(operations, it.searchQuery),
+                            totalIncome = formatDouble(data.totalIncome),
+                            totalOutcome = formatDouble(data.totalOutcome),
+                            totalBalance = formatDouble(data.totalBalance)
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun applySearchFilter(operations: List<Operation>, query: String): List<Operation> =
+        if (query.isBlank()) operations
+        else operations.filter { op ->
+            op.description.contains(query, ignoreCase = true) ||
+                    op.type.contains(query, ignoreCase = true) ||
+                    op.value.contains(query, ignoreCase = true) ||
+                    op.extras?.contains(query, ignoreCase = true) == true
+        }
 
     private fun onDescriptionChange(description: String) = uiState.update {
         it.copy(
@@ -137,30 +176,73 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
 
     private fun onSaveButtonClick(showDialog: MutableState<Boolean>) {
         if (validateFields()) {
-            val operations = uiState.value.operations.toMutableList()
-            val newOperation: Operation
-
-            with(uiState.value) {
-                newOperation = Operation(
-                    description = newOperationDescription,
-                    value = formatString(newOperationValue),
-                    type = stringProvider.getString(
-                        newOperationType?.stringId ?: R.string.operation_type_other
-                    ),
-                    date = newOperationDate,
-                    extras = newOperationOriginAccount.ifBlank { newOperationDestinationAccount }
-                )
+            viewModelScope.launch {
+                with(uiState.value) {
+                    val type = newOperationType ?: OperationType.OTHER
+                    val operationData = when {
+                        type == OperationType.CREDIT_PURCHASE -> NewOperationData.CreditCardOperation(
+                            counterparty = newOperationDescription,
+                            amount = newOperationValue.replace(',', '.').toDouble(),
+                            type = stringProvider.getString(type.stringId),
+                            category = type.name,
+                            date = newOperationDate,
+                            creditCardId = null
+                        )
+                        type.hasReserve -> NewOperationData.ReserveOperation(
+                            counterparty = newOperationDescription,
+                            amount = newOperationValue.replace(',', '.').toDouble(),
+                            type = stringProvider.getString(type.stringId),
+                            category = type.name,
+                            date = newOperationDate,
+                            reserveId = null,
+                            bankAccountId = null
+                        )
+                        else -> NewOperationData.BankAccountOperation(
+                            counterparty = newOperationDescription,
+                            amount = newOperationValue.replace(',', '.').toDouble(),
+                            type = stringProvider.getString(type.stringId),
+                            category = type.name,
+                            date = newOperationDate,
+                            bankAccountId = null
+                        )
+                    }
+                    val editId = editingOperationId
+                    if (editId != null) {
+                        operationsRepository.updateOperation(editId, operationData)
+                    } else {
+                        operationsRepository.addOperation(operationData)
+                    }
+                }
             }
-
-            with(operations) {
-                add(newOperation)
-                sortByDescending { it.date }
-            }
-
-            uiState.value = uiState.value.copy(operations = operations)
             resetDialogFields()
             showDialog.value = false
         }
+    }
+
+    private fun onDeleteOperation(id: Long) {
+        viewModelScope.launch {
+            operationsRepository.deleteOperation(id)
+        }
+    }
+
+    private fun onEditOperation(operation: Operation) {
+        val resolvedType = OperationType.entries.find { it.name == operation.category }
+            ?: OperationType.entries.find { it.name == operation.type }
+            ?: OperationType.OTHER
+        val accountName = operation.extras ?: OperationsScreenContract.UiState.DEFAULT_STRING_VALUE
+        uiState.update {
+            it.copy(
+                editingOperationId = operation.id,
+                newOperationDescription = operation.description,
+                newOperationValue = operation.value,
+                newOperationType = resolvedType,
+                newOperationDate = operation.date,
+                newOperationOriginAccount = if (resolvedType.hasOriginAccount) accountName else OperationsScreenContract.UiState.DEFAULT_STRING_VALUE,
+                newOperationDestinationAccount = if (resolvedType.hasDestinationAccount) accountName else OperationsScreenContract.UiState.DEFAULT_STRING_VALUE,
+                newOperationReserve = if (resolvedType.hasReserve) accountName else OperationsScreenContract.UiState.DEFAULT_STRING_VALUE
+            )
+        }
+        updateDialogFields(resetFields = false)
     }
 
     @VisibleForTesting
@@ -243,9 +325,9 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
         if (resetFields) {
             uiState.update {
                 it.copy(
-                    newOperationOriginAccount = OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE,
-                    newOperationDestinationAccount = OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE,
-                    newOperationReserve = OperationsScreenUiState.Companion.DEFAULT_STRING_VALUE
+                    newOperationOriginAccount = OperationsScreenContract.UiState.DEFAULT_STRING_VALUE,
+                    newOperationDestinationAccount = OperationsScreenContract.UiState.DEFAULT_STRING_VALUE,
+                    newOperationReserve = OperationsScreenContract.UiState.DEFAULT_STRING_VALUE
                 )
             }
         }
@@ -288,29 +370,17 @@ class OperationsScreenViewModel(val stringProvider: StringProvider) :
     }
 
     private fun onSearchQueryChange(query: String) {
-        uiState.update { currentState ->
-            val filteredList = if (query.isBlank()) {
-                uiState.value.operations
-            } else {
-                uiState.value.operations.filter { operation ->
-                    operation.description.contains(query, ignoreCase = true) ||
-                            operation.type.contains(query, ignoreCase = true) ||
-                            operation.value.contains(query, ignoreCase = true) ||
-                            operation.extras?.contains(query, ignoreCase = true) == true
-                }
-            }
-            currentState.copy(operations = filteredList, searchQuery = query)
+        uiState.update {
+            it.copy(
+                operations = applySearchFilter(allOperations, query),
+                searchQuery = query
+            )
         }
     }
 
-    private fun onDateFilterChange(localDate: LocalDate) = uiState.update {
-        it.copy(currentDateFilter = localDate)
+    private fun onDateFilterChange(localDate: LocalDate) {
+        uiState.update { it.copy(currentDateFilter = localDate) }
+        collectTransactions(localDate)
     }
 
-    companion object {
-        const val TOTAL_BALANCE_MOCK = 1000.0
-        const val TOTAL_INCOME_MOCK = 1500.0
-        const val TOTAL_OUTCOME_MOCK = 500.0
-
-    }
 }
