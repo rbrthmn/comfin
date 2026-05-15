@@ -59,6 +59,7 @@ dependencies {
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+    implementation(libs.androidx.compose.runtime)
 
     testImplementation(project(":core:test"))
     androidTestImplementation(project(":core:test"))

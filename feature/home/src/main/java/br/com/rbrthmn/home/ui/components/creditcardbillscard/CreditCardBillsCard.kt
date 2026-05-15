@@ -38,12 +38,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import br.com.rbrthmn.data.home.model.AccountsSummary
+import br.com.rbrthmn.data.home.model.CreditCardBillItem
+import br.com.rbrthmn.data.home.repository.HomeRepository
 import br.com.rbrthmn.home.R
 import br.com.rbrthmn.home.ui.components.AddItemButton
 import br.com.rbrthmn.home.ui.components.BanksDropdownMenu
 import br.com.rbrthmn.home.ui.components.TotalValueText
 import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardContract.Intent
 import br.com.rbrthmn.ui.components.DecimalInputField
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 import br.com.rbrthmn.home.ui.components.creditcardbillscard.CreditCardBillsCardContract as Contract
@@ -273,12 +278,19 @@ private fun CardBillCloseDayDropdownMenu(onDayClicked: (day: Int) -> Unit, isErr
     }
 }
 
+private fun previewCreditCardBillsVM() = CreditCardBillsCardViewModel(object : HomeRepository {
+    override fun getAccountsSummary(month: LocalDate): Flow<AccountsSummary> = flowOf(AccountsSummary(0.0, emptyList()))
+    override fun getCreditCardBills(month: LocalDate): Flow<List<CreditCardBillItem>> = flowOf(emptyList())
+    override fun getLastMonthDifference(month: LocalDate): Flow<Double> = flowOf(0.0)
+    override fun getMonthlySpent(month: LocalDate): Flow<Double> = flowOf(0.0)
+}).doOnInit()
+
 @SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
 fun CreditCardsBillCardPreview() {
     CreditCardBillsCard(
-        viewModel = CreditCardBillsCardViewModel().doOnInit(),
+        viewModel = previewCreditCardBillsVM(),
         modifier = Modifier,
         currentDateFilter = LocalDate.now()
     )
@@ -291,6 +303,6 @@ fun AddCardBillDialogPreview() {
     AddCreditCardDialog(
         onSaveButtonClick = { },
         onCancelButtonClick = {},
-        viewModel = CreditCardBillsCardViewModel().doOnInit()
+        viewModel = previewCreditCardBillsVM()
     )
 }

@@ -31,8 +31,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import br.com.rbrthmn.data.home.model.AccountsSummary
+import br.com.rbrthmn.data.home.model.CreditCardBillItem
+import br.com.rbrthmn.data.home.repository.HomeRepository
 import br.com.rbrthmn.home.R
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 import br.com.rbrthmn.ui.R as commonR
@@ -170,7 +175,12 @@ private fun InfoDialog(dialogText: String, onCloseButtonClick: () -> Unit) {
 fun MonthlyLimitCardPreview() {
     MonthlyLimitCard(
         onCardClick = {},
-        viewModel = MonthlyLimitCardViewModel().doOnInit(),
+        viewModel = MonthlyLimitCardViewModel(object : HomeRepository {
+            override fun getAccountsSummary(month: LocalDate): Flow<AccountsSummary> = flowOf(AccountsSummary(0.0, emptyList()))
+            override fun getCreditCardBills(month: LocalDate): Flow<List<CreditCardBillItem>> = flowOf(emptyList())
+            override fun getLastMonthDifference(month: LocalDate): Flow<Double> = flowOf(0.0)
+            override fun getMonthlySpent(month: LocalDate): Flow<Double> = flowOf(0.0)
+        }).doOnInit(),
         currentDateFilter = LocalDate.now()
     )
 }

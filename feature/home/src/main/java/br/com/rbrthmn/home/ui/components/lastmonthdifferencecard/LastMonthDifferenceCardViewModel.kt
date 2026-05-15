@@ -1,16 +1,28 @@
 package br.com.rbrthmn.home.ui.components.lastmonthdifferencecard
 
+import androidx.lifecycle.viewModelScope
+import br.com.rbrthmn.data.home.repository.HomeRepository
 import br.com.rbrthmn.ui.utils.formatDouble
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class LastMonthDifferenceCardViewModel : LastMonthDifferenceCardContract.ViewModel() {
+class LastMonthDifferenceCardViewModel(private val homeRepository: HomeRepository) : LastMonthDifferenceCardContract.ViewModel() {
     override var uiState = MutableStateFlow(LastMonthDifferenceCardContract.UiState())
+    private val dateFilter = MutableStateFlow(LocalDate.now())
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun doOnInit(): LastMonthDifferenceCardViewModel {
-        uiState.value = LastMonthDifferenceCardContract.UiState(formatDouble(MOCK))
-
+        viewModelScope.launch {
+            dateFilter.flatMapLatest { date ->
+                homeRepository.getLastMonthDifference(date)
+            }.collect { difference ->
+                uiState.update { it.copy(valueOfLastMonth = formatDouble(difference)) }
+            }
+        }
         return this
     }
 
@@ -20,11 +32,8 @@ class LastMonthDifferenceCardViewModel : LastMonthDifferenceCardContract.ViewMod
         }
     }
 
-    private fun setDateFilter(date: LocalDate) = uiState.update {
-        it.copy(currentDateFilter = date)
-    }
-
-    companion object {
-        const val MOCK = -100.00
+    private fun setDateFilter(date: LocalDate) {
+        dateFilter.value = date
+        uiState.update { it.copy(currentDateFilter = date) }
     }
 }

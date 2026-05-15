@@ -1,19 +1,29 @@
 package br.com.rbrthmn.home.ui.components.monthlylimitcard
 
+import androidx.lifecycle.viewModelScope
+import br.com.rbrthmn.data.home.repository.HomeRepository
 import br.com.rbrthmn.ui.utils.formatDouble
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class MonthlyLimitCardViewModel : MonthlyLimitCardContract.ViewModel() {
+class MonthlyLimitCardViewModel(private val homeRepository: HomeRepository) : MonthlyLimitCardContract.ViewModel() {
     override var uiState = MutableStateFlow(MonthlyLimitCardContract.UiState())
+    private val dateFilter = MutableStateFlow(LocalDate.now())
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun doOnInit(): MonthlyLimitCardViewModel {
-        uiState.value = MonthlyLimitCardContract.UiState(
-            monthLimit = formatDouble(MONTH_LIMIT_MOCK),
-            monthDifference = formatDouble(MONTH_DIFFERENCE_MOCK)
-        )
-
+        uiState.update { it.copy(monthLimit = formatDouble(MONTH_LIMIT)) }
+        viewModelScope.launch {
+            dateFilter.flatMapLatest { date ->
+                homeRepository.getMonthlySpent(date)
+            }.collect { spent ->
+                uiState.update { it.copy(monthDifference = formatDouble(spent)) }
+            }
+        }
         return this
     }
 
@@ -23,12 +33,12 @@ class MonthlyLimitCardViewModel : MonthlyLimitCardContract.ViewModel() {
         }
     }
 
-    private fun onDateFilterChange(date: LocalDate) = uiState.update {
-        it.copy(currentDateFilter = date)
+    private fun onDateFilterChange(date: LocalDate) {
+        dateFilter.value = date
+        uiState.update { it.copy(currentDateFilter = date) }
     }
 
     companion object {
-        const val MONTH_LIMIT_MOCK = 1000.0
-        const val MONTH_DIFFERENCE_MOCK = 500.0
+        const val MONTH_LIMIT = 1000.0
     }
 }

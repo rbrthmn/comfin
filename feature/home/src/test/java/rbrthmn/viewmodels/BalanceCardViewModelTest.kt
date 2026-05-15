@@ -1,23 +1,73 @@
 package rbrthmn.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
+import br.com.rbrthmn.data.home.model.AccountsSummary
+import br.com.rbrthmn.data.home.model.AccountSummaryItem
+import br.com.rbrthmn.data.home.model.CreditCardBillItem
+import br.com.rbrthmn.data.home.repository.HomeRepository
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.Intent
 import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel
-import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_NAME_MOCK
-import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.ACCOUNT_VALUE_MOCK
-import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.BANK_NAME_MOCK
-import br.com.rbrthmn.home.ui.components.balancecard.BalanceCardViewModel.Companion.TOTAL_BALANCE_MOCK
 import br.com.rbrthmn.ui.R
 import br.com.rbrthmn.ui.utils.formatDouble
 import br.com.rbrthmn.ui.utils.formatString
+import io.mockk.every
+import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import java.time.LocalDate
 import java.util.Locale
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class BalanceCardViewModelTest {
-    private val viewModel = BalanceCardViewModel()
+    private val homeRepository: HomeRepository = mockk()
+    private lateinit var viewModel: BalanceCardViewModel
+
+    @Before
+    fun setup() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        every { homeRepository.getAccountsSummary(any()) } returns flowOf(
+            AccountsSummary(
+                totalBalance = TOTAL_BALANCE,
+                accounts = listOf(
+                    AccountSummaryItem(
+                        id = 1L,
+                        name = ACCOUNT_NAME,
+                        bankName = BANK_NAME,
+                        balance = ACCOUNT_BALANCE,
+                        isMainAccount = false
+                    )
+                )
+            )
+        )
+        every { homeRepository.getCreditCardBills(any()) } returns flowOf(emptyList<CreditCardBillItem>())
+        every { homeRepository.getLastMonthDifference(any()) } returns flowOf(0.0)
+        every { homeRepository.getMonthlySpent(any()) } returns flowOf(0.0)
+        viewModel = BalanceCardViewModel(homeRepository)
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
+
+    @Test
+    fun `doOnInit should collect accounts from repository and update state`() {
+        viewModel.doOnInit()
+
+        assertEquals(formatDouble(TOTAL_BALANCE), viewModel.uiState.value.totalBalance)
+        assertEquals(ACCOUNT_NAME, viewModel.uiState.value.accounts.first().name)
+        assertEquals(formatDouble(ACCOUNT_BALANCE), viewModel.uiState.value.accounts.first().value)
+        assertEquals(BANK_NAME, viewModel.uiState.value.accounts.first().bankName)
+    }
 
     @Test
     fun `onSaveClick with valid input should add new account`() {
@@ -38,26 +88,6 @@ class BalanceCardViewModelTest {
         viewModel.onIntent(Intent.OnSaveClick(mock))
 
         assertEquals(newAccountList, viewModel.uiState.value.accounts)
-    }
-
-    @Test
-    fun `doOnInit should assign initial values`() {
-        viewModel.doOnInit()
-        val expectedList = listOf(
-            br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.BankAccountBalanceUiState(
-                name = ACCOUNT_NAME_MOCK,
-                value = formatDouble(ACCOUNT_VALUE_MOCK),
-                bankName = BANK_NAME_MOCK,
-            )
-        )
-
-        assertEquals(formatDouble(TOTAL_BALANCE_MOCK), viewModel.uiState.value.totalBalance)
-        assertEquals(expectedList.first().value, viewModel.uiState.value.accounts.first().value)
-        assertEquals(expectedList.first().name, viewModel.uiState.value.accounts.first().name)
-        assertEquals(
-            expectedList.first().bankName,
-            viewModel.uiState.value.accounts.first().bankName
-        )
     }
 
     @Test
@@ -137,6 +167,13 @@ class BalanceCardViewModelTest {
         assertCleanedInputs()
     }
 
+    @Test
+    fun `setDateFilter should assign value correctly`() {
+        viewModel.onIntent(Intent.OnDateFilterChange(VALID_DATE))
+
+        assertEquals(VALID_DATE, viewModel.uiState.value.currentDateFilter)
+    }
+
     private fun assertCleanedInputs() {
         assertEquals(EMPTY_STRING, viewModel.uiState.value.newAccountBalance)
         assertEquals(EMPTY_STRING, viewModel.uiState.value.newAccountDescription)
@@ -155,18 +192,15 @@ class BalanceCardViewModelTest {
         }
     }
 
-    @Test
-    fun `setDateFilter should assign value correctly`() {
-        viewModel.onIntent(Intent.OnDateFilterChange(VALID_DATE))
-
-        assertEquals(VALID_DATE, viewModel.uiState.value.currentDateFilter)
-    }
-
     private companion object {
         const val VALID_BALANCE_STRING = "123"
         const val EMPTY_STRING = ""
         const val VALID_STRING = "test"
         const val VALID_ID_STRING = 1
+        const val TOTAL_BALANCE = 2000.0
+        const val ACCOUNT_BALANCE = 1000.0
+        const val ACCOUNT_NAME = "Conta"
+        const val BANK_NAME = "Meu Banco"
         val VALID_DATE: LocalDate = LocalDate.of(1998, 10, 20)
     }
 }

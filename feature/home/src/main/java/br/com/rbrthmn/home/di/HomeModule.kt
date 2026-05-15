@@ -18,15 +18,15 @@ val homeModule = module {
         HomeScreenViewModel().doOnInit()
     }
     viewModel<MonthlyLimitCardContract.ViewModel> {
-        MonthlyLimitCardViewModel().doOnInit()
+        MonthlyLimitCardViewModel(homeRepository = get()).doOnInit()
     }
     viewModel<BalanceCardContract.ViewModel> {
-        BalanceCardViewModel().doOnInit()
+        BalanceCardViewModel(homeRepository = get()).doOnInit()
     }
     viewModel<LastMonthDifferenceCardContract.ViewModel> {
-        LastMonthDifferenceCardViewModel().doOnInit()
+        LastMonthDifferenceCardViewModel(homeRepository = get()).doOnInit()
     }
     viewModel<CreditCardBillsCardContract.ViewModel> {
-        CreditCardBillsCardViewModel().doOnInit()
+        CreditCardBillsCardViewModel(homeRepository = get()).doOnInit()
     }
 }

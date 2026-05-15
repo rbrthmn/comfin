@@ -1,29 +1,42 @@
 package br.com.rbrthmn.home.ui.components.balancecard
 
 import androidx.compose.runtime.MutableState
+import androidx.lifecycle.viewModelScope
+import br.com.rbrthmn.data.home.repository.HomeRepository
 import br.com.rbrthmn.ui.R
 import br.com.rbrthmn.ui.utils.formatDouble
 import br.com.rbrthmn.ui.utils.formatString
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class BalanceCardViewModel : BalanceCardContract.ViewModel() {
+class BalanceCardViewModel(private val homeRepository: HomeRepository) : BalanceCardContract.ViewModel() {
     override val uiState = MutableStateFlow(BalanceCardContract.BalanceCardUiState())
+    private val dateFilter = MutableStateFlow(LocalDate.now())
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun doOnInit(): BalanceCardViewModel {
-        val accounts = listOf(
-            BalanceCardContract.BankAccountBalanceUiState(
-                name = ACCOUNT_NAME_MOCK,
-                value = formatDouble(ACCOUNT_VALUE_MOCK),
-                bankName = BANK_NAME_MOCK,
-            )
-        )
-        uiState.value = BalanceCardContract.BalanceCardUiState(
-            totalBalance = formatDouble(TOTAL_BALANCE_MOCK),
-            accounts = accounts,
-        )
-
+        viewModelScope.launch {
+            dateFilter.flatMapLatest { date ->
+                homeRepository.getAccountsSummary(date)
+            }.collect { summary ->
+                uiState.update {
+                    it.copy(
+                        totalBalance = formatDouble(summary.totalBalance),
+                        accounts = summary.accounts.map { account ->
+                            BalanceCardContract.BankAccountBalanceUiState(
+                                name = account.name,
+                                value = formatDouble(account.balance),
+                                bankName = account.bankName
+                            )
+                        }
+                    )
+                }
+            }
+        }
         return this
     }
 
@@ -115,14 +128,8 @@ class BalanceCardViewModel : BalanceCardContract.ViewModel() {
             )
         }
 
-    private fun setDateFilter(date: LocalDate) = uiState.update {
-        it.copy(currentDateFilter = date)
-    }
-
-    companion object {
-        const val ACCOUNT_NAME_MOCK = "Conta"
-        const val ACCOUNT_VALUE_MOCK = 1000.00
-        const val BANK_NAME_MOCK = "Meu Banco"
-        const val TOTAL_BALANCE_MOCK = 2000.00
+    private fun setDateFilter(date: LocalDate) {
+        dateFilter.value = date
+        uiState.update { it.copy(currentDateFilter = date) }
     }
 }

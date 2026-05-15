@@ -8,7 +8,8 @@ val homeDataModule = module {
     single<HomeRepository> {
         LocalHomeDataSource(
             bankAccountDao = get(),
-            creditCardDao = get()
+            creditCardDao = get(),
+            transactionDao = get()
         )
     }
 }
