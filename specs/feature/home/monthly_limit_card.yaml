@@ -1,0 +1,47 @@
+spec_version: "1.0"
+
+name: MonthlyLimitCard
+module: ":feature:home"
+package: "br.com.rbrthmn.home.ui.components.monthlylimitcard"
+contract: MonthlyLimitCardContract
+
+description: >
+  Displays the user's configured monthly spending limit alongside actual spending
+  for the selected month. Filterable by month.
+
+state:
+  class: UiState
+  fields:
+    - name: monthLimit
+      type: String
+      default: '""'
+    - name: monthDifference
+      type: String
+      default: '""'
+    - name: currentDateFilter
+      type: LocalDate
+      default: "LocalDate.now()"
+
+intents:
+  - name: OnDateFilterChange
+    params:
+      - { name: date, type: LocalDate }
+
+behaviors:
+  - id: ML-001
+    description: "doOnInit should set hardcoded monthLimit"
+    given: "any state"
+    when: "ViewModel initializes"
+    then: "uiState.monthLimit = formatted MONTH_LIMIT constant"
+
+  - id: ML-002
+    description: "doOnInit should collect monthly spent from repository and update monthDifference"
+    given: "repository emits monthly spent value"
+    when: "ViewModel initializes"
+    then: "uiState.monthDifference populated from repository data"
+
+  - id: ML-003
+    description: "setDateFilter should assign value correctly"
+    given: "any state"
+    when: "OnDateFilterChange with a date"
+    then: "currentDateFilter = given date"

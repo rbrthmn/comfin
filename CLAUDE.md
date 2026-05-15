@@ -53,6 +53,24 @@ feature/{name}/
 
 **Data flow:** User action → `onIntent()` → ViewModel → `MutableStateFlow` update → UI `collectAsState()` recompose
 
+## Spec-Driven Architecture
+
+Specs live in `specs/` at the project root and are the source of truth for all features.
+
+**Workflow:** `specs/*.yaml` → `*Contract.kt` → `*ViewModel.kt` → `*ViewModelTest.kt`
+
+- Write the spec **first** — defines state, intents, and behaviors before any code
+- `*Contract.kt` must mirror the spec's `state` and `intents` sections exactly
+- Test method names must match behavior `description` fields verbatim
+
+**When adding a new feature:**
+1. Copy `specs/_template.yaml` → `specs/feature/{module}/{feature_name}.yaml`
+2. Fill all sections (state, intents, behaviors)
+3. Implement `*Contract.kt` from the spec
+4. Write tests whose names match behavior descriptions
+
+See `specs/README.md` for full conventions and behavior ID prefixes.
+
 ## Contract Pattern
 
 Every screen needs `*Contract.kt` with three types + one abstract class:

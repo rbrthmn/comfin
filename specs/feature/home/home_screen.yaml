@@ -1,0 +1,29 @@
+spec_version: "1.0"
+
+name: HomeScreen
+module: ":feature:home"
+package: "br.com.rbrthmn.home.ui"
+contract: HomeScreenContract
+
+description: >
+  Root screen of the home feature. Hosts the date filter and coordinates
+  child cards by propagating the selected month to each component.
+
+state:
+  class: UiState
+  fields:
+    - name: currentDateFilter
+      type: LocalDate
+      default: "LocalDate.now()"
+
+intents:
+  - name: OnDateFilterChange
+    params:
+      - { name: date, type: LocalDate }
+
+behaviors:
+  - id: HS-001
+    description: "setDateFilter should update currentDateFilter"
+    given: "default state"
+    when: "OnDateFilterChange with a date"
+    then: "currentDateFilter = given date"
