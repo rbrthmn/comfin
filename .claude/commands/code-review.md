@@ -136,34 +136,62 @@ If no spec file exists for a changed Contract, flag it: spec is missing, drift c
 
 ---
 
-### 4. Format output
+### 4. Collect findings
 
-Use the caveman-review style: one finding per line, no padding.
-
-```
-[FILE:LINE] LENS — problem. fix.
-```
-
-Group by lens. Use headers:
+As you run each lens, accumulate findings in this structure:
 
 ```
-## A — Architecture
-## B — SOLID
-## C — Clean Code
-## D — Dead Code
-## E — Scope Fit
-## F — Spec Drift
-## G — Compose Performance
-## H — Coroutine Safety
+file: <path relative to repo root>
+line: <line number in the file (right side / new file for additions, left side for deletions)>
+side: RIGHT  ← for added/context lines; LEFT for deleted lines
+lens: <letter>
+comment: <one-line problem + fix, caveman style>
 ```
 
-If a lens has zero findings, write: `A — no issues.`
+### 5. Submit GitHub PR review
 
-End with a one-line **verdict**:
-```
-VERDICT: [APPROVE | REQUEST CHANGES | NEEDS DISCUSSION] — <reason in ≤15 words>
+Get the PR number and latest commit SHA:
+
+```bash
+gh pr view --json number,headRefOid
 ```
 
-- **APPROVE** — only cosmetic or no findings
-- **NEEDS DISCUSSION** — scope fit concerns or architectural trade-offs without a clear right answer
-- **REQUEST CHANGES** — concrete violations found (architecture broken, dead code, SOLID violation)
+Build a single review payload and submit via `gh api`. Always use `event: COMMENT` — never `APPROVE` or `REQUEST_CHANGES`. The user decides the final outcome.
+
+```bash
+PR_NUMBER=<number>
+COMMIT_SHA=<headRefOid>
+
+gh api repos/rbrthmn/comfin/pulls/$PR_NUMBER/reviews \
+  --method POST \
+  --input - <<'PAYLOAD'
+{
+  "commit_id": "<COMMIT_SHA>",
+  "body": "<overall summary — lenses run, finding count per lens, no verdict>",
+  "event": "COMMENT",
+  "comments": [
+    {
+      "path": "<file>",
+      "line": <line>,
+      "side": "<RIGHT|LEFT>",
+      "body": "[<LENS>] <problem>. <fix>."
+    }
+  ]
+}
+PAYLOAD
+```
+
+**If there are no findings:** still submit a review with `event: COMMENT`, empty `comments` array, and body:
+
+```
+No issues found across all lenses (A–H). Awaiting your approval.
+```
+
+**If no PR exists** for the current branch (gh pr view fails): print findings to the terminal grouped by lens, one per line in `[FILE:LINE] LENS — problem. fix.` format. Do not attempt to post comments.
+
+### 6. Report back to user
+
+After submitting, tell the user:
+- How many inline comments were posted (or "no issues found")
+- PR review URL
+- Remind them: **you make the final approve/request-changes decision**
