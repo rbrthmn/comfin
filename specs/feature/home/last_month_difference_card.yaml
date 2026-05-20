@@ -6,7 +6,7 @@ package: "br.com.rbrthmn.home.ui.components.lastmonthdifferencecard"
 contract: LastMonthDifferenceCardContract
 
 description: >
-  Displays the spending difference between the current month and the previous month.
+  Displays the spending difference of the previous month.
   Filterable by month.
 
 state:

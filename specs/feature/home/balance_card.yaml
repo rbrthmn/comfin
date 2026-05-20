@@ -7,7 +7,9 @@ contract: BalanceCardContract
 
 description: >
   Displays total bank account balance and a breakdown per account.
-  Allows adding new bank accounts. Filterable by month.
+  Allows adding new bank accounts when there is no account.
+  Is clickable to open the accounts management screen.
+  Filterable by month.
 
 state:
   class: BalanceCardUiState

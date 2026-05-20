@@ -7,7 +7,9 @@ contract: CreditCardBillsCardContract
 
 description: >
   Displays total credit card bill and a breakdown per card for the selected month.
-  Allows adding new credit cards. Filterable by month.
+  Allows adding new credit cards when there is no card.
+  Clickable to open the credit cards management screen.
+  Filterable by month.
 
 state:
   class: CreditCardsBillCardUiState
