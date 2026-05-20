@@ -4,6 +4,8 @@ Guidance for Claude Code (claude.ai/code) when working in this repo.
 
 **Always show changes and wait for user approval before committing.**
 
+**When opening a pull request, always use `/open-pr` instead of running `gh pr create` directly.**
+
 ## Commands
 
 ```bash
