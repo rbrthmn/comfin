@@ -1,0 +1,38 @@
+spec_version: "1.0"
+
+name: LastMonthDifferenceCard
+module: ":feature:home"
+package: "br.com.rbrthmn.home.ui.components.lastmonthdifferencecard"
+contract: LastMonthDifferenceCardContract
+
+description: >
+  Displays the spending difference of the previous month.
+  Filterable by month.
+
+state:
+  class: UiState
+  fields:
+    - name: valueOfLastMonth
+      type: String
+      default: '""'
+    - name: currentDateFilter
+      type: LocalDate
+      default: "LocalDate.now()"
+
+intents:
+  - name: OnDateFilterChange
+    params:
+      - { name: date, type: LocalDate }
+
+behaviors:
+  - id: LMD-001
+    description: "doOnInit should collect difference from repository and update state"
+    given: "repository emits a difference value"
+    when: "ViewModel initializes"
+    then: "uiState.valueOfLastMonth populated from repository data"
+
+  - id: LMD-002
+    description: "setDateFilter should assign value correctly"
+    given: "any state"
+    when: "OnDateFilterChange with a date"
+    then: "currentDateFilter = given date"

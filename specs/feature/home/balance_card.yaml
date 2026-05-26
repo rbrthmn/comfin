@@ -1,0 +1,145 @@
+spec_version: "1.0"
+
+name: BalanceCard
+module: ":feature:home"
+package: "br.com.rbrthmn.home.ui.components.balancecard"
+contract: BalanceCardContract
+
+description: >
+  Displays total bank account balance and a breakdown per account.
+  Allows adding new bank accounts when there is no account.
+  Is clickable to open the accounts management screen.
+  Filterable by month.
+
+state:
+  class: BalanceCardUiState
+  fields:
+    - name: totalBalance
+      type: String
+      default: '""'
+    - name: accounts
+      type: "List<BankAccountBalanceUiState>"
+      default: "listOf()"
+    - name: newAccountBalance
+      type: String
+      default: '""'
+    - name: isNewAccountBalanceValid
+      type: Boolean
+      default: "true"
+    - name: newAccountDescription
+      type: String
+      default: '""'
+    - name: isNewAccountDescriptionValid
+      type: Boolean
+      default: "true"
+    - name: newAccountBank
+      type: String
+      default: '""'
+    - name: isNewAccountBankValid
+      type: Boolean
+      default: "true"
+    - name: newAccountBankIcon
+      type: Int
+      default: "R.drawable.bank_icon"
+    - name: currentDateFilter
+      type: LocalDate
+      default: "LocalDate.now()"
+
+nested_states:
+  - class: BankAccountBalanceUiState
+    fields:
+      - name: name
+        type: String
+        default: '""'
+      - name: value
+        type: String
+        default: '""'
+      - name: bankName
+        type: String
+        default: '""'
+      - name: bankIcon
+        type: Int
+        default: "R.drawable.bank_icon"
+      - name: canValueBeEdited
+        type: Boolean
+        default: "false"
+
+intents:
+  - name: OnInitialBalanceChange
+    params:
+      - { name: balance, type: String }
+  - name: OnDescriptionChange
+    params:
+      - { name: description, type: String }
+  - name: OnBankChange
+    params:
+      - { name: bankId, type: Int }
+      - { name: bankName, type: String }
+  - name: OnSaveClick
+    params:
+      - { name: showDialog, type: "MutableState<Boolean>" }
+  - name: CleanNewAccount
+  - name: OnDateFilterChange
+    params:
+      - { name: date, type: LocalDate }
+
+behaviors:
+  - id: BC-001
+    description: "doOnInit should collect accounts from repository and update state"
+    given: "repository emits AccountsSummary with accounts"
+    when: "ViewModel initializes"
+    then: "uiState.totalBalance and accounts populated from repository data"
+
+  - id: BC-002
+    description: "onSaveClick with valid input should add new account"
+    given: "valid balance, description, and bank set"
+    when: "OnSaveClick"
+    then: "new account appended to accounts list, inputs cleared"
+
+  - id: BC-003
+    description: "onInitialBalanceChange with empty value should assign correctly"
+    given: "default state"
+    when: "OnInitialBalanceChange with empty string"
+    then: "isNewAccountBalanceValid = false, newAccountBalance = empty"
+
+  - id: BC-004
+    description: "onInitialBalanceChange with value should assign correctly"
+    given: "default state"
+    when: "OnInitialBalanceChange with non-empty string"
+    then: "isNewAccountBalanceValid = true, newAccountBalance = given value"
+
+  - id: BC-005
+    description: "onDescriptionChange with empty value should assign correctly"
+    given: "default state"
+    when: "OnDescriptionChange with empty string"
+    then: "isNewAccountDescriptionValid = false"
+
+  - id: BC-006
+    description: "onDescriptionChange with value should assign correctly"
+    given: "default state"
+    when: "OnDescriptionChange with non-empty string"
+    then: "isNewAccountDescriptionValid = true, newAccountDescription = given value"
+
+  - id: BC-007
+    description: "onBankChange with empty value should assign correctly"
+    given: "default state"
+    when: "OnBankChange with empty bank name"
+    then: "isNewAccountBankValid = false"
+
+  - id: BC-008
+    description: "onBankChange with value should assign correctly"
+    given: "default state"
+    when: "OnBankChange with non-empty bank name"
+    then: "isNewAccountBankValid = true, newAccountBank = given value"
+
+  - id: BC-009
+    description: "cleanNewAccount should reset all input fields"
+    given: "inputs are set"
+    when: "CleanNewAccount"
+    then: "all new account fields reset to defaults"
+
+  - id: BC-010
+    description: "setDateFilter should assign value correctly"
+    given: "any state"
+    when: "OnDateFilterChange with a date"
+    then: "currentDateFilter = given date"

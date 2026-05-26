@@ -1,0 +1,67 @@
+spec_version: "1.0"
+
+# --- Identity ---
+name: MyFeature
+module: ":feature:module"
+package: "br.com.rbrthmn.module.ui.myfeature"
+contract: MyFeatureContract
+
+description: >
+  One-sentence description of what this feature/component does.
+
+# --- UiState ---
+state:
+  class: UiState
+  fields:
+    - name: exampleField
+      type: String
+      default: '""'
+    - name: currentDateFilter
+      type: LocalDate
+      default: "LocalDate.now()"
+
+# nested state types referenced in the main state (omit if none)
+nested_states: []
+
+# --- Intents ---
+intents:
+  - name: OnExampleChange
+    params:
+      - { name: value, type: String }
+  - name: OnDateFilterChange
+    params:
+      - { name: date, type: LocalDate }
+
+# --- Effects (omit section if feature has no one-time side effects) ---
+# effects:
+#   - name: ShowError
+#     params:
+#       - { name: message, type: String }
+
+# --- Behaviors (acceptance criteria → test cases) ---
+# id format: {PREFIX}-{NNN}
+# description must match @Test fun name verbatim
+behaviors:
+  - id: XX-001
+    description: "doOnInit should <expected initial state>"
+    given: "<precondition>"
+    when: "ViewModel initializes"
+    then: "<expected state change>"
+
+  - id: XX-002
+    description: "onExampleChange with empty value should mark invalid"
+    given: "default state"
+    when: "OnExampleChange with empty string"
+    then: "isExampleValid = false"
+
+  - id: XX-003
+    description: "onExampleChange with value should mark valid"
+    given: "default state"
+    when: "OnExampleChange with non-empty string"
+    then: "isExampleValid = true, exampleField = given value"
+
+  - id: XX-004
+    description: "setDateFilter should update currentDateFilter"
+    given: "any state"
+    when: "OnDateFilterChange with a date"
+    then: "currentDateFilter = given date"

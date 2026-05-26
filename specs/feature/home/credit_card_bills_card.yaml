@@ -1,0 +1,151 @@
+spec_version: "1.0"
+
+name: CreditCardBillsCard
+module: ":feature:home"
+package: "br.com.rbrthmn.home.ui.components.creditcardbillscard"
+contract: CreditCardBillsCardContract
+
+description: >
+  Displays total credit card bill and a breakdown per card for the selected month.
+  Allows adding new credit cards when there is no card.
+  Clickable to open the credit cards management screen.
+  Filterable by month.
+
+state:
+  class: CreditCardsBillCardUiState
+  fields:
+    - name: totalBill
+      type: String
+      default: '""'
+    - name: bills
+      type: "List<CreditCardBillUiState>"
+      default: "listOf()"
+    - name: newCreditCardName
+      type: String
+      default: '""'
+    - name: isNewCreditCardNameValid
+      type: Boolean
+      default: "true"
+    - name: newCreditCardBill
+      type: String
+      default: '""'
+    - name: isNewCreditCardBillValid
+      type: Boolean
+      default: "true"
+    - name: newCreditCardBillDueDay
+      type: Int
+      default: "0"
+    - name: isNewCreditCardBillDueDayValid
+      type: Boolean
+      default: "true"
+    - name: newCreditCardBankName
+      type: String
+      default: '""'
+    - name: isNewCreditCardBankNameValid
+      type: Boolean
+      default: "true"
+    - name: newCreditCardBankIcon
+      type: Int
+      default: "R.drawable.bank_icon"
+    - name: currentDateFilter
+      type: LocalDate
+      default: "LocalDate.now()"
+
+nested_states:
+  - class: CreditCardBillUiState
+    fields:
+      - name: name
+        type: String
+        default: '""'
+      - name: value
+        type: String
+        default: '""'
+      - name: bankName
+        type: String
+        default: '""'
+      - name: bankIcon
+        type: Int
+        default: "R.drawable.bank_icon"
+      - name: canValueBeEdited
+        type: Boolean
+        default: "false"
+      - name: dueDay
+        type: Int
+        default: "0"
+
+intents:
+  - name: OnNewCreditCardNameChange
+    params:
+      - { name: name, type: String }
+  - name: OnNewCreditCardBillValueChange
+    params:
+      - { name: bill, type: String }
+  - name: OnBankChange
+    params:
+      - { name: bankIcon, type: Int }
+      - { name: bankName, type: String }
+  - name: OnNewCreditCardBillDueDayChange
+    params:
+      - { name: day, type: Int }
+  - name: OnSaveClick
+    params:
+      - { name: showDialog, type: "MutableState<Boolean>" }
+  - name: CleanInputs
+  - name: OnDateFilterChange
+    params:
+      - { name: date, type: LocalDate }
+
+behaviors:
+  - id: CCB-001
+    description: "doOnInit should collect credit cards from repository and update state"
+    given: "repository emits list of CreditCardBillItem"
+    when: "ViewModel initializes"
+    then: "uiState.totalBill and bills populated from repository data"
+
+  - id: CCB-002
+    description: "onSaveClick with valid input should add new card"
+    given: "valid name, bill value, bank, and due day set"
+    when: "OnSaveClick"
+    then: "new card appended to bills list, inputs cleared"
+
+  - id: CCB-003
+    description: "OnNewCreditCardBillValueChange with empty value should assign correctly"
+    given: "default state"
+    when: "OnNewCreditCardBillValueChange with empty string"
+    then: "isNewCreditCardBillValid = false, newCreditCardBill = empty"
+
+  - id: CCB-004
+    description: "OnNewCreditCardBillValueChange with value should assign correctly"
+    given: "default state"
+    when: "OnNewCreditCardBillValueChange with non-empty string"
+    then: "isNewCreditCardBillValid = true, newCreditCardBill = given value"
+
+  - id: CCB-005
+    description: "onBankChange with empty value should assign correctly"
+    given: "default state"
+    when: "OnBankChange with empty bank name"
+    then: "isNewCreditCardBankNameValid = false"
+
+  - id: CCB-006
+    description: "onBankChange with value should assign correctly"
+    given: "default state"
+    when: "OnBankChange with non-empty bank name"
+    then: "isNewCreditCardBankNameValid = true, newCreditCardBankName = given value"
+
+  - id: CCB-007
+    description: "onNewCreditCardBillDueDayChange with zero value should assign correctly"
+    given: "default state"
+    when: "OnNewCreditCardBillDueDayChange with 0"
+    then: "isNewCreditCardBillDueDayValid = false, newCreditCardBillDueDay = 0"
+
+  - id: CCB-008
+    description: "onNewCreditCardBillDueDayChange with value should assign correctly"
+    given: "default state"
+    when: "OnNewCreditCardBillDueDayChange with non-zero day"
+    then: "isNewCreditCardBillDueDayValid = true, newCreditCardBillDueDay = given day"
+
+  - id: CCB-009
+    description: "setDateFilter should assign value correctly"
+    given: "any state"
+    when: "OnDateFilterChange with a date"
+    then: "currentDateFilter = given date"
