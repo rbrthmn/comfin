@@ -26,6 +26,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
@@ -57,7 +58,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.data.operations.model.OperationItem
 import br.com.rbrthmn.data.operations.model.OperationsData
@@ -102,7 +102,7 @@ fun OperationsListCard(
         )
 
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         modifier = Modifier
             .padding(bottom = dimensionResource(id = uiR.dimen.padding_medium))
             .shadow(elevation = dimensionResource(id = uiR.dimen.padding_small))
@@ -140,12 +140,12 @@ fun OperationsListCard(
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = stringResource(id = uiR.string.add_icon_description),
-                        tint = Color.Gray,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(end = dimensionResource(id = uiR.dimen.padding_extra_small))
                     )
                     Text(
                         text = stringResource(id = R.string.add_operation_button),
-                        fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
             }
@@ -345,7 +345,7 @@ private fun DayOfWeekAndMonthText(date: LocalDate) {
     val formattedDate = date.format(DateTimeFormatter.ofPattern("EEEE, dd"))
     Text(
         text = formattedDate,
-        fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
+        style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.ExtraBold
     )
 }
@@ -399,10 +399,15 @@ private fun OperationItem(
         backgroundContent = {
             val (bgColor, icon, alignment) = when (dismissState.targetValue) {
                 SwipeToDismissBoxValue.EndToStart ->
-                    Triple(Color.Red, Icons.Default.Delete, Alignment.CenterEnd)
+                    Triple(MaterialTheme.colorScheme.error, Icons.Default.Delete, Alignment.CenterEnd)
                 SwipeToDismissBoxValue.StartToEnd ->
-                    Triple(Color(0xFF4CAF50), Icons.Default.Edit, Alignment.CenterStart)
+                    Triple(MaterialTheme.colorScheme.tertiary, Icons.Default.Edit, Alignment.CenterStart)
                 else -> Triple(Color.Transparent, null, Alignment.Center)
+            }
+            val iconTint = when (dismissState.targetValue) {
+                SwipeToDismissBoxValue.EndToStart -> MaterialTheme.colorScheme.onError
+                SwipeToDismissBoxValue.StartToEnd -> MaterialTheme.colorScheme.onTertiary
+                else -> Color.Transparent
             }
             Box(
                 modifier = Modifier
@@ -411,7 +416,7 @@ private fun OperationItem(
                     .padding(horizontal = dimensionResource(id = uiR.dimen.padding_medium)),
                 contentAlignment = alignment
             ) {
-                icon?.let { Icon(it, contentDescription = null, tint = Color.White) }
+                icon?.let { Icon(it, contentDescription = null, tint = iconTint) }
             }
         }
     ) {
@@ -420,21 +425,19 @@ private fun OperationItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
                 .clickable { onEdit() }
                 .padding(start = dimensionResource(id = uiR.dimen.padding_small))
         ) {
             Column(horizontalAlignment = Alignment.Start) {
                 Text(
                     text = description,
-                    fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
-                    lineHeight = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = type,
-                        fontSize = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
-                        lineHeight = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
+                        style = MaterialTheme.typography.bodySmall,
                     )
                     extras?.let {
                         VerticalDivider(
@@ -444,8 +447,7 @@ private fun OperationItem(
                         )
                         Text(
                             text = it,
-                            fontSize = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
-                            lineHeight = dimensionResource(id = uiR.dimen.font_size_small).value.sp,
+                            style = MaterialTheme.typography.bodySmall,
                         )
                     }
                 }
@@ -455,8 +457,7 @@ private fun OperationItem(
                     currencyStringId = uiR.string.brl_currency,
                     value = value
                 ),
-                fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
-                lineHeight = dimensionResource(id = uiR.dimen.font_size_medium).value.sp,
+                style = MaterialTheme.typography.bodyLarge,
             )
         }
     }
