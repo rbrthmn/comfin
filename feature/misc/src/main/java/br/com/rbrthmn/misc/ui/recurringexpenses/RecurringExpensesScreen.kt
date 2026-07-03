@@ -24,6 +24,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -37,14 +38,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.misc.R
 import br.com.rbrthmn.navigation.NavigationDestination
@@ -107,7 +106,7 @@ private fun RecurringExpensesCard(
     onSaveNewExpense: () -> Unit
 ) {
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = dimensionResource(id = commonR.dimen.padding_medium))
@@ -124,7 +123,7 @@ private fun RecurringExpensesCard(
                 Text(
                     text = stringResource(id = R.string.recurring_total_title),
                     fontWeight = FontWeight.Bold,
-                    fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp
+                    style = MaterialTheme.typography.headlineSmall
                 )
                 Text(
                     fontWeight = FontWeight.Bold,
@@ -134,7 +133,7 @@ private fun RecurringExpensesCard(
                         currencyStringId = commonR.string.brl_currency,
                         value = totalExpensesValue
                     ),
-                    fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp
+                    style = MaterialTheme.typography.headlineLarge
                 )
             }
             Column(
@@ -182,7 +181,7 @@ private fun ExpenseItem(expense: RecurringExpense, modifier: Modifier = Modifier
             Text(
                 text = "${stringResource(id = R.string.recurring_expense_billing_day)} ${expense.billingDay}",
                 maxLines = 1,
-                fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
+                style = MaterialTheme.typography.bodyLarge,
             )
             VerticalDivider(
                 modifier = modifier
@@ -191,7 +190,7 @@ private fun ExpenseItem(expense: RecurringExpense, modifier: Modifier = Modifier
             )
             Text(
                 text = expense.description,
-                fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = modifier.padding(horizontal = dimensionResource(id = commonR.dimen.padding_extra_small))
@@ -203,7 +202,7 @@ private fun ExpenseItem(expense: RecurringExpense, modifier: Modifier = Modifier
                 value = expense.value
             ),
             maxLines = 1,
-            fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
+            style = MaterialTheme.typography.bodyLarge,
         )
     }
 }
@@ -248,12 +247,12 @@ private fun AddExpenseButton(
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = stringResource(id = commonR.string.add_icon_description),
-                tint = Color.Gray,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = modifier.padding(horizontal = dimensionResource(id = commonR.dimen.padding_extra_small))
             )
             Text(
                 text = stringResource(id = R.string.recurring_expense_add_button),
-                fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
+                style = MaterialTheme.typography.bodyLarge
             )
         }
     }
