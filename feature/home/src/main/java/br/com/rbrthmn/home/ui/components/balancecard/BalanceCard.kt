@@ -12,6 +12,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -24,12 +25,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.home.R
 import br.com.rbrthmn.home.ui.components.AddItemButton
@@ -92,7 +91,7 @@ fun BalanceCard(
         }
 
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         modifier = modifier.shadow(elevation = dimensionResource(id = uiR.dimen.padding_small))
     ) {
         BalanceList(
@@ -154,13 +153,13 @@ private fun BankAccountBalanceItem(
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = stringResource(id = R.string.bank_icon_description),
-                tint = Color.Gray,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = modifier
                     .padding(horizontal = dimensionResource(id = uiR.dimen.padding_extra_small))
             )
             Text(
                 text = itemName,
-                fontSize = dimensionResource(id = uiR.dimen.font_size_medium).value.sp
+                style = MaterialTheme.typography.bodyLarge
             )
         }
         TextField(
