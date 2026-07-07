@@ -23,12 +23,12 @@ class ComFinAppUITest : BaseUITest() {
     }
 
     @Test
-    fun comFinApp_should_have_navGraph_and_navBar() {
+    fun comFinApp_withNoSession_shouldShowNavGraph_andHideNavBar() {
         val navGraph = composeTestRule.onNodeWithTag(NAV_GRAPH_TAG)
-        val navBAR = composeTestRule.onNodeWithTag(NAV_BAR_TAG)
+        val navBar = composeTestRule.onNodeWithTag(NAV_BAR_TAG)
 
         navGraph.assertExists()
-        navBAR.assertExists()
+        navBar.assertDoesNotExist()
     }
 }
 
