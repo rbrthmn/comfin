@@ -23,7 +23,7 @@ class SettingsUITest : BaseUITest() {
         val settingsList = composeTestRule.onNodeWithTag(SETTINGS_LIST_TAG)
         val childNodes = settingsList.onChildren()
 
-        childNodes.assertCountEquals(1)
+        childNodes.assertCountEquals(2)
         composeTestRule.onNodeWithTag(SETTINGS_LIST_TAG).assertExists()
     }
 }

@@ -7,6 +7,6 @@ import org.koin.dsl.module
 
 val settingsModule = module {
     viewModel<SettingsScreenContract.ViewModel> {
-        SettingsScreenViewModel().doOnInit()
+        SettingsScreenViewModel(authRepository = get()).doOnInit()
     }
 }

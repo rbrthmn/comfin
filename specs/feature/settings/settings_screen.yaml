@@ -1,0 +1,87 @@
+spec_version: "1.0"
+
+# --- Identity ---
+name: SettingsScreen
+module: ":feature:settings"
+package: "br.com.rbrthmn.settings"
+contract: SettingsScreenContract
+
+description: >
+  App settings screen with dark mode selection and account logout, giving
+  the user feedback for each action.
+
+# --- UiState ---
+state:
+  class: UiState
+  fields:
+    - name: showDarkModeDialog
+      type: Boolean
+      default: "false"
+    - name: selectedDarkModeOption
+      type: String
+      default: "DarkModeOption.SYSTEM.label"
+    - name: showLogoutDialog
+      type: Boolean
+      default: "false"
+
+nested_states: []
+
+# --- Intents ---
+intents:
+  - name: OnOpenDarkModeDialog
+  - name: OnDismissDarkModeDialog
+  - name: OnSelectDarkModeOption
+    params:
+      - { name: option, type: String }
+  - name: OnLogoutClick
+  - name: OnDismissLogoutDialog
+  - name: OnConfirmLogout
+
+# --- Effects ---
+effects:
+  - name: NavigateToSignIn
+  - name: ShowThemeUpdated
+
+# --- Behaviors (acceptance criteria → test cases) ---
+behaviors:
+  - id: SS-001
+    description: "doOnInit should keep default state"
+    given: "fresh ViewModel"
+    when: "ViewModel initializes"
+    then: "UiState equals defaults"
+
+  - id: SS-002
+    description: "onOpenDarkModeDialog should show dark mode dialog"
+    given: "default state"
+    when: "OnOpenDarkModeDialog"
+    then: "showDarkModeDialog = true"
+
+  - id: SS-003
+    description: "onDismissDarkModeDialog should hide dark mode dialog"
+    given: "dark mode dialog open"
+    when: "OnDismissDarkModeDialog"
+    then: "showDarkModeDialog = false"
+
+  - id: SS-004
+    description: "onSelectDarkModeOption should update option and emit ShowThemeUpdated"
+    given: "dark mode dialog open"
+    when: "OnSelectDarkModeOption with an option"
+    then: "selectedDarkModeOption = option, showDarkModeDialog = false, Effect ShowThemeUpdated emitted"
+
+  - id: SS-005
+    description: "onLogoutClick should show logout dialog"
+    given: "default state"
+    when: "OnLogoutClick"
+    then: "showLogoutDialog = true"
+
+  - id: SS-006
+    description: "onDismissLogoutDialog should hide logout dialog"
+    given: "logout dialog open"
+    when: "OnDismissLogoutDialog"
+    then: "showLogoutDialog = false"
+
+  - id: SS-007
+    description: "onConfirmLogout should sign out and emit NavigateToSignIn"
+    given: "logout dialog open"
+    when: "OnConfirmLogout"
+    then: "repository signOut called, showLogoutDialog = false, Effect NavigateToSignIn emitted"

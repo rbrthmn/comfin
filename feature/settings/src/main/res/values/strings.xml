@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings_dark_mode">Modo escuro</string>
+    <string name="settings_theme_updated">Tema atualizado</string>
+    <string name="settings_logout">Sair da conta</string>
+    <string name="settings_logout_dialog_title">Sair da conta?</string>
+    <string name="settings_logout_dialog_message">Você precisará entrar novamente para usar o aplicativo.</string>
+    <string name="settings_logout_confirm_button">Sair</string>
 </resources>

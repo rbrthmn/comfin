@@ -88,7 +88,13 @@ fun ComFinNavGraph(
             RecurringExpenses()
         }
         composable(route = SettingsDestination.route) {
-            SettingsScreen()
+            SettingsScreen(
+                onNavigateToSignIn = {
+                    navController.navigate(SignInDestination.route) {
+                        popUpTo(navController.graph.id) { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }
