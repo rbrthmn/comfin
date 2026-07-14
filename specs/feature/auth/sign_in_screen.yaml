@@ -32,6 +32,9 @@ state:
     - name: showInvalidCredentialsError
       type: Boolean
       default: "false"
+    - name: showGoogleSignInError
+      type: Boolean
+      default: "false"
 
 nested_states: []
 
@@ -45,6 +48,8 @@ intents:
       - { name: value, type: String }
   - name: OnSignInClick
   - name: OnGoogleSignInClick
+    params:
+      - { name: activityContext, type: Context }
   - name: OnSignUpClick
   - name: OnPasswordRecoveryClick
 
@@ -53,7 +58,6 @@ effects:
   - name: NavigateToHome
   - name: NavigateToSignUp
   - name: NavigateToPasswordRecovery
-  - name: ShowGoogleSignInUnavailable
 
 # --- Behaviors (acceptance criteria → test cases) ---
 behaviors:
@@ -106,10 +110,10 @@ behaviors:
     then: "showInvalidCredentialsError = true, isLoading = false"
 
   - id: SIS-009
-    description: "onGoogleSignInClick with unavailable provider should emit ShowGoogleSignInUnavailable"
-    given: "external provider returns ProviderUnavailable"
+    description: "onGoogleSignInClick with successful sign in should emit NavigateToHome"
+    given: "repository returns Success for Google sign in"
     when: "OnGoogleSignInClick"
-    then: "Effect ShowGoogleSignInUnavailable emitted"
+    then: "Effect NavigateToHome emitted, isLoading = false"
 
   - id: SIS-010
     description: "onSignUpClick should emit NavigateToSignUp"
@@ -122,3 +126,15 @@ behaviors:
     given: "any state"
     when: "OnPasswordRecoveryClick"
     then: "Effect NavigateToPasswordRecovery emitted"
+
+  - id: SIS-012
+    description: "onGoogleSignInClick with cancelled sign in should not show error"
+    given: "repository returns Cancelled for Google sign in"
+    when: "OnGoogleSignInClick"
+    then: "isLoading = false, showGoogleSignInError = false"
+
+  - id: SIS-013
+    description: "onGoogleSignInClick with provider failure should show google sign in error"
+    given: "repository returns Unknown for Google sign in"
+    when: "OnGoogleSignInClick"
+    then: "showGoogleSignInError = true, isLoading = false"

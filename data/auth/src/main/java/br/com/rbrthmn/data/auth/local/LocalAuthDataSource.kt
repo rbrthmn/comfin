@@ -1,5 +1,6 @@
 package br.com.rbrthmn.data.auth.local
 
+import android.content.Context
 import br.com.rbrthmn.data.auth.model.AuthResult
 import br.com.rbrthmn.data.auth.model.AuthUser
 import br.com.rbrthmn.data.auth.model.SignInMethod
@@ -49,10 +50,10 @@ class LocalAuthDataSource(
             AuthResult.Success(user)
         }
 
-    override suspend fun signInWith(method: SignInMethod): AuthResult {
+    override suspend fun signInWith(method: SignInMethod, activityContext: Context): AuthResult {
         val provider = externalAuthProviders.firstOrNull { it.method == method }
             ?: return AuthResult.Error.ProviderUnavailable
-        val result = provider.signIn()
+        val result = provider.signIn(activityContext)
         if (result is AuthResult.Success) {
             writeUser(result.user)
             secureStorage.putString(KEY_SESSION_ACTIVE, SESSION_ACTIVE)
@@ -77,6 +78,7 @@ class LocalAuthDataSource(
         }
 
     override fun signOut() {
+        externalAuthProviders.forEach { it.signOut() }
         secureStorage.remove(KEY_SESSION_ACTIVE)
     }
 

@@ -1,5 +1,6 @@
 package br.com.rbrthmn.auth.signup
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import br.com.rbrthmn.auth.common.isValidEmail
 import br.com.rbrthmn.auth.common.isValidPassword
@@ -31,7 +32,8 @@ class SignUpScreenViewModel(
             is SignUpScreenContract.Intent.OnPasswordConfirmationChange ->
                 onPasswordConfirmationChange(intent.value)
             SignUpScreenContract.Intent.OnSignUpClick -> onSignUpClick()
-            SignUpScreenContract.Intent.OnGoogleSignInClick -> onGoogleSignInClick()
+            is SignUpScreenContract.Intent.OnGoogleSignInClick ->
+                onGoogleSignInClick(intent.activityContext)
             SignUpScreenContract.Intent.OnSignInClick ->
                 sendEffect(SignUpScreenContract.Effect.NavigateToSignIn)
         }
@@ -109,14 +111,21 @@ class SignUpScreenViewModel(
         }
     }
 
-    private fun onGoogleSignInClick() {
+    private fun onGoogleSignInClick(activityContext: Context) {
         viewModelScope.launch {
-            when (authRepository.signInWith(SignInMethod.GOOGLE)) {
-                is AuthResult.Success ->
+            uiState.update { it.copy(isLoading = true, showGoogleSignInError = false) }
+            when (authRepository.signInWith(SignInMethod.GOOGLE, activityContext)) {
+                is AuthResult.Success -> {
+                    uiState.update { it.copy(isLoading = false) }
                     effectsChannel.send(SignUpScreenContract.Effect.NavigateToHome)
+                }
 
-                else ->
-                    effectsChannel.send(SignUpScreenContract.Effect.ShowGoogleSignInUnavailable)
+                AuthResult.Error.Cancelled ->
+                    uiState.update { it.copy(isLoading = false) }
+
+                else -> uiState.update {
+                    it.copy(isLoading = false, showGoogleSignInError = true)
+                }
             }
         }
     }

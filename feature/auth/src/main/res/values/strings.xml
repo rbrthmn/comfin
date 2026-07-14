@@ -3,7 +3,7 @@
     <string name="auth_email_hint">E-mail</string>
     <string name="auth_password_hint">Senha</string>
     <string name="auth_google_button">Continuar com Google</string>
-    <string name="auth_google_unavailable">Login com Google indisponível no momento</string>
+    <string name="auth_google_error">Não foi possível entrar com o Google. Tente novamente</string>
     <string name="auth_invalid_email_error">E-mail inválido</string>
     <string name="auth_password_min_length_error">A senha deve ter pelo menos 8 caracteres</string>
     <string name="auth_password_mismatch_error">As senhas não coincidem</string>

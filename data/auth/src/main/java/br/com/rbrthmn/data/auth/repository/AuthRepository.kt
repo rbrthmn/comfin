@@ -1,5 +1,6 @@
 package br.com.rbrthmn.data.auth.repository
 
+import android.content.Context
 import br.com.rbrthmn.data.auth.model.AuthResult
 import br.com.rbrthmn.data.auth.model.AuthUser
 import br.com.rbrthmn.data.auth.model.SignInMethod
@@ -13,7 +14,7 @@ interface AuthRepository {
 
     suspend fun signIn(email: String, password: String): AuthResult
 
-    suspend fun signInWith(method: SignInMethod): AuthResult
+    suspend fun signInWith(method: SignInMethod, activityContext: Context): AuthResult
 
     suspend fun verifyAccountEmail(email: String): AuthResult
 

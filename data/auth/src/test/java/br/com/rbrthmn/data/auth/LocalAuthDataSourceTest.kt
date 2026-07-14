@@ -1,11 +1,14 @@
 package br.com.rbrthmn.data.auth
 
+import android.content.Context
 import br.com.rbrthmn.data.auth.local.LocalAuthDataSource
 import br.com.rbrthmn.data.auth.local.PasswordHasher
 import br.com.rbrthmn.data.auth.local.SecureStorage
 import br.com.rbrthmn.data.auth.model.AuthResult
+import br.com.rbrthmn.data.auth.model.AuthUser
 import br.com.rbrthmn.data.auth.model.SignInMethod
-import br.com.rbrthmn.data.auth.provider.GoogleAuthProvider
+import br.com.rbrthmn.data.auth.provider.ExternalAuthProvider
+import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -14,10 +17,13 @@ import org.junit.Test
 
 class LocalAuthDataSourceTest {
     private val secureStorage = FakeSecureStorage()
-    private val dataSource = LocalAuthDataSource(
+    private val activityContext = mockk<Context>()
+    private val dataSource = createDataSource()
+
+    private fun createDataSource(vararg providers: ExternalAuthProvider) = LocalAuthDataSource(
         secureStorage = secureStorage,
         passwordHasher = PasswordHasher(),
-        externalAuthProviders = listOf(GoogleAuthProvider())
+        externalAuthProviders = providers.toList()
     )
 
     @Test
@@ -68,10 +74,47 @@ class LocalAuthDataSourceTest {
     }
 
     @Test
-    fun `signInWith GOOGLE with stub provider should return ProviderUnavailable`() = runTest {
-        val result = dataSource.signInWith(SignInMethod.GOOGLE)
+    fun `signInWith with no provider for method should return ProviderUnavailable`() = runTest {
+        val result = dataSource.signInWith(SignInMethod.GOOGLE, activityContext)
 
         assertEquals(AuthResult.Error.ProviderUnavailable, result)
+        assertFalse(dataSource.isAuthenticated())
+    }
+
+    @Test
+    fun `signInWith GOOGLE with successful provider should store user and start session`() =
+        runTest {
+            val provider = FakeExternalAuthProvider(result = AuthResult.Success(GOOGLE_USER))
+            val dataSource = createDataSource(provider)
+
+            val result = dataSource.signInWith(SignInMethod.GOOGLE, activityContext)
+
+            assertTrue(result is AuthResult.Success)
+            assertTrue(dataSource.isAuthenticated())
+            assertEquals(GOOGLE_USER.email, dataSource.currentUser?.email)
+        }
+
+    @Test
+    fun `signInWith GOOGLE with cancelled provider should return Cancelled and not start session`() =
+        runTest {
+            val provider = FakeExternalAuthProvider(result = AuthResult.Error.Cancelled)
+            val dataSource = createDataSource(provider)
+
+            val result = dataSource.signInWith(SignInMethod.GOOGLE, activityContext)
+
+            assertEquals(AuthResult.Error.Cancelled, result)
+            assertFalse(dataSource.isAuthenticated())
+        }
+
+    @Test
+    fun `signOut should sign out external providers`() = runTest {
+        val provider = FakeExternalAuthProvider(result = AuthResult.Success(GOOGLE_USER))
+        val dataSource = createDataSource(provider)
+        dataSource.signInWith(SignInMethod.GOOGLE, activityContext)
+
+        dataSource.signOut()
+
+        assertTrue(provider.signedOut)
         assertFalse(dataSource.isAuthenticated())
     }
 
@@ -115,6 +158,19 @@ class LocalAuthDataSourceTest {
         assertFalse(dataSource.isAuthenticated())
     }
 
+    private class FakeExternalAuthProvider(
+        private val result: AuthResult,
+        override val method: SignInMethod = SignInMethod.GOOGLE
+    ) : ExternalAuthProvider {
+        var signedOut = false
+
+        override suspend fun signIn(activityContext: Context): AuthResult = result
+
+        override fun signOut() {
+            signedOut = true
+        }
+    }
+
     private class FakeSecureStorage : SecureStorage {
         private val values = mutableMapOf<String, String>()
 
@@ -134,5 +190,6 @@ class LocalAuthDataSourceTest {
         const val EMAIL = "user@email.com"
         const val PASSWORD = "password123"
         const val OTHER_PASSWORD = "newpassword456"
+        val GOOGLE_USER = AuthUser(id = "google-id", name = "Google User", email = "google@email.com")
     }
 }

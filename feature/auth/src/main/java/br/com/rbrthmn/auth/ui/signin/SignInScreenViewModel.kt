@@ -1,5 +1,6 @@
 package br.com.rbrthmn.auth.signin
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import br.com.rbrthmn.auth.common.isValidEmail
 import br.com.rbrthmn.data.auth.model.AuthResult
@@ -27,7 +28,8 @@ class SignInScreenViewModel(
             is SignInScreenContract.Intent.OnEmailChange -> onEmailChange(intent.value)
             is SignInScreenContract.Intent.OnPasswordChange -> onPasswordChange(intent.value)
             SignInScreenContract.Intent.OnSignInClick -> onSignInClick()
-            SignInScreenContract.Intent.OnGoogleSignInClick -> onGoogleSignInClick()
+            is SignInScreenContract.Intent.OnGoogleSignInClick ->
+                onGoogleSignInClick(intent.activityContext)
             SignInScreenContract.Intent.OnSignUpClick -> sendEffect(SignInScreenContract.Effect.NavigateToSignUp)
             SignInScreenContract.Intent.OnPasswordRecoveryClick ->
                 sendEffect(SignInScreenContract.Effect.NavigateToPasswordRecovery)
@@ -79,14 +81,21 @@ class SignInScreenViewModel(
         }
     }
 
-    private fun onGoogleSignInClick() {
+    private fun onGoogleSignInClick(activityContext: Context) {
         viewModelScope.launch {
-            when (authRepository.signInWith(SignInMethod.GOOGLE)) {
-                is AuthResult.Success ->
+            uiState.update { it.copy(isLoading = true, showGoogleSignInError = false) }
+            when (authRepository.signInWith(SignInMethod.GOOGLE, activityContext)) {
+                is AuthResult.Success -> {
+                    uiState.update { it.copy(isLoading = false) }
                     effectsChannel.send(SignInScreenContract.Effect.NavigateToHome)
+                }
 
-                else ->
-                    effectsChannel.send(SignInScreenContract.Effect.ShowGoogleSignInUnavailable)
+                AuthResult.Error.Cancelled ->
+                    uiState.update { it.copy(isLoading = false) }
+
+                else -> uiState.update {
+                    it.copy(isLoading = false, showGoogleSignInError = true)
+                }
             }
         }
     }

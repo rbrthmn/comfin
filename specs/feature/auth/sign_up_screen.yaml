@@ -44,6 +44,9 @@ state:
     - name: showEmailAlreadyRegisteredError
       type: Boolean
       default: "false"
+    - name: showGoogleSignInError
+      type: Boolean
+      default: "false"
 
 nested_states: []
 
@@ -63,13 +66,14 @@ intents:
       - { name: value, type: String }
   - name: OnSignUpClick
   - name: OnGoogleSignInClick
+    params:
+      - { name: activityContext, type: Context }
   - name: OnSignInClick
 
 # --- Effects ---
 effects:
   - name: NavigateToHome
   - name: NavigateToSignIn
-  - name: ShowGoogleSignInUnavailable
 
 # --- Behaviors (acceptance criteria → test cases) ---
 behaviors:
@@ -146,13 +150,25 @@ behaviors:
     then: "showEmailAlreadyRegisteredError = true, isLoading = false"
 
   - id: SUS-013
-    description: "onGoogleSignInClick with unavailable provider should emit ShowGoogleSignInUnavailable"
-    given: "external provider returns ProviderUnavailable"
+    description: "onGoogleSignInClick with successful sign in should emit NavigateToHome"
+    given: "repository returns Success for Google sign in"
     when: "OnGoogleSignInClick"
-    then: "Effect ShowGoogleSignInUnavailable emitted"
+    then: "Effect NavigateToHome emitted, isLoading = false"
 
   - id: SUS-014
     description: "onSignInClick should emit NavigateToSignIn"
     given: "any state"
     when: "OnSignInClick"
     then: "Effect NavigateToSignIn emitted"
+
+  - id: SUS-015
+    description: "onGoogleSignInClick with cancelled sign in should not show error"
+    given: "repository returns Cancelled for Google sign in"
+    when: "OnGoogleSignInClick"
+    then: "isLoading = false, showGoogleSignInError = false"
+
+  - id: SUS-016
+    description: "onGoogleSignInClick with provider failure should show google sign in error"
+    given: "repository returns Unknown for Google sign in"
+    when: "OnGoogleSignInClick"
+    then: "showGoogleSignInError = true, isLoading = false"
