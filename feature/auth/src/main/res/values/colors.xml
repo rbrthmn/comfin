@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="google_button_background">#FFFFFFFF</color>
+    <color name="google_button_content">#FF1F1F1F</color>
+    <color name="google_button_border">#FFDADCE0</color>
+</resources>
