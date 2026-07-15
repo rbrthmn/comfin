@@ -52,13 +52,27 @@ Format: `{PREFIX}-{NNN}` where prefix = abbreviated feature name.
 - `ML` = MonthlyLimitCard
 - `HS` = HomeScreen
 
+### Behaviors state business rules only
+A behavior describes an outcome the user or domain cares about, observable through
+`UiState` or `Effect` — never how the ViewModel gets there.
+
+- Phrase the `description` and `then` as a rule: "should flag balance as required",
+  "should add the new card and close the dialog", "should not attempt sign in"
+- Never "should assign correctly" / "should set field X" — that describes plumbing, not a rule
+- No echo assertions: a field merely mirroring the typed input is not a behavior
+- No implementation details in `then`: internal calls, constants, or field-by-field resets.
+  Interaction with a dependency belongs in a behavior only when it *is* the rule
+  (e.g. "no sign-in attempt made" for an invalid form)
+- One behavior per rule — merge cases that only re-assert the same rule from another angle
+
 ### Test naming
 Test method names must match the behavior `description` field verbatim:
 ```kotlin
 @Test
-fun `doOnInit should collect accounts from repository and update state`() { ... }
+fun `doOnInit should display the total balance and account balances`() { ... }
 // ↑ matches behavior id BC-001 description
 ```
+Test bodies assert only what the behavior's `then` states.
 
 ### Adding a new feature
 1. Copy `specs/_template.yaml` to `specs/feature/{module}/{feature_name}.yaml`

@@ -29,19 +29,13 @@ intents:
 
 behaviors:
   - id: ML-001
-    description: "doOnInit should set hardcoded monthLimit"
-    given: "any state"
+    description: "doOnInit should display the monthly limit and spending difference"
+    given: "a monthly limit is configured and spending data exists"
     when: "ViewModel initializes"
-    then: "uiState.monthLimit = formatted MONTH_LIMIT constant"
+    then: "monthly limit and spending difference shown to the user"
 
   - id: ML-002
-    description: "doOnInit should collect monthly spent from repository and update monthDifference"
-    given: "repository emits monthly spent value"
-    when: "ViewModel initializes"
-    then: "uiState.monthDifference populated from repository data"
-
-  - id: ML-003
-    description: "setDateFilter should assign value correctly"
+    description: "onDateFilterChange should update the selected month"
     given: "any state"
     when: "OnDateFilterChange with a date"
-    then: "currentDateFilter = given date"
+    then: "spending refers to the selected month"

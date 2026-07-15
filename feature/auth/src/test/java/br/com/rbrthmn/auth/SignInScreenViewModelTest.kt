@@ -52,7 +52,6 @@ class SignInScreenViewModelTest {
     fun `onEmailChange with invalid email should mark email invalid`() {
         viewModel.onIntent(SignInScreenContract.Intent.OnEmailChange(INVALID_EMAIL))
 
-        assertEquals(INVALID_EMAIL, viewModel.uiState.value.email)
         assertFalse(viewModel.uiState.value.isEmailValid)
     }
 
@@ -60,7 +59,6 @@ class SignInScreenViewModelTest {
     fun `onEmailChange with valid email should mark email valid`() {
         viewModel.onIntent(SignInScreenContract.Intent.OnEmailChange(VALID_EMAIL))
 
-        assertEquals(VALID_EMAIL, viewModel.uiState.value.email)
         assertTrue(viewModel.uiState.value.isEmailValid)
     }
 
@@ -68,7 +66,6 @@ class SignInScreenViewModelTest {
     fun `onPasswordChange with blank value should mark password invalid`() {
         viewModel.onIntent(SignInScreenContract.Intent.OnPasswordChange(BLANK_STRING))
 
-        assertEquals(BLANK_STRING, viewModel.uiState.value.password)
         assertFalse(viewModel.uiState.value.isPasswordValid)
     }
 
@@ -76,12 +73,11 @@ class SignInScreenViewModelTest {
     fun `onPasswordChange with value should mark password valid`() {
         viewModel.onIntent(SignInScreenContract.Intent.OnPasswordChange(VALID_PASSWORD))
 
-        assertEquals(VALID_PASSWORD, viewModel.uiState.value.password)
         assertTrue(viewModel.uiState.value.isPasswordValid)
     }
 
     @Test
-    fun `onSignInClick with invalid fields should not call repository`() {
+    fun `onSignInClick with invalid fields should not attempt sign in`() {
         viewModel.onIntent(SignInScreenContract.Intent.OnSignInClick)
 
         coVerify(exactly = 0) { authRepository.signIn(any(), any()) }

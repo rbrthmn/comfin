@@ -55,7 +55,6 @@ class PasswordRecoveryScreenViewModelTest {
     fun `onEmailChange with invalid email should mark email invalid`() {
         viewModel.onIntent(PasswordRecoveryScreenContract.Intent.OnEmailChange(INVALID_EMAIL))
 
-        assertEquals(INVALID_EMAIL, viewModel.uiState.value.email)
         assertFalse(viewModel.uiState.value.isEmailValid)
     }
 
@@ -141,7 +140,7 @@ class PasswordRecoveryScreenViewModelTest {
         }
 
     @Test
-    fun `onResetPasswordClick with invalid fields should not call repository`() {
+    fun `onResetPasswordClick with invalid fields should not attempt password reset`() {
         viewModel.onIntent(
             PasswordRecoveryScreenContract.Intent.OnNewPasswordChange(VALID_PASSWORD)
         )

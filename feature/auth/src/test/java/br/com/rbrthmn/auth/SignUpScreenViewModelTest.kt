@@ -52,7 +52,6 @@ class SignUpScreenViewModelTest {
     fun `onNameChange with blank value should mark name invalid`() {
         viewModel.onIntent(SignUpScreenContract.Intent.OnNameChange(BLANK_STRING))
 
-        assertEquals(BLANK_STRING, viewModel.uiState.value.name)
         assertFalse(viewModel.uiState.value.isNameValid)
     }
 
@@ -60,7 +59,6 @@ class SignUpScreenViewModelTest {
     fun `onNameChange with value should mark name valid`() {
         viewModel.onIntent(SignUpScreenContract.Intent.OnNameChange(VALID_NAME))
 
-        assertEquals(VALID_NAME, viewModel.uiState.value.name)
         assertTrue(viewModel.uiState.value.isNameValid)
     }
 
@@ -68,7 +66,6 @@ class SignUpScreenViewModelTest {
     fun `onEmailChange with invalid email should mark email invalid`() {
         viewModel.onIntent(SignUpScreenContract.Intent.OnEmailChange(INVALID_EMAIL))
 
-        assertEquals(INVALID_EMAIL, viewModel.uiState.value.email)
         assertFalse(viewModel.uiState.value.isEmailValid)
     }
 
@@ -76,7 +73,6 @@ class SignUpScreenViewModelTest {
     fun `onEmailChange with valid email should mark email valid`() {
         viewModel.onIntent(SignUpScreenContract.Intent.OnEmailChange(VALID_EMAIL))
 
-        assertEquals(VALID_EMAIL, viewModel.uiState.value.email)
         assertTrue(viewModel.uiState.value.isEmailValid)
     }
 
@@ -84,7 +80,6 @@ class SignUpScreenViewModelTest {
     fun `onPasswordChange with short password should mark password invalid`() {
         viewModel.onIntent(SignUpScreenContract.Intent.OnPasswordChange(SHORT_PASSWORD))
 
-        assertEquals(SHORT_PASSWORD, viewModel.uiState.value.password)
         assertFalse(viewModel.uiState.value.isPasswordValid)
     }
 
@@ -92,7 +87,6 @@ class SignUpScreenViewModelTest {
     fun `onPasswordChange with valid password should mark password valid`() {
         viewModel.onIntent(SignUpScreenContract.Intent.OnPasswordChange(VALID_PASSWORD))
 
-        assertEquals(VALID_PASSWORD, viewModel.uiState.value.password)
         assertTrue(viewModel.uiState.value.isPasswordValid)
     }
 
@@ -119,7 +113,7 @@ class SignUpScreenViewModelTest {
     }
 
     @Test
-    fun `onSignUpClick with invalid fields should not call repository`() {
+    fun `onSignUpClick with invalid fields should not attempt sign up`() {
         viewModel.onIntent(SignUpScreenContract.Intent.OnSignUpClick)
 
         coVerify(exactly = 0) { authRepository.signUp(any(), any(), any()) }
