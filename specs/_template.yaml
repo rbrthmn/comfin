@@ -41,27 +41,29 @@ intents:
 # --- Behaviors (acceptance criteria → test cases) ---
 # id format: {PREFIX}-{NNN}
 # description must match @Test fun name verbatim
+# behaviors state business rules only — observable outcomes via UiState/Effects,
+# never plumbing ("should assign correctly") or echo of the typed input
 behaviors:
   - id: XX-001
-    description: "doOnInit should <expected initial state>"
+    description: "doOnInit should <expected user-visible outcome>"
     given: "<precondition>"
     when: "ViewModel initializes"
-    then: "<expected state change>"
+    then: "<business rule outcome>"
 
   - id: XX-002
-    description: "onExampleChange with empty value should mark invalid"
+    description: "onExampleChange with empty value should flag example as required"
     given: "default state"
     when: "OnExampleChange with empty string"
-    then: "isExampleValid = false"
+    then: "example flagged as required (isExampleValid = false)"
 
   - id: XX-003
-    description: "onExampleChange with value should mark valid"
+    description: "onExampleChange with valid value should accept the example"
     given: "default state"
     when: "OnExampleChange with non-empty string"
-    then: "isExampleValid = true, exampleField = given value"
+    then: "example accepted (isExampleValid = true)"
 
   - id: XX-004
-    description: "setDateFilter should update currentDateFilter"
+    description: "onDateFilterChange should update the selected month"
     given: "any state"
     when: "OnDateFilterChange with a date"
-    then: "currentDateFilter = given date"
+    then: "data refers to the selected month"

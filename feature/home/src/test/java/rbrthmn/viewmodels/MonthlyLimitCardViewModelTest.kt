@@ -11,7 +11,7 @@ class MonthlyLimitCardViewModelTest {
     private val viewModel: MonthlyLimitCardContract.ViewModel = MonthlyLimitCardViewModel()
 
     @Test
-    fun `doOnInit should assign initial values`() {
+    fun `doOnInit should display the monthly limit and spending difference`() {
         viewModel.doOnInit()
 
         TestCase.assertEquals(
@@ -25,7 +25,7 @@ class MonthlyLimitCardViewModelTest {
     }
 
     @Test
-    fun `setDateFilter should assign value correctly`() {
+    fun `onDateFilterChange should update the selected month`() {
         viewModel.onIntent(MonthlyLimitCardContract.Intent.OnDateFilterChange(VALID_DATE))
 
         TestCase.assertEquals(

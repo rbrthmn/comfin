@@ -20,121 +20,97 @@ class BalanceCardViewModelTest {
     private val viewModel = BalanceCardViewModel()
 
     @Test
-    fun `onSaveClick with valid input should add new account`() {
-        Locale.setDefault(Locale("pt", "BR"))
-
-        assignValidInputs()
-        val mock = mutableStateOf(true)
-
-        val expectedFormattedValue = formatString(VALID_BALANCE_STRING)
-
-        val newAccount = BalanceCardContract.BankAccountBalanceUiState(
-            name = VALID_STRING,
-            value = expectedFormattedValue,
-            bankName = VALID_STRING
-        )
-        val newAccountList = viewModel.uiState.value.accounts + newAccount
-
-        viewModel.onIntent(Intent.OnSaveClick(mock))
-
-        assertEquals(newAccountList, viewModel.uiState.value.accounts)
-    }
-
-    @Test
-    fun `doOnInit should assign initial values`() {
+    fun `doOnInit should display the total balance and account balances`() {
         viewModel.doOnInit()
-        val expectedList = listOf(
-            br.com.rbrthmn.home.ui.components.balancecard.BalanceCardContract.BankAccountBalanceUiState(
-                name = ACCOUNT_NAME_MOCK,
-                value = formatDouble(ACCOUNT_VALUE_MOCK),
-                bankName = BANK_NAME_MOCK,
-            )
+        val expectedAccount = BalanceCardContract.BankAccountBalanceUiState(
+            name = ACCOUNT_NAME_MOCK,
+            value = formatDouble(ACCOUNT_VALUE_MOCK),
+            bankName = BANK_NAME_MOCK,
         )
 
         assertEquals(formatDouble(TOTAL_BALANCE_MOCK), viewModel.uiState.value.totalBalance)
-        assertEquals(expectedList.first().value, viewModel.uiState.value.accounts.first().value)
-        assertEquals(expectedList.first().name, viewModel.uiState.value.accounts.first().name)
-        assertEquals(
-            expectedList.first().bankName,
-            viewModel.uiState.value.accounts.first().bankName
-        )
+        assertEquals(expectedAccount.value, viewModel.uiState.value.accounts.first().value)
+        assertEquals(expectedAccount.name, viewModel.uiState.value.accounts.first().name)
+        assertEquals(expectedAccount.bankName, viewModel.uiState.value.accounts.first().bankName)
     }
 
     @Test
-    fun `onInitialBalanceChange with empty value should assign correctly`() {
+    fun `onSaveClick with valid input should add the new account and close the dialog`() {
+        Locale.setDefault(Locale("pt", "BR"))
+
+        assignValidInputs()
+        val showDialog = mutableStateOf(true)
+
+        val newAccount = BalanceCardContract.BankAccountBalanceUiState(
+            name = VALID_STRING,
+            value = formatString(VALID_BALANCE_STRING),
+            bankName = VALID_STRING
+        )
+        val expectedAccounts = viewModel.uiState.value.accounts + newAccount
+
+        viewModel.onIntent(Intent.OnSaveClick(showDialog))
+
+        assertEquals(expectedAccounts, viewModel.uiState.value.accounts)
+        assertEquals(false, showDialog.value)
+        assertCleanedInputs()
+    }
+
+    @Test
+    fun `onInitialBalanceChange with empty value should flag balance as required`() {
         viewModel.onIntent(Intent.OnInitialBalanceChange(EMPTY_STRING))
 
         assertEquals(false, viewModel.uiState.value.isNewAccountBalanceValid)
-        assertEquals(EMPTY_STRING, viewModel.uiState.value.newAccountBalance)
     }
 
     @Test
-    fun `onInitialBalanceChange with value should assign correctly`() {
+    fun `onInitialBalanceChange with valid value should accept the balance`() {
         viewModel.onIntent(Intent.OnInitialBalanceChange(VALID_BALANCE_STRING))
 
         assertEquals(true, viewModel.uiState.value.isNewAccountBalanceValid)
-        assertEquals(VALID_BALANCE_STRING, viewModel.uiState.value.newAccountBalance)
     }
 
     @Test
-    fun `onDescriptionChange with empty value should assign correctly`() {
+    fun `onDescriptionChange with empty value should flag description as required`() {
         viewModel.onIntent(Intent.OnDescriptionChange(EMPTY_STRING))
 
         assertEquals(false, viewModel.uiState.value.isNewAccountDescriptionValid)
-        assertEquals(EMPTY_STRING, viewModel.uiState.value.newAccountDescription)
     }
 
     @Test
-    fun `onDescriptionChange with value should assign correctly`() {
+    fun `onDescriptionChange with valid value should accept the description`() {
         viewModel.onIntent(Intent.OnDescriptionChange(VALID_STRING))
 
         assertEquals(true, viewModel.uiState.value.isNewAccountDescriptionValid)
-        assertEquals(VALID_STRING, viewModel.uiState.value.newAccountDescription)
     }
 
     @Test
-    fun `onBankChange with empty value should assign correctly`() {
+    fun `onBankChange with empty bank should flag bank as required`() {
         viewModel.onIntent(Intent.OnBankChange(VALID_ID_STRING, EMPTY_STRING))
 
         assertEquals(false, viewModel.uiState.value.isNewAccountBankValid)
-        assertEquals(EMPTY_STRING, viewModel.uiState.value.newAccountBank)
-        assertEquals(VALID_ID_STRING, viewModel.uiState.value.newAccountBankIcon)
     }
 
     @Test
-    fun `onBankChange with value should assign correctly`() {
-        viewModel.onIntent(Intent.OnBankChange(VALID_ID_STRING, VALID_BALANCE_STRING))
+    fun `onBankChange with a bank selected should accept the bank`() {
+        viewModel.onIntent(Intent.OnBankChange(VALID_ID_STRING, VALID_STRING))
 
         assertEquals(true, viewModel.uiState.value.isNewAccountBankValid)
-        assertEquals(VALID_BALANCE_STRING, viewModel.uiState.value.newAccountBank)
-        assertEquals(VALID_ID_STRING, viewModel.uiState.value.newAccountBankIcon)
     }
 
     @Test
-    fun `cleanNewAccount should assign default values`() {
+    fun `cleanNewAccount should discard the new account form`() {
+        assignValidInputs()
+
         viewModel.onIntent(Intent.CleanNewAccount)
 
         assertCleanedInputs()
     }
 
     @Test
-    fun `onSaveClick with valid input should assign false to dialog`() {
-        assignValidInputs()
-        val mock = mutableStateOf(true)
+    fun `onDateFilterChange should update the selected month`() {
+        viewModel.onIntent(Intent.OnDateFilterChange(VALID_DATE))
 
-        viewModel.onIntent(Intent.OnSaveClick(mock))
-
-        assertEquals(false, mock.value)
-    }
-
-    @Test
-    fun `onSaveClick with valid input should clean inputs`() {
-        assignValidInputs()
-        val mock = mutableStateOf(true)
-
-        viewModel.onIntent(Intent.OnSaveClick(mock))
-
-        assertCleanedInputs()
+        assertEquals(VALID_DATE, viewModel.uiState.value.currentDateFilter)
     }
 
     private fun assertCleanedInputs() {
@@ -153,13 +129,6 @@ class BalanceCardViewModelTest {
             onIntent(Intent.OnDescriptionChange(VALID_STRING))
             onIntent(Intent.OnBankChange(VALID_ID_STRING, VALID_STRING))
         }
-    }
-
-    @Test
-    fun `setDateFilter should assign value correctly`() {
-        viewModel.onIntent(Intent.OnDateFilterChange(VALID_DATE))
-
-        assertEquals(VALID_DATE, viewModel.uiState.value.currentDateFilter)
     }
 
     private companion object {

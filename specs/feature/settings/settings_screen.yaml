@@ -84,4 +84,4 @@ behaviors:
     description: "onConfirmLogout should sign out and emit NavigateToSignIn"
     given: "logout dialog open"
     when: "OnConfirmLogout"
-    then: "repository signOut called, showLogoutDialog = false, Effect NavigateToSignIn emitted"
+    then: "session ended, showLogoutDialog = false, Effect NavigateToSignIn emitted"

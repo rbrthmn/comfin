@@ -26,13 +26,13 @@ intents:
 
 behaviors:
   - id: LMD-001
-    description: "doOnInit should collect difference from repository and update state"
-    given: "repository emits a difference value"
+    description: "doOnInit should display the last month spending difference"
+    given: "spending data for the previous month exists"
     when: "ViewModel initializes"
-    then: "uiState.valueOfLastMonth populated from repository data"
+    then: "last month difference shown to the user"
 
   - id: LMD-002
-    description: "setDateFilter should assign value correctly"
+    description: "onDateFilterChange should update the selected month"
     given: "any state"
     when: "OnDateFilterChange with a date"
-    then: "currentDateFilter = given date"
+    then: "difference refers to the selected month"

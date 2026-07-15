@@ -17,7 +17,7 @@ class HomeScreenViewModelTest {
     private val viewModel: HomeScreenContract.ViewModel = HomeScreenViewModel()
 
     @Test
-    fun `onDateFilterChange should assign value correctly`() {
+    fun `onDateFilterChange should update the selected month`() {
         viewModel.onIntent(HomeScreenContract.Intent.OnDateFilterChange(VALID_DATE))
 
         assertEquals(VALID_DATE, viewModel.uiState.value.currentDateFilter)

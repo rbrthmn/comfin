@@ -85,61 +85,61 @@ intents:
 
 behaviors:
   - id: BC-001
-    description: "doOnInit should collect accounts from repository and update state"
-    given: "repository emits AccountsSummary with accounts"
+    description: "doOnInit should display the total balance and account balances"
+    given: "stored accounts exist"
     when: "ViewModel initializes"
-    then: "uiState.totalBalance and accounts populated from repository data"
+    then: "total balance and per-account balances shown to the user"
 
   - id: BC-002
-    description: "onSaveClick with valid input should add new account"
+    description: "onSaveClick with valid input should add the new account and close the dialog"
     given: "valid balance, description, and bank set"
     when: "OnSaveClick"
-    then: "new account appended to accounts list, inputs cleared"
+    then: "new account appears in the account list, form discarded, dialog closed"
 
   - id: BC-003
-    description: "onInitialBalanceChange with empty value should assign correctly"
+    description: "onInitialBalanceChange with empty value should flag balance as required"
     given: "default state"
     when: "OnInitialBalanceChange with empty string"
-    then: "isNewAccountBalanceValid = false, newAccountBalance = empty"
+    then: "balance flagged as required (isNewAccountBalanceValid = false)"
 
   - id: BC-004
-    description: "onInitialBalanceChange with value should assign correctly"
+    description: "onInitialBalanceChange with valid value should accept the balance"
     given: "default state"
     when: "OnInitialBalanceChange with non-empty string"
-    then: "isNewAccountBalanceValid = true, newAccountBalance = given value"
+    then: "balance accepted (isNewAccountBalanceValid = true)"
 
   - id: BC-005
-    description: "onDescriptionChange with empty value should assign correctly"
+    description: "onDescriptionChange with empty value should flag description as required"
     given: "default state"
     when: "OnDescriptionChange with empty string"
-    then: "isNewAccountDescriptionValid = false"
+    then: "description flagged as required (isNewAccountDescriptionValid = false)"
 
   - id: BC-006
-    description: "onDescriptionChange with value should assign correctly"
+    description: "onDescriptionChange with valid value should accept the description"
     given: "default state"
     when: "OnDescriptionChange with non-empty string"
-    then: "isNewAccountDescriptionValid = true, newAccountDescription = given value"
+    then: "description accepted (isNewAccountDescriptionValid = true)"
 
   - id: BC-007
-    description: "onBankChange with empty value should assign correctly"
+    description: "onBankChange with empty bank should flag bank as required"
     given: "default state"
     when: "OnBankChange with empty bank name"
-    then: "isNewAccountBankValid = false"
+    then: "bank flagged as required (isNewAccountBankValid = false)"
 
   - id: BC-008
-    description: "onBankChange with value should assign correctly"
+    description: "onBankChange with a bank selected should accept the bank"
     given: "default state"
     when: "OnBankChange with non-empty bank name"
-    then: "isNewAccountBankValid = true, newAccountBank = given value"
+    then: "bank accepted (isNewAccountBankValid = true)"
 
   - id: BC-009
-    description: "cleanNewAccount should reset all input fields"
+    description: "cleanNewAccount should discard the new account form"
     given: "inputs are set"
     when: "CleanNewAccount"
-    then: "all new account fields reset to defaults"
+    then: "form back to pristine state, no validation errors shown"
 
   - id: BC-010
-    description: "setDateFilter should assign value correctly"
+    description: "onDateFilterChange should update the selected month"
     given: "any state"
     when: "OnDateFilterChange with a date"
-    then: "currentDateFilter = given date"
+    then: "balances refer to the selected month"

@@ -23,7 +23,7 @@ intents:
 
 behaviors:
   - id: HS-001
-    description: "setDateFilter should update currentDateFilter"
+    description: "onDateFilterChange should update the selected month"
     given: "default state"
     when: "OnDateFilterChange with a date"
-    then: "currentDateFilter = given date"
+    then: "child cards receive the selected month"

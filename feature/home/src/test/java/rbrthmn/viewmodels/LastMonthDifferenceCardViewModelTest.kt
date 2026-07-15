@@ -13,7 +13,7 @@ class LastMonthDifferenceCardViewModelTest {
         LastMonthDifferenceCardViewModel()
 
     @Test
-    fun `doOnInit should assign initial values`() {
+    fun `doOnInit should display the last month spending difference`() {
         viewModel.doOnInit()
 
         Assert.assertEquals(
@@ -23,7 +23,7 @@ class LastMonthDifferenceCardViewModelTest {
     }
 
     @Test
-    fun `setDateFilter should assign value correctly`() {
+    fun `onDateFilterChange should update the selected month`() {
         viewModel.onIntent(LastMonthDifferenceCardContract.Intent.OnDateFilterChange(VALID_DATE))
 
         TestCase.assertEquals(

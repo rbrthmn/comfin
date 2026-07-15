@@ -97,55 +97,73 @@ intents:
 
 behaviors:
   - id: CCB-001
-    description: "doOnInit should collect credit cards from repository and update state"
-    given: "repository emits list of CreditCardBillItem"
+    description: "doOnInit should display the total bill and per-card bills"
+    given: "stored credit cards exist"
     when: "ViewModel initializes"
-    then: "uiState.totalBill and bills populated from repository data"
+    then: "total bill and per-card bills shown to the user"
 
   - id: CCB-002
-    description: "onSaveClick with valid input should add new card"
+    description: "onSaveClick with valid input should add the new card and close the dialog"
     given: "valid name, bill value, bank, and due day set"
     when: "OnSaveClick"
-    then: "new card appended to bills list, inputs cleared"
+    then: "new card appears in the bills list, form discarded, dialog closed"
 
   - id: CCB-003
-    description: "OnNewCreditCardBillValueChange with empty value should assign correctly"
+    description: "onNewCreditCardNameChange with empty value should flag card name as required"
     given: "default state"
-    when: "OnNewCreditCardBillValueChange with empty string"
-    then: "isNewCreditCardBillValid = false, newCreditCardBill = empty"
+    when: "OnNewCreditCardNameChange with empty string"
+    then: "card name flagged as required (isNewCreditCardNameValid = false)"
 
   - id: CCB-004
-    description: "OnNewCreditCardBillValueChange with value should assign correctly"
+    description: "onNewCreditCardNameChange with valid value should accept the card name"
     given: "default state"
-    when: "OnNewCreditCardBillValueChange with non-empty string"
-    then: "isNewCreditCardBillValid = true, newCreditCardBill = given value"
+    when: "OnNewCreditCardNameChange with non-empty string"
+    then: "card name accepted (isNewCreditCardNameValid = true)"
 
   - id: CCB-005
-    description: "onBankChange with empty value should assign correctly"
+    description: "onNewCreditCardBillValueChange with empty value should flag bill value as required"
     given: "default state"
-    when: "OnBankChange with empty bank name"
-    then: "isNewCreditCardBankNameValid = false"
+    when: "OnNewCreditCardBillValueChange with empty string"
+    then: "bill value flagged as required (isNewCreditCardBillValid = false)"
 
   - id: CCB-006
-    description: "onBankChange with value should assign correctly"
+    description: "onNewCreditCardBillValueChange with valid value should accept the bill value"
     given: "default state"
-    when: "OnBankChange with non-empty bank name"
-    then: "isNewCreditCardBankNameValid = true, newCreditCardBankName = given value"
+    when: "OnNewCreditCardBillValueChange with non-empty string"
+    then: "bill value accepted (isNewCreditCardBillValid = true)"
 
   - id: CCB-007
-    description: "onNewCreditCardBillDueDayChange with zero value should assign correctly"
+    description: "onBankChange with empty bank should flag bank as required"
     given: "default state"
-    when: "OnNewCreditCardBillDueDayChange with 0"
-    then: "isNewCreditCardBillDueDayValid = false, newCreditCardBillDueDay = 0"
+    when: "OnBankChange with empty bank name"
+    then: "bank flagged as required (isNewCreditCardBankNameValid = false)"
 
   - id: CCB-008
-    description: "onNewCreditCardBillDueDayChange with value should assign correctly"
+    description: "onBankChange with a bank selected should accept the bank"
     given: "default state"
-    when: "OnNewCreditCardBillDueDayChange with non-zero day"
-    then: "isNewCreditCardBillDueDayValid = true, newCreditCardBillDueDay = given day"
+    when: "OnBankChange with non-empty bank name"
+    then: "bank accepted (isNewCreditCardBankNameValid = true)"
 
   - id: CCB-009
-    description: "setDateFilter should assign value correctly"
+    description: "onNewCreditCardBillDueDayChange with zero value should flag due day as required"
+    given: "default state"
+    when: "OnNewCreditCardBillDueDayChange with 0"
+    then: "due day flagged as required (isNewCreditCardBillDueDayValid = false)"
+
+  - id: CCB-010
+    description: "onNewCreditCardBillDueDayChange with valid day should accept the due day"
+    given: "default state"
+    when: "OnNewCreditCardBillDueDayChange with non-zero day"
+    then: "due day accepted (isNewCreditCardBillDueDayValid = true)"
+
+  - id: CCB-011
+    description: "cleanInputs should discard the new card form"
+    given: "inputs are set"
+    when: "CleanInputs"
+    then: "form back to pristine state, no validation errors shown"
+
+  - id: CCB-012
+    description: "onDateFilterChange should update the selected month"
     given: "any state"
     when: "OnDateFilterChange with a date"
-    then: "currentDateFilter = given date"
+    then: "bills refer to the selected month"

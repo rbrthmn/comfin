@@ -87,37 +87,37 @@ behaviors:
     description: "onNameChange with blank value should mark name invalid"
     given: "default state"
     when: "OnNameChange with blank string"
-    then: "name = given value, isNameValid = false"
+    then: "name flagged as invalid (isNameValid = false)"
 
   - id: SUS-003
     description: "onNameChange with value should mark name valid"
     given: "default state"
     when: "OnNameChange with non-blank string"
-    then: "name = given value, isNameValid = true"
+    then: "name accepted (isNameValid = true)"
 
   - id: SUS-004
     description: "onEmailChange with invalid email should mark email invalid"
     given: "default state"
     when: "OnEmailChange with malformed e-mail"
-    then: "email = given value, isEmailValid = false"
+    then: "email flagged as invalid (isEmailValid = false)"
 
   - id: SUS-005
     description: "onEmailChange with valid email should mark email valid"
     given: "default state"
     when: "OnEmailChange with well-formed e-mail"
-    then: "email = given value, isEmailValid = true"
+    then: "email accepted (isEmailValid = true)"
 
   - id: SUS-006
     description: "onPasswordChange with short password should mark password invalid"
     given: "default state"
     when: "OnPasswordChange with fewer than 8 characters"
-    then: "password = given value, isPasswordValid = false"
+    then: "password flagged as invalid (isPasswordValid = false)"
 
   - id: SUS-007
     description: "onPasswordChange with valid password should mark password valid"
     given: "default state"
     when: "OnPasswordChange with 8+ characters"
-    then: "password = given value, isPasswordValid = true"
+    then: "password accepted (isPasswordValid = true)"
 
   - id: SUS-008
     description: "onPasswordConfirmationChange with mismatch should mark confirmation invalid"
@@ -132,10 +132,10 @@ behaviors:
     then: "isPasswordConfirmationValid = true"
 
   - id: SUS-010
-    description: "onSignUpClick with invalid fields should not call repository"
+    description: "onSignUpClick with invalid fields should not attempt sign up"
     given: "blank fields"
     when: "OnSignUpClick"
-    then: "repository not called, fields marked invalid"
+    then: "no sign-up attempt made, fields flagged as invalid"
 
   - id: SUS-011
     description: "onSignUpClick with valid fields should emit NavigateToHome"

@@ -71,31 +71,31 @@ behaviors:
     description: "onEmailChange with invalid email should mark email invalid"
     given: "default state"
     when: "OnEmailChange with malformed e-mail"
-    then: "email = given value, isEmailValid = false"
+    then: "email flagged as invalid (isEmailValid = false)"
 
   - id: SIS-003
     description: "onEmailChange with valid email should mark email valid"
     given: "default state"
     when: "OnEmailChange with well-formed e-mail"
-    then: "email = given value, isEmailValid = true"
+    then: "email accepted (isEmailValid = true)"
 
   - id: SIS-004
     description: "onPasswordChange with blank value should mark password invalid"
     given: "default state"
     when: "OnPasswordChange with blank string"
-    then: "password = given value, isPasswordValid = false"
+    then: "password flagged as invalid (isPasswordValid = false)"
 
   - id: SIS-005
     description: "onPasswordChange with value should mark password valid"
     given: "default state"
     when: "OnPasswordChange with non-blank string"
-    then: "password = given value, isPasswordValid = true"
+    then: "password accepted (isPasswordValid = true)"
 
   - id: SIS-006
-    description: "onSignInClick with invalid fields should not call repository"
+    description: "onSignInClick with invalid fields should not attempt sign in"
     given: "blank email and password"
     when: "OnSignInClick"
-    then: "repository not called, fields marked invalid"
+    then: "no sign-in attempt made, fields flagged as invalid"
 
   - id: SIS-007
     description: "onSignInClick with valid credentials should emit NavigateToHome"
