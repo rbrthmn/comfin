@@ -10,17 +10,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -50,8 +48,6 @@ fun SignInScreen(
     viewModel: SignInScreenContract.ViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val snackbarHostState = remember { SnackbarHostState() }
-    val googleUnavailableMessage = stringResource(id = R.string.auth_google_unavailable)
 
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
@@ -60,8 +56,6 @@ fun SignInScreen(
                 SignInScreenContract.Effect.NavigateToSignUp -> onNavigateToSignUp()
                 SignInScreenContract.Effect.NavigateToPasswordRecovery ->
                     onNavigateToPasswordRecovery()
-                SignInScreenContract.Effect.ShowGoogleSignInUnavailable ->
-                    snackbarHostState.showSnackbar(message = googleUnavailableMessage)
             }
         }
     }
@@ -71,10 +65,6 @@ fun SignInScreen(
             uiState = uiState,
             onIntent = viewModel::onIntent,
             modifier = Modifier.testTag(SIGN_IN_SCREEN_TAG)
-        )
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
 }
@@ -133,9 +123,13 @@ private fun SignInContent(
             Text(text = stringResource(id = R.string.sign_in_forgot_password_link))
         }
         OrDivider()
+        val activityContext = LocalContext.current
         GoogleSignInButton(
-            onClick = { onIntent(SignInScreenContract.Intent.OnGoogleSignInClick) }
+            onClick = { onIntent(SignInScreenContract.Intent.OnGoogleSignInClick(activityContext)) }
         )
+        if (uiState.showGoogleSignInError) {
+            AuthErrorText(text = stringResource(id = R.string.auth_google_error))
+        }
         TextButton(
             onClick = { onIntent(SignInScreenContract.Intent.OnSignUpClick) }
         ) {

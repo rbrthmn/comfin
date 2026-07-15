@@ -1,5 +1,6 @@
 package br.com.rbrthmn.auth
 
+import android.content.Context
 import br.com.rbrthmn.auth.signup.SignUpScreenContract
 import br.com.rbrthmn.auth.signup.SignUpScreenViewModel
 import br.com.rbrthmn.data.auth.model.AuthResult
@@ -26,6 +27,7 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class SignUpScreenViewModelTest {
     private val authRepository: AuthRepository = mockk()
+    private val activityContext: Context = mockk()
     private lateinit var viewModel: SignUpScreenViewModel
 
     @Before
@@ -158,19 +160,40 @@ class SignUpScreenViewModelTest {
         }
 
     @Test
-    fun `onGoogleSignInClick with unavailable provider should emit ShowGoogleSignInUnavailable`() =
-        runTest {
-            coEvery {
-                authRepository.signInWith(SignInMethod.GOOGLE)
-            } returns AuthResult.Error.ProviderUnavailable
+    fun `onGoogleSignInClick with successful sign in should emit NavigateToHome`() = runTest {
+        coEvery {
+            authRepository.signInWith(SignInMethod.GOOGLE, activityContext)
+        } returns AuthResult.Success(USER)
 
-            viewModel.onIntent(SignUpScreenContract.Intent.OnGoogleSignInClick)
+        viewModel.onIntent(SignUpScreenContract.Intent.OnGoogleSignInClick(activityContext))
 
-            assertEquals(
-                SignUpScreenContract.Effect.ShowGoogleSignInUnavailable,
-                viewModel.effects.first()
-            )
-        }
+        assertEquals(SignUpScreenContract.Effect.NavigateToHome, viewModel.effects.first())
+        assertFalse(viewModel.uiState.value.isLoading)
+    }
+
+    @Test
+    fun `onGoogleSignInClick with cancelled sign in should not show error`() = runTest {
+        coEvery {
+            authRepository.signInWith(SignInMethod.GOOGLE, activityContext)
+        } returns AuthResult.Error.Cancelled
+
+        viewModel.onIntent(SignUpScreenContract.Intent.OnGoogleSignInClick(activityContext))
+
+        assertFalse(viewModel.uiState.value.isLoading)
+        assertFalse(viewModel.uiState.value.showGoogleSignInError)
+    }
+
+    @Test
+    fun `onGoogleSignInClick with provider failure should show google sign in error`() = runTest {
+        coEvery {
+            authRepository.signInWith(SignInMethod.GOOGLE, activityContext)
+        } returns AuthResult.Error.Unknown()
+
+        viewModel.onIntent(SignUpScreenContract.Intent.OnGoogleSignInClick(activityContext))
+
+        assertTrue(viewModel.uiState.value.showGoogleSignInError)
+        assertFalse(viewModel.uiState.value.isLoading)
+    }
 
     @Test
     fun `onSignInClick should emit NavigateToSignIn`() = runTest {

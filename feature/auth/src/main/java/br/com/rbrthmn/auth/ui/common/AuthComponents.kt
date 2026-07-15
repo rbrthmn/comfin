@@ -1,10 +1,14 @@
 package br.com.rbrthmn.auth.common
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -12,7 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -60,9 +67,26 @@ fun GoogleSignInButton(
 ) {
     OutlinedButton(
         onClick = onClick,
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = colorResource(id = R.color.google_button_background),
+            contentColor = colorResource(id = R.color.google_button_content)
+        ),
+        border = BorderStroke(
+            width = dimensionResource(id = R.dimen.google_button_border_width),
+            color = colorResource(id = R.color.google_button_border)
+        ),
         modifier = modifier.fillMaxWidth()
     ) {
-        Text(text = stringResource(id = R.string.auth_google_button))
+        Icon(
+            painter = painterResource(id = R.drawable.ic_google_logo),
+            contentDescription = null,
+            tint = Color.Unspecified,
+            modifier = Modifier.size(dimensionResource(id = R.dimen.google_button_icon_size))
+        )
+        Text(
+            text = stringResource(id = R.string.auth_google_button),
+            modifier = Modifier.padding(start = dimensionResource(id = commonR.dimen.padding_small))
+        )
     }
 }
 

@@ -8,6 +8,7 @@ sealed class AuthResult {
         object EmailAlreadyRegistered : Error()
         object AccountNotFound : Error()
         object ProviderUnavailable : Error()
+        object Cancelled : Error()
         data class Unknown(val cause: Throwable? = null) : Error()
     }
 }

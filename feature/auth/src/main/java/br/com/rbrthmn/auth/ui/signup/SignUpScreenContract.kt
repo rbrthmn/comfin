@@ -1,5 +1,6 @@
 package br.com.rbrthmn.auth.signup
 
+import android.content.Context
 import br.com.rbrthmn.ui.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 
@@ -18,7 +19,8 @@ interface SignUpScreenContract {
         val isPasswordValid: Boolean = true,
         val isPasswordConfirmationValid: Boolean = true,
         val isLoading: Boolean = false,
-        val showEmailAlreadyRegisteredError: Boolean = false
+        val showEmailAlreadyRegisteredError: Boolean = false,
+        val showGoogleSignInError: Boolean = false
     )
 
     sealed class Intent {
@@ -27,13 +29,12 @@ interface SignUpScreenContract {
         data class OnPasswordChange(val value: String) : Intent()
         data class OnPasswordConfirmationChange(val value: String) : Intent()
         object OnSignUpClick : Intent()
-        object OnGoogleSignInClick : Intent()
+        data class OnGoogleSignInClick(val activityContext: Context) : Intent()
         object OnSignInClick : Intent()
     }
 
     sealed class Effect {
         object NavigateToHome : Effect()
         object NavigateToSignIn : Effect()
-        object ShowGoogleSignInUnavailable : Effect()
     }
 }
