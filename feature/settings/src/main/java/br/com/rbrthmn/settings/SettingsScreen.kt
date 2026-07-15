@@ -24,14 +24,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.navigation.NavigationDestination
 import org.koin.androidx.compose.koinViewModel
@@ -78,7 +76,7 @@ private fun SettingsContent(
     onDarkModeOptionSelected: (String) -> Unit
 ) {
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = dimensionResource(id = commonR.dimen.padding_medium))
@@ -144,11 +142,11 @@ private fun DarkModeSetting(
     ) {
         Text(
             text = stringResource(id = R.string.settings_dark_mode),
-            fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp
+            style = MaterialTheme.typography.titleMedium
         )
         Text(
             text = selectedOption,
-            fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

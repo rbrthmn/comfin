@@ -22,6 +22,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -37,20 +38,19 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.misc.R
 import br.com.rbrthmn.navigation.NavigationDestination
 import br.com.rbrthmn.operations.ui.OperationType
 import br.com.rbrthmn.operations.ui.OperationsScreenContract
 import br.com.rbrthmn.operations.ui.components.AddOperationDialog
+import br.com.rbrthmn.ui.theme.ComFinTheme
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
@@ -109,7 +109,7 @@ private fun ReservesCard(
     onSaveNewReserve: () -> Unit
 ) {
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = dimensionResource(id = commonR.dimen.padding_medium))
@@ -129,7 +129,7 @@ private fun ReservesCard(
                 Text(
                     text = stringResource(id = R.string.reserve_total_title),
                     fontWeight = FontWeight.Bold,
-                    fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp
+                    style = MaterialTheme.typography.headlineSmall
                 )
                 Text(
                     fontWeight = FontWeight.Bold,
@@ -139,7 +139,7 @@ private fun ReservesCard(
                         currencyStringId = commonR.string.brl_currency,
                         value = reservesTotalValue
                     ),
-                    fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp
+                    style = MaterialTheme.typography.headlineLarge
                 )
             }
             Column(
@@ -203,12 +203,12 @@ private fun AddReserveButton(
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = stringResource(id = commonR.string.add_icon_description),
-                tint = Color.Gray,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = modifier.padding(horizontal = dimensionResource(id = commonR.dimen.padding_extra_small))
             )
             Text(
                 text = stringResource(id = R.string.add_reserve_button),
-                fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
+                style = MaterialTheme.typography.bodyLarge
             )
         }
     }
@@ -294,7 +294,7 @@ private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
             )
             Text(
                 text = reserve.name,
-                fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -305,7 +305,7 @@ private fun ReserveItem(modifier: Modifier = Modifier, reserve: Reserve) {
                 currencyStringId = commonR.string.brl_currency, value = reserve.value
             ),
             maxLines = 1,
-            fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
+            style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
         )
     }
@@ -347,7 +347,11 @@ private fun ReserveOperationsList(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = commonR.dimen.padding_extra_small))
     ) {
         for (operation in reserve.operations) {
-            val operationValueColor = if (operation.isWithdrawal) Color.Red else Color.Green
+            val operationValueColor = if (operation.isWithdrawal) {
+                ComFinTheme.extendedColors.expense
+            } else {
+                ComFinTheme.extendedColors.income
+            }
             val operationValueSymbol = if (operation.isWithdrawal) "-" else "+"
 
             Row(
@@ -362,7 +366,7 @@ private fun ReserveOperationsList(
                     text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(
                         SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(operation.date)!!
                     ),
-                    fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
+                    style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
                     text = operationValueSymbol + valueWithCurrencyString(
@@ -370,7 +374,7 @@ private fun ReserveOperationsList(
                         value = operation.value
                     ),
                     color = operationValueColor,
-                    fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
         }
@@ -388,11 +392,11 @@ private fun ReserveOperationsList(
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(id = commonR.string.add_icon_description),
-                    tint = Color.Gray,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
                     text = stringResource(id = operationR.string.add_operation_button),
-                    fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
         }

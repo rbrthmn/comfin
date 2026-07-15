@@ -13,6 +13,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -23,13 +24,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.home.R
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
@@ -62,7 +61,7 @@ fun MonthlyLimitCard(
         )
 
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         modifier = modifier
             .padding(top = dimensionResource(id = commonR.dimen.padding_medium))
             .shadow(elevation = dimensionResource(id = commonR.dimen.padding_small))
@@ -77,13 +76,13 @@ fun MonthlyLimitCard(
             ) {
                 Text(
                     text = stringResource(id = R.string.monthly_limit_title),
-                    fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp,
+                    style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Icon(
                     painter = painterResource(id = commonR.drawable.help),
                     contentDescription = stringResource(id = R.string.help_icon_description),
-                    tint = Color.Gray,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .padding(start = dimensionResource(id = commonR.dimen.padding_extra_small))
                         .clickable { showMonthlyLimitDialog.value = true }
@@ -94,7 +93,7 @@ fun MonthlyLimitCard(
                     currencyStringId = R.string.brl_currency,
                     value = uiState.monthLimit
                 ),
-                fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
+                style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 modifier = modifier.padding(
                     bottom = dimensionResource(id = commonR.dimen.padding_medium),
@@ -108,13 +107,13 @@ fun MonthlyLimitCard(
             ) {
                 Text(
                     text = stringResource(id = R.string.difference_title),
-                    fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp,
+                    style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Icon(
                     painter = painterResource(id = commonR.drawable.help),
                     contentDescription = stringResource(id = R.string.help_icon_description),
-                    tint = Color.Gray,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = modifier
                         .padding(start = dimensionResource(id = commonR.dimen.padding_extra_small))
                         .clickable { showMonthlyDifferenceDialog.value = true }
@@ -125,7 +124,7 @@ fun MonthlyLimitCard(
                     currencyStringId = R.string.brl_currency,
                     value = uiState.monthDifference
                 ),
-                fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
+                style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 modifier = modifier.padding(top = dimensionResource(id = commonR.dimen.padding_extra_small))
             )

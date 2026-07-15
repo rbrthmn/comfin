@@ -17,6 +17,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -31,12 +32,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.rbrthmn.home.R
 import br.com.rbrthmn.home.ui.components.AddItemButton
@@ -72,7 +71,7 @@ fun CreditCardBillsCard(
             onSaveButtonClick = { viewModel.onIntent(Intent.OnSaveClick(showAddCardDialog)) })
 
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         modifier = modifier.shadow(elevation = dimensionResource(id = commonR.dimen.padding_small))
     ) {
         CreditCardBillsList(
@@ -137,19 +136,17 @@ private fun CreditCardItem(
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = stringResource(id = R.string.bank_icon_description),
-                tint = Color.Gray,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = modifier.padding(horizontal = dimensionResource(id = commonR.dimen.padding_extra_small))
             )
             Column(verticalArrangement = Arrangement.Center) {
                 Text(
                     text = itemName,
-                    fontSize = dimensionResource(id = commonR.dimen.font_size_medium).value.sp,
-                    lineHeight = dimensionResource(id = commonR.dimen.font_size_medium).value.sp
+                    style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
                     text = stringResource(id = R.string.credit_card_due_day_label) + " " + dueDay,
-                    fontSize = dimensionResource(id = commonR.dimen.font_size_small).value.sp,
-                    lineHeight = dimensionResource(id = commonR.dimen.font_size_small).value.sp
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
         }

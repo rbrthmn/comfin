@@ -4,14 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-import br.com.rbrthmn.home.R
 import br.com.rbrthmn.ui.utils.valueWithCurrencyString
 import br.com.rbrthmn.ui.R as commonR
 
@@ -30,7 +29,7 @@ fun TotalValueText(
     ) {
         Text(
             text = totalValueTitle,
-            fontSize = dimensionResource(id = commonR.dimen.font_size_large).value.sp,
+            style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.ExtraBold
         )
         Text(
@@ -38,7 +37,7 @@ fun TotalValueText(
                 currencyStringId = commonR.string.brl_currency,
                 value = totalValue
             ),
-            fontSize = dimensionResource(id = R.dimen.font_size_month_limit_value).value.sp,
+            style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold
         )
     }
