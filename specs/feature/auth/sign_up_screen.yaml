@@ -1,0 +1,158 @@
+spec_version: "1.0"
+
+# --- Identity ---
+name: SignUpScreen
+module: ":feature:auth"
+package: "br.com.rbrthmn.auth.signup"
+contract: SignUpScreenContract
+
+description: >
+  Sign up screen with name, e-mail, password and password confirmation fields,
+  a Google sign in button, and a link back to sign in.
+
+# --- UiState ---
+state:
+  class: UiState
+  fields:
+    - name: name
+      type: String
+      default: '""'
+    - name: email
+      type: String
+      default: '""'
+    - name: password
+      type: String
+      default: '""'
+    - name: passwordConfirmation
+      type: String
+      default: '""'
+    - name: isNameValid
+      type: Boolean
+      default: "true"
+    - name: isEmailValid
+      type: Boolean
+      default: "true"
+    - name: isPasswordValid
+      type: Boolean
+      default: "true"
+    - name: isPasswordConfirmationValid
+      type: Boolean
+      default: "true"
+    - name: isLoading
+      type: Boolean
+      default: "false"
+    - name: showEmailAlreadyRegisteredError
+      type: Boolean
+      default: "false"
+
+nested_states: []
+
+# --- Intents ---
+intents:
+  - name: OnNameChange
+    params:
+      - { name: value, type: String }
+  - name: OnEmailChange
+    params:
+      - { name: value, type: String }
+  - name: OnPasswordChange
+    params:
+      - { name: value, type: String }
+  - name: OnPasswordConfirmationChange
+    params:
+      - { name: value, type: String }
+  - name: OnSignUpClick
+  - name: OnGoogleSignInClick
+  - name: OnSignInClick
+
+# --- Effects ---
+effects:
+  - name: NavigateToHome
+  - name: NavigateToSignIn
+  - name: ShowGoogleSignInUnavailable
+
+# --- Behaviors (acceptance criteria → test cases) ---
+behaviors:
+  - id: SUS-001
+    description: "doOnInit should keep default state"
+    given: "no stored session"
+    when: "ViewModel initializes"
+    then: "UiState equals defaults"
+
+  - id: SUS-002
+    description: "onNameChange with blank value should mark name invalid"
+    given: "default state"
+    when: "OnNameChange with blank string"
+    then: "name = given value, isNameValid = false"
+
+  - id: SUS-003
+    description: "onNameChange with value should mark name valid"
+    given: "default state"
+    when: "OnNameChange with non-blank string"
+    then: "name = given value, isNameValid = true"
+
+  - id: SUS-004
+    description: "onEmailChange with invalid email should mark email invalid"
+    given: "default state"
+    when: "OnEmailChange with malformed e-mail"
+    then: "email = given value, isEmailValid = false"
+
+  - id: SUS-005
+    description: "onEmailChange with valid email should mark email valid"
+    given: "default state"
+    when: "OnEmailChange with well-formed e-mail"
+    then: "email = given value, isEmailValid = true"
+
+  - id: SUS-006
+    description: "onPasswordChange with short password should mark password invalid"
+    given: "default state"
+    when: "OnPasswordChange with fewer than 8 characters"
+    then: "password = given value, isPasswordValid = false"
+
+  - id: SUS-007
+    description: "onPasswordChange with valid password should mark password valid"
+    given: "default state"
+    when: "OnPasswordChange with 8+ characters"
+    then: "password = given value, isPasswordValid = true"
+
+  - id: SUS-008
+    description: "onPasswordConfirmationChange with mismatch should mark confirmation invalid"
+    given: "password already set"
+    when: "OnPasswordConfirmationChange with different value"
+    then: "isPasswordConfirmationValid = false"
+
+  - id: SUS-009
+    description: "onPasswordConfirmationChange with match should mark confirmation valid"
+    given: "password already set"
+    when: "OnPasswordConfirmationChange with same value"
+    then: "isPasswordConfirmationValid = true"
+
+  - id: SUS-010
+    description: "onSignUpClick with invalid fields should not call repository"
+    given: "blank fields"
+    when: "OnSignUpClick"
+    then: "repository not called, fields marked invalid"
+
+  - id: SUS-011
+    description: "onSignUpClick with valid fields should emit NavigateToHome"
+    given: "repository returns Success"
+    when: "OnSignUpClick"
+    then: "Effect NavigateToHome emitted, isLoading = false"
+
+  - id: SUS-012
+    description: "onSignUpClick with registered email should show email already registered error"
+    given: "repository returns EmailAlreadyRegistered"
+    when: "OnSignUpClick"
+    then: "showEmailAlreadyRegisteredError = true, isLoading = false"
+
+  - id: SUS-013
+    description: "onGoogleSignInClick with unavailable provider should emit ShowGoogleSignInUnavailable"
+    given: "external provider returns ProviderUnavailable"
+    when: "OnGoogleSignInClick"
+    then: "Effect ShowGoogleSignInUnavailable emitted"
+
+  - id: SUS-014
+    description: "onSignInClick should emit NavigateToSignIn"
+    given: "any state"
+    when: "OnSignInClick"
+    then: "Effect NavigateToSignIn emitted"

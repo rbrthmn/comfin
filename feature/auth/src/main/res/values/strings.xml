@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_email_hint">E-mail</string>
+    <string name="auth_password_hint">Senha</string>
+    <string name="auth_google_button">Continuar com Google</string>
+    <string name="auth_google_unavailable">Login com Google indisponível no momento</string>
+    <string name="auth_invalid_email_error">E-mail inválido</string>
+    <string name="auth_password_min_length_error">A senha deve ter pelo menos 8 caracteres</string>
+    <string name="auth_password_mismatch_error">As senhas não coincidem</string>
+    <string name="auth_or_divider">ou</string>
+
+    <string name="sign_in_title">Entrar</string>
+    <string name="sign_in_button">Entrar</string>
+    <string name="sign_in_blank_password_error">Informe a senha</string>
+    <string name="sign_in_invalid_credentials_error">E-mail ou senha inválidos</string>
+    <string name="sign_in_forgot_password_link">Esqueci minha senha</string>
+    <string name="sign_in_no_account_link">Não tem uma conta? Cadastre-se</string>
+
+    <string name="sign_up_title">Criar conta</string>
+    <string name="sign_up_button">Cadastrar</string>
+    <string name="sign_up_name_hint">Nome</string>
+    <string name="sign_up_password_confirmation_hint">Confirmar senha</string>
+    <string name="sign_up_blank_name_error">Informe o nome</string>
+    <string name="sign_up_email_already_registered_error">E-mail já cadastrado</string>
+    <string name="sign_up_has_account_link">Já tem uma conta? Entrar</string>
+
+    <string name="password_recovery_title">Recuperar senha</string>
+    <string name="password_recovery_email_instructions">Informe o e-mail da sua conta para redefinir a senha</string>
+    <string name="password_recovery_verify_button">Verificar e-mail</string>
+    <string name="password_recovery_account_not_found_error">Conta não encontrada</string>
+    <string name="password_recovery_new_password_hint">Nova senha</string>
+    <string name="password_recovery_new_password_confirmation_hint">Confirmar nova senha</string>
+    <string name="password_recovery_reset_button">Redefinir senha</string>
+    <string name="password_recovery_success_message">Senha redefinida com sucesso</string>
+    <string name="password_recovery_back_to_sign_in_link">Voltar para o login</string>
+</resources>

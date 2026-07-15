@@ -65,6 +65,7 @@ dependencies {
     implementation(project(":core:navigation"))
 
     // Features
+    implementation(project(":feature:auth"))
     implementation(project(":feature:home"))
     implementation(project(":feature:operations"))
     implementation(project(":feature:settings"))
@@ -78,6 +79,7 @@ dependencies {
     implementation(libs.koin.androidx.navigation)
 
     // Data layer
+    implementation(project(":data:auth"))
     implementation(project(":data:common"))
     implementation(project(":data:home"))
     implementation(project(":data:operations"))

@@ -15,10 +15,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.runtime.remember
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import br.com.rbrthmn.R
+import br.com.rbrthmn.auth.passwordrecovery.PasswordRecoveryDestination
+import br.com.rbrthmn.auth.signin.SignInDestination
+import br.com.rbrthmn.auth.signup.SignUpDestination
+import br.com.rbrthmn.data.auth.repository.AuthRepository
 import br.com.rbrthmn.home.ui.HomeDestination
 import br.com.rbrthmn.misc.morefeatures.MoreFeaturesDestination
 import br.com.rbrthmn.navigation.ComFinNavigationBar
@@ -26,9 +31,16 @@ import br.com.rbrthmn.navigation.ComFinNavigationType
 import br.com.rbrthmn.navigation.NavigationItemContent
 import br.com.rbrthmn.operations.ui.OperationsDestination
 import br.com.rbrthmn.ui.financialcompanion.navigation.ComFinNavGraph
+import org.koin.compose.koinInject
 
 const val NAV_GRAPH_TAG = "nav_graph"
 const val NAV_BAR_TAG = "nav_bar"
+
+private val authRoutes = setOf(
+    SignInDestination.route,
+    SignUpDestination.route,
+    PasswordRecoveryDestination.route
+)
 
 @Composable
 fun ComFinApp(
@@ -36,6 +48,10 @@ fun ComFinApp(
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
+    val authRepository = koinInject<AuthRepository>()
+    val startDestination = remember {
+        if (authRepository.isAuthenticated()) HomeDestination.route else SignInDestination.route
+    }
     val navigationType: ComFinNavigationType = when (windowSize) {
         WindowWidthSizeClass.Compact -> ComFinNavigationType.BOTTOM_NAVIGATION
         else -> ComFinNavigationType.BOTTOM_NAVIGATION
@@ -59,34 +75,40 @@ fun ComFinApp(
         )
     )
 
+    val currentRoute = currentDestination?.destination?.route ?: startDestination
+    val isAuthRoute = currentRoute in authRoutes
+
     Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = modifier.background(MaterialTheme.colorScheme.inverseOnSurface)
         ) {
             ComFinNavGraph(
                 navController = navController,
+                startDestination = startDestination,
                 modifier = Modifier
                     .weight(0.92f)
                     .testTag(NAV_GRAPH_TAG)
             )
-            ComFinNavigationBar(
-                modifier = Modifier
-                    .weight(0.08f)
-                    .testTag(NAV_BAR_TAG),
-                navigationItems = navItemsList,
-                navigationType = navigationType,
-                navigateToDestination = { route ->
-                    navController.navigate(route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+            if (!isAuthRoute) {
+                ComFinNavigationBar(
+                    modifier = Modifier
+                        .weight(0.08f)
+                        .testTag(NAV_BAR_TAG),
+                    navigationItems = navItemsList,
+                    navigationType = navigationType,
+                    navigateToDestination = { route ->
+                        navController.navigate(route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
+                    },
 
-                currentRoute = currentDestination?.destination?.route ?: HomeDestination.route
-            )
+                    currentRoute = currentRoute
+                )
+            }
         }
     }
 }

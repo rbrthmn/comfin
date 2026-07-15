@@ -1,0 +1,124 @@
+spec_version: "1.0"
+
+# --- Identity ---
+name: SignInScreen
+module: ":feature:auth"
+package: "br.com.rbrthmn.auth.signin"
+contract: SignInScreenContract
+
+description: >
+  Sign in screen with e-mail and password fields, a Google sign in button,
+  and links to sign up and password recovery.
+
+# --- UiState ---
+state:
+  class: UiState
+  fields:
+    - name: email
+      type: String
+      default: '""'
+    - name: password
+      type: String
+      default: '""'
+    - name: isEmailValid
+      type: Boolean
+      default: "true"
+    - name: isPasswordValid
+      type: Boolean
+      default: "true"
+    - name: isLoading
+      type: Boolean
+      default: "false"
+    - name: showInvalidCredentialsError
+      type: Boolean
+      default: "false"
+
+nested_states: []
+
+# --- Intents ---
+intents:
+  - name: OnEmailChange
+    params:
+      - { name: value, type: String }
+  - name: OnPasswordChange
+    params:
+      - { name: value, type: String }
+  - name: OnSignInClick
+  - name: OnGoogleSignInClick
+  - name: OnSignUpClick
+  - name: OnPasswordRecoveryClick
+
+# --- Effects ---
+effects:
+  - name: NavigateToHome
+  - name: NavigateToSignUp
+  - name: NavigateToPasswordRecovery
+  - name: ShowGoogleSignInUnavailable
+
+# --- Behaviors (acceptance criteria → test cases) ---
+behaviors:
+  - id: SIS-001
+    description: "doOnInit should keep default state"
+    given: "no stored session"
+    when: "ViewModel initializes"
+    then: "UiState equals defaults"
+
+  - id: SIS-002
+    description: "onEmailChange with invalid email should mark email invalid"
+    given: "default state"
+    when: "OnEmailChange with malformed e-mail"
+    then: "email = given value, isEmailValid = false"
+
+  - id: SIS-003
+    description: "onEmailChange with valid email should mark email valid"
+    given: "default state"
+    when: "OnEmailChange with well-formed e-mail"
+    then: "email = given value, isEmailValid = true"
+
+  - id: SIS-004
+    description: "onPasswordChange with blank value should mark password invalid"
+    given: "default state"
+    when: "OnPasswordChange with blank string"
+    then: "password = given value, isPasswordValid = false"
+
+  - id: SIS-005
+    description: "onPasswordChange with value should mark password valid"
+    given: "default state"
+    when: "OnPasswordChange with non-blank string"
+    then: "password = given value, isPasswordValid = true"
+
+  - id: SIS-006
+    description: "onSignInClick with invalid fields should not call repository"
+    given: "blank email and password"
+    when: "OnSignInClick"
+    then: "repository not called, fields marked invalid"
+
+  - id: SIS-007
+    description: "onSignInClick with valid credentials should emit NavigateToHome"
+    given: "repository returns Success"
+    when: "OnSignInClick"
+    then: "Effect NavigateToHome emitted, isLoading = false"
+
+  - id: SIS-008
+    description: "onSignInClick with wrong credentials should show invalid credentials error"
+    given: "repository returns InvalidCredentials"
+    when: "OnSignInClick"
+    then: "showInvalidCredentialsError = true, isLoading = false"
+
+  - id: SIS-009
+    description: "onGoogleSignInClick with unavailable provider should emit ShowGoogleSignInUnavailable"
+    given: "external provider returns ProviderUnavailable"
+    when: "OnGoogleSignInClick"
+    then: "Effect ShowGoogleSignInUnavailable emitted"
+
+  - id: SIS-010
+    description: "onSignUpClick should emit NavigateToSignUp"
+    given: "any state"
+    when: "OnSignUpClick"
+    then: "Effect NavigateToSignUp emitted"
+
+  - id: SIS-011
+    description: "onPasswordRecoveryClick should emit NavigateToPasswordRecovery"
+    given: "any state"
+    when: "OnPasswordRecoveryClick"
+    then: "Effect NavigateToPasswordRecovery emitted"

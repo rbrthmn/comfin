@@ -52,6 +52,7 @@ android {
 dependencies {
     api(project(":core:ui"))
     implementation(project(":core:navigation"))
+    implementation(project(":data:auth"))
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(platform(libs.koin.bom))

@@ -1,6 +1,8 @@
 package br.com.rbrthmn
 
 import android.app.Application
+import br.com.rbrthmn.auth.di.authModule
+import br.com.rbrthmn.data.auth.di.authDataModule
 import br.com.rbrthmn.data.di.dataModule
 import br.com.rbrthmn.data.home.di.homeDataModule
 import br.com.rbrthmn.data.misc.di.miscDataModule
@@ -23,10 +25,12 @@ class ComFin : Application() {
             androidContext(this@ComFin)
             modules(
                 dataModule,
+                authDataModule,
                 homeDataModule,
                 operationsDataModule,
                 miscDataModule,
                 uiModule,
+                authModule,
                 homeModule,
                 operationsModule,
                 settingsModule,
