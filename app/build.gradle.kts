@@ -87,7 +87,7 @@ dependencies {
     implementation(project(":data:misc"))
 
     // JUnit KTX
-    implementation(libs.androidx.junit.ktx)
+    androidTestImplementation(libs.androidx.junit.ktx)
 
     // Testes
     testImplementation(project(":core:test"))
